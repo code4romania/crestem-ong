@@ -1,4 +1,4 @@
-# Project name
+# Creștem ONG
 
 [![GitHub contributors][ico-contributors]][link-contributors]
 [![GitHub last commit][ico-last-commit]][link-last-commit]
@@ -15,8 +15,6 @@ Give a short introduction of your project. Let this section explain the objectiv
 ## Contributing
 
 This project is built by amazing volunteers and you can be one of them! Here's a list of ways in [which you can contribute to this project][link-contributing]. If you want to make any change to this repository, please **make a fork first**.
-
-Help us out by testing this project in the [staging environment][link-staging]. If you see something that doesn't quite work the way you expect it to, open an Issue. Make sure to describe what you _expect to happen_ and _what is actually happening_ in detail.
 
 If you would like to suggest new functionality, open an Issue and mark it as a __[Feature request]__. Please be specific about why you think this functionality will be of use. If you can, please include some visual description of what you would like the UI to look like, if you are suggesting new UI elements.
 
@@ -64,17 +62,16 @@ Started in 2016, Code for Romania is a civic tech NGO, official member of the Co
 Last, but not least, we rely on donations to ensure the infrastructure, logistics and management of our community that is widely spread across 11 timezones, coding for social change to make Romania and the world a better place. If you want to support us, [you can do it here][link-donate].
 
 
-[ico-contributors]: https://img.shields.io/github/contributors/code4romania/standard-repo-template.svg?style=for-the-badge
-[ico-last-commit]: https://img.shields.io/github/last-commit/code4romania/standard-repo-template.svg?style=for-the-badge
+[ico-contributors]: https://img.shields.io/github/contributors/code4romania/crestem-ong.svg?style=for-the-badge
+[ico-last-commit]: https://img.shields.io/github/last-commit/code4romania/crestem-ong.svg?style=for-the-badge
 [ico-license]: https://img.shields.io/badge/license-MPL%202.0-brightgreen.svg?style=for-the-badge
 
-[link-contributors]: https://github.com/code4romania/standard-repo-template/graphs/contributors
-[link-last-commit]: https://github.com/code4romania/standard-repo-template/commits/main
+[link-contributors]: https://github.com/code4romania/crestem-ong/graphs/contributors
+[link-last-commit]: https://github.com/code4romania/crestem-ong/commits/main
 [link-license]: https://opensource.org/licenses/MPL-2.0
 [link-contributing]: https://github.com/code4romania/.github/blob/main/CONTRIBUTING.md
 
 [link-production]: insert_link_here
-[link-staging]: insert_link_here
 
-[link-code4]: https://www.code4.ro/en/
+[link-code4]: https://code4.ro/en/
 [link-donate]: https://code4.ro/en/donate/
