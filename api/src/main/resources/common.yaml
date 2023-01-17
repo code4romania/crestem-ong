@@ -1,0 +1,130 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    size:
+      in: query
+      name: size
+      required: false
+      allowEmptyValue: false
+      schema:
+        type: integer
+    page:
+      in: query
+      name: page
+      required: false
+      allowEmptyValue: false
+      schema:
+        type: integer
+    sort:
+      name: sort
+      description: sort
+      in: query
+      required: false
+      allowEmptyValue: false
+      schema:
+        $ref: '#/components/schemas/AppEntitySort'
+    id:
+      name: id
+      description: ID of the user to fetch
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+  schemas:
+    ApiResponseDTO:
+      type: object
+      properties:
+        message:
+          description: Message
+          type: string
+        fieldErrors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldErrorDTO'
+    FieldErrorDTO:
+      type: object
+      properties:
+        field:
+          description: Field
+          type: string
+        message:
+          description: Message
+          type: string
+    AppEntitySort:
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            type: string
+            enum:
+              - CREATED_AT
+              - UPDATED_AT
+              - STATUS
+        direction:
+          type: string
+          enum:
+            - ASC
+            - DESC
+    AppEntityStatus:
+      type: string
+      enum:
+        - VISIBLE
+        - DRAFT
+        - ARCHIVED
+        - CANCELED
+        - DELETED
+      default: VISIBLE
+    AbstractDTO:
+      type: object
+      discriminator:
+        propertyName: dtoType
+      properties:
+        id:
+          type: integer
+          format: int64
+        status:
+          $ref: '#/components/schemas/AppEntityStatus'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: integer
+          format: int64
+    UserSummaryDTO:
+      allOf:
+        - $ref: '#/components/schemas/AbstractDTO'
+        - properties:
+            email:
+              type: string
+              format: email
+              minLength: 1
+            roles:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserRoles'
+    UserRoles:
+      type: string
+      enum:
+        - ROLE_ADMIN
+        - ROLE_MENTOR
+        - ROLE_USER_PARTIAL
+        - ROLE_USER_FULL
+    AppPageDTO:
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64

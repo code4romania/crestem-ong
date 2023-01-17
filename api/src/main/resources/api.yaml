@@ -1,0 +1,27 @@
+openapi: 3.0.3
+info:
+  title: Crestem ONG API
+  version: 1.0.0
+servers:
+  - url: /api/v1
+security:
+  - bearerAuth: [ ]
+paths:
+  #
+  # Auth
+  #
+  /auth/register:
+    $ref: './auth.yaml#/paths/~1auth~1register'
+  /auth/login:
+    $ref: './auth.yaml#/paths/~1auth~1login'
+  /auth/logout:
+    $ref: './auth.yaml#/paths/~1auth~1logout'
+  /auth/current:
+    $ref: './auth.yaml#/paths/~1auth~1current'
+  #
+  # Users
+  #
+  /users:
+    $ref: './users.yaml#/paths/~1users'
+  /users/{id}:
+    $ref: './users.yaml#/paths/~1users~1{id}'

@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  db:
+    image: mysql:8.0.31
+    container_name: crestem-ong-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: sa
+      MYSQL_DATABASE: crestem-ong
+    ports:
+      - 3306:3306
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025" # smtp server
+      - "8025:8025" # web ui
