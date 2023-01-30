@@ -1,0 +1,3 @@
+.globe {
+    @apply h-[18px] cursor-pointer;
+}

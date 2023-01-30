@@ -1,0 +1,14 @@
+{
+  "header.navbar.about.label": "About",
+  "header.navbar.evaluation.label": "NGO Evaluation",
+  "header.navbar.library.label": "Library",
+  "header.navbar.resources.label": "People resources",
+  "header.navbar.contact.label": "Contact",
+  "header.navbar.login.button.label": "Login",
+  "header.navbar.register.button.label": "Register",
+  "footer.contact.us.label": "Contact us",
+  "footer.newsletter.subscribe.label": "Abonează-te la newsletter",
+  "main.footer.copyright.text": "© {year} Creștem ONG",
+  "main.footer.advertisement.text": "O soluție Code for Romania.",
+  "main.footer.advertisement.link.text": "Află mai multe"
+}

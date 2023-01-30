@@ -47,3 +47,4 @@ api/target
 backend/target
 frontend/target
 frontend/node_modules
+frontend/.next
