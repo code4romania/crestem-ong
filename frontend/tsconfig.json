@@ -17,10 +17,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "paths": {
-      "@atom/*": ["components/atoms/*"],
-      "@molecule/*": ["components/molecules/*"]
+      "@atom/*": ["src/components/atoms/*"],
+      "@molecule/*": ["src/components/molecules/*"],
+      "@layout/*": ["src/components/layout/*"],
+      "@lib/*": ["src/lib/*"],
+      "@icons/*": ["public/icons/*"]
     }
   },
   "include": [

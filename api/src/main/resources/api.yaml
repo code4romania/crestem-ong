@@ -25,3 +25,8 @@ paths:
     $ref: './users.yaml#/paths/~1users'
   /users/{id}:
     $ref: './users.yaml#/paths/~1users~1{id}'
+  #
+  # Newsletter
+  #
+  /newsletter/subscribe:
+    $ref: './newsletter.yaml#/paths/~1newsletter~1subscribe'

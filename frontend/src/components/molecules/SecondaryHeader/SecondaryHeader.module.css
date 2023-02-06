@@ -1,3 +1,9 @@
 .header {
-    @apply pt-[80px];
+    @apply pt-[80px] h-[168px];
+    @apply shadow-[0px_1px_2px_rgba(0,0,0,0.06),0px_1px_3px_rgba(0,0,0,0.1)];
+    @apply flex flex-row-reverse items-center;
+}
+
+.image {
+    @apply pr-[24px];
 }

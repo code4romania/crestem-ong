@@ -7,7 +7,7 @@ function LanguagePicker() {
   const languages = [
     {
       label: 'en',
-      path: '/'
+      path: '/en'
     },
     {
       label: 'ro',

@@ -1,0 +1,26 @@
+.input {
+    @apply rounded-md font-medium;
+    @apply border shadow-[0px_1px_2px_rgba(0,0,0,0.05)] border-solid border-gray-300;
+    @apply px-2;
+}
+
+.input:hover{
+    @apply border-gray-500;
+}
+
+.input:focus {
+    @apply border-green;
+    outline: none;
+}
+
+.sm {
+    @apply h-10 w-64;
+}
+
+.md {
+    @apply h-12 w-80;
+}
+
+.lg {
+    @apply h-16 w-96;
+}

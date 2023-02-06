@@ -44,7 +44,7 @@ function DropdownMenu({ items, children }: DropdownMenuProps) {
         <div className={style.items}>
           {items.map((item) => (
             <div key={item.label} className={style.item}>
-              <Link href="/" locale={item.label}>
+              <Link href={item.path} locale={item.label}>
                 {item.label}
               </Link>
             </div>

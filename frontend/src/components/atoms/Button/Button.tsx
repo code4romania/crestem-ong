@@ -7,7 +7,6 @@ export interface ButtonProps {
   className?: string;
   text?: string;
   size?: 'sm' | 'md' | 'lg';
-
   children?: string | any;
 }
 

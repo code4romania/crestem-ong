@@ -8,19 +8,20 @@ import style from './MainFooter.module.css';
 import Image from 'next/image';
 import React from 'react';
 import Link from 'next/link';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'next-i18next';
 
 function MainFooter() {
+  const { t } = useTranslation();
   return (
     <footer className={style.footer}>
       <div className={style.advertisement}>
         <div className={style.filler} />
         <Image src={code4roIcon} alt={'Code4Romania logo'} />
         <span className={style.advertisementText}>
-          <FormattedMessage id={'main.footer.advertisement.text'} />
+          <span>{t('main.footer.advertisement.text')}</span>
         </span>
         <Link className={style.advertisementLinkText} href="#">
-          <FormattedMessage id={'main.footer.advertisement.link.text'}></FormattedMessage>
+          <span>{t('main.footer.advertisement.link.text')}</span>
         </Link>
         <div className={style.filler} />
       </div>
@@ -28,10 +29,7 @@ function MainFooter() {
         <div className={style.filler} />
         <div className={style.wrapper}>
           <div className={style.copyrightTextWrapper}>
-            <FormattedMessage
-              id={'main.footer.copyright.text'}
-              values={{ year: new Date().getFullYear() }}
-            />
+            <span>{t('main.footer.copyright.text', { year: new Date().getFullYear() })}</span>
           </div>
           <div className={style.spaceFiller} />
           <div className={style.socialButtonsWrapper}>

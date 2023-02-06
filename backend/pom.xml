@@ -16,7 +16,7 @@
     <description>Crestem ONG backend</description>
     <properties>
         <java.version>17</java.version>
-        <api.version>1.0.1</api.version>
+        <api.version>1.0.2</api.version>
         <testcontainers.version>1.17.6</testcontainers.version>
         <maven-remote-resources-plugin.version>3.0.0</maven-remote-resources-plugin.version>
         <openapi-generator-maven-plugin.version>6.2.1</openapi-generator-maven-plugin.version>

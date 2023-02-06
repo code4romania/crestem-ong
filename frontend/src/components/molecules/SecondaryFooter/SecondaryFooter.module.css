@@ -1,3 +1,39 @@
 .footer {
-    @apply pb-[90px];
+    @apply pb-[115px] h-[340px] w-full flex flex-col;
+}
+
+.filler {
+    @apply flex-none lg:w-20;
+}
+
+.wrapper {
+    @apply flex flex-row flex-wrap lg:mt-6 w-full items-center lg:pl-20 lg:pr-20;
+}
+
+.sectionHeader {
+    @apply w-full;
+}
+
+.sectionHeaderText {
+    @apply text-gray-400 uppercase text-[14px];
+}
+
+.section {
+    @apply basis-1/3 text-gray-400;
+}
+
+.sectionText {
+    @apply text-gray-500;
+}
+
+.divider {
+    @apply lg:ml-20 lg:mr-20 mt-6;
+}
+
+.icon {
+    @apply inline-block mr-4;
+}
+
+.subscribeInput {
+    @apply mr-4;
 }

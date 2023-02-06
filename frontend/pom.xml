@@ -13,7 +13,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <api.version>1.0.1</api.version>
+        <api.version>1.0.2</api.version>
         <maven-remote-resources-plugin.version>3.0.0</maven-remote-resources-plugin.version>
         <openapi-generator-maven-plugin.version>6.2.1</openapi-generator-maven-plugin.version>
     </properties>
