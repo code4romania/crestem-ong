@@ -1,7 +1,8 @@
 package org.crestemong.backend.model;
 
 public class MessageKey {
-    public static String GENERIC_ERROR = "generic.error";
+    public static final String GENERIC_ERROR = "generic.error";
+    public static final String VALIDATION_FAILURE = "validation.failure";
 
     public static class Auth {
         public static final String EMAIL_ALREADY_TAKEN = "auth.email.already.taken";

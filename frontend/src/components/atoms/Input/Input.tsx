@@ -9,6 +9,8 @@ export interface InputProps {
   className?: string;
   placeholder?: string;
   size?: 'sm' | 'md' | 'lg';
+  onChange?: any;
+  errorMessage?: string;
 }
 
 export default function Input({
@@ -16,17 +18,25 @@ export default function Input({
   type = 'text',
   className,
   size = 'md',
-  placeholder
+  placeholder,
+  onChange,
+  errorMessage = undefined
 }: InputProps) {
   const { t } = useTranslation();
   return (
-    <input
-      id={id}
-      type={type}
-      className={cx(style[size], style.input, className)}
-      placeholder={t(placeholder)}
-      onFocus={(e) => (e.target.placeholder = '')}
-      onBlur={(e) => (e.target.placeholder = t(placeholder))}
-    />
+    <>
+      <div className={cx(style[size], style.wrapper)}>
+        <input
+          id={id}
+          type={type}
+          className={cx(style['input-' + size], className, style.base, errorMessage ? style.error : style.valid)}
+          placeholder={t(placeholder)}
+          onFocus={(e) => (e.target.placeholder = '')}
+          onBlur={(e) => (e.target.placeholder = t(placeholder))}
+          onChange={onChange}
+        />
+        <div className={cx(style.errorText)}>{errorMessage}</div>
+      </div>
+    </>
   );
 }

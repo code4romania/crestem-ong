@@ -1,16 +1,32 @@
 import style from './SecondaryFooter.module.css';
 import Button from '@atom/Button';
-import Link from 'next/link';
 import cx from 'classnames';
 import phoneIcon from '@icons/phone.svg';
 import emailIcon from '@icons/email.svg';
 import locationIcon from '@icons/location.svg';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import Input from '@atom/Input';
 import { useTranslation } from 'next-i18next';
+import NewsletterApi from '@api/newsletter';
 
 function SecondaryFooter() {
+  const [subscribeToNewsletterEmail, setSubscribeToNewsletterEmail] = useState(undefined);
+  const [subscribeToNewsletterErrorMessage, setSubscribeToNewsletterErrorMessage] =
+    useState(undefined);
+
+  function subscribeToNewsletter() {
+    NewsletterApi.subscribe({
+      newsletterSubscriptionDTO: {
+        email: subscribeToNewsletterEmail
+      }
+    }).then((res) => {
+      if (res.status != 200) {
+        setSubscribeToNewsletterErrorMessage(res.message);
+      }
+    });
+  }
+
   const { t } = useTranslation();
   return (
     <div className={style.footer}>
@@ -53,11 +69,14 @@ function SecondaryFooter() {
             className={style.subscribeInput}
             type={'email'}
             placeholder={'secondary.footer.subscribe.input.placeholder'}
+            onChange={(event) => {
+              setSubscribeToNewsletterErrorMessage(undefined);
+              setSubscribeToNewsletterEmail(event.target.value);
+            }}
+            errorMessage={subscribeToNewsletterErrorMessage}
           />
-          <Button size={'md'}>
-            <Link href="/register">
-              <span>{t('secondary.footer.subscribe.button.label')}</span>
-            </Link>
+          <Button onClick={subscribeToNewsletter} size={'md'}>
+            <span>{t('secondary.footer.subscribe.button.label')}</span>
           </Button>
         </div>
       </div>

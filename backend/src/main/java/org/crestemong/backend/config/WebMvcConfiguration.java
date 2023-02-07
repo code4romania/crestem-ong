@@ -1,5 +1,7 @@
 package org.crestemong.backend.config;
 
+import jakarta.validation.Validation;
+import org.crestemong.backend.config.validation.AppMessageInterpolator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -12,6 +14,13 @@ import static org.springframework.http.HttpMethod.*;
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
     private static final long MAXAGESECS = 3600;
+
+    public WebMvcConfiguration() {
+        Validation.byDefaultProvider().configure().messageInterpolator(
+                new AppMessageInterpolator(
+                        Validation.byDefaultProvider().configure().getDefaultMessageInterpolator())
+        );
+    }
 
     @Value("${crestemong.security.allowed-origin-patterns}")
     private List<String> allowedOriginPatterns;

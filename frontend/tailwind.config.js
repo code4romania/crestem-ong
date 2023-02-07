@@ -14,6 +14,9 @@ module.exports = {
       'green': '#047B7D',
       'green-hover': '#005E60',
       'secondary-green': '#688F23',
+      'red': {
+        700: '#B91C1C'
+      }
     },
     extend: {}
   },

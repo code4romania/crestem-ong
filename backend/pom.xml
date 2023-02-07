@@ -29,6 +29,7 @@
         <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
         <springfox-swagger-ui.version>3.0.0</springfox-swagger-ui.version>
         <java-jwt.version>4.2.2</java-jwt.version>
+        <guava.version>31.1-jre</guava.version>
     </properties>
     <dependencies>
         <dependency>
@@ -94,6 +95,11 @@
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
             <version>${java-jwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -207,6 +213,7 @@
                             <apiPackage>org.crestemong.api</apiPackage>
                             <invokerPackage>org.crestemong.api</invokerPackage>
                             <modelPackage>org.crestemong.api.model</modelPackage>
+                            <templateDirectory>${project.basedir}/src/main/resources/openapi-templates</templateDirectory>
                         </configuration>
                     </execution>
                 </executions>

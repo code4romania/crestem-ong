@@ -23,7 +23,10 @@
       "@molecule/*": ["src/components/molecules/*"],
       "@layout/*": ["src/components/layout/*"],
       "@lib/*": ["src/lib/*"],
-      "@icons/*": ["public/icons/*"]
+      "@icons/*": ["public/icons/*"],
+      "@config": ["src/config/index.ts"],
+      "@generated-api/*": ["target/generated-sources/openapi/*"],
+      "@api/*": ["src/lib/api/impl/*"],
     }
   },
   "include": [
