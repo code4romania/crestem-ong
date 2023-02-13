@@ -37,7 +37,7 @@ If you would like to suggest new functionality, open an Issue and mark it as a _
 
 ## Repos and projects
 
-![image]()
+![crestem-ong drawio](https://user-images.githubusercontent.com/5001967/218456804-d8bade2c-ac5e-4156-aff6-512378847774.png)
 
 ## Deployment
 ### Without Docker
