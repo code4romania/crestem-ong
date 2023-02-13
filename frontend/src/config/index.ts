@@ -15,5 +15,7 @@ export const SERVER_ENV: string = PRC?.SERVER_ENV;
 export const DEV_MODE: boolean = process.env.NODE_ENV !== 'production';
 
 // Urls
-export const API_URL: string =
-  PRC?.API_URL ?? (DEV_MODE ? 'http://localhost:8080/api/v1' : '/api/v1');
+// export const API_URL: string =
+//   PRC?.API_URL ?? (DEV_MODE ? 'http://localhost:8080/api/v1' : '/api/v1');
+
+export const API_URL: string = PRC?.API_URL ?? 'http://localhost:8080/api/v1';

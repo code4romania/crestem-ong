@@ -22,7 +22,7 @@ function SecondaryFooter() {
       }
     }).then((res) => {
       if (res.status != 200) {
-        setSubscribeToNewsletterErrorMessage(res.message);
+        setSubscribeToNewsletterErrorMessage(res['message']);
       }
     });
   }

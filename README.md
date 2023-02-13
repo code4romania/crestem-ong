@@ -4,11 +4,14 @@
 [![GitHub last commit][ico-last-commit]][link-last-commit]
 [![License: MPL 2.0][ico-license]][link-license]
 
-Insert bullets description of the project if available.
+Crestem ONG project consists of 3 modules:
+- api - openapi yaml specification files. Used by both be&fe 
+- backend - Spring Boot application that implements the api
+- frontend - Next.js application
 
 [See the project live][link-production]
 
-Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.
+An evaluation and e-learning web platform that allows NGOs access to free resources and personalized mentoring
 
 [Contributing](#contributing) | [Built with](#built-with) | [Repos and projects](#repos-and-projects) | [Deployment](#deployment) | [Feedback](#feedback) | [License](#license) | [About Code for Romania](#about-code-for-romania)
 
@@ -21,6 +24,8 @@ If you would like to suggest new functionality, open an Issue and mark it as a _
 ## Built With
 
 ### Programming languages
+- Java
+- React
 
 ### Platforms
 
@@ -32,17 +37,26 @@ If you would like to suggest new functionality, open an Issue and mark it as a _
 
 ## Repos and projects
 
-Mention all related repos and projects.
+![image]()
 
 ## Deployment
+### Without Docker
+In order to get the code up and running on your own system proceed as follows:
+1. Make sure you have these installed: JDK 17+, Node 18.12.1+, Maven 3.8.5+, MySQL 8.0.31+ (or use the one from provided docker-compose.yaml)
+2. Go to root folder (crestem-ong) and issue the following command `mvn clean install`
+3. Import the project as Maven project in your favourite IDE (IntelliJ recommended)
+4. Make sure you have a MySQL server instance running on localhost and port 3306
+5. Start the backend application by running the `org.crestemong.backend.Application.main()` method from `backend` module (IntelliJ creates the run config for you when you first run it)
+6. Start the frontend application by running the `dev` script from `package.json` file located in `frontend` module
+7. Access the application on `localhost:3000`
 
-Guide users through getting your code up and running on their own system. In this section you can talk about:
-1. Installation process
-2. Software dependencies
-3. Latest releases
-4. API references
-
-Describe and show how to build your code and run the tests.
+### With Docker
+In order to get the app up and running with Docker proceed as follows:
+1. Make sure you have these installed: Docker 20.10.17+, docker-compose 2.2.3+ 
+2. Go to root folder (crestem-ong) and issue the following command `docker build -t crestem-ong-frontend -f frontend.Dockerfile .` to build the frontend image
+3. Go to root folder (crestem-ong) and issue the following command `docker build -t crestem-ong-backend -f backend.Dockerfile .` to build the backend image
+4. From the same root folder issue the command `docker-compose up` to run the applicaiton
+5. Access the application on `localhost:3000`
 
 ## Feedback
 
