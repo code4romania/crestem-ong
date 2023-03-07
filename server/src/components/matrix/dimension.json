@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_matrix_dimensions",
+  "info": {
+    "displayName": "dimension",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "quiz": {
+      "type": "component",
+      "repeatable": true,
+      "component": "matrix.question"
+    },
+    "name": {
+      "type": "string"
+    }
+  }
+}

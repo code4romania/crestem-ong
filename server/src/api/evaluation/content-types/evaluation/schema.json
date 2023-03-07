@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "evaluations",
+  "info": {
+    "singularName": "evaluation",
+    "pluralName": "evaluations",
+    "displayName": "Evaluation",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "dimensions": {
+      "displayName": "Dimension",
+      "type": "component",
+      "repeatable": true,
+      "component": "evaluation.dimension"
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "report": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::report.report",
+      "inversedBy": "evaluations"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_matrix_questions",
+  "info": {
+    "displayName": "question",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "question": {
+      "type": "string"
+    },
+    "option_1": {
+      "type": "text"
+    },
+    "option_2": {
+      "type": "text"
+    },
+    "option_3": {
+      "type": "text"
+    },
+    "option_4": {
+      "type": "text"
+    },
+    "option_5": {
+      "type": "text"
+    }
+  }
+}
