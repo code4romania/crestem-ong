@@ -24,11 +24,8 @@ export const userApi = createApi({
       query() {
         return {
           url: "users/me?populate=reports.evaluations.dimensions.quiz",
-          credentials: "include",
         };
       },
-      // transformResponse: (result: { data: { user: IUser } }) =>
-      //   result.data.user,
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;

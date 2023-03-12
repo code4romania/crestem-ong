@@ -1,80 +1,77 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import NavbarEvaluation from "../NavbarEvaluation";
+import { userApi } from "../../redux/api/userApi";
 
-const Navbar = () => (
-  <div className="bg-white pt-4 pr-8 pb-4 pl-8">
-    <div className="w-full">
-      <div className="flex w-full justify-end max-w-screen-2xl md:flex-row mt-auto mr-auto mb-auto ml-auto">
-        <div className="flex justify-center items-center md:justify-start hidden md:flex">
+function classNames({ ...classes }) {
+  return classes.filter(Boolean).join(" ");
+}
+
+const Example = () => {
+  const user = userApi.endpoints.getMe.useQueryState(null, {
+    selectFromResult: ({ data }) => {
+      return data!;
+    },
+  });
+  console.log("user", user);
+
+  return (
+    <NavbarEvaluation>
+      <div className={"flex justify-between w-full"}>
+        <div className={"sm:space-x-4"}>
           <Link
-            to={'/login'}
-            className="h-9 px-4 py-2 text-gray-600 bg-white border-2 border-white flex items-center justify-center
-            text-center rounded-lg text-lg font-normal mr-6"
+            to="/"
+            className="inline-flex items-center border-tealpx-2 py-2 pt-1 text-sm font-medium text-gray-900"
           >
-            Intră în cont
+            Despre
           </Link>
           <Link
-            to={'/register'}
-            className="h-9 px-4 py-2 text-white bg-teal-700 hover:bg-teal-900 hover:border-teal-900 border-2 flex
-            items-center justify-center text-center border-teal-700 rounded-lg text-lg font-normal mr-auto"
+            to="/"
+            className="inline-flex items-center border-transparent px-2 py-2 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
           >
-            Înregistrează-te
+            Evaluare ONG
+          </Link>
+          <Link
+            to="/"
+            className="inline-flex items-center border-transparent px-2 py-2 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+          >
+            Bibliotecă
+          </Link>
+          <Link
+            to="/"
+            className="inline-flex items-center border-transparent px-2 py-2 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+          >
+            Persoane resursă
+          </Link>
+          <Link
+            to="/"
+            className="inline-flex items-center border-transparent px-2 py-2 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+          >
+            Contact
           </Link>
         </div>
-        <div className="md:hidden flex items-center">
-          <div className="outline-none mobile-menu-button">
-            <svg
-              fill="none"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="w-6 h-6 text-gray-500
-              hover:text-green-500"
+        {user ? (
+          <div>Logout</div>
+        ) : (
+          <div className="flex justify-center items-center md:justify-start hidden md:flex">
+            <Link
+              to={"/login"}
+              className="px-4 py-2 text-gray-600 bg-white flex items-center justify-center text-center rounded-lg text-sm font-normal mr-6"
             >
-              <path d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+              Intră în cont
+            </Link>
+            <Link
+              to={"/register"}
+              className="px-4 py-2 text-white bg-teal-700 hover:bg-teal-900 hover:border-teal-900 flex
+            items-center justify-center text-center border-teal-700 rounded-lg text-sm font-normal mr-auto"
+            >
+              Înregistrează-te
+            </Link>
           </div>
-        </div>
+        )}
       </div>
-      <div className="hidden md:hidden md:hidden mobile-menu">
-        <div>
-          <div className="active">
-            <a
-              href="#"
-              className="text-gray-600 text-center mt-2 font-medium text-base"
-            >
-              Product
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 text-center mt-2 font-medium text-base"
-            >
-              Features
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 text-center mt-2 font-medium text-base"
-            >
-              Pricing
-            </a>
-            <button
-              className="h-9 w-24 text-gray-600 bg-white border-2 border-white flex items-center justify-center
-              text-center rounded-lg text-lg font-normal mt-2 mr-auto ml-auto"
-            >
-              Sign in
-            </button>
-            <button
-              className="h-9 w-24 text-white bg-blue-700 hover:bg-blue-900 hover:border-blue-900 border-2 flex
-              items-center justify-center text-center border-blue-700 rounded-lg text-lg font-normal mt-2 mr-auto
-              ml-auto"
-            >
-              Sign up
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-)
+    </NavbarEvaluation>
+  );
+};
 
-export default Navbar;
+export default Example;
