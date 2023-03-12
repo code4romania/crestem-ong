@@ -63,20 +63,25 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "ong_name": {
-      "type": "string"
+    "ongName": {
+      "type": "string",
+      "required": true
     },
-    "ong_identification_number": {
-      "type": "string"
+    "ongIdentificationNumber": {
+      "type": "string",
+      "required": true
     },
     "county": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "city": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "phone": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "activities": {
       "type": "string"
@@ -106,6 +111,18 @@
       "relation": "oneToMany",
       "target": "api::report.report",
       "mappedBy": "user"
+    },
+    "contactFirstName": {
+      "type": "string"
+    },
+    "contactLastName": {
+      "type": "string"
+    },
+    "contactEmail": {
+      "type": "string"
+    },
+    "contactPhone": {
+      "type": "string"
     }
   }
 }
