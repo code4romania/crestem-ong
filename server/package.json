@@ -14,7 +14,8 @@
     "@strapi/plugin-users-permissions": "4.7.1",
     "@strapi/provider-email-amazon-ses": "^4.7.1",
     "@strapi/strapi": "4.7.1",
-    "better-sqlite3": "8.0.1"
+    "better-sqlite3": "8.0.1",
+    "pg": "^8.10.0"
   },
   "author": {
     "name": "A Strapi developer"
