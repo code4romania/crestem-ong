@@ -161,7 +161,7 @@ const Evaluation = () => {
       onSubmit={handleSubmit(onSubmitHandler)}
     >
       <div>
-        <Heading level="h1">{dimension.name}</Heading>
+        <Heading level="h2">{dimension.name}</Heading>
         <p className="mt-4">{dimension.description}</p>
       </div>
       <div className="mt-4">

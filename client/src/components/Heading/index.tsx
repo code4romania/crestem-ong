@@ -1,10 +1,10 @@
 import React from "react";
 
 const classNames = {
-  h1: "text-4xl leading-10 font-bold",
-  h2: "text-3xl leading-9 font-bold",
-  h3: "",
-  h4: "",
+  h1: "text-6xl leading-none font-extrabold tracking-tight",
+  h2: "text-4xl leading-10 font-bold",
+  h3: "text-3xl leading-9 font-bold",
+  h4: "text-2xl leading-8 font-bold",
   h5: "",
   h6: "",
 };

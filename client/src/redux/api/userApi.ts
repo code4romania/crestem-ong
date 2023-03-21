@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setUser } from "../features/userSlice";
-import { IUser } from "./types";
+import { IUser, Report, Evaluation } from "./types";
 import { EvaluationInput } from "../../pages/Evaluation";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
@@ -33,28 +33,25 @@ export const userApi = createApi({
         } catch (error) {}
       },
     }),
-    createReport: builder.mutation<any, null>({
-      query() {
-        return {
-          method: "POST",
-          url: "reports",
-          body: { data: {} },
-        };
-      },
+    createReport: builder.mutation<Report, null>({
+      query: () => ({
+        method: "POST",
+        url: "reports",
+        body: { data: {} },
+      }),
     }),
-    findReport: builder.query<any, null>({
-      query({ reportId }: { reportId: string }) {
-        return {
+    findReport: builder.query<Report, string>({
+      query: (reportId) =>
+        reportId && {
           url: `reports/${reportId}`,
           credentials: "include",
-        };
-      },
+        },
     }),
-    updateReport: builder.mutation<any, null>({
-      query({ reportId, ...rest }: { reportId: string; finished: boolean }) {
+    updateReport: builder.mutation<Report, Report>({
+      query: ({ id, ...rest }) => {
         return {
           method: "PUT",
-          url: `reports/${reportId}`,
+          url: `reports/${id}`,
           credentials: "include",
           body: { data: rest },
         };
@@ -79,14 +76,17 @@ export const userApi = createApi({
       },
       transformResponse: (result: { data: any }) => result.data.attributes,
     }),
-    createEvaluation: builder.mutation<any, null>({
-      query({ reportId, email }) {
+    createEvaluation: builder.mutation<
+      Evaluation,
+      Pick<Evaluation, "id" | "email">
+    >({
+      query({ id, email }) {
         return {
           method: "POST",
           url: "evaluations",
           body: {
             data: {
-              report: reportId,
+              report: id,
               email,
             },
           },

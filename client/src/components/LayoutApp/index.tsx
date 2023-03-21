@@ -6,7 +6,7 @@ import Footer from "../Footer";
 const LayoutApp = () => (
   <>
     <Navbar />
-    <div className="container mx-auto px-2.5">
+    <div>
       <Outlet />
     </div>
     <Footer />

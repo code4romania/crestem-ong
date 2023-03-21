@@ -1,18 +1,8 @@
-import { useCookies } from "react-cookie";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { userApi } from "../../redux/api/userApi";
-import FullScreenLoader from "../FullScreenLoader";
+import { userApi } from "@/redux/api/userApi";
 
 const RequireUser = () => {
-  const [cookies] = useCookies(["jwt"]);
   const location = useLocation();
-
-  const { isLoading, isFetching } = userApi.endpoints.getMe.useQuery(null, {
-    skip: false,
-    refetchOnMountOrArgChange: true,
-  });
-
-  const loading = isLoading || isFetching;
 
   const user = userApi.endpoints.getMe.useQueryState(null, {
     selectFromResult: ({ data }) => {
@@ -20,11 +10,9 @@ const RequireUser = () => {
     },
   });
 
-  if (loading) {
-    return <FullScreenLoader />;
-  }
+  console.log("require user", user);
 
-  return cookies.jwt || user ? (
+  return user ? (
     <Outlet />
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />

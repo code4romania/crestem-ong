@@ -3,8 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { object, string, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLoginUserMutation } from "../../redux/api/authApi";
-import { useCookies } from "react-cookie";
+import { useLoginUserMutation } from "@/redux/api/authApi";
+import Section from "@/components/Section";
+import { useAppDispatch } from "@/redux/store";
+import { setToken } from "@/redux/features/userSlice";
 
 const loginSchema = object({
   identifier: string()
@@ -19,7 +21,7 @@ const loginSchema = object({
 export type LoginInput = TypeOf<typeof loginSchema>;
 
 const Login = () => {
-  const [ cookies, setCookie ] = useCookies(["jwt"]);
+  const dispatch = useAppDispatch();
   const methods = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
   });
@@ -27,23 +29,18 @@ const Login = () => {
   const [loginUser, { isLoading, isError, error, isSuccess, data }] =
     useLoginUserMutation();
 
-  const navigate = useNavigate();
-  const from = ((location.state as any)?.from.pathname as string) || "/";
-
   useEffect(() => {
     if (isSuccess && data?.jwt) {
-      setCookie('jwt', data.jwt);
-      navigate(from);
+      dispatch(setToken(data.jwt));
     }
-  }, [isLoading]);
+  }, [isSuccess, data, dispatch]);
 
   const onSubmitHandler: SubmitHandler<LoginInput> = (values) => {
-    // 👇 Executing the loginUser Mutation
     loginUser(values);
   };
 
   return (
-    <div className="h-1/2 flex items-center justify-center mt-0 mr-auto mb-0 ml-auto flex-wrap container gap-8">
+    <Section className="h-1/2 flex items-center justify-center mt-0 mr-auto mb-0 ml-auto flex-wrap container gap-8">
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(onSubmitHandler)}
@@ -125,7 +122,7 @@ const Login = () => {
           className="object-contain object-top w-full"
         />
       </div>
-    </div>
+    </Section>
   );
 };
 export default Login;

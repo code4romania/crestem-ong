@@ -38,7 +38,7 @@ const steps = [
 const StartEvaluation = ({ onClick }: { onClick: () => void }) => (
   <div className="space-y-10">
     <section className="pt-12">
-      <Heading level="h1">Începe evaluarea</Heading>
+      <Heading level="h2">Începe evaluarea</Heading>
       <div className="flex flex-row mt-8 md:gap-x-20">
         <div className="flex w-full justify-center items-center">
           <img

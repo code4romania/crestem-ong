@@ -3,6 +3,12 @@ import { useRegisterUserMutation } from "../../redux/api/authApi";
 import { literal, object, string, TypeOf } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import Heading from "@/components/Heading";
+import Section from "@/components/Section";
+import Button from "@/components/Button";
+import { setToken } from "@/redux/features/userSlice";
+import { useAppDispatch } from "@/redux/store";
 
 const registerSchema = object({
   ongName: string().min(1, "Numele organizatiei este obligatoriu"),
@@ -40,14 +46,22 @@ const registerSchema = object({
 export type RegisterInput = TypeOf<typeof registerSchema>;
 
 const Register = () => {
-  const [submitRegister, { isError, error }] = useRegisterUserMutation();
+  const [submitRegister, { isSuccess, isError, error, data }] =
+    useRegisterUserMutation();
   const methods = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
   });
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     console.log("error", error);
   }, [error]);
+
+  useEffect(() => {
+    if (isSuccess && data?.jwt) {
+      dispatch(setToken(data.jwt));
+    }
+  }, [isSuccess, data?.jwt, dispatch]);
 
   const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
     // 👇 Executing the loginUser Mutation
@@ -55,11 +69,16 @@ const Register = () => {
   };
 
   return (
-    <div className="container mx-auto">
-      <p className="mb-2 leading-tight font-bold text-5xl font-heading text- text-black">
-        Înregistrare
-      </p>
-      <div className="h-1/2 flex items-center justify-center mr-auto mb-0 ml-auto flex-wrap container mt-16">
+    <div>
+      <Section>
+        <div className={"space-y-2"}>
+          <Breadcrumbs
+            pages={[{ name: "Înregistrare", href: "#", current: true }]}
+          />
+          <Heading level={"h2"}>Înregistrare</Heading>
+        </div>
+      </Section>
+      <Section>
         <form
           onSubmit={methods.handleSubmit(onSubmitHandler)}
           className="space-y-8 divide-y divide-gray-200"
@@ -432,28 +451,14 @@ const Register = () => {
 
           <div className="pt-5">
             <div className="flex justify-end">
-              <button
-                type="button"
-                className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-              >
+              <Button to="/evaluation" color="white">
                 Renunță
-              </button>
-              <button
-                type="submit"
-                className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-              >
-                Salvează
-              </button>
-              {/*<Link*/}
-              {/*  to={"/"}*/}
-              {/*  className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"*/}
-              {/*>*/}
-              {/*  Salvează*/}
-              {/*</Link>*/}
+              </Button>
+              <Button type="submit">Salvează</Button>
             </div>
           </div>
         </form>
-      </div>
+      </Section>
     </div>
   );
 };

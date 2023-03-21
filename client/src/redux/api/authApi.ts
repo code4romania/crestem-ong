@@ -1,35 +1,32 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { LoginInput } from '../../pages/login.page';
-import { RegisterInput } from '../../pages/register.page';
-import { IGenericResponse } from './types';
-import { userApi } from './userApi';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { LoginInput } from "@/pages/Login";
+import { RegisterInput } from "@/pages/Register";
+import { RegisterResponse } from "./types";
+import { userApi } from "./userApi";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
 export const authApi = createApi({
-  reducerPath: 'authApi',
+  reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/api/auth/local`,
   }),
   endpoints: (builder) => ({
-    registerUser: builder.mutation<IGenericResponse, RegisterInput>({
+    registerUser: builder.mutation<RegisterResponse, RegisterInput>({
       query(data) {
         return {
-          url: 'register',
-          method: 'POST',
+          url: "register",
+          method: "POST",
           body: data,
         };
       },
     }),
-    loginUser: builder.mutation<
-      { jwt: string; user: object },
-      LoginInput
-      >({
+    loginUser: builder.mutation<{ jwt: string; user: object }, LoginInput>({
       query(data) {
         return {
-          method: 'POST',
+          method: "POST",
           body: data,
-          credentials: 'include',
+          credentials: "include",
         };
       },
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
@@ -39,19 +36,7 @@ export const authApi = createApi({
         } catch (error) {}
       },
     }),
-    logoutUser: builder.mutation<void, void>({
-      query() {
-        return {
-          url: 'logout',
-          credentials: 'include',
-        };
-      },
-    }),
   }),
 });
 
-export const {
-  useLoginUserMutation,
-  useRegisterUserMutation,
-  useLogoutUserMutation,
-} = authApi;
+export const { useLoginUserMutation, useRegisterUserMutation } = authApi;

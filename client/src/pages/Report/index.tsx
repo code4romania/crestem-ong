@@ -1,24 +1,26 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Button from "../../components/Button";
-import Stats from "../../components/Stats";
-import { calcScore } from "../../lib/score";
-import ResultsByDimension from "../../components/ResultsByDimension";
+import Button from "@/components/Button";
+import Stats from "@/components/Stats";
+import { calcScore } from "@/lib/score";
+import ResultsByDimension from "@/components/ResultsByDimension";
 import {
   useCreateEvaluationMutation,
   useFindReportQuery,
   useUpdateReportMutation,
-} from "../../redux/api/userApi";
-import envelope from "../../assets/envelope.svg";
-import TableEvaluations from "../../components/TableEvaluations";
+} from "@/redux/api/userApi";
+import envelope from "@/assets/envelope.svg";
+import TableEvaluations from "@/components/TableEvaluations";
+import CreateEvaluation from "@/components/CreateEvaluation";
+import Section from "@/components/Section";
+import Heading from "@/components/Heading";
 
-const EditReport = () => {
+const Report = () => {
   const [isFinished, setIsFinished] = useState(false);
   const { reportId } = useParams();
 
-  const { data: report } = useFindReportQuery({ reportId });
+  const { data: report } = useFindReportQuery(reportId);
   const [updateReport] = useUpdateReportMutation();
-  const [createEvaluation] = useCreateEvaluationMutation();
 
   useEffect(() => {
     if (report?.finished) {
@@ -28,12 +30,8 @@ const EditReport = () => {
 
   const handleComplete = useCallback(() => {
     setIsFinished(true);
-    updateReport({ reportId, finished: true });
+    updateReport({ id: reportId, finished: true });
   }, [setIsFinished]);
-
-  const handleInvite = useCallback(() => {
-    createEvaluation({ reportId, email: "platica.ciprian@gmail.com" });
-  }, []);
 
   if (!report) {
     return false;
@@ -43,22 +41,20 @@ const EditReport = () => {
   );
 
   return (
-    <div>
+    <Section>
       <header className="mb-10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900">
-            {isFinished
-              ? `Evaluare ${new Date(report.createdAt).toLocaleDateString(
-                  "ro-RO",
-                  {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  }
-                )}`
-              : "Evaluare curentă"}
-          </h1>
-        </div>
+        <Heading level="h2">
+          {isFinished
+            ? `Evaluare ${new Date(report.createdAt).toLocaleDateString(
+                "ro-RO",
+                {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                }
+              )}`
+            : "Evaluare curentă"}
+        </Heading>
       </header>
       {isFinished ? (
         <div>
@@ -92,16 +88,12 @@ const EditReport = () => {
             </div>
           </div>
           <div className={"divide-y divide-gray-300"}>
-            <div>
-              <div>Invită membrii organizației</div>
-            </div>
-            <div>
+            {reportId && (
               <div>
-                <label>Adaugă email</label>
-                <input type="text" />{" "}
-                <Button onClick={handleInvite}>Invită</Button>
+                <div>Invită membrii organizației</div>
+                <CreateEvaluation reportId={reportId} />
               </div>
-            </div>
+            )}
             {report?.evaluations.length > 0 ? (
               <TableEvaluations evaluations={report.evaluations} />
             ) : (
@@ -119,8 +111,8 @@ const EditReport = () => {
           </div>
         </div>
       )}
-    </div>
+    </Section>
   );
 };
 
-export default EditReport;
+export default Report;
