@@ -94,20 +94,7 @@ const Report = () => {
                 <CreateEvaluation reportId={reportId} />
               </div>
             )}
-            {report?.evaluations.length > 0 ? (
-              <TableEvaluations evaluations={report.evaluations} />
-            ) : (
-              <div className={"flex flex-col items-center"}>
-                <img src={envelope} />
-                <h3 className={"text-2xl text-gray-900 font-bold mt-6 mb-2"}>
-                  Niciun membru invitat
-                </h3>
-                <p className="max-w-xl text-center text-gray-500 text-lg">
-                  Adaugă adresele de email ale membrilor organizației pentru a-i
-                  invita să completeze evaluarea
-                </p>
-              </div>
-            )}
+            <TableEvaluations evaluations={report.evaluations} />
           </div>
         </div>
       )}

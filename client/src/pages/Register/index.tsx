@@ -451,7 +451,7 @@ const Register = () => {
 
           <div className="pt-5">
             <div className="flex justify-end">
-              <Button to="/evaluation" color="white">
+              <Button to="/" color="white">
                 Renunță
               </Button>
               <Button type="submit">Salvează</Button>

@@ -21,7 +21,10 @@ export const authApi = createApi({
         };
       },
     }),
-    loginUser: builder.mutation<{ jwt: string; user: object }, LoginInput>({
+    loginUser: builder.mutation<
+      { jwt: string; user: { username: string } },
+      LoginInput
+    >({
       query(data) {
         return {
           method: "POST",
