@@ -5,7 +5,7 @@ module.exports = ({ env }) => ({
       providerOptions: {
         key: env("AWS_SES_KEY"),
         secret: env("AWS_SES_SECRET"),
-        amazon: env("AWS_SES_AMAZON"),
+        amazon: "https://email.eu-central-1.amazonaws.com",
       },
       settings: {
         defaultFrom: env("DEFAULT_FROM"),
