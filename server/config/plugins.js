@@ -5,12 +5,12 @@ module.exports = ({ env }) => ({
       providerOptions: {
         key: env("AWS_SES_KEY"),
         secret: env("AWS_SES_SECRET"),
-        amazon: "https://email.us-east-1.amazonaws.com",
+        amazon: env("AWS_SES_AMAZON"),
       },
-      // settings: {
-      //   defaultFrom: "myemail@protonmail.com",
-      //   defaultReplyTo: "myemail@protonmail.com",
-      // },
+      settings: {
+        defaultFrom: env("DEFAULT_FROM"),
+        defaultReplyTo: env("DEFAULT_REPLY_TO"),
+      },
     },
   },
 });
