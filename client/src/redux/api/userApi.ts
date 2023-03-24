@@ -18,7 +18,7 @@ export const userApi = createApi({
       }
     },
   }),
-  tagTypes: ["User"],
+  tagTypes: ["User", "Evaluation"],
   endpoints: (builder) => ({
     getMe: builder.query<IUser, null>({
       query() {
@@ -46,6 +46,7 @@ export const userApi = createApi({
           url: `reports/${reportId}`,
           credentials: "include",
         },
+      providesTags: ["Evaluation"],
     }),
     updateReport: builder.mutation<Report, Report>({
       query: ({ id, ...rest }) => {
@@ -92,6 +93,7 @@ export const userApi = createApi({
           },
         };
       },
+      invalidatesTags: ["Evaluation"],
     }),
     submitEvaluation: builder.mutation<any, EvaluationInput>({
       query({ evaluationId, dimensions }) {
