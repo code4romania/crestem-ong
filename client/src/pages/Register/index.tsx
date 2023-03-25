@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useRegisterUserMutation } from "../../redux/api/authApi";
+import { useRegisterUserMutation } from "@/redux/api/authApi";
 import { literal, object, string, TypeOf } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
@@ -9,6 +9,7 @@ import Section from "@/components/Section";
 import Button from "@/components/Button";
 import { setToken } from "@/redux/features/userSlice";
 import { useAppDispatch } from "@/redux/store";
+import { toast } from "react-toastify";
 
 const registerSchema = object({
   ongName: string().min(1, "Numele organizatiei este obligatoriu"),
@@ -54,8 +55,10 @@ const Register = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log("error", error);
-  }, [error]);
+    if (error?.data?.error?.message) {
+      toast.error(error.data.error.message);
+    }
+  }, [error?.data?.error?.message]);
 
   useEffect(() => {
     if (isSuccess && data?.jwt) {
@@ -64,7 +67,6 @@ const Register = () => {
   }, [isSuccess, data?.jwt, dispatch]);
 
   const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
-    // 👇 Executing the loginUser Mutation
     submitRegister({ ...values, username: values.email });
   };
 
@@ -81,7 +83,7 @@ const Register = () => {
       <Section>
         <form
           onSubmit={methods.handleSubmit(onSubmitHandler)}
-          className="space-y-8 divide-y divide-gray-200"
+          className="space-y-8 divide-y divide-gray-200 max-w-3xl mx-auto"
         >
           <div className="space-y-8 divide-y divide-gray-200">
             <div>
@@ -288,31 +290,31 @@ const Register = () => {
                   </div>
                 </div>
 
-                <div className="sm:col-span-6">
-                  <label
-                    htmlFor="photo"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Logo organizație
-                  </label>
-                  <div className="mt-1 flex items-center">
-                    <span className="h-12 w-12 overflow-hidden rounded-full bg-gray-100">
-                      <svg
-                        className="h-full w-full text-gray-300"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                      </svg>
-                    </span>
-                    <button
-                      type="button"
-                      className="ml-5 rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-                    >
-                      Încarcă logo
-                    </button>
-                  </div>
-                </div>
+                {/*<div className="sm:col-span-6">*/}
+                {/*  <label*/}
+                {/*    htmlFor="photo"*/}
+                {/*    className="block text-sm font-medium text-gray-700"*/}
+                {/*  >*/}
+                {/*    Logo organizație*/}
+                {/*  </label>*/}
+                {/*  <div className="mt-1 flex items-center">*/}
+                {/*    <span className="h-12 w-12 overflow-hidden rounded-full bg-gray-100">*/}
+                {/*      <svg*/}
+                {/*        className="h-full w-full text-gray-300"*/}
+                {/*        fill="currentColor"*/}
+                {/*        viewBox="0 0 24 24"*/}
+                {/*      >*/}
+                {/*        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />*/}
+                {/*      </svg>*/}
+                {/*    </span>*/}
+                {/*    <button*/}
+                {/*      type="button"*/}
+                {/*      className="ml-5 rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"*/}
+                {/*    >*/}
+                {/*      Încarcă logo*/}
+                {/*    </button>*/}
+                {/*  </div>*/}
+                {/*</div>*/}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="about"
@@ -450,7 +452,7 @@ const Register = () => {
           </div>
 
           <div className="pt-5">
-            <div className="flex justify-end">
+            <div className="flex justify-end gap-4">
               <Button to="/" color="white">
                 Renunță
               </Button>

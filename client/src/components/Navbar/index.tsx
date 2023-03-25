@@ -2,6 +2,62 @@ import React from "react";
 import { Link } from "react-router-dom";
 import NavbarEvaluation from "@/components/NavbarEvaluation";
 import { userApi } from "@/redux/api/userApi";
+import Button from "@/components/Button";
+
+const Menu = () => (
+  <ul className="items-center hidden text-sm gap-x-3 lg:flex lg:flex-wrap">
+    <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
+      <a href="https://ong.website-factory.heroesof.tech/ro/acasa" className="">
+        Acasă
+      </a>
+    </li>
+    <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
+      <a
+        href="https://ong.website-factory.heroesof.tech/ro/despre-proiect"
+        className=""
+      >
+        Despre
+      </a>
+    </li>
+    <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 bg-gray-100">
+      <Link to="/" className="">
+        Evaluare ONG
+      </Link>
+    </li>
+    <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
+      <a
+        href="https://ong.website-factory.heroesof.tech/ro/biblioteca"
+        className=""
+      >
+        Biblioteca
+      </a>
+    </li>
+    <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
+      <a
+        href="https://ong.website-factory.heroesof.tech/ro/persoane-resursa"
+        className=""
+      >
+        Persoane resursa
+      </a>
+    </li>
+    <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
+      <a
+        href="https://ong.website-factory.heroesof.tech/ro/programele-noastre"
+        className=""
+      >
+        Programele noastre
+      </a>
+    </li>
+    <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
+      <a
+        href="https://ong.website-factory.heroesof.tech/ro/programele-noastre"
+        className=""
+      >
+        Contact
+      </a>
+    </li>
+  </ul>
+);
 
 const Example = () => {
   const user = userApi.endpoints.getMe.useQueryState(null, {
@@ -11,57 +67,22 @@ const Example = () => {
   });
 
   return (
-    <NavbarEvaluation>
-      <div className={"flex justify-between w-full"}>
-        <div className={"sm:space-x-4"}>
-          <Link
-            to="/"
-            className="inline-flex items-center border-tealpx-2 py-2 pt-1 text-sm font-medium text-gray-900"
-          >
-            Despre
-          </Link>
-          <Link
-            to="/"
-            className="inline-flex items-center border-transparent px-2 py-2 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-          >
-            Evaluare ONG
-          </Link>
-          <Link
-            to="/"
-            className="inline-flex items-center border-transparent px-2 py-2 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-          >
-            Bibliotecă
-          </Link>
-          <Link
-            to="/"
-            className="inline-flex items-center border-transparent px-2 py-2 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-          >
-            Persoane resursă
-          </Link>
-          <Link
-            to="/"
-            className="inline-flex items-center border-transparent px-2 py-2 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-          >
-            Contact
-          </Link>
-        </div>
+    <NavbarEvaluation menu={<Menu />}>
+      <div className={"flex justify-end w-full"}>
         {user ? (
           <div>Logout</div>
         ) : (
-          <div className="flex justify-center items-center md:justify-start hidden md:flex">
-            <Link
-              to={"/login"}
-              className="px-4 py-2 text-gray-600 bg-white flex items-center justify-center text-center rounded-lg text-sm font-normal mr-6"
-            >
+          <div className="flex justify-center items-center md:justify-start gap-4">
+            <Button color="white" to={"/login"}>
               Intră în cont
-            </Link>
-            <Link
+            </Button>
+            <Button
               to={"/register"}
               className="px-4 py-2 text-white bg-teal-700 hover:bg-teal-900 hover:border-teal-900 flex
             items-center justify-center text-center border-teal-700 rounded-lg text-sm font-normal mr-auto"
             >
               Înregistrează-te
-            </Link>
+            </Button>
           </div>
         )}
       </div>
