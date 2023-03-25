@@ -9,17 +9,28 @@ const { createCoreController } = require("@strapi/strapi").factories;
 module.exports = createCoreController("api::report.report", ({ strapi }) => ({
   async create(ctx) {
     const { user } = ctx.state;
-    const data = await strapi.entityService.create("api::report.report", {
+    const { deadline } = ctx.request.body.data || {};
+    const { evaluations } = ctx.request.body.data;
+    const result = await strapi.entityService.create("api::report.report", {
       data: {
         user: user.id,
+        deadline,
       },
     });
-    ctx.created(data);
+    for (const evaluation of evaluations) {
+      await strapi.entityService.create("api::evaluation.evaluation", {
+        data: {
+          report: result.id,
+          ...evaluation,
+        },
+      });
+    }
+    ctx.created(result);
   },
   async findOne(ctx) {
     const { id } = ctx.params;
     const data = await strapi.entityService.findOne("api::report.report", id, {
-      populate: 'evaluations.dimensions.quiz'
+      populate: "evaluations.dimensions.quiz",
     });
     return data;
   },

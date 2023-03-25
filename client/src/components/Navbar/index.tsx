@@ -1,11 +1,7 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import NavbarEvaluation from "../NavbarEvaluation";
-import { userApi } from "../../redux/api/userApi";
-
-function classNames({ ...classes }) {
-  return classes.filter(Boolean).join(" ");
-}
+import NavbarEvaluation from "@/components/NavbarEvaluation";
+import { userApi } from "@/redux/api/userApi";
 
 const Example = () => {
   const user = userApi.endpoints.getMe.useQueryState(null, {
@@ -13,7 +9,6 @@ const Example = () => {
       return data!;
     },
   });
-  console.log("user", user);
 
   return (
     <NavbarEvaluation>

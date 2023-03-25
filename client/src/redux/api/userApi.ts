@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setUser } from "../features/userSlice";
 import { IUser, Report, Evaluation } from "./types";
 import { EvaluationInput } from "../../pages/Evaluation";
+import { ReportInput } from "@/pages/NewReport";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
@@ -33,11 +34,18 @@ export const userApi = createApi({
         } catch (error) {}
       },
     }),
-    createReport: builder.mutation<Report, null>({
-      query: () => ({
+    createReport: builder.mutation<Report, ReportInput>({
+      query: ({ deadline, evaluations }) => ({
         method: "POST",
         url: "reports",
-        body: { data: {} },
+        body: {
+          data: {
+            deadline,
+            evaluations: evaluations
+              ? evaluations?.split("\n")?.map((email) => ({ email }))
+              : [],
+          },
+        },
       }),
     }),
     findReport: builder.query<Report, string>({

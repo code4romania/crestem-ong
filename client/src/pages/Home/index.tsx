@@ -8,22 +8,10 @@ import { useAppSelector } from "@/redux/store";
 import empty from "@/assets/empty.svg";
 import TableHeadReports from "@/components/index/TableHeadReports";
 import TableRowReport from "@/components/TableRowReport";
-import { useCreateReportMutation } from "@/redux/api/userApi";
-import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const user = useAppSelector((state) => state.userState.user);
-  const [createReport, { data, isSuccess }] = useCreateReportMutation();
-  const navigate = useNavigate();
-  const handleClickCreate = useCallback(() => {
-    createReport(null);
-  }, []);
-
-  useEffect(() => {
-    if (isSuccess && data) {
-      navigate(`/reports/${data.id}`);
-    }
-  }, [navigate, isSuccess, data?.id]);
+  const hasReports = !!user?.reports?.length;
 
   return (
     <div>
@@ -37,7 +25,7 @@ const Home = () => {
           <Heading level={"h2"}>Evaluare organizațională</Heading>
         </div>
       </Section>
-      {!user?.reports?.length && (
+      {!hasReports && (
         <Section>
           <div className="h-1/2 flex justify-center mt-0 mr-auto mb-0 ml-auto container gap-8">
             <div className="w-full h-full flex items-center justify-center pt-0 pr-4 pb-0 pl-4 md:w-1/2 md:mb-0">
@@ -61,7 +49,7 @@ const Home = () => {
         </Section>
       )}
       {user ? (
-        user.reports?.length > 0 ? (
+        hasReports ? (
           <>
             <Section key={"reports"}>
               <p className="color-gray-500 text-lg">
@@ -102,9 +90,7 @@ const Home = () => {
                 </div>
                 <div className={"md:w-1/2 lg:w-1/3"}>
                   <div className="float-right">
-                    <Button onClick={handleClickCreate}>
-                      Începe evaluarea
-                    </Button>
+                    <Button to="/create/report">Începe evaluarea</Button>
                   </div>
                 </div>
               </div>
@@ -118,7 +104,7 @@ const Home = () => {
               Realizează evaluarea pentru a descoperi dimensiunile organizației
               care necesită dezvoltare{" "}
             </p>
-            <Button onClick={handleClickCreate}>Începe prima evaluare</Button>
+            <Button to={"/create/report"}>Începe prima evaluare</Button>
           </Section>
         )
       ) : (

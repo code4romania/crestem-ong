@@ -9,29 +9,15 @@ interface IButton {
   color?: "teal" | "white";
 }
 
-const textColor = {
-  white: "teal-600",
-  teal: "white",
-};
-
-const hoverColor = {
-  white: "gray-100",
-  teal: "teal-700",
-};
-
-const bgColor = {
-  white: "bg-white",
-  teal: "bg-teal-600",
+const variation = {
+  teal: "rounded bg-teal-600 py-2 px-4 font-medium text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600",
+  white:
+    "rounded bg-white py-2 px-4 font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50",
 };
 
 const Button = ({ children, to, onClick, type, color = "teal" }: IButton) => {
-  const buttonClassName =
-    "inline-flex justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2";
-  const className = `${buttonClassName} ${
-    color
-      ? `${bgColor[color]} text-${textColor[color]} hover:bg-${hoverColor[color]}`
-      : ""
-  }`;
+  const className = variation[color];
+
   return to ? (
     <Link to={to} className={className}>
       {children}

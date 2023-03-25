@@ -9,6 +9,7 @@ import ForgotPassword from "@/pages/ForgotPassword";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Report from "@/pages/Report";
+import NewReport from "@/pages/NewReport";
 
 const Router = () => {
   return (
@@ -21,6 +22,7 @@ const Router = () => {
         {/*Private Route */}
         <Route element={<RequireUser />}>
           <Route path="/reports/:reportId" element={<Report />} />
+          <Route path="/create/report" element={<NewReport />} />
         </Route>
       </Route>
       <Route element={<LayoutEvaluation />}>

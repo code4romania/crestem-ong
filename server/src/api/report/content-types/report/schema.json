@@ -19,7 +19,8 @@
       "mappedBy": "report"
     },
     "deadline": {
-      "type": "date"
+      "type": "date",
+      "required": true
     },
     "finished": {
       "type": "boolean",

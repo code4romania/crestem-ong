@@ -34,7 +34,11 @@ const AuthMiddleware: React.FC<IAuthMiddleware> = ({ children }) => {
   }, [cookies.jwt]);
 
   if (isLoading || (cookies.jwt && !token)) {
-    return <FullScreenLoader />;
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <FullScreenLoader />
+      </div>
+    );
   }
 
   return children;
