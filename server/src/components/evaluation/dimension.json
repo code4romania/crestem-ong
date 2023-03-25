@@ -11,6 +11,9 @@
       "type": "component",
       "repeatable": true,
       "component": "evaluation.question"
+    },
+    "comment": {
+      "type": "text"
     }
   }
 }

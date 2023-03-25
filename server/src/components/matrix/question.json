@@ -23,6 +23,9 @@
     },
     "option_5": {
       "type": "text"
+    },
+    "tag": {
+      "type": "string"
     }
   }
 }
