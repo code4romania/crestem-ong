@@ -41,7 +41,7 @@ const ResultsByDimension = ({ evaluations }) => {
     <div className="mt-10">
       <div className={"flex justify-between"}>
         <div className="font-medium text-lg">Rezultate pe dimensiuni</div>
-        <Button>Descarca</Button>
+        {/*<Button>Descarca</Button>*/}
       </div>
       <div className="space-y-6 md:w-1/2">
         {matrix?.map(({ id, name }, i) => (

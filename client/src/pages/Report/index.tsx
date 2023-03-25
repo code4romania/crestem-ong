@@ -5,11 +5,9 @@ import Stats from "@/components/Stats";
 import { calcScore } from "@/lib/score";
 import ResultsByDimension from "@/components/ResultsByDimension";
 import {
-  useCreateEvaluationMutation,
   useFindReportQuery,
   useUpdateReportMutation,
 } from "@/redux/api/userApi";
-import envelope from "@/assets/envelope.svg";
 import TableEvaluations from "@/components/TableEvaluations";
 import CreateEvaluation from "@/components/CreateEvaluation";
 import Section from "@/components/Section";

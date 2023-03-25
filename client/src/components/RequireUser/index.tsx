@@ -12,11 +12,12 @@ const RequireUser = () => {
 
   console.log("require user", user);
 
-  return user ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
-  );
+  // return user ? (
+  //   <Outlet />
+  // ) : (
+  //   <Navigate to="/login" state={{ from: location }} replace />
+  // );
+  return <Outlet />;
 };
 
 export default RequireUser;

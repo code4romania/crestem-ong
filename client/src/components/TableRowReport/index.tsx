@@ -1,6 +1,6 @@
-import React from "react";
-import { calcScore } from "../../lib/score";
+import React, { memo } from "react";
 import { Link } from "react-router-dom";
+import { calcScore } from "@/lib/score";
 
 const TableRowReport = ({ id, createdAt, deadline, evaluations, finished }) => {
   const evaluationsCompleted = evaluations
@@ -25,7 +25,7 @@ const TableRowReport = ({ id, createdAt, deadline, evaluations, finished }) => {
         {startDate} - {endDate}
       </td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        {evaluations?.length || 0}
+        {evaluationsCompleted?.length || 0}
       </td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
         {evaluationsCompleted?.length > 0
@@ -42,4 +42,4 @@ const TableRowReport = ({ id, createdAt, deadline, evaluations, finished }) => {
   );
 };
 
-export default TableRowReport;
+export default memo(TableRowReport);

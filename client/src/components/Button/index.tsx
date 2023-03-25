@@ -26,7 +26,7 @@ const bgColor = {
 
 const Button = ({ children, to, onClick, type, color = "teal" }: IButton) => {
   const buttonClassName =
-    "ml-3 inline-flex justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2";
+    "inline-flex justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2";
   const className = `${buttonClassName} ${
     color
       ? `${bgColor[color]} text-${textColor[color]} hover:bg-${hoverColor[color]}`

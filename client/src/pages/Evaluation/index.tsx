@@ -1,21 +1,17 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import {
-  Navigate,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Navigate, useParams, useSearchParams } from "react-router-dom";
 import { object, string, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Pagination from "../../components/Pagination";
-import Button from "../../components/Button";
-import { useGetEvaluationQuery, userApi } from "../../redux/api/userApi";
-import FullScreenLoader from "../../components/FullScreenLoader";
-import { useSubmitEvaluationMutation } from "../../redux/api/userApi";
-import StartEvaluation from "../../components/StartEvaluation";
-import EvaluationFinished from "../../components/EvaluationFinished";
-import Heading from "../../components/Heading";
+import Pagination from "@/components/Pagination";
+import Button from "@/components/Button";
+import { useGetEvaluationQuery, userApi } from "@/redux/api/userApi";
+import FullScreenLoader from "@/components/FullScreenLoader";
+import { useSubmitEvaluationMutation } from "@/redux/api/userApi";
+import StartEvaluation from "@/components/StartEvaluation";
+import EvaluationFinished from "@/components/EvaluationFinished";
+import Heading from "@/components/Heading";
+import Section from "@/components/Section";
 
 const evaluationSchema = object({
   question_1: string(),
@@ -101,12 +97,6 @@ const Evaluation = () => {
     }
   }, [isSubmitSuccess]);
 
-  // useEffect(() => {
-  //   if (email) {
-  //     setSearchParams({});
-  //   }
-  // }, [email]);
-
   useEffect(() => {
     if (emailParam) {
       setEmail(emailParam);
@@ -130,7 +120,7 @@ const Evaluation = () => {
 
   const dimensionIndex = evaluationData?.dimensions?.length + 1;
   const dimension = matrixData && matrixData[+evaluationIndex - 1];
-
+  console.log("isEvaluationError", isEvaluationError);
   if (isEvaluationError) {
     return <Navigate to={"/"} replace={true} />;
   }
@@ -194,10 +184,18 @@ const Evaluation = () => {
           </div>
         ))}
       </div>
-      <div className="flex mx-auto">
-        <Pagination />
-        <Button type={"submit"}>Continuă</Button>
-      </div>
+      <Section>
+        <p>
+          Te rugăm să argumentezi selecțiile făcute pentru indicatorul{" "}
+          {dimension.name}
+        </p>
+      </Section>
+      <Section>
+        <div className="flex">
+          <Pagination step={evaluationIndex} />
+          <Button type={"submit"}>Continuă</Button>
+        </div>
+      </Section>
     </form>
   );
 };
