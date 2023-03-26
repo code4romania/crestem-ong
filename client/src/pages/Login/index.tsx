@@ -10,6 +10,8 @@ import { useAppDispatch } from "@/redux/store";
 import { setToken } from "@/redux/features/userSlice";
 import { toast } from "react-toastify";
 import Heading from "@/components/Heading";
+import screenshot from "@/assets/screenshot-start.jpg";
+import Button from "@/components/Button";
 
 const loginSchema = object({
   identifier: string()
@@ -34,7 +36,7 @@ const FormHeader = memo(() => (
 ));
 
 const FormFooter = memo(() => (
-  <div className="h- flex items-center justify-between mt-0 mr-auto mb-0 ml-auto flex-wrap container">
+  <div className="flex items-center justify-between mt-0 mr-auto mb-0 ml-auto flex-wrap container">
     <div className="h-full flex items-center justify-center pt-0 pr-4 pb-0  md:mb-0">
       <div className="inline-block pt-3 pr-4 pb-3 mt-0 mr-auto mb-0 container">
         <label className="block">
@@ -108,10 +110,7 @@ const Login = memo(() => {
   return (
     <Section>
       <div className="grid md:grid-cols-2 items-center justify-center mt-0 mr-auto mb-0 ml-auto gap-8">
-        <form
-          onSubmit={handleSubmit(onSubmitHandler)}
-          className="w-full h-full items- justify- pt-0 pr-4 pb-0 pl-4 md:mb-0"
-        >
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
           <FormHeader />
           <Input
             label="Email"
@@ -132,17 +131,10 @@ const Login = memo(() => {
             required
           />
           <FormFooter />
-          <button className="text-white rounded bg-teal-700 pt-2 pr-4 pb-2 pl-4 w-full">
-            Intra in cont
-          </button>
+          <Button>Intra in cont</Button>
         </form>
-        <div className="w-full h-full flex items-center justify-center pt-0 pr-4 pb-0 pl-4 md:mb-0">
-          <iframe
-            width="420"
-            height="315"
-            src="https://www.youtube.com/embed/tgbNymZ7vqY"
-            className="object-contain object-top w-full"
-          />
+        <div>
+          <img src={screenshot} alt={"screenshot"} />
         </div>
       </div>
     </Section>

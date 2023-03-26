@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import NavbarEvaluation from "@/components/NavbarEvaluation";
-import { userApi } from "@/redux/api/userApi";
 import Button from "@/components/Button";
+import UserMenu from "@/components/UserMenu";
+import { useAppSelector } from "@/redux/store";
 
 const Menu = () => (
   <ul className="items-center hidden text-sm gap-x-3 lg:flex lg:flex-wrap">
@@ -60,29 +61,21 @@ const Menu = () => (
 );
 
 const Example = () => {
-  const user = userApi.endpoints.getMe.useQueryState(null, {
-    selectFromResult: ({ data }) => {
-      return data!;
-    },
-  });
+  const user = useAppSelector((state) => state.userState.user);
 
   return (
     <NavbarEvaluation menu={<Menu />}>
       <div className={"flex justify-end w-full"}>
         {user ? (
-          <div>Logout</div>
+          <UserMenu />
         ) : (
           <div className="flex justify-center items-center md:justify-start gap-4">
             <Button color="white" to={"/login"}>
               Intră în cont
             </Button>
-            <Button
-              to={"/register"}
-              className="px-4 py-2 text-white bg-teal-700 hover:bg-teal-900 hover:border-teal-900 flex
-            items-center justify-center text-center border-teal-700 rounded-lg text-sm font-normal mr-auto"
-            >
-              Înregistrează-te
-            </Button>
+            <div className="hidden md:block">
+              <Button to={"/register"}>Înregistrează-te</Button>
+            </div>
           </div>
         )}
       </div>

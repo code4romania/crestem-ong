@@ -30,7 +30,7 @@ const NavbarEvaluation = ({
       </nav>
     </header>
     <aside className="border-b">
-      <div className="container mx-auto flex justify-end py-4 items-center gap-4">
+      <div className="container mx-auto flex justify-end py-4 items-center gap-4 px-2.5">
         <span className="text-sm font-medium text-gray-600">Un proiect</span>
         <Link to="/">
           <img src={logoFDSC} className="object-contain h-12" />

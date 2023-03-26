@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <Provider store={store}>
       <BrowserRouter>
         <CookiesProvider>
-          <ToastContainer />
+          <ToastContainer position="bottom-center" />
           <AuthMiddleware>
             <Router />
           </AuthMiddleware>
