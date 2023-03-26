@@ -18,6 +18,15 @@ const reportSchema = object({
 
 export type ReportInput = TypeOf<typeof reportSchema>;
 
+const ButtonGroup = ({ className }: { className: string }) => (
+  <div className={`${className} flex space-x-4`}>
+    <Button color="white" to={"/"}>
+      Renunță
+    </Button>
+    <Button type="submit">Salvează detalii</Button>
+  </div>
+);
+
 const NewReport = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, formState } = useForm<ReportInput>({
@@ -47,76 +56,71 @@ const NewReport = () => {
 
   return (
     <Section>
-      <form
-        className="divide-y divide-gray-300"
-        onSubmit={handleSubmit(onSubmitHandler)}
-      >
-        <div className="flex flex-wrap gap-4 justify-between py-6">
-          <div className="text-xl">Setează detalii evaluare</div>
-          <div className="flex space-x-4">
-            <Button color="white" to={"/"}>
-              Renunță
-            </Button>
-            <Button type="submit">Salvează detalii</Button>
+      <form onSubmit={handleSubmit(onSubmitHandler)}>
+        <div className="divide-y divide-gray-300">
+          <div className="flex flex-wrap gap-4 justify-between py-6">
+            <div className="text-xl">Setează detalii evaluare</div>
+            <ButtonGroup className={"hidden md:flex"} />
+          </div>
+          <div className="py-6">
+            <div className={"text-gray-700 text-base leading-6 font-medium"}>
+              Setează perioada de evaluare
+            </div>
+            <p className="text-gray-500 mt-2 text-sm">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi,
+              totam at reprehenderit maxime aut beatae ad.
+            </p>
+            <div className="flex gap-6 mt-4">
+              <div>
+                <div className="text-gray-700 text-sm leading-5 font-medium mb-1">
+                  Dată început
+                </div>
+                <input
+                  type="date"
+                  disabled
+                  defaultValue={new Date().toISOString().substring(0, 10)}
+                  className="border-gray-300 rounded-md"
+                />
+              </div>
+              <div>
+                <div className="text-gray-700 text-sm leading-5 font-medium mb-1">
+                  Dată final
+                </div>
+                <input
+                  type="date"
+                  className="border-gray-300 rounded-md"
+                  min={new Date().toISOString().substring(0, 10)}
+                  {...register("deadline")}
+                />
+                <div className="text-red-600 text-sm mt-1">
+                  <ErrorMessage name="deadline" errors={formState.errors} />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="py-6">
-          <div className={"text-gray-700 text-base leading-6 font-medium"}>
-            Setează perioada de evaluare
+        <div className="divide-y divide-gray-300">
+          <div className="py-6">
+            <div className="text-xl">Invită membrii organizației</div>
+            <p className="text-gray-500 text-sm leading-5 font-normal mt-2">
+              Workcation is a property rental website. Etiam ullamcorper massa
+              viverra consequat, consectetur id nulla tempus. Fringilla egestas
+              justo massa purus sagittis malesuada.
+            </p>
           </div>
-          <p className="text-gray-500 mt-2 text-sm">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi,
-            totam at reprehenderit maxime aut beatae ad.
-          </p>
-          <div className="flex gap-6 mt-4">
-            <div>
-              <div className="text-gray-700 text-sm leading-5 font-medium mb-1">
-                Dată început
-              </div>
-              <input
-                type="date"
-                disabled
-                defaultValue={new Date().toISOString().substring(0, 10)}
-                className="border-gray-300 rounded-md"
+          <div className="py-6">
+            <div className="mb-1">Adaugă email</div>
+            <div className="flex gap-10 w-full md:w-2/3 lg:w-1/2">
+              <textarea
+                rows={4}
+                className="rounded-md border-gray-300 w-full"
+                {...register("evaluations")}
               />
             </div>
-            <div>
-              <div className="text-gray-700 text-sm leading-5 font-medium mb-1">
-                Dată final
-              </div>
-              <input
-                type="date"
-                className="border-gray-300 rounded-md"
-                min={new Date().toISOString().substring(0, 10)}
-                {...register("deadline")}
-              />
-              <div className="text-red-600 text-sm mt-1">
-                <ErrorMessage name="deadline" errors={formState.errors} />
-              </div>
-            </div>
+            <ButtonGroup className={"mt-4 md:hidden"} />
           </div>
         </div>
       </form>
-      <div className="divide-y divide-gray-300">
-        <div className="py-6">
-          <div className="text-xl">Invită membrii organizației</div>
-          <p className="text-gray-500 text-sm leading-5 font-normal mt-2">
-            Workcation is a property rental website. Etiam ullamcorper massa
-            viverra consequat, consectetur id nulla tempus. Fringilla egestas
-            justo massa purus sagittis malesuada.
-          </p>
-        </div>
-        <div className="py-6">
-          <div className="mb-1">Adaugă email</div>
-          <div className="flex gap-10 w-full md:w-2/3 lg:w-1/2">
-            <textarea
-              rows={4}
-              className="rounded-md border-gray-300 w-full"
-              {...register("evaluations")}
-            />
-          </div>
-        </div>
-      </div>
     </Section>
   );
 };
