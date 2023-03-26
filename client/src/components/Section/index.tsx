@@ -8,7 +8,7 @@ const Section = ({
   className?: string;
 }) => (
   <section className={className}>
-    <div className="container mx-auto px-2.5 py-10">{children}</div>
+    <div className="container mx-auto px-2.5 py-5">{children}</div>
   </section>
 );
 

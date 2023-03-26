@@ -6,13 +6,12 @@ import { useAppSelector } from "@/redux/store";
 const RequireUser = () => {
   const location = useLocation();
   const { isSuccess, isLoading } = userApi.endpoints.getMe.useQueryState(null);
-  const user = useAppSelector((state) => state.userState.user);
 
   if (isLoading) {
     return <FullScreenLoader />;
   }
 
-  return isSuccess && user ? (
+  return isSuccess ? (
     <Outlet />
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />

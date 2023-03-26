@@ -27,8 +27,23 @@ const CreateEvaluation = ({ reportId }: { reportId: string }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)}>
-      <label>Adaugă email</label>
-      <input {...register("email")} /> <Button type="submit">Invită</Button>
+      <div className="sm:col-span-6">
+        <label
+          htmlFor="last-name"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Invită membrii organizației
+        </label>
+        <div className="my-2">
+          <input
+            type="text"
+            autoComplete="family-name"
+            className="inline-flex w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+            {...register("email")}
+          />
+        </div>
+        <Button type="submit">Invită</Button>
+      </div>
     </form>
   );
 };

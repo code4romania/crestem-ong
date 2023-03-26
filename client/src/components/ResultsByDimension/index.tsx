@@ -39,7 +39,7 @@ const ResultsByDimension = ({ evaluations }) => {
 
   return (
     <div className="mt-10">
-      <div className={"flex justify-between"}>
+      <div className={"flex justify-between mb-4"}>
         <div className="font-medium text-lg">Rezultate pe dimensiuni</div>
         {/*<Button>Descarca</Button>*/}
       </div>

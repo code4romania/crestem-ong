@@ -798,6 +798,11 @@ quick-lru@^5.1.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-5.1.1.tgz#366493e6b3e42a3a6885e2e99d18f80fb7a8c932"
   integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
 
+react-circle-chart@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-circle-chart/-/react-circle-chart-1.0.4.tgz#60f8a1c578251c7afc01331af5cc54349a7279a2"
+  integrity sha512-HIoAuILNNISjvxTTWH22H2QSBLRsX45H+08LFW8n5DzRnTzXbGWIssoXSzFau52SVlxtHdM906QKQfRKxDke+A==
+
 react-cookie@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/react-cookie/-/react-cookie-4.1.1.tgz#832e134ad720e0de3e03deaceaab179c4061a19d"

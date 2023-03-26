@@ -52,7 +52,7 @@ const Home = () => {
         hasReports ? (
           <>
             <Section key={"reports"} className="overflow-x-hidden">
-              <p className="color-gray-500 text-lg">
+              <p className="color-gray-500 text-lg mb-4">
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry. Lorem Ipsum has been the industry's standard dummy
                 text ever since the 1500s, when an unknown printer took a galley
