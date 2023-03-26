@@ -4,7 +4,7 @@ import { Evaluation } from "@/redux/api/types";
 
 const TableEvaluations = ({ evaluations }: { evaluations: Evaluation[] }) =>
   evaluations.length ? (
-    <table className="min-w-full divide-y divide-gray-300">
+    <table className="table-auto divide-y divide-gray-300">
       <thead className="bg-gray-50">
         <tr>
           <th

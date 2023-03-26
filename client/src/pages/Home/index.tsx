@@ -51,30 +51,32 @@ const Home = () => {
       {user ? (
         hasReports ? (
           <>
-            <Section key={"reports"}>
+            <Section key={"reports"} className="overflow-x-hidden">
               <p className="color-gray-500 text-lg">
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry. Lorem Ipsum has been the industry's standard dummy
                 text ever since the 1500s, when an unknown printer took a galley
                 of type and scrambled it to make a type specimen book.{" "}
               </p>
-              <table className="min-w-full divide-y divide-gray-300">
-                <TableHeadReports />
-                <tbody className="divide-y divide-gray-200 bg-white">
-                  {user.reports?.map((report) => {
-                    return (
-                      <TableRowReport
-                        key={report.id}
-                        id={report.id}
-                        createdAt={report.createdAt}
-                        deadline={report.deadline}
-                        evaluations={report.evaluations}
-                        finished={report.finished}
-                      />
-                    );
-                  })}
-                </tbody>
-              </table>
+              <div className="overflow-x-scroll ">
+                <table className="min-w-full divide-y divide-gray-300">
+                  <TableHeadReports />
+                  <tbody className="divide-y divide-gray-200 bg-white">
+                    {user.reports?.map((report) => {
+                      return (
+                        <TableRowReport
+                          key={report.id}
+                          id={report.id}
+                          createdAt={report.createdAt}
+                          deadline={report.deadline}
+                          evaluations={report.evaluations}
+                          finished={report.finished}
+                        />
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </Section>
             <Section>
               <div className="bg-teal-600/10 px-16 py-20 flex flex-col md:flex-row space-y-5 items-center">
