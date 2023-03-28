@@ -58,7 +58,10 @@ const Report = () => {
       {isFinished ? (
         <div>
           <Stats
-            period={30}
+            period={Math.ceil(
+              Math.abs(new Date(report.deadline) - new Date(report.createdAt)) /
+                (1000 * 60 * 60 * 24)
+            )}
             count={evaluationsCompleted.length}
             score={calcScore(evaluationsCompleted)}
           />
