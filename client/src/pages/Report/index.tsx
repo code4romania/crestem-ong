@@ -92,7 +92,7 @@ const Report = () => {
                       color: "#047B7D",
                       value: Math.floor(
                         (evaluationsCompleted?.length * 100) /
-                          report?.evaluations?.length
+                          report?.evaluations?.length || 0
                       ),
                     },
                   ]}
@@ -119,7 +119,7 @@ const Report = () => {
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Commodi, totam at reprehenderit maxime aut beatae ad.
                 </p>
-                <div className="flex mt-4">
+                <div className="flex mt-4 space-x-8">
                   {report.createdAt && (
                     <div>
                       <div className="text-sm leading-5 font-medium">
@@ -138,8 +138,10 @@ const Report = () => {
                     </div>
                   )}
                   {report.deadline && (
-                    <div className="text-sm leading-5 font-medium">
-                      <div>Data de final:</div>
+                    <div>
+                      <div className="text-sm leading-5 font-medium">
+                        Data de final:
+                      </div>
                       <div className="mt-2.5">
                         {new Date(report.deadline).toLocaleDateString("ro-RO", {
                           month: "short",

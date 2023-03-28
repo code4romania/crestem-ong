@@ -87,10 +87,10 @@ const Register = () => {
                 <h3 className="text-base font-semibold leading-6 text-gray-900">
                   Informații obligatorii despre ONG
                 </h3>
-                <p className="mt-1 text-sm text-gray-500">
-                  This information will be displayed publicly so be careful what
-                  you share.
-                </p>
+                {/*<p className="mt-1 text-sm text-gray-500">*/}
+                {/*  This information will be displayed publicly so be careful what*/}
+                {/*  you share.*/}
+                {/*</p>*/}
               </div>
               <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                 <div className="sm:col-span-3">
