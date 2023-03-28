@@ -19,6 +19,7 @@ const evaluationSchema = object({
   question_3: string(),
   question_4: string(),
   question_5: string(),
+  comment: string().max(1000),
 });
 
 export type EvaluationInput = TypeOf<typeof evaluationSchema> & {
@@ -44,6 +45,7 @@ const createEvaluation = (data: EvaluationInput) => ({
       answer: data.question_5,
     },
   ],
+  comment: data.comment,
 });
 
 const Evaluation = () => {
@@ -186,10 +188,14 @@ const Evaluation = () => {
         ))}
       </div>
       <Section>
-        <p>
+        <p className={"text-base font-semibold leading-6 text-gray-900 mb-2"}>
           Te rugăm să argumentezi selecțiile făcute pentru indicatorul{" "}
           {dimension.name}
         </p>
+        <textarea
+          className="rounded-md border-gray-300 w-full"
+          {...register("comment")}
+        />
       </Section>
       <Section>
         <div className="flex">
