@@ -58,12 +58,14 @@ const Evaluation = () => {
     resolver: zodResolver(evaluationSchema),
   });
 
-  const { data: matrixData } = userApi.endpoints.getMatrix.useQuery(null, {
-    skip: false,
-    refetchOnMountOrArgChange: true,
-  });
+  const { data: matrixData, isLoading: isMatrixLoading } =
+    userApi.endpoints.getMatrix.useQuery(null, {
+      skip: false,
+      refetchOnMountOrArgChange: true,
+    });
 
   const {
+    isLoading: isEvaluationLoading,
     isSuccess: isEvaluationSuccess,
     data: evaluationData,
     isError: isEvaluationError,
@@ -120,13 +122,16 @@ const Evaluation = () => {
 
   const dimensionIndex = evaluationData?.dimensions?.length + 1;
   const dimension = matrixData && matrixData[+evaluationIndex - 1];
-  console.log("isEvaluationError", isEvaluationError);
-  if (isEvaluationError) {
-    return <Navigate to={"/"} replace={true} />;
-  }
 
   if (!(email || emailParam)) {
     return false;
+  }
+
+  if (
+    !(dimension && evaluationIndex && evaluationData) &&
+    (isMatrixLoading || isEvaluationLoading)
+  ) {
+    return <FullScreenLoader />;
   }
 
   if (evaluations?.length === 0 && !hasStarted) {
@@ -137,11 +142,7 @@ const Evaluation = () => {
     return <EvaluationFinished />;
   }
 
-  if (!(dimension && evaluationIndex)) {
-    return <FullScreenLoader />;
-  }
-
-  if (evaluationData?.email !== email) {
+  if (isEvaluationError || evaluationData?.email !== email) {
     return <Navigate to="/" />;
   }
 
@@ -192,8 +193,14 @@ const Evaluation = () => {
       </Section>
       <Section>
         <div className="flex">
-          <Pagination step={evaluationIndex} />
-          <Button type={"submit"}>Continuă</Button>
+          {evaluationIndex !== 10 && evaluationIndex && (
+            <Pagination step={evaluationIndex} />
+          )}
+          <div className="ml-auto">
+            <Button type={"submit"}>
+              {evaluationIndex !== 10 ? "Continuă" : "Trimite"}
+            </Button>
+          </div>
         </div>
       </Section>
     </form>
