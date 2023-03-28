@@ -47,7 +47,7 @@ const StartEvaluation = ({ onClick }: { onClick: () => void }) => (
   <>
     <Section className="pt-12">
       <Heading level="h2">Începe evaluarea</Heading>
-      <div className="flex flex-row mt-8 md:gap-x-20">
+      <div className="grid gap-10 md:grid-cols-2 flex-row mt-8 lg:gap-x-20">
         <div className="flex w-full justify-center items-center">
           <img className="w-full max-w-full rounded" src={screenshotStart} />
         </div>
