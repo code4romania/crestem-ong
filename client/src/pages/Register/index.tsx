@@ -3,7 +3,6 @@ import { useRegisterUserMutation } from "@/redux/api/authApi";
 import { literal, object, string, TypeOf } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
-import Breadcrumbs from "@/components/Breadcrumbs";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import Button from "@/components/Button";
@@ -74,9 +73,6 @@ const Register = () => {
     <div>
       <Section>
         <div className={"space-y-2"}>
-          <Breadcrumbs
-            pages={[{ name: "Înregistrare", href: "#", current: true }]}
-          />
           <Heading level={"h2"}>Înregistrare</Heading>
         </div>
       </Section>

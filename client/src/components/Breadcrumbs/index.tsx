@@ -1,10 +1,5 @@
 import { ChevronRightIcon, HomeIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
-//
-// const pages = [
-//   { name: "Projects", href: "#", current: false },
-//   { name: "Project Nero", href: "#", current: true },
-// ];
 
 export default function Example({
   pages,

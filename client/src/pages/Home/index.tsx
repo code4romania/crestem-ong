@@ -2,7 +2,6 @@ import React from "react";
 import Button from "@/components/Button";
 import Section from "@/components/Section";
 import Heading from "@/components/Heading";
-import Breadcrumbs from "@/components/Breadcrumbs";
 import screenshot from "@/assets/screenshot.jpg";
 import { useAppSelector } from "@/redux/store";
 import empty from "@/assets/empty.svg";
@@ -17,32 +16,26 @@ const Home = () => {
     <div>
       <Section>
         <div className={"space-y-2"}>
-          <Breadcrumbs
-            pages={[
-              { name: "Evaluare organizațională", href: "#", current: true },
-            ]}
-          />
           <Heading level={"h2"}>Evaluare organizațională</Heading>
         </div>
       </Section>
       {!hasReports && (
-        <Section>
-          <div className="h-1/2 flex justify-center mt-0 mr-auto mb-0 ml-auto container gap-8">
-            <div className="w-full h-full flex items-center justify-center pt-0 pr-4 pb-0 pl-4 md:w-1/2 md:mb-0">
+        <Section className="py-6">
+          <div className="grid lg:grid-cols-2 justify-center mt-0 mr-auto mb-0 ml-auto container gap-8">
+            <div className="w-full h-full flex items-center justify-center pt-0 pr-4 pb-0 pl-4 md:mb-0">
               <img src={screenshot} />
             </div>
-            <div className="w-full h-full items- justify- pt-0 pr-4 pb-0 pl-4 md:w-1/2 md:mb-0 text-lg text-gray-500">
+            <div className="w-full h-full items- justify- pt-0 pr-4 pb-0 pl-4 md:mb-0 text-lg text-gray-500">
               <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book.
-              </p>
-              <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book.
+                Matricea de dezvoltare organizațională sprijină organizațiile în
+                procesul de management, în gestionarea provocărilor legate de
+                îndeplinirea misiunii, sustenabilitate și creșterea impactului
+                social. Chestionarul te ajută să identifici nevoi, punctele tari
+                și cele de îmbunătățit ale organizației tale din 10 perspective:
+                Guvernanță, Aspecte financiare, Managementul informației,
+                Monitorizare și evaluare, Structură organizațională, Leadership,
+                Managementul resurselor umane, Implicarea persoanelor
+                beneficiare, Advocacy și parteneriate, Comunicare externă.
               </p>
             </div>
           </div>
@@ -52,12 +45,12 @@ const Home = () => {
         hasReports ? (
           <>
             <Section key={"reports"} className="overflow-x-hidden">
-              <p className="color-gray-500 text-lg mb-4">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book.{" "}
-              </p>
+              {/*<p className="color-gray-500 text-lg mb-4">*/}
+              {/*  Lorem Ipsum is simply dummy text of the printing and typesetting*/}
+              {/*  industry. Lorem Ipsum has been the industry's standard dummy*/}
+              {/*  text ever since the 1500s, when an unknown printer took a galley*/}
+              {/*  of type and scrambled it to make a type specimen book.{" "}*/}
+              {/*</p>*/}
               <div className="overflow-x-scroll ">
                 <table className="min-w-full divide-y divide-gray-300">
                   <TableHeadReports />
@@ -112,13 +105,15 @@ const Home = () => {
       ) : (
         <Section className="bg-gray-100 bg-opacity-90 text-center py-8">
           <Heading level="h2">Înscrie-te acum</Heading>
-          <p className="text-lg leading-6 font-normal mt-4 mb-8 max-w-xl mx-auto">
-            Ac euismod vel sit maecenas id pellentesque eu sed consectetur.
-            Malesuada adipiscing sagittis vel nulla nec.
-          </p>
-          <Button color="white" to="/register">
-            Înregistrează-te
-          </Button>
+          {/*<p className="text-lg leading-6 font-normal mt-4 mb-8 max-w-xl mx-auto">*/}
+          {/*  Ac euismod vel sit maecenas id pellentesque eu sed consectetur.*/}
+          {/*  Malesuada adipiscing sagittis vel nulla nec.*/}
+          {/*</p>*/}
+          <div className="mt-8">
+            <Button color="white" to="/register">
+              Înregistrează-te
+            </Button>
+          </div>
         </Section>
       )}
     </div>

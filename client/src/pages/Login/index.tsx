@@ -28,10 +28,10 @@ export type LoginInput = TypeOf<typeof loginSchema>;
 const FormHeader = memo(() => (
   <>
     <Heading level="h2">Bine ai venit!</Heading>
-    <p className="my-2 text-lg text-gray-400 leading-relaxed text-">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea sit eaque
-      totam aliquid veritatis assumenda temporibus harum unde!
-    </p>
+    {/*<p className="my-2 text-lg text-gray-400 leading-relaxed text-">*/}
+    {/*  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea sit eaque*/}
+    {/*  totam aliquid veritatis assumenda temporibus harum unde!*/}
+    {/*</p>*/}
   </>
 ));
 
@@ -110,7 +110,10 @@ const Login = memo(() => {
   return (
     <Section>
       <div className="grid md:grid-cols-2 items-center justify-center mt-0 mr-auto mb-0 ml-auto gap-8">
-        <form onSubmit={handleSubmit(onSubmitHandler)}>
+        <form
+          // className="order-2 md:order-1"
+          onSubmit={handleSubmit(onSubmitHandler)}
+        >
           <FormHeader />
           <Input
             label="Email"
