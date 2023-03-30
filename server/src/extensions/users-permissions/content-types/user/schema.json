@@ -13,6 +13,13 @@
     "timestamps": true
   },
   "attributes": {
+    "avatar": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    },
     "username": {
       "type": "string",
       "minLength": 3,
@@ -122,6 +129,21 @@
       "type": "string"
     },
     "contactPhone": {
+      "type": "string"
+    },
+    "accountFacebook": {
+      "type": "string"
+    },
+    "accountTwitter": {
+      "type": "string"
+    },
+    "accountTiktok": {
+      "type": "string"
+    },
+    "accountInstagram": {
+      "type": "string"
+    },
+    "accountLinkedin": {
       "type": "string"
     }
   }
