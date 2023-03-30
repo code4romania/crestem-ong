@@ -12,35 +12,22 @@ const NavbarEvaluation = ({
   children?: ReactNode;
   menu?: ReactNode;
 }) => (
-  <>
+  <header className={"shadow"}>
     <NavbarAside />
-    <header className={"shadow"}>
-      <nav className="container mx-auto py-6 px-2.5 space-y-4">
-        <div className="relative flex items-center justify-between gap-3">
-          <Link to="/">
-            <img
-              className="object-contain h-16 max-w-48 sm:max-w-64"
-              alt={"Crestem ONG-uri Incredere De Bine"}
-              src={logo}
-            />
-          </Link>
-          {children}
-        </div>
-        {menu}
-      </nav>
-    </header>
-    <aside className="border-b">
-      <div className="container mx-auto flex justify-end py-4 items-center gap-4 px-2.5">
-        <span className="text-sm font-medium text-gray-600">Un proiect</span>
+    <nav className="container mx-auto py-6 px-2.5 space-y-4">
+      <div className="relative flex items-center justify-between gap-3">
         <Link to="/">
-          <img src={logoFDSC} className="object-contain h-12" />
+          <img
+            className="object-contain h-16 max-w-48 sm:max-w-64"
+            alt={"Crestem ONG-uri Incredere De Bine"}
+            src={logo}
+          />
         </Link>
-        <Link to="/">
-          <img src={logoInStareDeBine} className="object-contain h-12" />
-        </Link>
+        {children}
       </div>
-    </aside>
-  </>
+      {menu}
+    </nav>
+  </header>
 );
 
 export default NavbarEvaluation;
