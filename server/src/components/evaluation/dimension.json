@@ -13,7 +13,8 @@
       "component": "evaluation.question"
     },
     "comment": {
-      "type": "text"
+      "type": "text",
+      "required": true
     }
   }
 }
