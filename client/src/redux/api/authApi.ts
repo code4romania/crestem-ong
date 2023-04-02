@@ -3,6 +3,7 @@ import { LoginInput } from "@/pages/Login";
 import { RegisterInput } from "@/pages/Register";
 import { RegisterResponse } from "./types";
 import { userApi } from "./userApi";
+import { data } from "autoprefixer";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 

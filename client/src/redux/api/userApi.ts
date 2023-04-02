@@ -3,6 +3,7 @@ import { setUser } from "../features/userSlice";
 import { IUser, Report, Evaluation } from "./types";
 import { EvaluationInput } from "../../pages/Evaluation";
 import { ReportInput } from "@/pages/NewReport";
+import { data } from "autoprefixer";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
@@ -24,7 +25,7 @@ export const userApi = createApi({
     getMe: builder.query<IUser, null>({
       query() {
         return {
-          url: "users/me?populate=reports.evaluations.dimensions.quiz",
+          url: "users/me?populate[0]=reports.evaluations.dimensions.quiz&populate[1]=avatar",
         };
       },
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
@@ -113,6 +114,15 @@ export const userApi = createApi({
         };
       },
     }),
+    upload: builder.mutation<any, any>({
+      query(data) {
+        return {
+          url: "upload",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
@@ -123,4 +133,5 @@ export const {
   useCreateReportMutation,
   useFindReportQuery,
   useUpdateReportMutation,
+  useUploadMutation,
 } = userApi;

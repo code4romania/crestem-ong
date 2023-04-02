@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useRegisterUserMutation } from "@/redux/api/authApi";
-import { literal, object, string, TypeOf } from "zod";
+import { custom, literal, object, string, TypeOf } from "zod";
 import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import Heading from "@/components/Heading";
@@ -9,8 +9,8 @@ import Button from "@/components/Button";
 import { setToken } from "@/redux/features/userSlice";
 import { useAppDispatch } from "@/redux/store";
 import { toast } from "react-toastify";
-import Select from "@/components/Select";
 import SocialNetworkLinks from "@/pages/Register/SocialNetworkLinks";
+import { useUploadMutation } from "@/redux/api/userApi";
 
 const registerSchema = object({
   ongName: string().min(1, "Numele organizatiei este obligatoriu"),
@@ -29,6 +29,7 @@ const registerSchema = object({
     .min(8, "Password must be more than 8 characters")
     .max(32, "Password must be less than 32 characters"),
   confirmPassword: string(),
+  avatar: custom<File>(),
   activities: string(),
   website: string(),
   keywords: string(),
@@ -40,11 +41,11 @@ const registerSchema = object({
     .optional()
     .or(literal("")),
   contactPhone: string(),
-  accountFacebook: string(),
-  accountTwitter: string(),
-  accountTiktok: string(),
-  accountInstagram: string(),
-  accountLinkedin: string(),
+  accountFacebook: string().optional(),
+  accountTwitter: string().optional(),
+  accountTiktok: string().optional(),
+  accountInstagram: string().optional(),
+  accountLinkedin: string().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Password doesn't match",
   path: ["confirmpassword"],
@@ -55,6 +56,10 @@ export type RegisterInput = TypeOf<typeof registerSchema>;
 const Register = () => {
   const [submitRegister, { isSuccess, isError, error, data }] =
     useRegisterUserMutation();
+  const [
+    uploadAvatar,
+    { isError: isUploadAvatarError, error: uploadAvatarError },
+  ] = useUploadMutation();
   const methods = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
   });
@@ -67,13 +72,28 @@ const Register = () => {
   }, [error?.data?.error?.message]);
 
   useEffect(() => {
+    const message = uploadAvatarError?.data?.error?.message;
+    if (isUploadAvatarError && message) {
+      toast.error(message);
+    }
+  }, [isUploadAvatarError, uploadAvatarError?.data?.error?.message]);
+
+  useEffect(() => {
     if (isSuccess && data?.jwt) {
       dispatch(setToken(data.jwt));
     }
   }, [isSuccess, data?.jwt, dispatch]);
 
-  const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
-    submitRegister({ ...values, username: values.email });
+  const onSubmitHandler: SubmitHandler<RegisterInput> = async (values) => {
+    const formData = new FormData();
+    const res = await submitRegister({ ...values, username: values.email });
+    if (values.avatar) {
+      formData.append(`files`, values.avatar[0], values.avatar[0].name);
+      formData.append(`ref`, "plugin::users-permissions.user");
+      formData.append(`refId`, res.data.user.id);
+      formData.append(`field`, "avatar");
+      uploadAvatar(formData);
+    }
   };
 
   return (
@@ -294,31 +314,39 @@ const Register = () => {
                     </div>
                   </div>
 
-                  {/*<div className="sm:col-span-6">*/}
-                  {/*  <label*/}
-                  {/*    htmlFor="photo"*/}
-                  {/*    className="block text-sm font-medium text-gray-700"*/}
-                  {/*  >*/}
-                  {/*    Logo organizație*/}
-                  {/*  </label>*/}
-                  {/*  <div className="mt-1 flex items-center">*/}
-                  {/*    <span className="h-12 w-12 overflow-hidden rounded-full bg-gray-100">*/}
-                  {/*      <svg*/}
-                  {/*        className="h-full w-full text-gray-300"*/}
-                  {/*        fill="currentColor"*/}
-                  {/*        viewBox="0 0 24 24"*/}
-                  {/*      >*/}
-                  {/*        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />*/}
-                  {/*      </svg>*/}
-                  {/*    </span>*/}
-                  {/*    <button*/}
-                  {/*      type="button"*/}
-                  {/*      className="ml-5 rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"*/}
-                  {/*    >*/}
-                  {/*      Încarcă logo*/}
-                  {/*    </button>*/}
-                  {/*  </div>*/}
-                  {/*</div>*/}
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="avatar"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Logo organizație
+                    </label>
+                    <label
+                      htmlFor="avatar"
+                      className="flex items-center gap-10 cursor-pointer"
+                    >
+                      <span className="h-12 w-12 overflow-hidden rounded-full bg-gray-100">
+                        <svg
+                          className="h-full w-full text-gray-300"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                      </span>
+                      <div className={"pointer-events-none"}>
+                        <Button color={"white"} type="button">
+                          Încarcă logo
+                        </Button>
+                      </div>
+                      <input
+                        type="file"
+                        className="hidden"
+                        id={"avatar"}
+                        {...methods.register("avatar")}
+                      />
+                    </label>
+                  </div>
                   <div className="sm:col-span-6">
                     <label
                       htmlFor="about"
