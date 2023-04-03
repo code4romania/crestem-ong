@@ -10,6 +10,7 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Report from "@/pages/Report";
 import NewReport from "@/pages/NewReport";
+import UserReports from "@/pages/UserReports";
 
 const Router = () => {
   return (
@@ -23,6 +24,7 @@ const Router = () => {
         <Route element={<RequireUser />}>
           <Route path="/reports/:reportId" element={<Report />} />
           <Route path="/create/report" element={<NewReport />} />
+          <Route path="/users/:userId" element={<UserReports />} />
         </Route>
       </Route>
       <Route element={<LayoutEvaluation />}>

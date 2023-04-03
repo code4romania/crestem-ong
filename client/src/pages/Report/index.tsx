@@ -1,30 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import Button from "@/components/Button";
-import {
-  useFindReportQuery,
-  useUpdateReportMutation,
-} from "@/redux/api/userApi";
-import TableEvaluations from "@/components/TableEvaluations";
-import CreateEvaluation from "@/components/CreateEvaluation";
+import { useFindReportQuery } from "@/redux/api/userApi";
 import Section from "@/components/Section";
 import Heading from "@/components/Heading";
-import { DonutChart } from "react-circle-chart";
 import ReportResults from "./ReportResults";
 import ReportInProgress from "@/pages/Report/ReportInProgress";
 
 const Report = () => {
-  const [isFinished, setIsFinished] = useState(false);
   const { reportId } = useParams();
-
   const { data: report } = useFindReportQuery(reportId);
 
   if (!report) {
     return false;
   }
-  const evaluationsCompleted = report?.evaluations?.filter(
-    ({ dimensions }) => dimensions.length === 10
-  );
 
   return (
     <Section>

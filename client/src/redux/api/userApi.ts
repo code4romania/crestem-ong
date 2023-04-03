@@ -24,7 +24,7 @@ export const userApi = createApi({
     getMe: builder.query<IUser, null>({
       query() {
         return {
-          url: "users/me?populate[0]=reports.evaluations.dimensions.quiz&populate[1]=avatar",
+          url: "users/me?populate[0]=reports.evaluations.dimensions.quiz&populate[1]=avatar&populate[2]=role",
         };
       },
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
@@ -32,6 +32,20 @@ export const userApi = createApi({
           const { data } = await queryFulfilled;
           dispatch(setUser(data));
         } catch (error) {}
+      },
+    }),
+    getUsers: builder.query<null, null>({
+      query() {
+        return {
+          url: "users?populate=role",
+        };
+      },
+    }),
+    getUserReports: builder.query<null, null>({
+      query({ userId }) {
+        return {
+          url: `users/${userId}?populate=reports.evaluations.dimensions.quiz`,
+        };
       },
     }),
     createReport: builder.mutation<Report, ReportInput>({
@@ -134,4 +148,6 @@ export const {
   useFindReportQuery,
   useUpdateReportMutation,
   useUploadMutation,
+  useGetUsersQuery,
+  useGetUserReportsQuery,
 } = userApi;
