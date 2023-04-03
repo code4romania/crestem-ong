@@ -70,9 +70,11 @@ const Example = () => {
           <UserMenu />
         ) : (
           <div className="flex justify-center items-center md:justify-start gap-4">
-            <Button color="white" to={"/login"}>
-              Intră în cont
-            </Button>
+            <div>
+              <Button color="white" to={"/login"}>
+                Intră în cont
+              </Button>
+            </div>
             <div className="hidden md:block">
               <Button to={"/register"}>Înregistrează-te</Button>
             </div>

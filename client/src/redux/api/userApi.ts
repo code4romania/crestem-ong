@@ -3,7 +3,6 @@ import { setUser } from "../features/userSlice";
 import { IUser, Report, Evaluation } from "./types";
 import { EvaluationInput } from "../../pages/Evaluation";
 import { ReportInput } from "@/pages/NewReport";
-import { data } from "autoprefixer";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
@@ -20,7 +19,7 @@ export const userApi = createApi({
       }
     },
   }),
-  tagTypes: ["User", "Evaluation"],
+  tagTypes: ["User", "Report", "Evaluation"],
   endpoints: (builder) => ({
     getMe: builder.query<IUser, null>({
       query() {
@@ -55,7 +54,7 @@ export const userApi = createApi({
           url: `reports/${reportId}`,
           credentials: "include",
         },
-      providesTags: ["Evaluation"],
+      providesTags: ["Report", "Evaluation"],
     }),
     updateReport: builder.mutation<Report, Report>({
       query: ({ id, ...rest }) => {
@@ -66,6 +65,7 @@ export const userApi = createApi({
           body: { data: rest },
         };
       },
+      invalidatesTags: ["Report"],
     }),
     getMatrix: builder.query<IUser, null>({
       query() {
