@@ -66,10 +66,6 @@ const NewReport = () => {
             <div className={"text-gray-700 text-base leading-6 font-medium"}>
               Setează perioada de evaluare
             </div>
-            <p className="text-gray-500 mt-2 text-sm">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi,
-              totam at reprehenderit maxime aut beatae ad.
-            </p>
             <div className="flex gap-6 mt-4">
               <div>
                 <div className="text-gray-700 text-sm leading-5 font-medium mb-1">
@@ -103,13 +99,19 @@ const NewReport = () => {
           <div className="py-6">
             <div className="text-xl">Invită membrii organizației</div>
             <p className="text-gray-500 text-sm leading-5 font-normal mt-2">
-              Workcation is a property rental website. Etiam ullamcorper massa
-              viverra consequat, consectetur id nulla tempus. Fringilla egestas
-              justo massa purus sagittis malesuada.
+              Pentru a putea păstra confidențialitatea răspunsurilor individuale
+              este necesar ca și tu, ca administrator al organizației să îți
+              trimiți o invitație de completare a matricei de evaluare. Adaugă
+              aici toate adresele de email ale colegilor pe care îi inviți să
+              completeze și adaugă și adresa ta de email. Această adresă trebuie
+              să fie diferită de adresa pe care ai completat-o ca email al
+              organizației la crearea contului.
             </p>
           </div>
           <div className="py-6">
-            <div className="mb-1">Adaugă email</div>
+            <div className="mb-2">
+              Adaugă adresele de email către care vrei să trimiți invitațiile.
+            </div>
             <div className="flex gap-10 w-full md:w-2/3 lg:w-1/2">
               <textarea
                 rows={4}
