@@ -1,11 +1,46 @@
-import React, { Fragment } from "react";
+import React, { Fragment, ReactNode } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { logout } from "@/redux/features/userSlice";
 import { useCookies } from "react-cookie";
+import { Link } from "react-router-dom";
 
 const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(" ");
+};
+
+const MenuItem = ({
+  children,
+  to,
+  onClick,
+}: {
+  children: ReactNode;
+  to?: string;
+  onClick?: () => void;
+}) => {
+  const className =
+    "block px-4 py-2 text-sm text-gray-700 cursor-pointer text-right";
+  return (
+    <Menu.Item>
+      {({ active }) =>
+        to ? (
+          <Link
+            to={to}
+            className={classNames(active ? "bg-gray-100" : "", className)}
+          >
+            {children}
+          </Link>
+        ) : (
+          <a
+            onClick={onClick}
+            className={classNames(active ? "bg-gray-100" : "", className)}
+          >
+            {children}
+          </a>
+        )
+      }
+    </Menu.Item>
+  );
 };
 
 const UserMenu = () => {
@@ -39,20 +74,9 @@ const UserMenu = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <Menu.Item>
-            {({ active }) => (
-              <a
-                onClick={handleLogout}
-                className={classNames(
-                  active ? "bg-gray-100" : "",
-                  "block px-4 py-2 text-sm text-gray-700 pointer"
-                )}
-              >
-                Sign out
-              </a>
-            )}
-          </Menu.Item>
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <MenuItem>Acasă</MenuItem>
+          <MenuItem onClick={handleLogout}> Log out</MenuItem>
         </Menu.Items>
       </Transition>
     </Menu>
