@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { Navigate, useParams, useSearchParams } from "react-router-dom";
 import { object, string, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,14 +12,18 @@ import StartEvaluation from "@/components/StartEvaluation";
 import EvaluationFinished from "@/components/EvaluationFinished";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
+import { ErrorMessage } from "@hookform/error-message";
+
+const invalid_type_error = "Va rugam alegeti o optiune";
+const min_message = "Acest camp este obligator";
 
 const evaluationSchema = object({
-  question_1: string(),
-  question_2: string(),
-  question_3: string(),
-  question_4: string(),
-  question_5: string(),
-  comment: string().max(1000),
+  question_1: string({ invalid_type_error }),
+  question_2: string({ invalid_type_error }),
+  question_3: string({ invalid_type_error }),
+  question_4: string({ invalid_type_error }),
+  question_5: string({ invalid_type_error }),
+  comment: string().min(1, { message: min_message }).max(1000),
 });
 
 export type EvaluationInput = TypeOf<typeof evaluationSchema> & {
@@ -56,9 +60,10 @@ const Evaluation = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const emailParam = searchParams.get("email");
   const [email, setEmail] = useState(null);
-  const { handleSubmit, register, reset } = useForm<EvaluationInput>({
+  const methods = useForm<EvaluationInput>({
     resolver: zodResolver(evaluationSchema),
   });
+  const { handleSubmit, register, reset } = methods;
 
   const { data: matrixData, isLoading: isMatrixLoading } =
     userApi.endpoints.getMatrix.useQuery(null, {
@@ -149,67 +154,75 @@ const Evaluation = () => {
   }
 
   return (
-    <form
-      className="w-full flex flex-col mt-12"
-      onSubmit={handleSubmit(onSubmitHandler)}
-    >
-      <div>
-        <Heading level="h2">{dimension.name}</Heading>
-        <p className="mt-4">{dimension.description}</p>
-      </div>
-      <div className="mt-4">
-        {dimension.quiz.map(({ id, question, ...quiz }, questionIndex) => (
-          <div key={id} className="mt-4">
-            <label className="text-base font-semibold leading-6 text-gray-900">
-              {question}
-            </label>
-            <fieldset className="mt-4">
-              <div className="space-y-4">
-                {[...Array(5).keys()].map((index) => (
-                  <div className="flex items-center" key={index}>
-                    <input
-                      id={`${id}-option_${index + 1}`}
-                      type="radio"
-                      className="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500"
-                      value={index}
-                      {...register(`question_${questionIndex + 1}`)}
-                    />
-                    <label
-                      htmlFor={`${id}-option_${index + 1}`}
-                      className="ml-3 block text-sm font-medium text-gray-700"
-                    >
-                      {quiz[`option_${index + 1}`]}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </fieldset>
-          </div>
-        ))}
-      </div>
-      <Section>
-        <p className={"text-base font-semibold leading-6 text-gray-900 mb-2"}>
-          Te rugăm să argumentezi selecțiile făcute pentru indicatorul{" "}
-          {dimension.name}
-        </p>
-        <textarea
-          className="rounded-md border-gray-300 w-full"
-          {...register("comment")}
-        />
-      </Section>
-      <Section>
-        <div className="flex">
-          {evaluationIndex !== 10 && evaluationIndex && (
-            <Pagination step={evaluationIndex} />
-          )}
-          <div className="ml-auto">
-            <Button type={"submit"}>
-              {evaluationIndex !== 10 ? "Continuă" : "Trimite"}
-            </Button>
-          </div>
+    <FormProvider {...methods}>
+      <form
+        className="w-full flex flex-col mt-12"
+        onSubmit={handleSubmit(onSubmitHandler)}
+      >
+        <div>
+          <Heading level="h2">{dimension.name}</Heading>
+          <p className="mt-4">{dimension.description}</p>
         </div>
-      </Section>
-    </form>
+        <div className="mt-4">
+          {dimension.quiz.map(({ id, question, ...quiz }, questionIndex) => (
+            <div key={id} className="mt-4">
+              <label className="text-base font-semibold leading-6 text-gray-900">
+                {question}
+              </label>
+              <fieldset className="mt-4">
+                <div className="space-y-4">
+                  {[...Array(5).keys()].map((index) => (
+                    <div className="flex items-center" key={index}>
+                      <input
+                        id={`${id}-option_${index + 1}`}
+                        type="radio"
+                        className="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500"
+                        value={index}
+                        {...register(`question_${questionIndex + 1}`)}
+                      />
+                      <label
+                        htmlFor={`${id}-option_${index + 1}`}
+                        className="ml-3 block text-sm font-medium text-gray-700"
+                      >
+                        {quiz[`option_${index + 1}`]}
+                      </label>
+                    </div>
+                  ))}
+                  <div className="text-red-600 text-sm">
+                    <ErrorMessage name={`question_${questionIndex + 1}`} />
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          ))}
+        </div>
+        <Section>
+          <p className={"text-base font-semibold leading-6 text-gray-900 mb-2"}>
+            Te rugăm să argumentezi selecțiile făcute pentru indicatorul{" "}
+            {dimension.name}
+          </p>
+          <textarea
+            className="rounded-md border-gray-300 w-full"
+            {...register("comment")}
+          />
+          <div className="text-red-600 text-sm mt-2">
+            <ErrorMessage name={"comment"} />
+          </div>
+        </Section>
+        <Section>
+          <div className="flex">
+            {evaluationIndex !== 10 && evaluationIndex && (
+              <Pagination step={evaluationIndex} />
+            )}
+            <div className="ml-auto">
+              <Button type={"submit"}>
+                {evaluationIndex !== 10 ? "Continuă" : "Trimite"}
+              </Button>
+            </div>
+          </div>
+        </Section>
+      </form>
+    </FormProvider>
   );
 };
 
