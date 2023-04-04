@@ -54,6 +54,11 @@ const NewReport = () => {
     });
   }, []);
 
+  const maxDate = new Date();
+  maxDate.setDate(maxDate.getDate() + 30);
+  const max = maxDate.toISOString().substring(0, 10);
+  const today = new Date().toISOString().substring(0, 10);
+
   return (
     <Section>
       <form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -74,7 +79,7 @@ const NewReport = () => {
                 <input
                   type="date"
                   disabled
-                  defaultValue={new Date().toISOString().substring(0, 10)}
+                  defaultValue={today}
                   className="border-gray-300 rounded-md"
                 />
               </div>
@@ -85,7 +90,8 @@ const NewReport = () => {
                 <input
                   type="date"
                   className="border-gray-300 rounded-md"
-                  min={new Date().toISOString().substring(0, 10)}
+                  min={today}
+                  max={max}
                   {...register("deadline")}
                 />
                 <div className="text-red-600 text-sm mt-1">
