@@ -5,16 +5,30 @@
  */
 
 const { createCoreController } = require("@strapi/strapi").factories;
-const { UnauthorizedError } = require("@strapi/utils").errors;
+const { UnauthorizedError, ForbiddenError } = require("@strapi/utils").errors;
 
 module.exports = createCoreController(
   "api::evaluation.evaluation",
   ({ strapi }) => ({
     async findOne(ctx) {
-      const urlParams = new URLSearchParams(ctx.request.url.split("?")[1]);
-      const response = await super.findOne(ctx);
-      if (response?.data?.attributes?.email !== urlParams.get("email")) {
+      const { id } = ctx.params;
+      const { email } = ctx.query;
+      const data = await strapi.entityService.findOne(
+        "api::evaluation.evaluation",
+        id,
+        {
+          populate: ["report.user", "dimensions.quiz"],
+        }
+      );
+      const { report, email: userEmail, ...response } = data;
+
+      if (report.finished) {
         throw new UnauthorizedError(
+          `Perioada de evaluare a luat sfarsit. Va rugam luati legatura cu organizatia ${report.user.ongName} pentru mai mutle detalii`
+        );
+      }
+      if (userEmail !== email) {
+        throw new ForbiddenError(
           "Sorry, you are not authorized to access this page."
         );
       } else {

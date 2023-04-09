@@ -8,6 +8,7 @@ import Button from "@/components/Button";
 import { useGetEvaluationQuery, userApi } from "@/redux/api/userApi";
 import FullScreenLoader from "@/components/FullScreenLoader";
 import { useSubmitEvaluationMutation } from "@/redux/api/userApi";
+import ExpiredEvaluation from "@/pages/Evaluation/ExpiredEvaluation";
 import StartEvaluation from "@/components/StartEvaluation";
 import EvaluationFinished from "@/components/EvaluationFinished";
 import Heading from "@/components/Heading";
@@ -76,8 +77,8 @@ const Evaluation = () => {
     isSuccess: isEvaluationSuccess,
     data: evaluationData,
     isError: isEvaluationError,
+    error: evaluationError,
   } = useGetEvaluationQuery({ evaluationId, email: emailParam });
-
   const [
     submitEvaluation,
     {
@@ -130,15 +131,19 @@ const Evaluation = () => {
   const dimensionIndex = evaluationData?.dimensions?.length + 1;
   const dimension = matrixData && matrixData[+evaluationIndex - 1];
 
-  if (!(email || emailParam)) {
-    return false;
-  }
-
   if (
     !(dimension && evaluationIndex && evaluationData) &&
     (isMatrixLoading || isEvaluationLoading)
   ) {
     return <FullScreenLoader />;
+  }
+
+  if (evaluationError?.status === 403) {
+    return <Navigate to="/" />;
+  }
+
+  if (evaluationError?.status === 401) {
+    return <ExpiredEvaluation error={evaluationError} />;
   }
 
   if (evaluations?.length === 0 && !hasStarted) {
@@ -147,10 +152,6 @@ const Evaluation = () => {
 
   if (evaluations?.length === matrixData?.length) {
     return <EvaluationFinished />;
-  }
-
-  if (isEvaluationError || evaluationData?.email !== email) {
-    return <Navigate to="/" />;
   }
 
   return (

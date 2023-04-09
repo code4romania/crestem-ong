@@ -94,11 +94,10 @@ export const userApi = createApi({
     getEvaluation: builder.query<EvaluationInput, null>({
       query({ evaluationId, email }: { evaluationId: string; email: string }) {
         return {
-          url: `evaluations/${evaluationId}?populate=dimensions.quiz&email=${email}`,
+          url: `evaluations/${evaluationId}?email=${email}`,
           credentials: "include",
         };
       },
-      transformResponse: (result: { data: any }) => result.data.attributes,
     }),
     createEvaluation: builder.mutation<
       Evaluation,

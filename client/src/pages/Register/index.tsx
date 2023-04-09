@@ -87,7 +87,7 @@ const Register = () => {
   const onSubmitHandler: SubmitHandler<RegisterInput> = async (values) => {
     const formData = new FormData();
     const res = await submitRegister({ ...values, username: values.email });
-    if (values.avatar) {
+    if (values.avatar[0]?.name) {
       formData.append(`files`, values.avatar[0], values.avatar[0].name);
       formData.append(`ref`, "plugin::users-permissions.user");
       formData.append(`refId`, res.data.user.id);
