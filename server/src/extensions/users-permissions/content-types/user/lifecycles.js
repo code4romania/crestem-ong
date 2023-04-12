@@ -25,15 +25,15 @@ module.exports = {
     } catch (err) {
       console.log(err);
     }
-    // try {
-    //   await strapi.plugins["email"].services.email.send({
-    //     to: "contact@crestem.ong",
-    //     subject: afterCreateEmailSubject,
-    //     text: `Bună,\n${result.ongName} a deschis un cont de organizație pe Creștem.ONG.\nO zi frumoasă! Echipa Creștem.ONG`,
-    //     html: `<p>Bună,</p><p>${result.ongName} a deschis un cont de organizație pe Creștem.ONG.</p><p>O zi frumoasă! Echipa Creștem.ONG</p>`,
-    //   });
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    try {
+      await strapi.plugins["email"].services.email.send({
+        to: "olivia.vereha@code4.ro", // get it from env variable
+        subject: afterCreateEmailSubject,
+        text: `Bună,\n${result.ongName} a deschis un cont de organizație pe Creștem.ONG.\nO zi frumoasă! Echipa Creștem.ONG`,
+        html: `<p>Bună,</p><p>${result.ongName} a deschis un cont de organizație pe Creștem.ONG.</p><p>O zi frumoasă! Echipa Creștem.ONG</p>`,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   },
 };
