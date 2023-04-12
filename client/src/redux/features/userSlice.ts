@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IUser } from "../api/types";
-import { authApi } from "../api/authApi";
 import { userApi } from "../api/userApi";
+import Cookies from "js-cookie";
 
 interface IUserState {
   user: IUser | null;
@@ -9,9 +9,11 @@ interface IUserState {
   matrix: object | null;
 }
 
+const userToken = Cookies.get("jwt") || null;
+
 const initialState: IUserState = {
   user: null,
-  token: null,
+  token: userToken,
   matrix: null,
 };
 
@@ -19,7 +21,10 @@ export const userSlice = createSlice({
   initialState,
   name: "userSlice",
   reducers: {
-    logout: () => initialState,
+    logout: () => ({
+      ...initialState,
+      token: null,
+    }),
     setUser: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload;
     },
@@ -29,18 +34,11 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addMatcher(
-      authApi.endpoints.loginUser.matchFulfilled,
+      userApi.endpoints.getMatrix.matchFulfilled,
       (state, { payload }) => {
-        state.token = payload.jwt;
-        state.user = payload.user;
+        state.matrix = payload;
       }
-    ),
-      builder.addMatcher(
-        userApi.endpoints.getMatrix.matchFulfilled,
-        (state, { payload }) => {
-          state.matrix = payload;
-        }
-      );
+    );
   },
 });
 

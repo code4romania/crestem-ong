@@ -138,7 +138,7 @@ const ResultsByDimension = ({ evaluations }) => {
               {score < 50 ? <img src={badIcon} /> : <img src={goodIcon} />}
               <div>
                 {tags.map((tag, i) => (
-                  <span>
+                  <span key={i}>
                     {tag}
                     {i !== 2 && "; "}
                   </span>

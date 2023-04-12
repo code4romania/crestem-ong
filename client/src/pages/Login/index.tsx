@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { object, string, TypeOf } from "zod";
@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import Heading from "@/components/Heading";
 import screenshot from "@/assets/screenshot-start.jpg";
 import Button from "@/components/Button";
+import Cookies from "js-cookie";
 
 const loginSchema = object({
   identifier: string()
@@ -79,6 +80,7 @@ const Input = ({ register, name, label, errors, ...rest }) => (
 
 const Login = memo(() => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
@@ -93,6 +95,8 @@ const Login = memo(() => {
   useEffect(() => {
     if (isSuccess && data?.jwt) {
       dispatch(setToken(data.jwt));
+      Cookies.set("jwt", data.jwt);
+      navigate("/");
     }
   }, [isSuccess, data, dispatch]);
 
@@ -110,10 +114,7 @@ const Login = memo(() => {
   return (
     <Section>
       <div className="grid md:grid-cols-2 items-center justify-center mt-0 mr-auto mb-0 ml-auto gap-8">
-        <form
-          // className="order-2 md:order-1"
-          onSubmit={handleSubmit(onSubmitHandler)}
-        >
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
           <FormHeader />
           <Input
             label="Email"
