@@ -5,9 +5,9 @@ import Navbar from "../Navbar";
 import Footer from "../Footer";
 
 const LayoutApp = () => (
-  <div className="min-h-screen flex flex-col justify-between">
+  <div className="flex flex-col h-screen">
     <Navbar />
-    <div>
+    <div className="mb-auto">
       <Outlet />
     </div>
     <Footer />

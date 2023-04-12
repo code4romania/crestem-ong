@@ -15,6 +15,12 @@ const UsersTable = () => {
             scope="col"
             className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
           >
+            NUME ORGANIZATIE
+          </th>
+          <th
+            scope="col"
+            className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+          >
             EMAIL
           </th>
           <th
@@ -24,8 +30,11 @@ const UsersTable = () => {
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200 bg-white">
-        {data.map(({ id, email }) => (
+        {data.map(({ id, ongName, email }) => (
           <tr key={id}>
+            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+              {ongName}
+            </td>
             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
               {email}
             </td>

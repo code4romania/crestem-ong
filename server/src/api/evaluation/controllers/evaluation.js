@@ -24,7 +24,7 @@ module.exports = createCoreController(
 
       if (report.finished) {
         throw new UnauthorizedError(
-          `Perioada de evaluare a luat sfarsit. Va rugam luati legatura cu organizatia ${report.user.ongName} pentru mai mutle detalii`
+          `Perioada de evaluare a luat sfarsit. Va rugam luati legatura cu organizatia ${report.user.ongName} pentru mai multe detalii.`
         );
       }
       if (userEmail !== email) {

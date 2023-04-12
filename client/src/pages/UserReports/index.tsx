@@ -11,21 +11,23 @@ const UserReports = () => {
 
   return (
     <Section>
-      <TableHeadReports />
-      <tbody className="divide-y divide-gray-200 bg-white">
-        {user?.reports?.map((report) => {
-          return (
-            <TableRowReport
-              key={report.id}
-              id={report.id}
-              createdAt={report.createdAt}
-              deadline={report.deadline}
-              evaluations={report.evaluations}
-              finished={report.finished}
-            />
-          );
-        })}
-      </tbody>
+      <table className="w-full">
+        <TableHeadReports />
+        <tbody className="divide-y divide-gray-200 bg-white">
+          {user?.reports?.map((report) => {
+            return (
+              <TableRowReport
+                key={report.id}
+                id={report.id}
+                createdAt={report.createdAt}
+                deadline={report.deadline}
+                evaluations={report.evaluations}
+                finished={report.finished}
+              />
+            );
+          })}
+        </tbody>
+      </table>
     </Section>
   );
 };

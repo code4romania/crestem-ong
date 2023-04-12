@@ -11,5 +11,5 @@ export const calcScore = (evaluations) => {
       0
     ) /
     (2 * evaluations.length);
-  return score ? `${Math.round(score)}%` : "-";
+  return Math.round(score);
 };

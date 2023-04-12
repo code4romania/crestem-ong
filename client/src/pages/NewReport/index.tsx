@@ -116,7 +116,8 @@ const NewReport = () => {
           </div>
           <div className="py-6">
             <div className="mb-2">
-              Adaugă adresele de email către care vrei să trimiți invitațiile.
+              Adaugă adresele de email către care vrei să trimiți invitațiile,
+              separate de tasta [Enter].
             </div>
             <div className="flex gap-10 w-full md:w-2/3 lg:w-1/2">
               <textarea
