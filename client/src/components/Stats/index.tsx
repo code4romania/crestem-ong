@@ -17,7 +17,7 @@ const Stats = ({ period = 0, count = 0, score = "-" }) => (
           Total completări
         </dt>
         <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-          {count}
+          {count || 0}
         </dd>
       </div>
 
@@ -26,7 +26,7 @@ const Stats = ({ period = 0, count = 0, score = "-" }) => (
           Scor total
         </dt>
         <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-          {score}
+          {score || "-"}
         </dd>
       </div>
     </dl>

@@ -14,6 +14,8 @@ import EvaluationFinished from "@/components/EvaluationFinished";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import { ErrorMessage } from "@hookform/error-message";
+import { useAppSelector } from "@/redux/store";
+import EvaluationResults from "@/components/EvaluationResults";
 
 const invalid_type_error = "Va rugam alegeti o optiune";
 const min_message = "Acest camp este obligator";
@@ -58,13 +60,14 @@ const Evaluation = () => {
   const [hasStarted, setHasStarted] = useState(false);
   const [evaluations, setEvaluations] = useState([]);
   const { evaluationId } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const emailParam = searchParams.get("email");
-  const [email, setEmail] = useState(null);
   const methods = useForm<EvaluationInput>({
     resolver: zodResolver(evaluationSchema),
   });
   const { handleSubmit, register, reset } = methods;
+  const user = useAppSelector((state) => state.userState.user);
+  const isFDSC = user?.role?.type === "fdsc";
 
   const { data: matrixData, isLoading: isMatrixLoading } =
     userApi.endpoints.getMatrix.useQuery(null, {
@@ -107,12 +110,6 @@ const Evaluation = () => {
     }
   }, [isSubmitSuccess]);
 
-  useEffect(() => {
-    if (emailParam) {
-      setEmail(emailParam);
-    }
-  }, [emailParam]);
-
   const onSubmitHandler = (data: EvaluationInput) => {
     submitEvaluation({
       dimensions: [...evaluations, createEvaluation(data)],
@@ -140,6 +137,9 @@ const Evaluation = () => {
 
   if (evaluationError?.status === 403) {
     return <Navigate to="/" />;
+  }
+  if (isFDSC) {
+    return <EvaluationResults evaluationData={evaluationData} />;
   }
 
   if (evaluationError?.status === 401) {

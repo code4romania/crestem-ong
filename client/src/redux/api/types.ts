@@ -1,7 +1,14 @@
 export interface IUser {
   name: string;
   email: string;
-  role: string;
+  role: {
+    id: number;
+    description: string;
+    name: string;
+    type: "fdsc";
+    createdAt: string;
+    updatedAt: string;
+  };
   _id: string;
   createdAt: Date;
   updatedAt: Date;

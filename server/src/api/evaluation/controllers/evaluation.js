@@ -11,6 +11,7 @@ module.exports = createCoreController(
   "api::evaluation.evaluation",
   ({ strapi }) => ({
     async findOne(ctx) {
+      const isFDSC = ctx.state.user.role.type === "fdsc";
       const { id } = ctx.params;
       const { email } = ctx.query;
       const data = await strapi.entityService.findOne(
@@ -22,7 +23,7 @@ module.exports = createCoreController(
       );
       const { report, email: userEmail, ...response } = data;
 
-      if (report.finished) {
+      if (report.finished && !isFDSC) {
         throw new UnauthorizedError(
           `Perioada de evaluare a luat sfarsit. Va rugam luati legatura cu organizatia ${report.user.ongName} pentru mai multe detalii.`
         );
