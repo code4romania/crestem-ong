@@ -1,4 +1,4 @@
-const afterCreateEmailSubject = "CRESTEM-ONG";
+const afterCreateEmailSubject = "Bine ai venit!";
 const afterCreateEmailText = `Felicitări, contul tău pe Creștem.ONG a fost creat cu succes!\n
 Următorul pas este să stabilești perioada de evaluare a organizației tale și să inviți persoanele pe care vrei să le implici în analiză: pot fi membri, angajați, colaboratori (permanenți), membri ai structurii de guvernanță (board/ consiliu director), voluntari și/ sau beneficiari activ implicați în organizație (implicați în activități ce țin de management și/ sau guvernanță).\n
 Nu uita să incluzi și adresa ta în listă pentru a răspunde la rândul tău întrebărilor.Veți avea la dispoziție maxim o lună pentru a completa chestionarul.\n
@@ -28,7 +28,7 @@ module.exports = {
     try {
       await strapi.plugins["email"].services.email.send({
         to: "olivia.vereha@code4.ro", // get it from env variable
-        subject: afterCreateEmailSubject,
+        subject: "Cont nou pe Crestem.ONG",
         text: `Bună,\n${result.ongName} a deschis un cont de organizație pe Creștem.ONG.\nO zi frumoasă! Echipa Creștem.ONG`,
         html: `<p>Bună,</p><p>${result.ongName} a deschis un cont de organizație pe Creștem.ONG.</p><p>O zi frumoasă! Echipa Creștem.ONG</p>`,
       });
