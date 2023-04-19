@@ -8,6 +8,7 @@ import evaluation from "@/pages/Evaluation";
 const TableEvaluations = ({ evaluations }: { evaluations: Evaluation[] }) => {
   const user = useAppSelector((state) => state.userState.user);
   const isFDSC = user?.role?.type === "fdsc";
+
   return evaluations.length ? (
     <table className="w-full table-auto divide-y divide-gray-300">
       <thead className="bg-gray-50">
@@ -41,9 +42,11 @@ const TableEvaluations = ({ evaluations }: { evaluations: Evaluation[] }) => {
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
               {dimensions.length === 10 ? "Completat" : "Necompletat"}
             </td>
-            {isFDSC && (
+            {isFDSC && dimensions.length === 10 && (
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                <Link to={`/evaluation/${id}?email=${email}`}>Vezi</Link>
+                <Link to={`/evaluation/${id}?email=${email}`}>
+                  Vezi raspunsurile
+                </Link>
               </td>
             )}
           </tr>

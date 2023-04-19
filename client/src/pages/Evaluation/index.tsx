@@ -138,7 +138,7 @@ const Evaluation = () => {
   if (evaluationError?.status === 403) {
     return <Navigate to="/" />;
   }
-  if (isFDSC) {
+  if (isFDSC && evaluationData?.dimensions?.length === 10) {
     return <EvaluationResults evaluationData={evaluationData} />;
   }
 
