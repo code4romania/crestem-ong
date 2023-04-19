@@ -11,7 +11,53 @@ const Footer = () => (
       <footer className="relative">
         <div className="py-12 lg:py-16">
           <div className="grid gap-8 xl:grid-cols-3">
-            <div></div>
+            <div className="space-y-4">
+              <div className="edgtf-column-content edgtf-grid-col-3">
+                <div
+                  id="media_image-3"
+                  className="widget edgtf-footer-column-3 widget_media_image"
+                >
+                  <div className="edgtf-widget-title-holder mb-4 text-gray-500">
+                    <h5 className="edgtf-widget-title">
+                      Platformă dezvoltată de
+                    </h5>
+                  </div>
+                  <a href="http://fdsc.ro">
+                    <img
+                      width="192"
+                      height="71"
+                      src="https://instaredebine.ro/wp-content/uploads/2018/12/FDSC-Footer.png"
+                      className="image wp-image-5982  attachment-full size-full max-w-full h-auto"
+                      alt=""
+                      decoding="async"
+                      loading="lazy"
+                    />
+                  </a>
+                </div>
+              </div>
+
+              <div className="edgtf-column-content edgtf-grid-col-3">
+                <div
+                  id="media_image-4"
+                  className="widget edgtf-footer-column-2 widget_media_image"
+                >
+                  <div className="edgtf-widget-title-holder mb-4 text-gray-500">
+                    <h5 className="edgtf-widget-title">cu sprijinul</h5>
+                  </div>
+                  <a href="http://kaufland.ro">
+                    <img
+                      width="247"
+                      height="124"
+                      src="https://instaredebine.ro/wp-content/uploads/2018/12/implicarea-face-diferenta-logo-01.png"
+                      className="image wp-image-5975  attachment-full size-full max-w-full h-auto"
+                      alt=""
+                      decoding="async"
+                      loading="lazy"
+                    />
+                  </a>
+                </div>
+              </div>
+            </div>
             <nav className="xl:col-span-2">
               <ul className="grid gap-8 gap-y-16 sm:grid-cols-2 md:grid-cols-3">
                 <li className="space-y-4">
