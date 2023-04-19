@@ -1,7 +1,7 @@
 import { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
-export default function Example({ open, setOpen, handleComplete }) {
+const Confirm = ({ open, setOpen, handleComplete }) => {
   const cancelButtonRef = useRef(null);
 
   return (
@@ -81,4 +81,6 @@ export default function Example({ open, setOpen, handleComplete }) {
       </Dialog>
     </Transition.Root>
   );
-}
+};
+
+export default Confirm;

@@ -29,8 +29,7 @@ const ReportInProgress = ({ report }) => {
       report?.evaluations?.filter(({ dimensions }) => dimensions.length === 10),
     [report?.evaluations]
   );
-  const canFinish =
-    evaluationsCompleted.length === report.evaluations.length || true;
+  const canFinish = evaluationsCompleted.length === report.evaluations.length;
 
   return (
     <div>
