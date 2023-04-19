@@ -116,7 +116,7 @@ const Home = () => {
           </Section>
         )
       ) : (
-        <Section className="bg-gray-100 bg-opacity-90 text-center py-8">
+        <Section className="bg-gray-100 bg-opacity-70 text-center py-8">
           <Heading level="h2">Înscrie-te acum</Heading>
           {/*<p className="text-lg leading-6 font-normal mt-4 mb-8 max-w-xl mx-auto">*/}
           {/*  Ac euismod vel sit maecenas id pellentesque eu sed consectetur.*/}
