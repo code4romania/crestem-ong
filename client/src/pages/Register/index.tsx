@@ -29,7 +29,7 @@ const registerSchema = object({
     .min(8, "Password must be more than 8 characters")
     .max(32, "Password must be less than 32 characters"),
   confirmPassword: string(),
-  avatar: custom<File>(),
+  avatar: custom<File[]>(),
   activities: string(),
   website: string(),
   keywords: string(),
@@ -63,7 +63,13 @@ const Register = () => {
   const methods = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
   });
+  const avatar = methods.watch("avatar");
+  const hasAvatar = !!avatar;
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     if (error?.data?.error?.message) {
@@ -87,7 +93,7 @@ const Register = () => {
   const onSubmitHandler: SubmitHandler<RegisterInput> = async (values) => {
     const formData = new FormData();
     const res = await submitRegister({ ...values, username: values.email });
-    if (values.avatar[0]?.name) {
+    if (values.avatar[0].name) {
       formData.append(`files`, values.avatar[0], values.avatar[0].name);
       formData.append(`ref`, "plugin::users-permissions.user");
       formData.append(`refId`, res.data.user.id);
@@ -314,37 +320,42 @@ const Register = () => {
                     </div>
                   </div>
 
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="avatar"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Logo organizație
-                    </label>
-                    <label
-                      htmlFor="avatar"
-                      className="flex items-center gap-10 cursor-pointer"
-                    >
-                      <span className="h-12 w-12 overflow-hidden rounded-full bg-gray-100">
-                        <svg
-                          className="h-full w-full text-gray-300"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                      </span>
-                      <div className={"pointer-events-none"}>
-                        <Button color={"white"} type="button">
-                          Încarcă logo
-                        </Button>
+                  <div className="sm:col-span-6">
+                    <label htmlFor="avatar" className="">
+                      <div className="text-sm font-medium text-gray-700 mb-2.5">
+                        Logo organizație
                       </div>
-                      <input
-                        type="file"
-                        className="hidden"
-                        id={"avatar"}
-                        {...methods.register("avatar")}
-                      />
+                      <div className="flex items-center gap-10 cursor-pointer">
+                        {!!avatar?.length ? (
+                          <img
+                            className="h-12 w-12 overflow-hidden rounded-full bg-gray-100"
+                            src={URL.createObjectURL(avatar[0])}
+                            alt={avatar[0].name}
+                            style={{ width: "100px", height: "100px" }}
+                          />
+                        ) : (
+                          <span className="h-12 w-12 overflow-hidden rounded-full bg-gray-100">
+                            <svg
+                              className="h-full w-full text-gray-300"
+                              fill="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </span>
+                        )}
+                        <div className={"pointer-events-none"}>
+                          <Button color={"white"} type="button">
+                            {!hasAvatar ? "Încarcă logo" : "Schimbă logo"}
+                          </Button>
+                        </div>
+                        <input
+                          type="file"
+                          className="hidden"
+                          id={"avatar"}
+                          {...methods.register("avatar")}
+                        />
+                      </div>
                     </label>
                   </div>
                   <div className="sm:col-span-6">
