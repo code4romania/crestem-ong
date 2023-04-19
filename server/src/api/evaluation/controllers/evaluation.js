@@ -11,7 +11,7 @@ module.exports = createCoreController(
   "api::evaluation.evaluation",
   ({ strapi }) => ({
     async findOne(ctx) {
-      const isFDSC = ctx.state.user.role.type === "fdsc";
+      const isFDSC = ctx.state?.user?.role?.type === "fdsc";
       const { id } = ctx.params;
       const { email } = ctx.query;
       const data = await strapi.entityService.findOne(
