@@ -1,7 +1,7 @@
 import React from "react";
 import Heading from "@/components/Heading";
 import Button from "@/components/Button";
-import screenshot from "@/assets/screenshot-end.jpg";
+import screenshot from "@/assets/illustration.svg";
 import Section from "@/components/Section";
 
 const EvaluationFinished = () => (

@@ -10,7 +10,7 @@ import { useAppDispatch } from "@/redux/store";
 import { setToken } from "@/redux/features/userSlice";
 import { toast } from "react-toastify";
 import Heading from "@/components/Heading";
-import screenshot from "@/assets/screenshot-start.jpg";
+import screenshot from "@/assets/illustration.svg";
 import Button from "@/components/Button";
 import Cookies from "js-cookie";
 

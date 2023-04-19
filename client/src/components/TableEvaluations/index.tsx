@@ -3,7 +3,6 @@ import envelope from "@/assets/envelope.svg";
 import { Evaluation } from "@/redux/api/types";
 import { useAppSelector } from "@/redux/store";
 import { Link } from "react-router-dom";
-import evaluation from "@/pages/Evaluation";
 
 const TableEvaluations = ({ evaluations }: { evaluations: Evaluation[] }) => {
   const user = useAppSelector((state) => state.userState.user);

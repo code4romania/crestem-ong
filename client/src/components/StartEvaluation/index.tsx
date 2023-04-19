@@ -1,7 +1,7 @@
 import React from "react";
 import Heading from "@/components/Heading";
 import Button from "@/components/Button";
-import screenshotStart from "@/assets/screenshot-start.jpg";
+import screenshotStart from "@/assets/illustration.svg";
 import Section from "@/components/Section";
 
 const steps = [

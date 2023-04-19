@@ -2,7 +2,7 @@ import React from "react";
 import Button from "@/components/Button";
 import Section from "@/components/Section";
 import Heading from "@/components/Heading";
-import screenshot from "@/assets/screenshot.jpg";
+import screenshot from "@/assets/illustration.svg";
 import { useAppSelector } from "@/redux/store";
 import empty from "@/assets/empty.svg";
 import TableHeadReports from "@/components/index/TableHeadReports";
