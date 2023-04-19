@@ -1,18 +1,25 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Button from "@/components/Button";
 import { DonutChart } from "react-circle-chart";
 import CreateEvaluation from "@/components/CreateEvaluation";
 import TableEvaluations from "@/components/TableEvaluations";
+import Confirm from "@/components/Confirm";
 import { useUpdateReportMutation } from "@/redux/api/userApi";
 
 const CallToAction = ({ reportId }: { reportId: number }) => {
   const [updateReport] = useUpdateReportMutation();
+  const [open, setOpen] = useState(false);
 
   const handleComplete = useCallback(() => {
     updateReport({ id: reportId, finished: true });
   }, [reportId]);
 
-  return <Button onClick={handleComplete}>Finalizează evaluare</Button>;
+  return (
+    <>
+      <Confirm open={open} setOpen={setOpen} handleComplete={handleComplete} />
+      <Button onClick={() => setOpen(true)}>Finalizează evaluare</Button>
+    </>
+  );
 };
 
 const ReportInProgress = ({ report }) => {
@@ -22,7 +29,8 @@ const ReportInProgress = ({ report }) => {
       report?.evaluations?.filter(({ dimensions }) => dimensions.length === 10),
     [report?.evaluations]
   );
-  const canFinish = evaluationsCompleted.length === report.evaluations.length;
+  const canFinish =
+    evaluationsCompleted.length === report.evaluations.length || true;
 
   return (
     <div>
