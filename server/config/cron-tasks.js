@@ -56,7 +56,7 @@ module.exports = {
       }
     },
     options: {
-      rule: "* * * * *",
+      rule: "0 0 * * *",
     },
   },
 };
