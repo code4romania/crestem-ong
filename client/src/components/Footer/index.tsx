@@ -1,8 +1,7 @@
 import React from "react";
 import MadeBy from "@/components/MadeBy";
 import Section from "@/components/Section";
-
-const PUBLIC_URL = import.meta.env.VITE_CLIENT_PUBLIC_URL as string;
+import { Link } from "react-router-dom";
 
 const Footer = () => (
   <>
@@ -77,15 +76,12 @@ const Footer = () => (
                       </a>
                     </li>
                     <li>
-                      <a
-                        href={PUBLIC_URL}
-                        target="_blank"
-                        rel="noopener"
+                      <Link
+                        to="/"
                         className="text-gray-500 hover:text-gray-900"
                       >
-                        {" "}
-                        Începe o evaluare{" "}
-                      </a>
+                        Începe o evaluare
+                      </Link>
                     </li>
                     <li>
                       <a
