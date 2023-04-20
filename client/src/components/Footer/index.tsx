@@ -67,7 +67,7 @@ const Footer = () => (
                   <ul className="space-y-4">
                     <li>
                       <a
-                        href="https://ong.website-factory.heroesof.tech/ro/despre-proiect"
+                        href="https://crestem.ong/ro/despre-proiect"
                         className="text-gray-500 hover:text-gray-900"
                       >
                         {" "}
@@ -87,7 +87,7 @@ const Footer = () => (
                     </li>
                     <li>
                       <a
-                        href="https://ong.website-factory.heroesof.tech/ro/biblioteca"
+                        href="https://crestem.ong/ro/biblioteca"
                         className="text-gray-500 hover:text-gray-900"
                       >
                         {" "}
@@ -96,7 +96,7 @@ const Footer = () => (
                     </li>
                     <li>
                       <a
-                        href="https://ong.website-factory.heroesof.tech/ro/contact"
+                        href="https://crestem.ong/ro/contact"
                         className="text-gray-500 hover:text-gray-900"
                       >
                         {" "}
@@ -154,7 +154,7 @@ const Footer = () => (
                   <ul className="space-y-4">
                     <li>
                       <a
-                        href="https://ong.website-factory.heroesof.tech/ro/termeni-si-conditii"
+                        href="https://crestem.ong/ro/termeni-si-conditii"
                         className="text-gray-500 hover:text-gray-900"
                       >
                         {" "}

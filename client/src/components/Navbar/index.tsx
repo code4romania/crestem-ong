@@ -8,13 +8,13 @@ import { useAppSelector } from "@/redux/store";
 const Menu = () => (
   <ul className="items-center hidden text-sm gap-x-3 lg:flex lg:flex-wrap">
     <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-      <a href="https://ong.website-factory.heroesof.tech/ro/acasa" className="">
+      <a href="https://crestem.ong/ro/acasa" className="">
         Acasă
       </a>
     </li>
     <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
       <a
-        href="https://ong.website-factory.heroesof.tech/ro/despre-proiect"
+        href="https://crestem.ong/ro/despre-proiect"
         className=""
       >
         Despre
@@ -27,7 +27,7 @@ const Menu = () => (
     </li>
     <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
       <a
-        href="https://ong.website-factory.heroesof.tech/ro/biblioteca"
+        href="https://crestem.ong/ro/biblioteca"
         className=""
       >
         Biblioteca
@@ -35,7 +35,7 @@ const Menu = () => (
     </li>
     <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
       <a
-        href="https://ong.website-factory.heroesof.tech/ro/persoane-resursa"
+        href="https://crestem.ong/ro/persoane-resursa"
         className=""
       >
         Persoane resursa
@@ -43,7 +43,7 @@ const Menu = () => (
     </li>
     <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
       <a
-        href="https://ong.website-factory.heroesof.tech/ro/programele-noastre"
+        href="https://crestem.ong/ro/programele-noastre"
         className=""
       >
         Programele noastre
@@ -51,7 +51,7 @@ const Menu = () => (
     </li>
     <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
       <a
-        href="https://ong.website-factory.heroesof.tech/ro/programele-noastre"
+        href="https://crestem.ong/ro/programele-noastre"
         className=""
       >
         Contact

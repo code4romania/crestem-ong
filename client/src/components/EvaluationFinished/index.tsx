@@ -17,7 +17,7 @@ const EvaluationFinished = () => (
           la nivel de organizație, poți deja accesa Biblioteca noastră de
           resurse, organizate în funcție de cele 10 dimensiuni ale analizei.
         </p>
-        <Button to={"https://ong.website-factory.heroesof.tech/ro/biblioteca"}>
+        <Button to={"https://crestem.ong/ro/biblioteca"}>
           Vezi biblioteca
         </Button>
       </div>
