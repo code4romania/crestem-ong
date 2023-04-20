@@ -2,6 +2,8 @@ import React from "react";
 import MadeBy from "@/components/MadeBy";
 import Section from "@/components/Section";
 
+const PUBLIC_URL = import.meta.env.VITE_CLIENT_PUBLIC_URL as string;
+
 const Footer = () => (
   <>
     <Section className="bg-gray-100">
@@ -76,7 +78,7 @@ const Footer = () => (
                     </li>
                     <li>
                       <a
-                        href="https://crestem-ong.vercel.app/"
+                        href={PUBLIC_URL}
                         target="_blank"
                         rel="noopener"
                         className="text-gray-500 hover:text-gray-900"

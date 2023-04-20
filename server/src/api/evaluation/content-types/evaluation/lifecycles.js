@@ -52,8 +52,8 @@ module.exports = {
             to: result.email,
             subject:
               "Salut! Toți membrii organizației au completat chestionarele transmise",
-            text: `Bună,\nToate persoanele invitate de tine să completeze chestionarul de dezvoltare organizațională a finalizat.\nPoți intra în contul tău să finalizezi evaluarea și să vezi rezultatele: https://crestem-ong.vercel.app/login\nO zi frumoasă!\nEchipa Creștem.ONG`,
-            html: `<p>Bună,</p><p>Toate persoanele invitate de tine să completeze chestionarul de dezvoltare organizațională a finalizat.</p><p>Poți intra în contul tău să finalizezi evaluarea și să vezi rezultatele: <a href="https://crestem-ong.vercel.app/login">https://crestem-ong.vercel.app/login</a></p><p>O zi frumoasă!</p><p>Echipa Creștem.ONG</p>`,
+            text: `Bună,\nToate persoanele invitate de tine să completeze chestionarul de dezvoltare organizațională a finalizat.\nPoți intra în contul tău să finalizezi evaluarea și să vezi rezultatele: ${process.env.CLIENT_PUBLIC_URL}/login\nO zi frumoasă!\nEchipa Creștem.ONG`,
+            html: `<p>Bună,</p><p>Toate persoanele invitate de tine să completeze chestionarul de dezvoltare organizațională a finalizat.</p><p>Poți intra în contul tău să finalizezi evaluarea și să vezi rezultatele: <a href="${process.env.CLIENT_PUBLIC_URL}/login">${process.env.CLIENT_PUBLIC_URL}/login</a></p><p>O zi frumoasă!</p><p>Echipa Creștem.ONG</p>`,
           });
         } catch (err) {
           console.log(err);
