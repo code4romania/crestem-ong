@@ -11,6 +11,8 @@ import { useAppDispatch } from "@/redux/store";
 import { toast } from "react-toastify";
 import SocialNetworkLinks from "@/pages/Register/SocialNetworkLinks";
 import { useUploadMutation } from "@/redux/api/userApi";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const registerSchema = object({
   ongName: string().min(1, "Numele organizatiei este obligatoriu"),
@@ -66,6 +68,7 @@ const Register = () => {
   const avatar = methods.watch("avatar");
   const hasAvatar = !!avatar;
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -87,6 +90,8 @@ const Register = () => {
   useEffect(() => {
     if (isSuccess && data?.jwt) {
       dispatch(setToken(data.jwt));
+      Cookies.set("jwt", data.jwt);
+      navigate("/");
     }
   }, [isSuccess, data?.jwt, dispatch]);
 
