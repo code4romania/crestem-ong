@@ -3,6 +3,16 @@
 /**
  * evaluation controller
  */
+const sendMailToUserWhenEvaluationIsFinished = (to, data) =>
+  strapi.plugin("email-designer").service("email").sendTemplatedEmail(
+    {
+      to,
+    },
+    {
+      templateReferenceId: 7,
+    },
+    data
+  );
 
 const { createCoreController } = require("@strapi/strapi").factories;
 const { UnauthorizedError, ForbiddenError } = require("@strapi/utils").errors;
@@ -43,22 +53,6 @@ module.exports = createCoreController(
         populate: "dimensions.quiz",
       });
       if (dimensions?.length === matrix?.dimensions?.length) {
-        const mailText = matrix?.dimensions.reduce(
-          (acc, { name, quiz }, dimensionIndex) => {
-            return `${acc}\nDimensiune: ${name}${quiz.reduce(
-              (acc, matrixQuiz, quizIndex) =>
-                `${acc}\nIntrebare: ${matrixQuiz.question}\nRaspuns: ${
-                  matrixQuiz[
-                    `option_${
-                      dimensions[dimensionIndex]?.quiz[quizIndex]?.answer + 1
-                    }`
-                  ]
-                }`,
-              ""
-            )}\nComentariu: ${dimensions[dimensionIndex]?.comment}`;
-          },
-          ""
-        );
         const mailHtml = matrix?.dimensions.reduce(
           (acc, { name, quiz }, dimensionIndex) => {
             return `${acc}\n<h2>${name}</h2>${quiz.reduce(
@@ -81,12 +75,8 @@ module.exports = createCoreController(
         try {
           const email = response?.data?.attributes?.email;
           if (email)
-            await strapi.plugins["email"].services.email.send({
-              to: email,
-              subject:
-                "CRESTEM-ONG: Raspunsurile dvs pentru formularul de evaluare a organizatiei",
-              text: mailText,
-              html: mailHtml,
+            await sendMailToUserWhenEvaluationIsFinished(email, {
+              content: mailHtml,
             });
         } catch (err) {
           console.log(err);

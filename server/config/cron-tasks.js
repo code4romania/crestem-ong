@@ -1,3 +1,24 @@
+const sendMailToReportUser = (to) =>
+  strapi.plugin("email-designer").service("email").sendTemplatedEmail(
+    {
+      to,
+    },
+    {
+      templateReferenceId: 1,
+    }
+  );
+
+const sendMailToEvaluationUser = (to, data) =>
+  strapi.plugin("email-designer").service("email").sendTemplatedEmail(
+    {
+      to,
+    },
+    {
+      templateReferenceId: 2,
+    },
+    data
+  );
+
 module.exports = {
   /**
    * Update reports if they past the deadline.
@@ -18,22 +39,14 @@ module.exports = {
           const differenceInDays = Math.ceil(difference / (1000 * 3600 * 24));
           if (differenceInDays === 1) {
             try {
-              await strapi.plugins["email"].services.email.send({
-                to: report.user.email,
-                subject: "Salut! A mai rămas o zi pînă la deadline",
-                text: `Bună,\nMai e o singură zi în care persoanele din organizația ta pot completa chestionarul de evaluare.\nToți au primit o notificare automată ca reminder pentru a finaliza completarea chestionarului.\nDacă ai nevoie de mai mult timp, poți intra în contul tău de organizație și poți prelungi termenul de completare sau poți lua legătura cu echipa noastră pentru a te ajuta în acest proces.\n${process.env.CLIENT_PUBLIC_URL}/login\nO zi frumoasă!\nEchipa Creștem.ONG`,
-                html: `<p>Bună,</p><p>Mai e o singură zi în care persoanele din organizația ta pot completa chestionarul de evaluare.</p><p>Toți au primit o notificare automată ca reminder pentru a finaliza completarea chestionarului.</p><p>Dacă ai nevoie de mai mult timp, poți intra în contul tău de organizație și poți prelungi termenul de completare sau poți lua legătura cu echipa noastră pentru a te ajuta în acest proces.</p><p><a href="${process.env.CLIENT_PUBLIC_URL}/login">${process.env.CLIENT_PUBLIC_URL}/login</a></p><p>O zi frumoasă!</p><p>Echipa Creștem.ONG</p>`,
-              });
+              await sendMailToReportUser(report.user.email);
             } catch (err) {
               console.log(err);
             }
             for await (const [_, evaluation] of reports.evaluations.entries()) {
               try {
-                await strapi.plugins["email"].services.email.send({
-                  to: evaluation.email,
-                  subject: "Salut! A mai rămas o zi pînă la deadline",
-                  text: `Bună, Mai e o singură zi în care poți completa chestionarul de evaluare a ${report.user.ongName}. Dacă nu ai timp suficient, ia legătura cu organizația ta și solicită o extindere a termenului limită. O zi frumoasă! Echipa Creștem.ONG`,
-                  html: `Bună, Mai e o singură zi în care poți completa chestionarul de evaluare a ${report.user.ongName}. Dacă nu ai timp suficient, ia legătura cu organizația ta și solicită o extindere a termenului limită. O zi frumoasă! Echipa Creștem.ONG`,
+                await sendMailToEvaluationUser(evaluation.email, {
+                  REPORT: report,
                 });
               } catch (err) {
                 console.log(err);

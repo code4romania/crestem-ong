@@ -16,6 +16,7 @@
     "@strapi/strapi": "4.9.0",
     "better-sqlite3": "8.0.1",
     "pg": "^8.10.0",
+    "strapi-plugin-email-designer": "^2.1.2",
     "strapi-provider-upload-aws-s3-advanced": "^5.0.1"
   },
   "author": {
