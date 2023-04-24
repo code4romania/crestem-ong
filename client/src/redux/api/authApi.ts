@@ -3,19 +3,29 @@ import { LoginInput } from "@/pages/Login";
 import { RegisterInput } from "@/pages/Register";
 import { RegisterResponse } from "./types";
 import { userApi } from "./userApi";
+import { ForgotPasswordInput } from "@/pages/ForgotPassword";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${BASE_URL}/api/auth/local`,
+    baseUrl: `${BASE_URL}/api/auth`,
   }),
   endpoints: (builder) => ({
     registerUser: builder.mutation<RegisterResponse, RegisterInput>({
       query(data) {
         return {
-          url: "register",
+          url: "local/register",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
+    forgotPassword: builder.mutation<RegisterResponse, ForgotPasswordInput>({
+      query(data) {
+        return {
+          url: "forgot-password",
           method: "POST",
           body: data,
         };
@@ -27,7 +37,7 @@ export const authApi = createApi({
     >({
       query(data) {
         return {
-          url: "",
+          url: "local",
           method: "POST",
           body: data,
           credentials: "include",
@@ -43,4 +53,8 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLoginUserMutation, useRegisterUserMutation } = authApi;
+export const {
+  useLoginUserMutation,
+  useRegisterUserMutation,
+  useForgotPasswordMutation,
+} = authApi;
