@@ -60,7 +60,7 @@ module.exports = createCoreController(
                 `${acc}<h3>Intrebare: ${matrixQuiz.question}</h3><p>Raspuns: ${
                   matrixQuiz[
                     `option_${
-                      dimensions[dimensionIndex]?.quiz[quizIndex]?.answer + 1
+                      +dimensions[dimensionIndex]?.quiz[quizIndex]?.answer + 1
                     }`
                   ]
                 }</p>`,
@@ -74,10 +74,20 @@ module.exports = createCoreController(
         );
         try {
           const email = response?.data?.attributes?.email;
-          if (email)
+          const evaluation = await strapi.entityService.findOne(
+            "api::evaluation.evaluation",
+            response.data.id,
+            {
+              populate: "report.user",
+            }
+          );
+          if (email) {
             await sendMailToUserWhenEvaluationIsFinished(email, {
-              content: mailHtml,
+              content: mailHtml, // TODO: legacy
+              EVALUATION_RESULTS: mailHtml,
+              ONG_NAME: evaluation?.report?.user?.ongName,
             });
+          }
         } catch (err) {
           console.log(err);
         }
