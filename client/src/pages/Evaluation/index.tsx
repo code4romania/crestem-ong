@@ -37,19 +37,19 @@ export type EvaluationInput = TypeOf<typeof evaluationSchema> & {
 const createEvaluation = (data: EvaluationInput) => ({
   quiz: [
     {
-      answer: data.question_1,
+      answer: +data.question_1,
     },
     {
-      answer: data.question_2,
+      answer: +data.question_2,
     },
     {
-      answer: data.question_3,
+      answer: +data.question_3,
     },
     {
-      answer: data.question_4,
+      answer: +data.question_4,
     },
     {
-      answer: data.question_5,
+      answer: +data.question_5,
     },
   ],
   comment: data.comment,
