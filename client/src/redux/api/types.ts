@@ -1,20 +1,3 @@
-export interface IUser {
-  name: string;
-  email: string;
-  role: {
-    id: number;
-    description: string;
-    name: string;
-    type: "fdsc";
-    createdAt: string;
-    updatedAt: string;
-  };
-  _id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
-}
-
 export interface User {
   activities: string;
   city: string;
@@ -33,6 +16,8 @@ export interface User {
   phone: string;
   username: string;
   website: string;
+  reports: Report[];
+  role?: Role;
 }
 
 export interface IGenericResponse {

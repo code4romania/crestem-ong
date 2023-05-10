@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setUser } from "../features/userSlice";
-import { IUser, Report, Evaluation } from "./types";
+import { User, Report, Evaluation } from "./types";
 import { EvaluationInput } from "../../pages/Evaluation";
 import { ReportInput } from "@/pages/NewReport";
 
@@ -21,7 +21,7 @@ export const userApi = createApi({
   }),
   tagTypes: ["User", "Report", "Evaluation"],
   endpoints: (builder) => ({
-    getMe: builder.query<IUser, null>({
+    getMe: builder.query<User, null>({
       query() {
         return {
           url: "users/me?populate[0]=reports.evaluations.dimensions.quiz&populate[1]=avatar&populate[2]=role",
@@ -81,7 +81,7 @@ export const userApi = createApi({
       },
       invalidatesTags: ["Report"],
     }),
-    getMatrix: builder.query<IUser, null>({
+    getMatrix: builder.query<User, null>({
       query() {
         return {
           url: "matrix?populate=dimensions.quiz",

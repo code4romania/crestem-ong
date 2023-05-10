@@ -1,20 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IUser } from "../api/types";
+import { User } from "../api/types";
 import { userApi } from "../api/userApi";
 import Cookies from "js-cookie";
 
-interface IUserState {
-  user: IUser | null;
-  token: string | null;
-  matrix: object | null;
+interface UserState {
+  user?: User;
+  token?: string;
+  matrix?: object;
 }
 
-const userToken = Cookies.get("jwt") || null;
+const userToken = Cookies.get("jwt") || undefined;
 
-const initialState: IUserState = {
-  user: null,
+const initialState: UserState = {
+  user: undefined,
   token: userToken,
-  matrix: null,
+  matrix: undefined,
 };
 
 export const userSlice = createSlice({
@@ -23,9 +23,9 @@ export const userSlice = createSlice({
   reducers: {
     logout: () => ({
       ...initialState,
-      token: null,
+      token: undefined,
     }),
-    setUser: (state, action: PayloadAction<IUser>) => {
+    setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
     setToken: (state, action: PayloadAction<string>) => {
