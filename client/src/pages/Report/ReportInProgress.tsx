@@ -80,10 +80,6 @@ const ReportInProgress = ({ report }) => {
             <div className="text-base leading-6 font-medium mb-2">
               Perioada de evaluare
             </div>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi,
-              totam at reprehenderit maxime aut beatae ad.
-            </p>
             <div className="flex mt-4 space-x-8">
               {report.createdAt && (
                 <div>
