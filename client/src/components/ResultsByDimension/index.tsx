@@ -71,7 +71,7 @@ const ResultsByDimension = ({ evaluations }) => {
       .sort((a, b) =>
         object[a].score === object[b].score
           ? 0
-          : object[a].score > object[b].score
+          : object[a].score < object[b].score
           ? -1
           : 1
       )
@@ -104,7 +104,7 @@ const ResultsByDimension = ({ evaluations }) => {
             score: object[index].option5,
           },
         ].sort((a, b) =>
-          a.score === b.score ? 0 : a.score < b.score ? -1 : 1
+          a.score === b.score ? 0 : a.score > b.score ? -1 : 1
         );
 
         return {
