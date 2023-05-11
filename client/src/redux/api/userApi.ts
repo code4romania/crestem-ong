@@ -94,7 +94,7 @@ export const userApi = createApi({
     getEvaluation: builder.query<EvaluationInput, null>({
       query({ evaluationId, email }: { evaluationId: string; email: string }) {
         return {
-          url: `evaluations/${evaluationId}?email=${email}`,
+          url: `evaluations/${evaluationId}?email=${encodeURIComponent(email)}`,
           credentials: "include",
         };
       },
