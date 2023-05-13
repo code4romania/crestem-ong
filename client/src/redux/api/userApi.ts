@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { setUser } from "../features/userSlice";
-import { User, Report, Evaluation } from "./types";
-import { EvaluationInput } from "../../pages/Evaluation";
+import { EvaluationInput } from "@/pages/Evaluation";
 import { ReportInput } from "@/pages/NewReport";
+import { RootState } from "@/redux/store";
+import { setUser } from "../features/userSlice";
+import { User, Report, Evaluation, Matrix } from "./types";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
@@ -11,7 +12,7 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/api/`,
     prepareHeaders: (headers, { getState }) => {
-      const token = getState().userState.token;
+      const token = (getState() as RootState).userState.token;
       if (token) {
         // include token in req header
         headers.set("authorization", `Bearer ${token}`);
@@ -41,7 +42,7 @@ export const userApi = createApi({
         };
       },
     }),
-    getUserReports: builder.query<null, null>({
+    getUserReports: builder.query<null, { userId: string }>({
       query({ userId }) {
         return {
           url: `users/${userId}?populate=reports.evaluations.dimensions.quiz`,
@@ -81,7 +82,7 @@ export const userApi = createApi({
       },
       invalidatesTags: ["Report"],
     }),
-    getMatrix: builder.query<User, null>({
+    getMatrix: builder.query<Matrix, null>({
       query() {
         return {
           url: "matrix?populate=dimensions.quiz",
@@ -91,7 +92,10 @@ export const userApi = createApi({
       transformResponse: (result: { data: any }) =>
         result.data.attributes.dimensions,
     }),
-    getEvaluation: builder.query<EvaluationInput, null>({
+    getEvaluation: builder.query<
+      EvaluationInput,
+      { evaluationId: string; email: string }
+    >({
       query({ evaluationId, email }: { evaluationId: string; email: string }) {
         return {
           url: `evaluations/${evaluationId}?email=${encodeURIComponent(email)}`,
@@ -117,7 +121,10 @@ export const userApi = createApi({
       },
       invalidatesTags: ["Evaluation"],
     }),
-    submitEvaluation: builder.mutation<any, EvaluationInput>({
+    submitEvaluation: builder.mutation<
+      any,
+      { evaluationId: string; dimensions: EvaluationInput[] }
+    >({
       query({ evaluationId, dimensions }) {
         return {
           method: "PUT",

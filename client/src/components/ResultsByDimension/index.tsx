@@ -1,11 +1,20 @@
 import React, { useMemo } from "react";
 import { userApi } from "../../redux/api/userApi";
-import { useSelector } from "react-redux";
 import ProgressBar from "../ProgressBar";
 import goodIcon from "@/assets/good.svg";
 import badIcon from "@/assets/bad.svg";
+import { Evaluation } from "@/redux/api/types";
+import { useAppSelector } from "@/redux/store";
 
-const add = (obj1, obj2) =>
+interface Quiz {
+  score: number;
+  option1: number;
+  option2: number;
+  option3: number;
+  option4: number;
+  option5: number;
+}
+const add = (obj1: Record<string, Quiz>, obj2: Record<string, Quiz>) =>
   Object.keys(obj1).reduce(
     (acc, key) => ({
       ...acc,
@@ -33,8 +42,8 @@ const add = (obj1, obj2) =>
     {}
   );
 
-const ResultsByDimension = ({ evaluations }) => {
-  const matrix = useSelector((state) => state.userState.matrix);
+const ResultsByDimension = ({ evaluations }: { evaluations: Evaluation[] }) => {
+  const matrix = useAppSelector((state) => state.userState.matrix);
   const { isLoading } = userApi.endpoints.getMatrix.useQuery(null, {
     skip: !!matrix,
     refetchOnMountOrArgChange: true,
@@ -65,6 +74,7 @@ const ResultsByDimension = ({ evaluations }) => {
             {}
           )
         ),
+      // @ts-ignore
       [...Array(10).keys()].reduce((acc, index) => ({ ...acc, [index]: 0 }), {})
     );
     return Object.keys(object)

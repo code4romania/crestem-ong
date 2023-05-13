@@ -102,8 +102,16 @@ const Login = memo(() => {
 
   useEffect(() => {
     const message = error?.data?.error?.message;
-    if (isError && message) {
-      toast.error(message);
+    if (isError) {
+      if (message) {
+        toast.error(
+          "Credențialele introduse nu sunt corecte. Vă rugăm să verificați și să încercați din nou."
+        );
+      } else {
+        toast.error(
+          "Ne pare rău, dar serverul este momentan indisponibil. Vă rugăm să încercați din nou mai târziu."
+        );
+      }
     }
   }, [isError, error?.data?.error?.message]);
 

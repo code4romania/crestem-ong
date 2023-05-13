@@ -1,8 +1,8 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 interface IButton {
-  children: React.Node;
+  children: ReactNode;
   to?: string;
   onClick?: () => void;
   type?: "submit" | "button";

@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <ToastContainer position="bottom-center" />
+        <ToastContainer position="top-center" />
         <AuthMiddleware>
           <Router />
         </AuthMiddleware>

@@ -1,3 +1,7 @@
+interface Role {
+  type: "fdsc";
+}
+
 export interface User {
   activities: string;
   city: string;
@@ -18,11 +22,6 @@ export interface User {
   website: string;
   reports: Report[];
   role?: Role;
-}
-
-export interface IGenericResponse {
-  status: string;
-  message: string;
 }
 
 export interface Question {
@@ -56,3 +55,16 @@ export interface RegisterResponse {
   jwt: string;
   user: User;
 }
+
+export type Matrix = {
+  name: string;
+  quiz: {
+    question: string;
+    option_1: string;
+    option_2: string;
+    option_3: string;
+    option_4: string;
+    option_5: string;
+    tag: string;
+  }[];
+}[];

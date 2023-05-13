@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "../api/types";
+import { Matrix, User } from "../api/types";
 import { userApi } from "../api/userApi";
 import Cookies from "js-cookie";
 
 interface UserState {
   user?: User;
   token?: string;
-  matrix?: object;
+  matrix?: Matrix;
 }
 
 const userToken = Cookies.get("jwt") || undefined;
