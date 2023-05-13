@@ -4,21 +4,32 @@ import { useCreateReportMutation } from "@/redux/api/userApi";
 import { useNavigate } from "react-router-dom";
 import Button from "@/components/Button";
 import { useForm } from "react-hook-form";
-import { object, string, date, preprocess, TypeOf } from "zod";
+import { object, string, date, preprocess, array, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import { ErrorMessage } from "@hookform/error-message";
 import { toast } from "react-toastify";
+
+const emailListSchema = array(string().email()).nonempty();
+const validateEmails = (input: string) => {
+  const emails = input.trim().split(/\r?\n/); // split input by new line
+  const emailList = emailListSchema.safeParse(emails);
+
+  return emailList.success;
+};
 
 const reportSchema = object({
   deadline: preprocess((arg) => {
     if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
   }, date().min(new Date(), { message: "Alegeti o data in viitor" })),
-  evaluations: string().optional(),
+  evaluations: string().refine(validateEmails, {
+    message:
+      "Ne pare rău, nu am putut procesa informațiile introduse. Vă rugăm să verificați informațiile și să încercați din nou.",
+  }),
 });
 
 export type ReportInput = TypeOf<typeof reportSchema>;
 
-const ButtonGroup = ({ className }: { className: string }) => (
+const ButtonGroup = ({ className }: { className?: string }) => (
   <div className={`${className} flex space-x-4`}>
     <Button color="white" to={"/"}>
       Renunță
@@ -47,12 +58,16 @@ const NewReport = () => {
   }, [error?.data?.error?.message]);
 
   const onSubmitHandler = useCallback((form: ReportInput) => {
-    const evaluations = form.evaluations?.split("\n") || [];
     createReport({
       deadline: form.deadline,
       evaluations: form.evaluations,
     });
   }, []);
+
+  const handleTextareaChange = (e) => {
+    const value = e.target.value.replace(/ /g, "");
+    e.target.value = value;
+  };
 
   const maxDate = new Date();
   maxDate.setDate(maxDate.getDate() + 30);
@@ -65,7 +80,6 @@ const NewReport = () => {
         <div className="divide-y divide-gray-300">
           <div className="flex flex-wrap gap-4 justify-between py-6">
             <div className="text-xl">Setează detalii evaluare</div>
-            <ButtonGroup className={"hidden md:flex"} />
           </div>
           <div className="py-6">
             <div className={"text-gray-700 text-base leading-6 font-medium"}>
@@ -114,8 +128,8 @@ const NewReport = () => {
               organizației la crearea contului.
             </p>
           </div>
-          <div className="py-6">
-            <div className="mb-2">
+          <div className="py-6 space-y-2">
+            <div>
               Adaugă adresele de email către care vrei să trimiți invitațiile,
               separate de tasta [Enter].
             </div>
@@ -124,9 +138,13 @@ const NewReport = () => {
                 rows={4}
                 className="rounded-md border-gray-300 w-full"
                 {...register("evaluations")}
+                onChange={handleTextareaChange}
               />
             </div>
-            <ButtonGroup className={"mt-4 md:hidden"} />
+            <div className="text-red-600 text-sm mt-1">
+              <ErrorMessage name="evaluations" errors={formState.errors} />
+            </div>
+            <ButtonGroup />
           </div>
         </div>
       </form>

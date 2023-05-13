@@ -57,7 +57,10 @@ export const userApi = createApi({
           data: {
             deadline,
             evaluations: evaluations
-              ? evaluations?.split("\n")?.map((email) => ({ email }))
+              ? evaluations
+                  .trim()
+                  .split(/\r?\n/)
+                  .map((email: string) => ({ email }))
               : [],
           },
         },
