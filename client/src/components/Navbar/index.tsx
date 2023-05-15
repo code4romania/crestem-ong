@@ -71,9 +71,13 @@ const Example = () => {
       </NavbarEvaluation>
       <aside className="border-b">
         <div className="container mx-auto flex items-center gap-4 sm:justify-end md:gap-x-8">
-          <div className="flex flex-wrap items-center justify-end flex-1 gap-4 py-5 lg:gap-x-6 sm:flex-initial">
+          <div className="flex flex-wrap items-center justify-end flex-1 gap-4 py-5 lg:gap-x-6 sm:flex-initial px-2.5">
             <span className="inline-flex shrink-0">
-              <img className="object-contain h-20" src={logo} alt="partners" />
+              <img
+                className="object-contain h-20 max-w-full"
+                src={logo}
+                alt="partners"
+              />
             </span>
           </div>
         </div>
