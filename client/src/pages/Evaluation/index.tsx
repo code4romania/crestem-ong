@@ -17,8 +17,8 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useAppSelector } from "@/redux/store";
 import EvaluationResults from "@/components/EvaluationResults";
 
-const invalid_type_error = "Va rugam alegeti o optiune";
-const min_message = "Acest camp este obligator";
+const invalid_type_error = "Vă rugăm alegeți o opțiune";
+const min_message = "Acest câmp este obligatoriu";
 
 const evaluationSchema = object({
   question_1: string({ invalid_type_error }),

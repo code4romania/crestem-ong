@@ -141,7 +141,7 @@ const Register = () => {
                       htmlFor="ong_name"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Nume organizatie
+                      Numele organizației
                     </label>
                     <div className="mt-1">
                       <input
@@ -179,7 +179,7 @@ const Register = () => {
                       htmlFor="country"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Judet
+                      Județ
                     </label>
                     <div className="mt-1">
                       <input
@@ -278,7 +278,7 @@ const Register = () => {
                       htmlFor="last-name"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Confirma parola
+                      Confirmă parola
                     </label>
                     <div className="mt-1">
                       <input
@@ -400,7 +400,7 @@ const Register = () => {
                       ></textarea>
                     </div>
                     <p className="mt-2 text-sm text-gray-500">
-                      Numarul maxim de caractere: 1000
+                      Numărul maxim de caractere: 1000
                     </p>
                   </div>
                 </div>
@@ -410,14 +410,10 @@ const Register = () => {
                   <h3 className="text-base font-semibold leading-6 text-gray-900">
                     Comunicare și social media
                   </h3>
-                  {/*<p className="mt-1 text-sm text-gray-500">*/}
-                  {/*  We'll always let you know about important changes, but you*/}
-                  {/*  pick what else you want to hear about.*/}
-                  {/*</p>*/}
                 </div>
                 <div className={"mt-4"}>Link-uri către social media</div>
                 <SocialNetworkLinks />
-                <div className={"mt-4"}>Persoană de contact organizație</div>
+                <div className={"mt-4"}>Persoana de contact a organizației</div>
                 <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                   <div className="sm:col-span-3">
                     <label
