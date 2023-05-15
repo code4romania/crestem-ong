@@ -1,5 +1,4 @@
 import React, { ChangeEventHandler } from "react";
-import { FieldValue, UseFormRegister } from "react-hook-form";
 
 const Select = ({
   name,

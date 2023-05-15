@@ -1,7 +1,12 @@
 import React, { useEffect } from "react";
 import { useRegisterUserMutation } from "@/redux/api/authApi";
-import { custom, literal, object, string, TypeOf } from "zod";
-import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
+import { array, custom, literal, number, object, string, TypeOf } from "zod";
+import {
+  SubmitHandler,
+  useForm,
+  FormProvider,
+  useWatch,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
@@ -10,9 +15,11 @@ import { setToken } from "@/redux/features/userSlice";
 import { useAppDispatch } from "@/redux/store";
 import { toast } from "react-toastify";
 import SocialNetworkLinks from "@/pages/Register/SocialNetworkLinks";
-import { useUploadMutation } from "@/redux/api/userApi";
+import { useGetDomainsQuery, useUploadMutation } from "@/redux/api/userApi";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import MultiSelect from "@/components/MultiSelect";
+import { ErrorMessage } from "@hookform/error-message";
 
 const registerSchema = object({
   ongName: string().min(1, "Numele organizatiei este obligatoriu"),
@@ -32,7 +39,7 @@ const registerSchema = object({
     .max(32, "Password must be less than 32 characters"),
   confirmPassword: string(),
   avatar: custom<File[]>(),
-  activities: string(),
+  domains: array(number()),
   website: string(),
   keywords: string(),
   description: string(),
@@ -49,8 +56,8 @@ const registerSchema = object({
   accountInstagram: string().optional(),
   accountLinkedin: string().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
-  message: "Password doesn't match",
-  path: ["confirmpassword"],
+  message: "Ne pare rau, parola nu coincide",
+  path: ["confirmPassword"],
 });
 
 export type RegisterInput = TypeOf<typeof registerSchema>;
@@ -62,6 +69,7 @@ const Register = () => {
     uploadAvatar,
     { isError: isUploadAvatarError, error: uploadAvatarError },
   ] = useUploadMutation();
+  const { data: domains } = useGetDomainsQuery(null);
   const methods = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
   });
@@ -126,10 +134,6 @@ const Register = () => {
                   <h3 className="text-base font-semibold leading-6 text-gray-900">
                     Informații obligatorii despre ONG
                   </h3>
-                  {/*<p className="mt-1 text-sm text-gray-500">*/}
-                  {/*  This information will be displayed publicly so be careful what*/}
-                  {/*  you share.*/}
-                  {/*</p>*/}
                 </div>
                 <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                   <div className="sm:col-span-3">
@@ -145,6 +149,9 @@ const Register = () => {
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("ongName")}
                       />
+                      <div className="text-red-400 text-sm py-2">
+                        <ErrorMessage name={"ongName"} />
+                      </div>
                     </div>
                   </div>
 
@@ -161,6 +168,9 @@ const Register = () => {
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("ongIdentificationNumber")}
                       />
+                      <div className="text-red-400 text-sm py-2">
+                        <ErrorMessage name={"ongIdentificationNumber"} />
+                      </div>
                     </div>
                   </div>
 
@@ -177,6 +187,9 @@ const Register = () => {
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("county")}
                       />
+                      <div className="text-red-400 text-sm py-2">
+                        <ErrorMessage name={"county"} />
+                      </div>
                     </div>
                   </div>
 
@@ -193,6 +206,9 @@ const Register = () => {
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("city")}
                       />
+                      <div className="text-red-400 text-sm py-2">
+                        <ErrorMessage name={"city"} />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -211,6 +227,9 @@ const Register = () => {
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("email")}
                       />
+                      <div className="text-red-400 text-sm py-2">
+                        <ErrorMessage name={"email"} />
+                      </div>
                     </div>
                   </div>
 
@@ -227,6 +246,9 @@ const Register = () => {
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("phone")}
                       />
+                      <div className="text-red-400 text-sm py-2">
+                        <ErrorMessage name={"phone"} />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -245,6 +267,9 @@ const Register = () => {
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("password")}
                       />
+                      <div className="text-red-400 text-sm py-2">
+                        <ErrorMessage name={"password"} />
+                      </div>
                     </div>
                   </div>
 
@@ -261,6 +286,9 @@ const Register = () => {
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("confirmPassword")}
                       />
+                      <div className="text-red-400 text-sm py-2">
+                        <ErrorMessage name={"confirmPassword"} />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -271,26 +299,20 @@ const Register = () => {
                   <h3 className="text-base font-semibold leading-6 text-gray-900">
                     Informații adiționale despre ONG (opționale)
                   </h3>
-                  {/*<p className="mt-1 text-sm text-gray-500">*/}
-                  {/*  Use a permanent address where you can receive mail.*/}
-                  {/*</p>*/}
                 </div>
                 <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="first-name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Domenii activitate
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("activities")}
+                  {domains?.length > 0 && (
+                    <div className="sm:col-span-3">
+                      <MultiSelect
+                        options={domains}
+                        label={"Domenii activitate"}
+                        {...methods.register("domains")}
                       />
+                      <div className="text-red-400 text-sm py-2">
+                        <ErrorMessage name={"domains"} />
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   <div className="sm:col-span-3">
                     <label

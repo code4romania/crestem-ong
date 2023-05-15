@@ -7,6 +7,13 @@ import { User, Report, Evaluation, Matrix } from "./types";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
+interface IApiError {
+  message: string;
+  description: string;
+  statusCode: string | number;
+  data: object;
+}
+
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
@@ -106,6 +113,18 @@ export const userApi = createApi({
         };
       },
     }),
+    getDomains: builder.query({
+      query() {
+        return {
+          url: `domains`,
+        };
+      },
+      transformResponse: (result: { data: any }) =>
+        result.data.map((domain: any) => ({
+          id: domain.id,
+          ...domain.attributes,
+        })),
+    }),
     createEvaluation: builder.mutation<
       Evaluation,
       Pick<Evaluation, "id" | "email">
@@ -159,4 +178,5 @@ export const {
   useUploadMutation,
   useGetUsersQuery,
   useGetUserReportsQuery,
+  useGetDomainsQuery,
 } = userApi;
