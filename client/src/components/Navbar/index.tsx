@@ -4,6 +4,7 @@ import NavbarEvaluation from "@/components/NavbarEvaluation";
 import Button from "@/components/Button";
 import UserMenu from "@/components/UserMenu";
 import { useAppSelector } from "@/redux/store";
+import logo from "@/assets/platforma_FDSC_Kaufland.svg";
 
 const Menu = () => (
   <ul className="items-center hidden text-sm gap-x-3 lg:flex lg:flex-wrap">
@@ -13,10 +14,7 @@ const Menu = () => (
       </a>
     </li>
     <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-      <a
-        href="https://crestem.ong/ro/despre-proiect"
-        className=""
-      >
+      <a href="https://crestem.ong/ro/despre-proiect" className="">
         Despre
       </a>
     </li>
@@ -26,34 +24,22 @@ const Menu = () => (
       </Link>
     </li>
     <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-      <a
-        href="https://crestem.ong/ro/biblioteca"
-        className=""
-      >
+      <a href="https://crestem.ong/ro/biblioteca" className="">
         Biblioteca
       </a>
     </li>
     <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-      <a
-        href="https://crestem.ong/ro/persoane-resursa"
-        className=""
-      >
+      <a href="https://crestem.ong/ro/persoane-resursa" className="">
         Persoane resursa
       </a>
     </li>
     <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-      <a
-        href="https://crestem.ong/ro/programele-noastre"
-        className=""
-      >
+      <a href="https://crestem.ong/ro/programele-noastre" className="">
         Programele noastre
       </a>
     </li>
     <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-      <a
-        href="https://crestem.ong/ro/programele-noastre"
-        className=""
-      >
+      <a href="https://crestem.ong/ro/programele-noastre" className="">
         Contact
       </a>
     </li>
@@ -64,24 +50,35 @@ const Example = () => {
   const user = useAppSelector((state) => state.userState.user);
 
   return (
-    <NavbarEvaluation menu={<Menu />}>
-      <div className={"flex justify-end w-full"}>
-        {user ? (
-          <UserMenu />
-        ) : (
-          <div className="flex justify-center items-center md:justify-start gap-4">
-            <div>
-              <Button color="white" to={"/login"}>
-                Intră în cont
-              </Button>
+    <>
+      <NavbarEvaluation menu={<Menu />}>
+        <div className={"flex justify-end w-full"}>
+          {user ? (
+            <UserMenu />
+          ) : (
+            <div className="flex justify-center items-center md:justify-start gap-4">
+              <div>
+                <Button color="white" to={"/login"}>
+                  Intră în cont
+                </Button>
+              </div>
+              <div className="hidden md:block">
+                <Button to={"/register"}>Înregistrează-te</Button>
+              </div>
             </div>
-            <div className="hidden md:block">
-              <Button to={"/register"}>Înregistrează-te</Button>
-            </div>
+          )}
+        </div>
+      </NavbarEvaluation>
+      <aside className="border-b">
+        <div className="container mx-auto flex items-center gap-4 sm:justify-end md:gap-x-8">
+          <div className="flex flex-wrap items-center justify-end flex-1 gap-4 py-5 lg:gap-x-6 sm:flex-initial">
+            <span className="inline-flex shrink-0">
+              <img className="object-contain h-20" src={logo} alt="partners" />
+            </span>
           </div>
-        )}
-      </div>
-    </NavbarEvaluation>
+        </div>
+      </aside>
+    </>
   );
 };
 
