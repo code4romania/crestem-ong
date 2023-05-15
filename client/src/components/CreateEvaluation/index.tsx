@@ -1,9 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import Button from "@/components/Button";
 import { useCreateEvaluationMutation } from "@/redux/api/userApi";
 import { object, string, TypeOf } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
+import { toast } from "react-toastify";
 
 const evaluationSchema = object({
   email: string()
@@ -13,7 +14,8 @@ const evaluationSchema = object({
 export type EvaluationInput = TypeOf<typeof evaluationSchema>;
 
 const CreateEvaluation = ({ reportId }: { reportId: string }) => {
-  const [createEvaluation] = useCreateEvaluationMutation();
+  const [createEvaluation, { isSuccess, isError }] =
+    useCreateEvaluationMutation();
   const { register, handleSubmit, reset } = useForm<EvaluationInput>({
     resolver: zodResolver(evaluationSchema),
   });
@@ -24,6 +26,17 @@ const CreateEvaluation = ({ reportId }: { reportId: string }) => {
     },
     [createEvaluation, reset]
   );
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Invitația a fost transmisă.");
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("Ceva nu a funcționat. Încearcă din nou.");
+    }
+  }, [isError]);
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)}>
