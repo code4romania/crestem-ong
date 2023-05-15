@@ -83,7 +83,6 @@ module.exports = createCoreController(
           );
           if (email) {
             await sendMailToUserWhenEvaluationIsFinished(email, {
-              content: mailHtml, // TODO: legacy
               EVALUATION_RESULTS: mailHtml,
               ONG_NAME: evaluation?.report?.user?.ongName,
             });

@@ -13,13 +13,6 @@
     "timestamps": true
   },
   "attributes": {
-    "avatar": {
-      "allowedTypes": [
-        "images"
-      ],
-      "type": "media",
-      "multiple": false
-    },
     "username": {
       "type": "string",
       "minLength": 3,
@@ -70,6 +63,14 @@
       "inversedBy": "users",
       "configurable": false
     },
+    "avatar": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
     "ongName": {
       "type": "string",
       "required": true
@@ -89,9 +90,6 @@
     "phone": {
       "type": "string",
       "required": true
-    },
-    "activities": {
-      "type": "string"
     },
     "website": {
       "type": "string"
@@ -145,6 +143,12 @@
     },
     "accountLinkedin": {
       "type": "string"
+    },
+    "domains": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::domain.domain",
+      "mappedBy": "users"
     }
   }
 }
