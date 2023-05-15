@@ -1,8 +1,9 @@
 module.exports = {
   async afterCreate(event) {
     const { result } = event;
-    const evaluationUrl = `${process.env.CLIENT_PUBLIC_URL}/
-    evaluation/${result.id}?email=${encodeURIComponent(result.email)}`;
+    const evaluationUrl = `${process.env.CLIENT_PUBLIC_URL}/evaluation/${
+      result.id
+    }?email=${encodeURIComponent(result.email)}`;
     const evaluationData = await strapi.entityService.findOne(
       "api::evaluation.evaluation",
       result.id,
