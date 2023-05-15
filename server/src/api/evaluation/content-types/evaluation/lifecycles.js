@@ -63,6 +63,9 @@ module.exports = {
               },
               {
                 templateReferenceId: 4,
+              },
+              {
+                URL: `${process.env.CLIENT_PUBLIC_URL}/reports/${data.report.id}`,
               }
             );
         } catch (err) {

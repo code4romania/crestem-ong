@@ -23,7 +23,7 @@ module.exports = {
   async afterCreate(event) {
     const { result } = event;
     try {
-      await sendMailToAdminWhenUserIsCreated("olivia.vereha@code4.ro", {
+      await sendMailToAdminWhenUserIsCreated("crestem.ong@fdsc.ro", {
         ONG_NAME: result.ongName,
       });
     } catch (err) {
