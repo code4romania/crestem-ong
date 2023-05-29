@@ -3,6 +3,7 @@ import { calcScore } from "@/lib/score";
 import ResultsByDimension from "@/components/ResultsByDimension";
 import TableEvaluations from "@/components/TableEvaluations";
 import React, { useMemo } from "react";
+import LibraryBanner from "@/components/LibraryBanner";
 
 const ReportResults = ({ report }) => {
   const evaluationsCompleted = useMemo(
@@ -21,6 +22,7 @@ const ReportResults = ({ report }) => {
         score={calcScore(evaluationsCompleted)}
       />
       <ResultsByDimension evaluations={evaluationsCompleted} />
+      <LibraryBanner />
       <div className="mt-10">
         <div className="font-medium text-lg mb-4">Invitații trimise</div>
         <TableEvaluations evaluations={report?.evaluations} />
