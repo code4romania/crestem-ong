@@ -63,13 +63,10 @@ const StartEvaluation = ({ onClick }: { onClick: () => void }) => (
             persoanele care lucrează în organizație, astfel încât rezultatele să
             includă perspective cât mai diverse.
           </p>
-          <div className="flex justify-end mt-12">
-            <Button onClick={onClick}>Începe evaluarea</Button>
-          </div>
         </div>
       </div>
     </Section>
-    <Section>
+    <Section className="pb-8">
       <Heading level={"h2"}>
         Ce trebuie să știi înainte să începi evaluarea?
       </Heading>
@@ -85,6 +82,9 @@ const StartEvaluation = ({ onClick }: { onClick: () => void }) => (
             </div>
           </div>
         ))}
+      </div>
+      <div className="flex mt-12">
+        <Button onClick={onClick}>Începe evaluarea</Button>
       </div>
     </Section>
   </>

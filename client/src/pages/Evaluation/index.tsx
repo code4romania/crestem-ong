@@ -118,10 +118,12 @@ const Evaluation = () => {
     });
     setEvaluations((state) => [...state, createEvaluation(data)]);
     reset();
+    window.scrollTo(0, 0);
   };
 
   const handleClickStart = useCallback(() => {
     setHasStarted(true);
+    window.scrollTo(0, 0);
   }, [setHasStarted]);
 
   const dimensionIndex = evaluationData?.dimensions?.length + 1;
