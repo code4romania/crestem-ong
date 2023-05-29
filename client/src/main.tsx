@@ -7,6 +7,7 @@ import "./index.css";
 import { store } from "./redux/store";
 import AuthMiddleware from "./components/AuthMiddleware";
 import { ToastContainer } from "react-toastify";
+import ScrollToTop from "@/components/ScrollToTop";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <AuthMiddleware>
           <Router />
         </AuthMiddleware>
+        <ScrollToTop />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>

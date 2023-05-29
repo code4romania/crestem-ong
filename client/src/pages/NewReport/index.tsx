@@ -64,10 +64,6 @@ const NewReport = () => {
     });
   }, []);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
-
   const handleTextareaChange = (e) => {
     const value = e.target.value.replace(/ /g, "");
     e.target.value = value;

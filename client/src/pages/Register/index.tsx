@@ -79,10 +79,6 @@ const Register = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
     if (error?.data?.error?.message) {
       toast.error(error.data.error.message);
     }

@@ -118,7 +118,6 @@ const Evaluation = () => {
     });
     setEvaluations((state) => [...state, createEvaluation(data)]);
     reset();
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleClickStart = useCallback(() => {
