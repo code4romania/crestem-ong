@@ -55,7 +55,7 @@ const Menu = () => {
           </li>
           <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
             <a
-              href="https://crestem.ong/ro/despre-proiect"
+              href="https://crestem.ong/ro/biblioteca"
               className=""
               target="_blank"
             >
@@ -64,7 +64,7 @@ const Menu = () => {
           </li>
           <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
             <a
-              href="https://crestem.ong/ro/despre-proiect"
+              href="https://crestem.ong/ro/persoane-resursa"
               className=""
               target="_blank"
             >
@@ -73,7 +73,7 @@ const Menu = () => {
           </li>
           <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
             <a
-              href="https://crestem.ong/ro/despre-proiect"
+              href="https://crestem.ong/ro/programele-noastre"
               className=""
               target="_blank"
             >
@@ -114,7 +114,7 @@ const Menu = () => {
             </a>
           </li>
           <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-            <a href="https://crestem.ong/ro/programele-noastre" className="">
+            <a href="https://crestem.ong/ro/contact" className="">
               Contact
             </a>
           </li>
