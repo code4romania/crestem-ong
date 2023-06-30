@@ -4,22 +4,36 @@ import ResultsByDimension from "@/components/ResultsByDimension";
 import TableEvaluations from "@/components/TableEvaluations";
 import React, { useMemo } from "react";
 import LibraryBanner from "@/components/LibraryBanner";
+import { evaluationsCompletedFilter } from "@/lib/filters";
 
 const ReportResults = ({ report }) => {
   const evaluationsCompleted = useMemo(
-    () =>
-      report?.evaluations?.filter(({ dimensions }) => dimensions.length === 10),
+    () => evaluationsCompletedFilter(report?.evaluations),
     [report?.evaluations]
+  );
+  const startDate = new Date(report.createdAt).getTime();
+  const endDate = new Date(report.deadline).getTime();
+
+  const period = Math.ceil(
+    Math.abs(endDate - startDate) / (1000 * 60 * 60 * 24)
   );
   return (
     <div>
       <Stats
-        period={Math.ceil(
-          Math.abs(new Date(report.deadline) - new Date(report.createdAt)) /
-            (1000 * 60 * 60 * 24)
-        )}
-        count={evaluationsCompleted.length}
-        score={calcScore(evaluationsCompleted)}
+        data={[
+          {
+            label: "Perioadă de completare",
+            value: `${period} zile`,
+          },
+          {
+            label: "Total completări",
+            value: `${evaluationsCompleted.length || 0}`,
+          },
+          {
+            label: " Scor total",
+            value: `${calcScore(evaluationsCompleted)}%` || "-",
+          },
+        ]}
       />
       <ResultsByDimension evaluations={evaluationsCompleted} />
       <LibraryBanner />

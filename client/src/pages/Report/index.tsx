@@ -11,7 +11,7 @@ const Report = () => {
   const { data: report } = useFindReportQuery(reportId);
 
   if (!report) {
-    return false;
+    return <></>;
   }
 
   return (

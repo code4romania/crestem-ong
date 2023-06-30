@@ -8,6 +8,8 @@ import empty from "@/assets/empty.svg";
 import TableHeadReports from "@/components/index/TableHeadReports";
 import TableRowReport from "@/components/TableRowReport";
 import UsersTable from "@/pages/Home/UsersTable";
+import Stats from "@/components/Stats";
+import Dashboard from "@/pages/Dashboard";
 
 const Home = () => {
   const user = useAppSelector((state) => state.userState.user);
@@ -18,19 +20,6 @@ const Home = () => {
       user.reports.filter((report) => !report.finished).length > 0,
     [hasReports, user?.reports]
   );
-
-  const userType = user?.role?.type;
-
-  if (userType === "fdsc") {
-    return (
-      <Section className="py-4">
-        <div className={"mb-10"}>
-          <Heading level={"h2"}>Users</Heading>
-        </div>
-        <UsersTable />
-      </Section>
-    );
-  }
 
   return (
     <div>

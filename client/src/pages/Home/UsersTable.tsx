@@ -15,13 +15,25 @@ const UsersTable = () => {
             scope="col"
             className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
           >
-            NUME ORGANIZATIE
+            NUME ONG
           </th>
           <th
             scope="col"
             className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
           >
-            EMAIL
+            Dată înregistrare
+          </th>
+          <th
+            scope="col"
+            className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+          >
+            PROGRAM
+          </th>
+          <th
+            scope="col"
+            className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+          >
+            ULTIMA EVALUARE
           </th>
           <th
             scope="col"
@@ -30,13 +42,33 @@ const UsersTable = () => {
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200 bg-white">
-        {data.map(({ id, ongName, email }) => (
+        {data.map(({ id, ongName, createdAt, reports, domains }) => (
           <tr key={id}>
             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
               {ongName}
             </td>
             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-              {email}
+              {new Date(createdAt).toLocaleString("ro-RO", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </td>
+            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+              {domains
+                ? domains.map((domain) => domain.name).join(", ")
+                : "Fără program"}
+            </td>
+            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+              {reports?.length
+                ? new Date(
+                    reports[reports?.length - 1].createdAt
+                  ).toLocaleString("ro-RO", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })
+                : "-"}
             </td>
             <td className={"text-sm"}>
               <Link to={`/users/${id}`}>Vezi rapoarte</Link>

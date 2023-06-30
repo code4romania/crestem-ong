@@ -42,12 +42,14 @@ export const userApi = createApi({
         } catch (error) {}
       },
     }),
-    getUsers: builder.query<null, null>({
+    getUsers: builder.query<null, User[]>({
       query() {
         return {
-          url: "users?populate=role",
+          url: `users?populate[0]=role&populate[1]=domains&populate[2]=reports&sort=createdAt%3Adesc`,
         };
       },
+      transformResponse: (result: User[]) =>
+        result.filter((user) => user?.role?.type !== "fdsc"),
     }),
     getUserReports: builder.query<null, { userId: string }>({
       query({ userId }) {
@@ -55,6 +57,12 @@ export const userApi = createApi({
           url: `users/${userId}?populate=reports.evaluations.dimensions.quiz`,
         };
       },
+      transformResponse: (result: User[]) => ({
+        ...result,
+        reports: result.reports.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        ),
+      }),
     }),
     createReport: builder.mutation<Report, ReportInput>({
       query: ({ deadline, evaluations }) => ({
@@ -72,6 +80,20 @@ export const userApi = createApi({
           },
         },
       }),
+    }),
+    getReports: builder.query<Report[], null>({
+      query: () => ({
+        url: "reports?pagination[pageSize]=1000&populate[0]=user&populate[1]=evaluations.dimensions.quiz&sort=createdAt%3Adesc",
+      }),
+      transformResponse: (result: { data: any }) =>
+        result.data.map((report: any) => ({
+          id: report.id,
+          ...report.attributes,
+          user: report?.attributes?.user?.data?.attributes,
+          evaluations: report?.attributes?.evaluations?.data?.map(
+            ({ attributes }) => attributes
+          ),
+        })),
     }),
     findReport: builder.query<Report, string>({
       query: (reportId) =>
@@ -112,6 +134,16 @@ export const userApi = createApi({
           credentials: "include",
         };
       },
+    }),
+    getEvaluationsCount: builder.query<Report[], null>({
+      query: () => ({
+        url: "evaluations?populate=dimensions.quiz&pagination[pageSize]=1000",
+      }),
+      transformResponse: (result: { data: any }) =>
+        result.data.map((evaluation: any) => ({
+          id: evaluation.id,
+          ...evaluation.attributes,
+        })),
     }),
     getDomains: builder.query({
       query() {
@@ -179,4 +211,6 @@ export const {
   useGetUsersQuery,
   useGetUserReportsQuery,
   useGetDomainsQuery,
+  useGetReportsQuery,
+  useGetEvaluationsCountQuery,
 } = userApi;

@@ -39,7 +39,12 @@ const TableEvaluations = ({ evaluations }: { evaluations: Evaluation[] }) => {
               {email}
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              {dimensions.length === 10 ? "Completat" : "Necompletat"}
+              {dimensions.reduce(
+                (acc, dimension) => acc + dimension.quiz.length,
+                0
+              ) === 50
+                ? "Completat"
+                : "Necompletat"}
             </td>
             {isFDSC && dimensions.length === 10 && (
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
