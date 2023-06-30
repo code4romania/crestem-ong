@@ -94,9 +94,9 @@ const Menu = () => {
             </a>
           </li>
           <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 bg-gray-100">
-            <Link to="/" className="">
+            <NavLink to="/" className="">
               Evaluare ONG
-            </Link>
+            </NavLink>
           </li>
           <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
             <a href="https://crestem.ong/ro/biblioteca" className="">
