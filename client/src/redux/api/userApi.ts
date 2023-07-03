@@ -42,7 +42,7 @@ export const userApi = createApi({
         } catch (error) {}
       },
     }),
-    getUsers: builder.query<null, User[]>({
+    getUsers: builder.query<User[], null>({
       query() {
         return {
           url: `users?populate[0]=role&populate[1]=domains&populate[2]=reports&sort=createdAt%3Adesc`,

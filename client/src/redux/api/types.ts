@@ -21,6 +21,7 @@ export interface User {
   username: string;
   website: string;
   reports: Report[];
+  domains?: Domain[];
   role?: Role;
 }
 
@@ -54,6 +55,10 @@ export interface Report {
 export interface RegisterResponse {
   jwt: string;
   user: User;
+}
+
+export interface Domain {
+  name: string;
 }
 
 export type Matrix = {
