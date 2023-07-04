@@ -15,7 +15,6 @@ const resetPasswordSchema = object({
     .min(8, "Parola trebuie sa contina cel putin 8 caractere")
     .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
   passwordConfirmation: string(),
-  code: string(),
 }).refine((data) => data.password === data.passwordConfirmation, {
   message: "Parola nu coincide",
   path: ["passwordConfirmation"],
