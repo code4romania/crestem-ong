@@ -31,7 +31,7 @@ const ReportResults = ({ report }) => {
           },
           {
             label: " Scor total",
-            value: `${calcScore(evaluationsCompleted)}%` || "-",
+            value: `${calcScore(evaluationsCompleted) || 0}%`,
           },
         ]}
       />

@@ -6,10 +6,23 @@ import Section from "@/components/Section";
 import TableRowReport from "@/components/TableRowReport";
 import Heading from "@/components/Heading";
 import Stats from "@/components/Stats";
+import FullScreenLoader from "@/components/FullScreenLoader";
+import { calcScore } from "@/lib/score";
+import { evaluationsCompletedFilter } from "@/lib/filters";
 
 const UserReports = () => {
   const { userId } = useParams();
-  const { data: user } = useGetUserReportsQuery({ userId });
+  const { data: user, isLoading } = useGetUserReportsQuery({ userId });
+  if (isLoading) {
+    return <FullScreenLoader />;
+  }
+  const lastEvaluation = user?.reports?.filter(
+    (report) => report.evaluations.length
+  );
+  const lastReportCompletedEvaluations = evaluationsCompletedFilter(
+    lastEvaluation[0]?.evaluations || []
+  );
+  const lastScore = calcScore(lastReportCompletedEvaluations);
 
   return (
     <>
@@ -17,11 +30,17 @@ const UserReports = () => {
         <Heading level={"h2"}>{user?.ongName}</Heading>
         <Stats
           data={[
-            { label: "Scor", value: "80%" },
-            { label: "Total completări ultima evaluare", value: "64" },
+            {
+              label: "Scor total ultima evaluare",
+              value: `${lastScore || 0}%`,
+            },
             {
               label: "Total completări ultima evaluare",
-              value: "3",
+              value: `${lastReportCompletedEvaluations.length}`,
+            },
+            {
+              label: "Total evaluări realizate",
+              value: user?.reports.length,
             },
           ]}
         />

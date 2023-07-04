@@ -29,7 +29,7 @@ const ProgressBar = ({
           className={`text-sm`}
           style={{ color: percentage >= 50 ? "#047B7D" : "#D95040" }}
         >
-          {percentage}%
+          {percentage || 0}%
         </div>
       </div>
       <div className={`w-full rounded-full h-2.5 bg-gray-200`}>
