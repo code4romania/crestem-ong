@@ -4,6 +4,7 @@ import { RegisterInput } from "@/pages/Register";
 import { RegisterResponse } from "./types";
 import { userApi } from "./userApi";
 import { ForgotPasswordInput } from "@/pages/ForgotPassword";
+import { ResetPasswordInput } from "@/pages/ResetPassword";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
@@ -26,6 +27,15 @@ export const authApi = createApi({
       query(data) {
         return {
           url: "forgot-password",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
+    resetPassword: builder.mutation<RegisterResponse, ResetPasswordInput>({
+      query(data) {
+        return {
+          url: "reset-password",
           method: "POST",
           body: data,
         };
@@ -57,4 +67,5 @@ export const {
   useLoginUserMutation,
   useRegisterUserMutation,
   useForgotPasswordMutation,
+  useResetPasswordMutation,
 } = authApi;

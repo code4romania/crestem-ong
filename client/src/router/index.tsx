@@ -7,6 +7,7 @@ import Home from "@/pages/Home";
 import Evaluation from "@/pages/Evaluation";
 import ForgotPassword from "@/pages/ForgotPassword";
 import Login from "@/pages/Login";
+import ResetPassword from "@/pages/ResetPassword";
 import Register from "@/pages/Register";
 import Report from "@/pages/Report";
 import NewReport from "@/pages/NewReport";
@@ -28,6 +29,7 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         {/*Private Route */}
         <Route element={<RequireUser />}>
           <Route path="/reports/:reportId" element={<Report />} />
