@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import screenshot from "@/assets/illustration.svg";
 import Button from "@/components/Button";
 import { useForm } from "react-hook-form";
@@ -8,6 +8,8 @@ import { ErrorMessage } from "@hookform/error-message";
 import Section from "@/components/Section";
 import { useResetPasswordMutation } from "@/redux/api/authApi";
 import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const resetPasswordSchema = object({
   password: string()
@@ -19,25 +21,50 @@ const resetPasswordSchema = object({
   message: "Parola nu coincide",
   path: ["passwordConfirmation"],
 });
-export type ResetPasswordInput = TypeOf<typeof resetPasswordSchema>;
+export type ResetPasswordInput = TypeOf<typeof resetPasswordSchema> & {
+  code: string;
+};
 
 const ResetPassword = () => {
-  const [sendResetPasswordRequest] = useResetPasswordMutation();
+  const [sendResetPasswordRequest, { isSuccess, isError }] =
+    useResetPasswordMutation();
   const { register, handleSubmit, reset, formState } =
     useForm<ResetPasswordInput>({
       resolver: zodResolver(resetPasswordSchema),
     });
+  const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
 
   const onSubmitHandler = useCallback(
     ({ password, passwordConfirmation }: ResetPasswordInput) => {
-      sendResetPasswordRequest({ password, passwordConfirmation, code });
-      reset();
+      if (code) {
+        sendResetPasswordRequest({ password, passwordConfirmation, code });
+        reset();
+      }
     },
-    [reset]
+    [sendResetPasswordRequest, reset]
   );
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Parola a fost schimbata cu succes");
+      navigate("/");
+    }
+  }, [isSuccess, navigate]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("A aparut o problema");
+    }
+  }, [isError]);
+
+  useEffect(() => {
+    if (!code) {
+      navigate("/");
+    }
+  }, [code, navigate]);
 
   return (
     <Section>
