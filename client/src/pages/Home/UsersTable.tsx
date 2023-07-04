@@ -90,8 +90,8 @@ const UsersTable = () => {
                     })
                   : "-"}
               </td>
-              <td className={"text-sm"}>
-                <Link to={`/users/${id}`}>Vezi rapoarte</Link>
+              <td className={"text-sm text-teal-600"}>
+                <Link to={`/users/${id}`}>Vezi</Link>
               </td>
             </tr>
           ))}
