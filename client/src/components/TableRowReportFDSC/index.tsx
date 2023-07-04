@@ -46,8 +46,8 @@ const TableRowReportFDSC = ({
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
         {`${evaluationsCompleted.length} / ${evaluations.length}`}
       </td>
-      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        <Link to={`/reports/${id}`}>vezi</Link>
+      <td className="whitespace-nowrap px-3 py-4 text-teal-600 text-sm text-gray-500">
+        <Link to={`/reports/${id}`}>Vezi</Link>
       </td>
     </tr>
   );
