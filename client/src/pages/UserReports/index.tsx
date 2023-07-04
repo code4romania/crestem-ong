@@ -9,6 +9,7 @@ import Stats from "@/components/Stats";
 import FullScreenLoader from "@/components/FullScreenLoader";
 import { calcScore } from "@/lib/score";
 import { evaluationsCompletedFilter } from "@/lib/filters";
+import Button from "@/components/Button";
 
 const UserReports = () => {
   const { userId } = useParams();
@@ -46,144 +47,195 @@ const UserReports = () => {
         />
       </Section>
       <Section>
-        <div className="mb-4 text-lg font-semibold">Informații despre ONG</div>
-        <table>
-          <tbody className="bg-white">
-            <tr className="even:bg-gray-50">
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Nume organizație
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {user?.ongName}
-              </td>
-            </tr>
-            <tr className="even:bg-gray-50">
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                CIF-ul organizației
-              </td>
-              <td>{user?.ongIdentificationNumber}</td>
-            </tr>
-            <tr className="even:bg-gray-50">
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Program
-              </td>
-              <td>-</td>
-            </tr>{" "}
-            <tr className="even:bg-gray-50">
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Județ
-              </td>
-              <td>{user?.county}</td>
-            </tr>{" "}
-            <tr className="even:bg-gray-50">
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Localitate
-              </td>
-              <td>{user?.ongIdentificationNumber}</td>
-            </tr>{" "}
-            <tr className="even:bg-gray-50">
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Email organizație
-              </td>
-              <td>{user?.email}</td>
-            </tr>{" "}
-            <tr className="even:bg-gray-50">
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Telefon organizație
-              </td>
-              <td>{user?.phone}</td>
-            </tr>{" "}
-            <tr className="even:bg-gray-50">
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Domenii de activitate
-              </td>
-              <td>
-                {user?.domains?.map((domain) => (
-                  <span key={domain.id}>{domain.name}</span>
-                ))}
-              </td>
-            </tr>{" "}
-            <tr className="even:bg-gray-50">
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Cuvinte cheie ale activității
-              </td>
-              <td>{user?.keywords}</td>
-            </tr>{" "}
-            <tr className="even:bg-gray-50">
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Descriere organizatie
-              </td>
-              <td>{user?.description}</td>
-            </tr>{" "}
-            <tr className="even:bg-gray-50">
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Website organizatie
-              </td>
-              <td>{user?.website}</td>
-            </tr>
-            <tr className="even:bg-gray-50">
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Link-uri social media
-              </td>
-              <td>
-                {user?.accountFacebook && (
-                  <a className="text-sky-700 mr-2" href={user?.accountFacebook}>
-                    Facebook
-                  </a>
-                )}
-                {user?.accountInstagram && (
-                  <a
-                    className="text-sky-700 mr-2"
-                    href={user?.accountInstagram}
-                  >
-                    Instagram
-                  </a>
-                )}
-                {user?.accountInstagram && (
-                  <a className="text-sky-700" href={user?.accountTwitter}>
-                    Twitter
-                  </a>
-                )}
+        <div className="sm:flex sm:items-center">
+          <div className="sm:flex-auto">
+            <h1 className="text-base font-semibold leading-6 text-gray-900">
+              Informații despre ONG
+            </h1>
+            {/*<p className="mt-2 text-sm text-gray-700">*/}
+            {/*  A list of all the users in your account including their name,*/}
+            {/*  title, email and role.*/}
+            {/*</p>*/}
+          </div>
+          {/*<div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">*/}
+          {/*  <Button>Editează</Button>*/}
+          {/*</div>*/}
+        </div>
+        <div className="mt-8 flow-root">
+          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+              <table className="min-w-full divide-y divide-gray-300">
+                <tbody className="bg-white">
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Nume organizație
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {user?.ongName}
+                    </td>
+                  </tr>
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      CIF-ul organizației
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {user?.ongIdentificationNumber}
+                    </td>
+                  </tr>
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Program
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      -
+                    </td>
+                  </tr>{" "}
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Județ
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {user?.county}
+                    </td>
+                  </tr>{" "}
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Localitate
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {user?.city}
+                    </td>
+                  </tr>{" "}
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Email organizație
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {user?.email}
+                    </td>
+                  </tr>{" "}
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Telefon organizație
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {user?.phone}
+                    </td>
+                  </tr>{" "}
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Domenii de activitate
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {user?.domains?.map((domain) => (
+                        <span key={domain.id}>{domain.name}</span>
+                      ))}
+                    </td>
+                  </tr>{" "}
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Cuvinte cheie ale activității
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {user?.keywords}
+                    </td>
+                  </tr>{" "}
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Descriere organizatie
+                    </td>
+                    <td className="px-3 py-4 text-sm text-gray-500">
+                      {user?.description}
+                    </td>
+                  </tr>{" "}
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Website organizatie
+                    </td>
+                    <td className="px-3 py-4 text-sm text-gray-500">
+                      {user?.website}
+                    </td>
+                  </tr>
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Link-uri social media
+                    </td>
+                    <td className="px-3 py-4 text-sm text-gray-500">
+                      {user?.accountFacebook && (
+                        <a
+                          className="text-sky-700 mr-2"
+                          href={user?.accountFacebook}
+                        >
+                          Facebook
+                        </a>
+                      )}
+                      {user?.accountInstagram && (
+                        <a
+                          className="text-sky-700 mr-2"
+                          href={user?.accountInstagram}
+                        >
+                          Instagram
+                        </a>
+                      )}
+                      {user?.accountInstagram && (
+                        <a className="text-sky-700" href={user?.accountTwitter}>
+                          Twitter
+                        </a>
+                      )}
 
-                {user?.accountInstagram && (
-                  <a className="text-sky-700" href={user?.accountTiktok}>
-                    TikTok
-                  </a>
-                )}
+                      {user?.accountInstagram && (
+                        <a className="text-sky-700" href={user?.accountTiktok}>
+                          TikTok
+                        </a>
+                      )}
 
-                {user?.accountInstagram && (
-                  <a className="text-sky-700" href={user?.accountLinkedin}>
-                    Linkedin
-                  </a>
-                )}
-              </td>
-            </tr>{" "}
-            <tr>
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Nume reprezentant organizatie
-              </td>
-              <td>{user?.contactLastName}</td>
-            </tr>{" "}
-            <tr>
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Prenume reprezentant organizatie
-              </td>
-              <td>{user?.contactFirstName}</td>
-            </tr>{" "}
-            <tr>
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Email reprezentant organizatie
-              </td>
-              <td>{user?.contactEmail}</td>
-            </tr>{" "}
-            <tr>
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                Telefon reprezentant organizatie
-              </td>
-              <td>{user?.contactPhone}</td>
-            </tr>{" "}
-          </tbody>
-        </table>
+                      {user?.accountInstagram && (
+                        <a
+                          className="text-sky-700"
+                          href={user?.accountLinkedin}
+                        >
+                          Linkedin
+                        </a>
+                      )}
+                    </td>
+                  </tr>{" "}
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Nume reprezentant organizatie
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {user?.contactLastName}
+                    </td>
+                  </tr>{" "}
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Prenume reprezentant organizatie
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {user?.contactFirstName}
+                    </td>
+                  </tr>{" "}
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Email reprezentant organizatie
+                    </td>
+                    <td className="px-3 py-4 text-sm text-gray-500">
+                      {user?.contactEmail}
+                    </td>
+                  </tr>{" "}
+                  <tr className="even:bg-gray-50">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      Telefon reprezentant organizatie
+                    </td>
+                    <td className="px-3 py-4 text-sm text-gray-500">
+                      {user?.contactPhone}
+                    </td>
+                  </tr>{" "}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </Section>
       <Section>
         <div className="mb-4 text-lg font-semibold">Istoric evaluări</div>
