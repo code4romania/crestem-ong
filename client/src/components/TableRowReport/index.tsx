@@ -35,8 +35,8 @@ const TableRowReport = ({ id, createdAt, deadline, evaluations, finished }) => {
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
         {finished ? "Finalizat" : "In desfasurare"}
       </td>
-      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-        <Link to={`/reports/${id}`}>edit</Link>
+      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 text-teal-600">
+        <Link to={`/reports/${id}`}>Vezi</Link>
       </td>
     </tr>
   );

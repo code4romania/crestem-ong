@@ -54,7 +54,7 @@ export const userApi = createApi({
     getUserReports: builder.query<null, { userId: string }>({
       query({ userId }) {
         return {
-          url: `users/${userId}?populate=reports.evaluations.dimensions.quiz`,
+          url: `users/${userId}?populate[0]=reports.evaluations.dimensions.quiz&populate[1]=domains`,
         };
       },
       transformResponse: (result: User[]) => ({
