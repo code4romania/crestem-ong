@@ -50,7 +50,7 @@ const ResetPassword = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Parola a fost schimbata cu succes");
-      navigate("/");
+      navigate("/login");
     }
   }, [isSuccess, navigate]);
 
