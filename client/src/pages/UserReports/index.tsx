@@ -9,7 +9,6 @@ import Stats from "@/components/Stats";
 import FullScreenLoader from "@/components/FullScreenLoader";
 import { calcScore } from "@/lib/score";
 import { evaluationsCompletedFilter } from "@/lib/filters";
-import Button from "@/components/Button";
 
 const UserReports = () => {
   const { userId } = useParams();

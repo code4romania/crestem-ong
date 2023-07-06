@@ -5,20 +5,23 @@ import { object, string, TypeOf } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import { toast } from "react-toastify";
+import { ErrorMessage } from "@hookform/error-message";
 
 const evaluationSchema = object({
   email: string()
-    .min(1, "Email address is required")
-    .email("Email Address is invalid"),
+    .min(1, "Vă rugăm introduceți adresa de email")
+    .email("Adresa de email este invalidă"),
 });
 export type EvaluationInput = TypeOf<typeof evaluationSchema>;
 
 const CreateEvaluation = ({ reportId }: { reportId: string }) => {
   const [createEvaluation, { isSuccess, isError }] =
     useCreateEvaluationMutation();
-  const { register, handleSubmit, reset } = useForm<EvaluationInput>({
-    resolver: zodResolver(evaluationSchema),
-  });
+  const { register, formState, handleSubmit, reset } = useForm<EvaluationInput>(
+    {
+      resolver: zodResolver(evaluationSchema),
+    }
+  );
   const onSubmitHandler = useCallback(
     ({ email }: EvaluationInput) => {
       createEvaluation({ id: reportId, email });
@@ -49,12 +52,16 @@ const CreateEvaluation = ({ reportId }: { reportId: string }) => {
         </label>
         <div className="my-2">
           <input
-            type="text"
+            type="email"
             autoComplete="family-name"
             className="inline-flex w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
             {...register("email")}
-          />
+          />{" "}
+          <div className="text-red-600 text-sm">
+            <ErrorMessage errors={formState.errors} name={"email"} />
+          </div>
         </div>
+
         <Button type="submit">Invită</Button>
       </div>
     </form>

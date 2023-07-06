@@ -1,7 +1,7 @@
-import { Routes, Route } from "react-router-dom";
-
+import { Routes, Route, Navigate } from "react-router-dom";
 import LayoutApp from "@/components/LayoutApp";
 import LayoutEvaluation from "@/components/LayoutEvaluation";
+import LayoutDashboard from "@/components/LayoutDashboard";
 import RequireUser from "@/components/RequireUser";
 import Home from "@/pages/Home";
 import Evaluation from "@/pages/Evaluation";
@@ -24,26 +24,34 @@ const Router = () => {
 
   return (
     <Routes>
-      <Route element={<LayoutApp />}>
-        <Route index element={isFDSC ? <Dashboard /> : <Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        {/*Private Route */}
-        <Route element={<RequireUser />}>
-          <Route path="/reports/:reportId" element={<Report />} />
-          <Route path="/create/report" element={<NewReport />} />
-          <Route path="/users/:userId" element={<UserReports />} />
-        </Route>
-        <Route element={<RequireUser />}>
-          <Route path="/reports" element={<ReportsList />} />
-          <Route path="/users" element={<UsersList />} />
-        </Route>
-      </Route>
       <Route element={<LayoutEvaluation />}>
         <Route path="/evaluation/:evaluationId" element={<Evaluation />} />
       </Route>
+      {isFDSC ? (
+        <Route element={<LayoutDashboard />}>
+          <Route index element={<Dashboard />} />
+          <Route path="/reports" element={<ReportsList />} />
+          <Route path="/reports/:reportId" element={<Report />} />
+          <Route path="/users" element={<UsersList />} />
+          <Route path="/users/:userId" element={<UserReports />} />
+        </Route>
+      ) : user ? (
+        <Route element={<LayoutApp />}>
+          <Route index element={<Home />} />
+          <Route path="/reports/:reportId" element={<Report />} />
+          <Route path="/users/:userId" element={<UserReports />} />
+          <Route path="/create/report" element={<NewReport />} />
+        </Route>
+      ) : (
+        <Route element={<LayoutApp />}>
+          <Route index element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+        </Route>
+      )}
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 };
