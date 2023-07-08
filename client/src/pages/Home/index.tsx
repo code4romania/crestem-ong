@@ -97,7 +97,7 @@ const Home = () => {
             )}
           </>
         ) : (
-          <Section key="no-reports" className={"text-center"}>
+          <Section key="no-reports" className={"text-center pb-8"}>
             <img src={empty} className={"mx-auto mb-4"} />
             <Heading level={"h4"}> Nicio evaluare realizată</Heading>
             <p className={"mt-2 mb-4 max-w-xl mx-auto"}>
