@@ -29,6 +29,9 @@ module.exports = ({ env }) => ({
       },
     },
   },
+  "import-export-entries": {
+    enabled: true,
+  },
   "email-designer": {
     enabled: true,
 

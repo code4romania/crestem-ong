@@ -22,7 +22,12 @@ module.exports = [
   "strapi::poweredBy",
   "strapi::logger",
   "strapi::query",
-  "strapi::body",
+  {
+    name: "strapi::body",
+    config: {
+      jsonLimit: "10mb",
+    },
+  },
   "strapi::session",
   "strapi::favicon",
   "strapi::public",
