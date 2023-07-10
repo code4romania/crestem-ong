@@ -69,7 +69,7 @@ export default ({ report, evaluationsCompleted, scoreByEvaluation }) => {
             {scoreByEvaluation[9]?.score
               ? `${scoreByEvaluation[9]?.name} (${
                   (scoreByEvaluation && scoreByEvaluation[9]?.score) || 0
-                })`
+                }%)`
               : "-"}
           </td>
         </tr>
@@ -81,7 +81,7 @@ export default ({ report, evaluationsCompleted, scoreByEvaluation }) => {
             {scoreByEvaluation[0]?.score
               ? `${scoreByEvaluation[0]?.name} (${
                   (scoreByEvaluation && scoreByEvaluation[0]?.score) || 0
-                })`
+                }%)`
               : "-"}
           </td>
         </tr>
