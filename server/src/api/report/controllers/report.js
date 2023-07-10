@@ -30,7 +30,7 @@ module.exports = createCoreController("api::report.report", ({ strapi }) => ({
   async findOne(ctx) {
     const { id } = ctx.params;
     const data = await strapi.entityService.findOne("api::report.report", id, {
-      populate: "evaluations.dimensions.quiz",
+      populate: ["evaluations.dimensions.quiz", "user"],
     });
     return data;
   },
