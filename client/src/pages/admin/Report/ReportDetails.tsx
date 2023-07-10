@@ -50,7 +50,7 @@ export default ({ report, evaluationsCompleted, scoreByEvaluation }) => {
             Scor obținut
           </td>
           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-            {calcScore(evaluationsCompleted)}%
+            {calcScore(evaluationsCompleted) || 0}%
           </td>
         </tr>
         <tr className="even:bg-gray-50">
@@ -66,8 +66,11 @@ export default ({ report, evaluationsCompleted, scoreByEvaluation }) => {
             Cel mai mare scor
           </td>
           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-            {scoreByEvaluation && scoreByEvaluation[9]?.name} (
-            {scoreByEvaluation && scoreByEvaluation[9]?.score}%)
+            {scoreByEvaluation[9]?.score
+              ? `${scoreByEvaluation[9]?.name} (${
+                  (scoreByEvaluation && scoreByEvaluation[9]?.score) || 0
+                })`
+              : "-"}
           </td>
         </tr>
         <tr className="even:bg-gray-50">
@@ -75,8 +78,11 @@ export default ({ report, evaluationsCompleted, scoreByEvaluation }) => {
             Cel mai mic scor
           </td>
           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-            {scoreByEvaluation && scoreByEvaluation[0]?.name} (
-            {scoreByEvaluation && scoreByEvaluation[9]?.score}%)
+            {scoreByEvaluation[0]?.score
+              ? `${scoreByEvaluation[0]?.name} (${
+                  (scoreByEvaluation && scoreByEvaluation[0]?.score) || 0
+                })`
+              : "-"}
           </td>
         </tr>
       </tbody>
