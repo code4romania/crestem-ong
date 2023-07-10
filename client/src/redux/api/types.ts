@@ -2,6 +2,15 @@ interface Role {
   type: "fdsc";
 }
 
+export interface Quiz {
+  score: number;
+  option1: number;
+  option2: number;
+  option3: number;
+  option4: number;
+  option5: number;
+}
+
 export interface User {
   activities: string;
   city: string;

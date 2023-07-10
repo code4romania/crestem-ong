@@ -1,16 +1,11 @@
+import React from "react";
 import Stats from "@/components/Stats";
 import { calcScore } from "@/lib/score";
 import ResultsByDimension from "@/components/ResultsByDimension";
 import TableEvaluations from "@/components/TableEvaluations";
-import React, { useMemo } from "react";
 import LibraryBanner from "@/components/LibraryBanner";
-import { evaluationsCompletedFilter } from "@/lib/filters";
 
-const ReportResults = ({ report }) => {
-  const evaluationsCompleted = useMemo(
-    () => evaluationsCompletedFilter(report?.evaluations),
-    [report?.evaluations]
-  );
+const ReportResults = ({ report, evaluationsCompleted, scoreByEvaluation }) => {
   const startDate = new Date(report.createdAt).getTime();
   const endDate = new Date(report.deadline).getTime();
 
@@ -35,7 +30,7 @@ const ReportResults = ({ report }) => {
           },
         ]}
       />
-      <ResultsByDimension evaluations={evaluationsCompleted} />
+      <ResultsByDimension scoreByEvaluation={scoreByEvaluation} />
       <LibraryBanner />
       <div className="mt-10">
         <div className="font-medium text-lg mb-4">Invitații trimise</div>

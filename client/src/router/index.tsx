@@ -2,14 +2,14 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LayoutApp from "@/components/LayoutApp";
 import LayoutEvaluation from "@/components/LayoutEvaluation";
 import LayoutDashboard from "@/components/LayoutDashboard";
-import RequireUser from "@/components/RequireUser";
 import Home from "@/pages/Home";
 import Evaluation from "@/pages/Evaluation";
 import ForgotPassword from "@/pages/ForgotPassword";
 import Login from "@/pages/Login";
 import ResetPassword from "@/pages/ResetPassword";
 import Register from "@/pages/Register";
-import Report from "@/pages/Report";
+import Report from "@/pages/authenticated/Report";
+import AdminReport from "@/pages/admin/Report";
 import NewReport from "@/pages/NewReport";
 import UserReports from "@/pages/UserReports";
 import { useAppSelector } from "@/redux/store";
@@ -31,7 +31,7 @@ const Router = () => {
         <Route element={<LayoutDashboard />}>
           <Route index element={<Dashboard />} />
           <Route path="/reports" element={<ReportsList />} />
-          <Route path="/reports/:reportId" element={<Report />} />
+          <Route path="/reports/:reportId" element={<AdminReport />} />
           <Route path="/users" element={<UsersList />} />
           <Route path="/users/:userId" element={<UserReports />} />
         </Route>
