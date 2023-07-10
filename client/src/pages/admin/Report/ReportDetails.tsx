@@ -66,9 +66,9 @@ export default ({ report, evaluationsCompleted, scoreByEvaluation }) => {
             Cel mai mare scor
           </td>
           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-            {scoreByEvaluation[9]?.score
-              ? `${scoreByEvaluation[9]?.name} (${
-                  (scoreByEvaluation && scoreByEvaluation[9]?.score) || 0
+            {scoreByEvaluation[0]?.score
+              ? `${scoreByEvaluation[0]?.name} (${
+                  (scoreByEvaluation && scoreByEvaluation[0]?.score) || 0
                 }%)`
               : "-"}
           </td>
@@ -78,9 +78,9 @@ export default ({ report, evaluationsCompleted, scoreByEvaluation }) => {
             Cel mai mic scor
           </td>
           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-            {scoreByEvaluation[0]?.score
-              ? `${scoreByEvaluation[0]?.name} (${
-                  (scoreByEvaluation && scoreByEvaluation[0]?.score) || 0
+            {scoreByEvaluation[9]?.score
+              ? `${scoreByEvaluation[9]?.name} (${
+                  (scoreByEvaluation && scoreByEvaluation[9]?.score) || 0
                 }%)`
               : "-"}
           </td>

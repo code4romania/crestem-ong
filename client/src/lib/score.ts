@@ -85,7 +85,7 @@ export const calcScoreByDimension = ({
     .sort((a, b) =>
       object[a].score === object[b].score
         ? 0
-        : object[a].score < object[b].score
+        : object[a].score > object[b].score
         ? -1
         : 1
     )
