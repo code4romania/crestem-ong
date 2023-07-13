@@ -4,10 +4,11 @@ import LayoutEvaluation from "@/components/LayoutEvaluation";
 import LayoutDashboard from "@/components/LayoutDashboard";
 import Home from "@/pages/Home";
 import Evaluation from "@/pages/Evaluation";
-import ForgotPassword from "@/pages/ForgotPassword";
-import Login from "@/pages/Login";
-import ResetPassword from "@/pages/ResetPassword";
-import Register from "@/pages/Register";
+import ForgotPassword from "@/pages/public/ForgotPassword";
+import Login from "@/pages/public/Login";
+import ResetPassword from "@/pages/public/ResetPassword";
+import Register from "@/pages/public/Register";
+import SetPassword from "@/pages/public/SetPassword";
 import Report from "@/pages/authenticated/Report";
 import AdminReport from "@/pages/admin/Report";
 import NewReport from "@/pages/NewReport";
@@ -49,6 +50,7 @@ const Router = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/confirm-email" element={<SetPassword />} />
         </Route>
       )}
       <Route path="*" element={<Navigate to="/" />} />

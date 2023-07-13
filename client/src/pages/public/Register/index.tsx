@@ -14,7 +14,7 @@ import Button from "@/components/Button";
 import { setToken } from "@/redux/features/userSlice";
 import { useAppDispatch } from "@/redux/store";
 import { toast } from "react-toastify";
-import SocialNetworkLinks from "@/pages/Register/SocialNetworkLinks";
+import SocialNetworkLinks from "@/pages/public/Register/SocialNetworkLinks";
 import { useGetDomainsQuery, useUploadMutation } from "@/redux/api/userApi";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";

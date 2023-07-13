@@ -46,6 +46,12 @@
       "configurable": false,
       "private": true
     },
+    "registrationToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
     "confirmed": {
       "type": "boolean",
       "default": false,
@@ -149,6 +155,13 @@
       "relation": "manyToMany",
       "target": "api::domain.domain",
       "mappedBy": "users"
+    }
+  },
+  "config": {
+    "attributes": {
+      "resetPasswordToken": {
+        "hidden": true
+      }
     }
   }
 }

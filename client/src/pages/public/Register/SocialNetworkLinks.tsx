@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "@/components/Button";
-import ExternalLinkItem from "@/pages/Register/ExternalLinkItem";
+import ExternalLinkItem from "@/pages/public/Register/ExternalLinkItem";
 
 const SOCIAL_NETWORKS = [
   { name: "accountFacebook", label: "Facebook" },

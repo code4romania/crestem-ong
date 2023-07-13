@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { LoginInput } from "@/pages/Login";
-import { RegisterInput } from "@/pages/Register";
+import { LoginInput } from "src/pages/public/Login";
+import { RegisterInput } from "src/pages/public/Register";
 import { RegisterResponse } from "./types";
 import { userApi } from "./userApi";
-import { ForgotPasswordInput } from "@/pages/ForgotPassword";
-import { ResetPasswordInput } from "@/pages/ResetPassword";
+import { ForgotPasswordInput } from "src/pages/public/ForgotPassword";
+import { ResetPasswordInput } from "src/pages/public/ResetPassword";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 

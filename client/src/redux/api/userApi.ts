@@ -157,6 +157,24 @@ export const userApi = createApi({
           ...domain.attributes,
         })),
     }),
+    getRegistrationInfo: builder.query({
+      query({ registrationToken }) {
+        return {
+          url: `users-permissions/registration-info?registrationToken=${registrationToken}`,
+        };
+      },
+    }),
+    registerWithConfirmationToken: builder.mutation<Evaluation, User>({
+      query(user) {
+        return {
+          method: "POST",
+          url: "/users-permissions/register",
+          body: {
+            data: user,
+          },
+        };
+      },
+    }),
     createEvaluation: builder.mutation<
       Evaluation,
       Pick<Evaluation, "id" | "email">
@@ -213,4 +231,6 @@ export const {
   useGetDomainsQuery,
   useGetReportsQuery,
   useGetEvaluationsCountQuery,
+  useGetRegistrationInfoQuery,
+  useRegisterWithConfirmationTokenMutation,
 } = userApi;
