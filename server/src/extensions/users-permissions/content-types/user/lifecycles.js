@@ -31,17 +31,20 @@ const sendMailToUserWhenUserIsInvited = (to, data) =>
   );
 
 module.exports = {
+  async beforeCreate(event) {
+    event.params.data.provider = "local";
+    event.params.data.username = event.params.data.email;
+    event.params.data.role = 1;
+    event.params.data.confirmed = true;
+  },
   async afterCreate(event) {
     const { result, params } = event;
 
-    if (!params.data.createdBy) {
+    if (!params.data.password) {
       const registrationToken = strapi.service("admin::token").createToken();
+
       await strapi.plugin("users-permissions").service("user").edit(result.id, {
-        username: result.email,
         registrationToken,
-        provider: "local",
-        role: 1,
-        confirmed: true,
       });
 
       try {
