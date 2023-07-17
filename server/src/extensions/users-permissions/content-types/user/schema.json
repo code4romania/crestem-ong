@@ -9,8 +9,7 @@
     "displayName": "User"
   },
   "options": {
-    "draftAndPublish": false,
-    "timestamps": true
+    "draftAndPublish": false
   },
   "attributes": {
     "username": {
@@ -83,7 +82,8 @@
     },
     "ongIdentificationNumber": {
       "type": "string",
-      "required": true
+      "required": true,
+      "unique": true
     },
     "county": {
       "type": "string",
@@ -155,13 +155,6 @@
       "relation": "manyToMany",
       "target": "api::domain.domain",
       "mappedBy": "users"
-    }
-  },
-  "config": {
-    "attributes": {
-      "resetPasswordToken": {
-        "hidden": true
-      }
     }
   }
 }
