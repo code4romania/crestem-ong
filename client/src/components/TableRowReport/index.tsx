@@ -29,7 +29,9 @@ const TableRowReport = ({ id, createdAt, deadline, evaluations, finished }) => {
       </td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
         {evaluationsCompleted?.length > 0
-          ? calcScore(evaluationsCompleted)
+          ? finished
+            ? `${calcScore(evaluationsCompleted)}%`
+            : "-"
           : "-"}
       </td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
