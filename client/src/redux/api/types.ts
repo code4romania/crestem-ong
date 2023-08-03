@@ -12,6 +12,8 @@ export interface Quiz {
 }
 
 export interface User {
+  id: number;
+  createdAt: string;
   activities: string;
   city: string;
   confirmPassword: string;

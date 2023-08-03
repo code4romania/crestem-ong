@@ -19,7 +19,7 @@ const UsersTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const header = [
     "NUME ONG",
-    "Dată înregistrare",
+    "DATĂ ÎNREGISTRARE",
     "PROGRAM",
     "ULTIMA EVALUARE",
   ];
@@ -43,7 +43,7 @@ const UsersTable = () => {
         )
       : "-",
   }));
-  const handleChange = (event: ChangeEvent) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
@@ -76,6 +76,7 @@ const UsersTable = () => {
       <div className="flex items-center justify-between mb-10">
         <div className="w-2/3">
           <Input
+            name="search"
             placeholder="Caută"
             onChange={handleChange}
             value={searchTerm}
@@ -92,14 +93,14 @@ const UsersTable = () => {
             {header.map((th) => (
               <th
                 scope="col"
-                className="py-3.5 pl-4 pr-3 uppercase text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
               >
                 {th}
               </th>
             ))}
             <th
               scope="col"
-              className="py-3.5 pl-4 pr-3 uppercase text-left text-sm font-semibold text-gray-900 sm:pl-6"
+              className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
             ></th>
           </tr>
         </thead>

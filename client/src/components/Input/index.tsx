@@ -1,4 +1,15 @@
-import React from "react";
+import React, { ChangeEvent, HTMLInputTypeAttribute } from "react";
+
+interface InputProps {
+  name: string;
+  id?: string;
+  placeholder?: string;
+  type?: HTMLInputTypeAttribute;
+  label?: string;
+  icon?: string;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  value?: string | number;
+}
 
 const Input = ({
   label,
@@ -9,7 +20,7 @@ const Input = ({
   icon,
   onChange,
   value,
-}) => (
+}: InputProps) => (
   <div>
     {label && (
       <label
