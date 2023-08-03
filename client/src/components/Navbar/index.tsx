@@ -50,7 +50,7 @@ const Menu = () => {
                 }`
               }
             >
-              Utilizatori
+              Organizații
             </NavLink>
           </li>
           <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">

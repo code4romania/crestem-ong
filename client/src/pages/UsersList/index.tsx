@@ -8,7 +8,7 @@ const UsersList = () => {
   return (
     <>
       <Section>
-        <Heading level={"h2"}>Utilizatori</Heading>
+        <Heading level={"h2"}>Organizații</Heading>
       </Section>
       <Section>
         <UsersTable />
