@@ -55,6 +55,7 @@ export interface Evaluation {
 }
 
 export interface Report {
+  user?: User;
   id: number | string;
   createdAt: string;
   updatedAt: string;
