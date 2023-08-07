@@ -1,5 +1,5 @@
-import React, { memo, useMemo } from "react";
-import { Link } from "react-router-dom";
+import React, { memo, useCallback, useMemo } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { calcScore } from "@/lib/score";
 import { evaluationsCompletedFilter } from "@/lib/filters";
 
@@ -11,6 +11,7 @@ const TableRowReportFDSC = ({
   finished,
   user,
 }) => {
+  const navigate = useNavigate();
   const evaluationsCompleted = useMemo(
     () => evaluationsCompletedFilter(evaluations),
     [evaluations]
@@ -26,8 +27,12 @@ const TableRowReportFDSC = ({
     day: "numeric",
     year: "numeric",
   });
+  const handleClick = useCallback(() => {
+    navigate(`/reports/${id}`);
+  }, [navigate]);
+
   return (
-    <tr>
+    <tr className="cursor-pointer" onClick={handleClick}>
       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
         {id}
       </td>
