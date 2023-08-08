@@ -107,8 +107,8 @@ const ReportsList = () => {
         res.ongName?.toLowerCase().includes(searchTerm) &&
         (startDate ? res.startDate > new Date(startDate) : true) &&
         (endDate ? res.endDate > new Date(endDate) : true) &&
-        res.score > scoreRange[0] &&
-        res.score < scoreRange[1]
+        res.score >= scoreRange[0] &&
+        res.score <= scoreRange[1]
     );
     return results || data;
   }, [data, searchTerm, startDate, endDate, scoreRange]);
