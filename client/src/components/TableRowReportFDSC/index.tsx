@@ -5,11 +5,11 @@ import { evaluationsCompletedFilter } from "@/lib/filters";
 
 const TableRowReportFDSC = ({
   id,
-  createdAt,
-  deadline,
+  ongName,
+  startDate,
+  endDate,
   evaluations,
   finished,
-  user,
 }) => {
   const navigate = useNavigate();
   const evaluationsCompleted = useMemo(
@@ -17,16 +17,6 @@ const TableRowReportFDSC = ({
     [evaluations]
   );
 
-  const startDate = new Date(createdAt).toLocaleString("ro-RO", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-  const endDate = new Date(deadline).toLocaleString("ro-RO", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
   const handleClick = useCallback(() => {
     navigate(`/reports/${id}`);
   }, [navigate]);
@@ -37,13 +27,23 @@ const TableRowReportFDSC = ({
         {id}
       </td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        {user?.ongName}
+        {ongName}
       </td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        {startDate}
+        {startDate.toLocaleString("ro-RO", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        })}
       </td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        {finished ? endDate : "În progres"}
+        {finished
+          ? endDate.toLocaleString("ro-RO", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })
+          : "În progres"}
       </td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
         {finished ? `${calcScore(evaluationsCompleted) || "0"}%` : "În progres"}

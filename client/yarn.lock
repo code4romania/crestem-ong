@@ -428,6 +428,11 @@ combined-stream@^1.0.8:
   dependencies:
     delayed-stream "~1.0.0"
 
+core-js@^3.22.4:
+  version "3.32.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.32.0.tgz#7643d353d899747ab1f8b03d2803b0312a0fb3b6"
+  integrity sha512-rd4rYZNlF3WuoYuRIDEmbR/ga9CeuWX9U05umAvgrrZoHY4Z++cp/xwPQMvUpBB4Ag6J8KfD80G0zwCyaSxDww==
+
 cssesc@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
@@ -830,6 +835,14 @@ react-is@^18.0.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
+
+react-range-slider-input@^3.0.7:
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/react-range-slider-input/-/react-range-slider-input-3.0.7.tgz#88ceb118b33d7eb0550cec1f77fc3e60e0f880f9"
+  integrity sha512-yAJDDMUNkILOcZSCLCVbwgnoAM3v0AfdDysTCMXDwY/+ZRNRlv98TyHbVCwPFEd7qiI8Ca/stKb0GAy//NybYw==
+  dependencies:
+    clsx "^1.1.1"
+    core-js "^3.22.4"
 
 react-redux@^8.0.5:
   version "8.0.5"
