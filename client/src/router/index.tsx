@@ -17,6 +17,7 @@ import { useAppSelector } from "@/redux/store";
 import Dashboard from "@/pages/Dashboard";
 import ReportsList from "@/pages/ReportsList";
 import UsersList from "@/pages/UsersList";
+import Profile from "@/pages/Profile";
 
 const Router = () => {
   const user = useAppSelector((state) => state.userState.user);
@@ -35,6 +36,7 @@ const Router = () => {
           <Route path="/reports/:reportId" element={<AdminReport />} />
           <Route path="/users" element={<UsersList />} />
           <Route path="/users/:userId" element={<UserReports />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       ) : user ? (
         <Route element={<LayoutApp />}>
@@ -42,6 +44,7 @@ const Router = () => {
           <Route path="/reports/:reportId" element={<Report />} />
           <Route path="/users/:userId" element={<UserReports />} />
           <Route path="/create/report" element={<NewReport />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       ) : (
         <Route element={<LayoutApp />}>
