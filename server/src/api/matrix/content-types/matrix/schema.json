@@ -13,9 +13,9 @@
   "pluginOptions": {},
   "attributes": {
     "dimensions": {
-      "type": "component",
-      "repeatable": true,
-      "component": "matrix.dimension"
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::dimension.dimension"
     }
   }
 }

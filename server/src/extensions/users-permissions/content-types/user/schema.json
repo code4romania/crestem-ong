@@ -154,7 +154,37 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::domain.domain",
-      "mappedBy": "users"
+      "mappedBy": "mentors"
+    },
+    "programs": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::program.program",
+      "mappedBy": "mentors"
+    },
+    "dimensions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::dimension.dimension",
+      "inversedBy": "mentors"
+    },
+    "activities": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::activity.activity",
+      "mappedBy": "organisation"
+    },
+    "bio": {
+      "type": "text"
+    },
+    "expertise": {
+      "type": "text"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
     }
   }
 }

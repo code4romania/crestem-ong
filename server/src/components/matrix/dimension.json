@@ -6,11 +6,6 @@
   },
   "options": {},
   "attributes": {
-    "quiz": {
-      "type": "component",
-      "repeatable": true,
-      "component": "matrix.question"
-    },
     "name": {
       "type": "string"
     },
