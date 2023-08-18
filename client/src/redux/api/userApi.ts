@@ -45,7 +45,7 @@ export const userApi = createApi({
     getUsers: builder.query<User[], null>({
       query() {
         return {
-          url: `users?populate[0]=role&populate[1]=domains&populate[2]=reports&sort=createdAt%3Adesc`,
+          url: `users?filters[role][type][$eq]=authenticated&populate[0]=role&populate[1]=domains&populate[2]=reports&sort=createdAt%3Adesc`,
         };
       },
       transformResponse: (result: User[]) =>
@@ -63,6 +63,45 @@ export const userApi = createApi({
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         ),
       }),
+    }),
+    getMentors: builder.query<User[], null>({
+      query() {
+        return {
+          url: `users?filters[role][type][$eq]=mentor&populate[0]=role&populate[1]=domains&populate[2]=programs&populate[3]=dimensions&sort=createdAt%3Adesc`,
+        };
+      },
+    }),
+    createMentor: builder.mutation<User, User>({
+      query() {
+        return {
+          method: "POST",
+          url: "users",
+        };
+      },
+    }),
+    getPrograms: builder.query<User[], null>({
+      query() {
+        return {
+          url: `programs`,
+        };
+      },
+      transformResponse: (result: { data: any }) =>
+        result.data.map((report: any) => ({
+          id: report.id,
+          ...report.attributes,
+        })),
+    }),
+    getDimensions: builder.query<User[], null>({
+      query() {
+        return {
+          url: `dimensions`,
+        };
+      },
+      transformResponse: (result: { data: any }) =>
+        result.data.map((report: any) => ({
+          id: report.id,
+          ...report.attributes,
+        })),
     }),
     createReport: builder.mutation<Report, ReportInput>({
       query: ({ deadline, evaluations }) => ({
@@ -228,9 +267,13 @@ export const {
   useUploadMutation,
   useGetUsersQuery,
   useGetUserReportsQuery,
+  useGetMentorsQuery,
   useGetDomainsQuery,
   useGetReportsQuery,
   useGetEvaluationsCountQuery,
   useGetRegistrationInfoQuery,
   useRegisterWithConfirmationTokenMutation,
+  useGetProgramsQuery,
+  useGetDimensionsQuery,
+  useCreateMentorMutation,
 } = userApi;

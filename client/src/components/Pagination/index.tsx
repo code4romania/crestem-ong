@@ -21,7 +21,7 @@ const Pagination = ({ step }: { step: number }) => {
           <a
             href="#"
             style={{ left: `${step * 10}%` }}
-            className="absolute top-0 flex h-10 w-10 items-center justify-center rounded-full bg-teal-600 hover:bg-indigo-900 text-white text-sm"
+            className="absolute top-0 flex h-10 w-10 items-center justify-center rounded-full bg-teal-600 hover:bg-teal-900 text-white text-sm"
           >
             {step * 10}%<span className="sr-only">Step 1</span>
           </a>

@@ -54,22 +54,16 @@ const Menu = () => {
             </NavLink>
           </li>
           <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-            <a
-              href="https://crestem.ong/ro/biblioteca"
-              className=""
-              target="_blank"
-            >
-              Bibliotecă
-            </a>
-          </li>
-          <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-            <a
-              href="https://crestem.ong/ro/persoane-resursa"
-              className=""
-              target="_blank"
+            <NavLink
+              to="/mentors"
+              className={({ isActive, isPending }) =>
+                `flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 ${
+                  isPending ? "bg-gray-50" : isActive ? "bg-gray-100" : ""
+                }`
+              }
             >
               Persoane resursă
-            </a>
+            </NavLink>
           </li>
           <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
             <a

@@ -12,7 +12,7 @@ const EvaluationFinished = () => (
         <Heading level="h2">
           Răspunsurile tale au fost trimise cu succes!
         </Heading>
-        <p className={"text-indigo-200 text-lg leading-6 mt-4 mb-8"}>
+        <p className={"text-teal-200 text-lg leading-6 mt-4 mb-8"}>
           Le vei primi în scurt timp și pe mail. Până la procesarea rezultatelor
           la nivel de organizație, poți deja accesa Biblioteca noastră de
           resurse, organizate în funcție de cele 10 dimensiuni ale analizei.

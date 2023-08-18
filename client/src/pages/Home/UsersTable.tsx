@@ -9,10 +9,8 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { downloadExcel } from "react-export-table-to-excel";
 import Input from "@/components/Input";
-import { User } from "@/redux/api/types";
 import { useGetUsersQuery } from "@/redux/api/userApi";
 import Button from "@/components/Button";
-import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import { object, string, TypeOf } from "zod";
 
 const filtersSchema = object({

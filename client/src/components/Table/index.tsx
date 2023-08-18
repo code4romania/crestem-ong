@@ -2,7 +2,7 @@ import React from "react";
 
 const Table = ({ title, description, button, head, body }) => {
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
+    <div>
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           {title && (
@@ -25,30 +25,15 @@ const Table = ({ title, description, button, head, body }) => {
               {head && (
                 <thead>
                   <tr>
-                    <th
-                      scope="col"
-                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Title
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Email
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Role
-                    </th>
+                    {head.map((th) => (
+                      <th
+                        key={th}
+                        scope="col"
+                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
+                      >
+                        {th}
+                      </th>
+                    ))}
                     <th
                       scope="col"
                       className="relative py-3.5 pl-3 pr-4 sm:pr-3"
@@ -62,7 +47,10 @@ const Table = ({ title, description, button, head, body }) => {
                 {body.map((row) => (
                   <tr key={row[0]} className="even:bg-gray-50">
                     {row.map((cell) => (
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                      <td
+                        key={cell}
+                        className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3"
+                      >
                         {cell}
                       </td>
                     ))}
@@ -78,7 +66,7 @@ const Table = ({ title, description, button, head, body }) => {
                     {/*<td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">*/}
                     {/*  <a*/}
                     {/*    href="#"*/}
-                    {/*    className="text-indigo-600 hover:text-indigo-900"*/}
+                    {/*    className="text-teal-600 hover:text-teal-900"*/}
                     {/*  >*/}
                     {/*    Edit<span className="sr-only">, {person.name}</span>*/}
                     {/*  </a>*/}
