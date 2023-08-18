@@ -1,4 +1,4 @@
-module.exports = [
+module.exports = ({ env }) => [
   "strapi::errors",
   {
     name: "strapi::security",
@@ -10,7 +10,7 @@ module.exports = [
           "img-src": [
             "'self'",
             "data:",
-            "'blob:",
+            "blob:",
             "cdn.jsdelivr.net",
             "strapi.io",
             "s3.amazonaws.com",
@@ -20,7 +20,7 @@ module.exports = [
           "media-src": [
             "'self'",
             "data:",
-            "'blob:",
+            "blob:",
             "cdn.jsdelivr.net",
             "strapi.io",
             "s3.amazonaws.com",
