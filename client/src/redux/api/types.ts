@@ -1,4 +1,5 @@
 interface Role {
+  id: number;
   type: "fdsc";
 }
 
@@ -70,6 +71,10 @@ export interface RegisterResponse {
 }
 
 export interface Domain {
+  name: string;
+}
+
+export interface Program {
   name: string;
 }
 

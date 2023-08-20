@@ -3,7 +3,7 @@ import { EvaluationInput } from "@/pages/Evaluation";
 import { ReportInput } from "@/pages/NewReport";
 import { RootState } from "@/redux/store";
 import { setUser } from "../features/userSlice";
-import { User, Report, Evaluation, Matrix } from "./types";
+import { User, Report, Evaluation, Matrix, Program } from "./types";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
@@ -72,14 +72,15 @@ export const userApi = createApi({
       },
     }),
     createMentor: builder.mutation<User, User>({
-      query() {
+      query(body) {
         return {
           method: "POST",
           url: "users",
+          body,
         };
       },
     }),
-    getPrograms: builder.query<User[], null>({
+    getPrograms: builder.query<Program[], null>({
       query() {
         return {
           url: `programs`,

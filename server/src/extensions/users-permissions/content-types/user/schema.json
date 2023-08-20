@@ -78,24 +78,24 @@
     },
     "ongName": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "ongIdentificationNumber": {
       "type": "string",
-      "required": true,
+      "required": false,
       "unique": true
     },
     "county": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "city": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "phone": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "website": {
       "type": "string"
