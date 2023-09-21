@@ -28,7 +28,7 @@ const Report = () => {
   );
 
   const scoreByEvaluation = useMemo(() => {
-    return matrix && evaluationsCompleted
+    return matrix && evaluationsCompleted.length > 0
       ? calcScoreByDimension({ evaluationsCompleted, matrix })
       : [];
   }, [evaluationsCompleted, matrix]);

@@ -3,7 +3,7 @@ import { EvaluationInput } from "@/pages/Evaluation";
 import { ReportInput } from "@/pages/NewReport";
 import { RootState } from "@/redux/store";
 import { setUser } from "../features/userSlice";
-import { User, Report, Evaluation, Matrix, Program } from "./types";
+import { User, Report, Evaluation, Matrix, Program, Dimension } from "./types";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
@@ -162,7 +162,9 @@ export const userApi = createApi({
         };
       },
       transformResponse: (result: { data: any }) =>
-        result.data.attributes.dimensions,
+        result.data.attributes.dimensions.data.map(
+          ({ attributes }: { attributes: Dimension }) => attributes
+        ),
     }),
     getEvaluation: builder.query<
       EvaluationInput,
