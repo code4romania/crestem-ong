@@ -97,9 +97,7 @@ const UsersTable = () => {
           </div>
         </div>
         <div>
-          <Button type="button" onClick={handleDownloadExcel}>
-            Descarcă tabel
-          </Button>
+          <Button to="/create/program">Adaugă program </Button>
         </div>
       </form>
       <table

@@ -4,7 +4,6 @@ import { ReportInput } from "@/pages/NewReport";
 import { RootState } from "@/redux/store";
 import { setUser } from "../features/userSlice";
 import { User, Report, Evaluation, Matrix, Program, Dimension } from "./types";
-import { data } from "autoprefixer";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
@@ -78,6 +77,17 @@ export const userApi = createApi({
           method: "POST",
           url: "users",
           body,
+        };
+      },
+    }),
+    createProgram: builder.mutation<User, Program>({
+      query(body) {
+        return {
+          method: "POST",
+          url: "programs",
+          body: {
+            data: body,
+          },
         };
       },
     }),
@@ -302,6 +312,7 @@ export const {
   useGetEvaluationsCountQuery,
   useGetRegistrationInfoQuery,
   useRegisterWithConfirmationTokenMutation,
+  useCreateProgramMutation,
   useGetProgramsQuery,
   useFindProgramQuery,
   useGetDimensionsQuery,
