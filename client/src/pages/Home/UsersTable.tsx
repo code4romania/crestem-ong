@@ -78,7 +78,7 @@ const UsersTable = () => {
   useEffect(() => {
     const results = data?.filter(
       (res) =>
-        res.ongName.toLowerCase().includes(searchTerm) &&
+        res.ongName?.toLowerCase().includes(searchTerm) &&
         (startDate ? new Date(res.createdAt) > new Date(startDate) : true) &&
         (endDate && res.reports?.length > 0
           ? new Date(res.reports[res.reports?.length - 1].createdAt) >
@@ -136,6 +136,7 @@ const UsersTable = () => {
               <th
                 scope="col"
                 className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                key={th}
               >
                 {th}
               </th>
