@@ -1,6 +1,14 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
-const Table = ({ title, description, button, head, body }) => {
+interface TableProps {
+  body: ReactNode[][];
+  head?: string[];
+  title?: string;
+  description?: string;
+  button?: string;
+}
+
+const Table = ({ title, description, button, head, body }: TableProps) => {
   return (
     <div>
       <div className="sm:flex sm:items-center">

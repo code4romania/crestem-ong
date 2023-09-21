@@ -4,21 +4,14 @@ import Section from "@/components/Section";
 import { useFindProgramQuery } from "@/redux/api/userApi";
 import { NavLink, useParams } from "react-router-dom";
 import FullScreenLoader from "@/components/FullScreenLoader";
+import Table from "@/components/Table";
 
 const Program = () => {
   const { programId = "" } = useParams();
 
-  const {
-    isLoading,
-    isSuccess: isEvaluationSuccess,
-    data,
-    isError: isEvaluationError,
-    error: evaluationError,
-  } = useFindProgramQuery({ programId });
+  const { isLoading, data } = useFindProgramQuery({ programId });
 
-  if (isLoading) return <FullScreenLoader />;
-
-  console.log("data", data);
+  if (!data || isLoading) return <FullScreenLoader />;
 
   return (
     <>
@@ -26,69 +19,51 @@ const Program = () => {
         <Heading level={"h2"}>{data.name}</Heading>
       </Section>
       <Section>
-        <div>Informații despre program</div>
-        <table>
-          <tbody>
-            <tr>
-              <td>Denumire program</td>
-              <td>{data.name}</td>
-            </tr>
-            <tr>
-              <td>Perioadă de desfășurare: Data de început</td>
-              <td>
-                {new Date(data.createdAt).toLocaleString("ro-RO", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </td>
-            </tr>
-            <tr>
-              <td>Perioadă de desfășurare: Data de final</td>
-              <td>
-                {new Date(data.endDate).toLocaleString("ro-RO", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </td>
-            </tr>
-            <tr>
-              <td>Nume finanțator</td>
-              <td>{data.sponsorName || "-"}</td>
-            </tr>
-          </tbody>
-        </table>
+        <Table
+          title="Informații despre program"
+          body={[
+            ["Denumire program", data.name],
+            [
+              "Perioadă de desfășurare: Data de început",
+              new Date(data.startDate).toLocaleString("ro-RO", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              }),
+            ],
+            [
+              "Perioadă de desfășurare: Data de final",
+              new Date(data.endDate).toLocaleString("ro-RO", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              }),
+            ],
+            ["Nume finanțator", data.sponsorName || "-"],
+          ]}
+        />
       </Section>
-      <Section>
-        <div>Persoane resursă în program</div>
-        <table>
-          <thead>
-            <tr>
-              <td>Nume</td>
-              <td>SPECIALIZARE</td>
-              <td>DISPONIBILITATE</td>
-              <td>ULTIMA ACTIVITATE</td>
-              <td></td>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.mentors?.map((mentor) => (
-              <tr key={mentor.id}>
-                <td>
-                  {mentor.firstName} {mentor.lastName}
-                </td>
-                <td>{mentor.dimensions?.map((dimension) => dimension.name)}</td>
-                <td>{mentor.isAvailable ? "Disponibil" : "Indisponibil"}</td>
-                <td>-</td>
-                <td>
-                  <NavLink to={`/users/${mentor.id}`}>Vezi</NavLink>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </Section>
+      {data?.mentors?.length > 0 && (
+        <Section>
+          <Table
+            title="Persoane resursă în program"
+            head={[
+              "Nume",
+              "Specializare",
+              "Disponibilitate",
+              "Ultima activitate",
+              "",
+            ]}
+            body={data.mentors.map((mentor) => [
+              `${mentor.firstName} ${mentor.lastName}`,
+              mentor.dimensions?.map((dimension) => dimension.name).join(", "),
+              "Indisponibil",
+              "-",
+              <NavLink to={`/users/${mentor.id}`}>Vezi</NavLink>,
+            ])}
+          />
+        </Section>
+      )}
     </>
   );
 };

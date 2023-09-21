@@ -76,6 +76,10 @@ export interface Domain {
 
 export interface Program {
   name: string;
+  startDate: string;
+  endDate: string;
+  mentors?: User[];
+  sponsorName?: string;
 }
 
 export type Matrix = {

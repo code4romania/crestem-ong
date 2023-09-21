@@ -106,7 +106,7 @@ export const userApi = createApi({
           ),
         })),
     }),
-    findProgram: builder.query<Program[], { programId: string }>({
+    findProgram: builder.query<Program, { programId: string }>({
       query({ programId }) {
         return {
           url: `programs/${programId}?populate[0]=mentors.dimensions&populate[1]=mentors.activities`,
