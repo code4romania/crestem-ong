@@ -80,9 +80,18 @@ const Register = () => {
 
   useEffect(() => {
     if (error?.data?.error?.message) {
-      toast.error(error.data.error.message);
+      if (
+        error?.data?.error?.details?.errors?.length > 0 &&
+        error?.data.error.details.errors.find(({ path }) =>
+          path.includes("ongIdentificationNumber")
+        )
+      ) {
+        toast.error("Organizație deja înregistrată în platformă");
+      } else {
+        toast.error(error.data.error.message);
+      }
     }
-  }, [error?.data?.error?.message]);
+  }, [error?.data?.error?.message, error?.data?.error?.details?.errors]);
 
   useEffect(() => {
     const message = uploadAvatarError?.data?.error?.message;
