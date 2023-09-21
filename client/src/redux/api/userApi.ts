@@ -4,6 +4,7 @@ import { ReportInput } from "@/pages/NewReport";
 import { RootState } from "@/redux/store";
 import { setUser } from "../features/userSlice";
 import { User, Report, Evaluation, Matrix, Program, Dimension } from "./types";
+import { data } from "autoprefixer";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
@@ -83,14 +84,39 @@ export const userApi = createApi({
     getPrograms: builder.query<Program[], null>({
       query() {
         return {
-          url: `programs`,
+          url: `programs?populate[0]=mentors`,
         };
       },
       transformResponse: (result: { data: any }) =>
         result.data.map((report: any) => ({
-          id: report.id,
           ...report.attributes,
+          id: report.id,
+          mentors: report.attributes.mentors.data.map(
+            ({ attributes }) => attributes
+          ),
         })),
+    }),
+    findProgram: builder.query<Program[], { programId: string }>({
+      query({ programId }) {
+        return {
+          url: `programs/${programId}?populate[0]=mentors.dimensions&populate[1]=mentors.activities`,
+        };
+      },
+      transformResponse: (result) => ({
+        ...result.data.attributes,
+        mentors: result.data.attributes.mentors?.data?.map(
+          ({ id, attributes }) => ({
+            ...attributes,
+            id,
+            activities: attributes.activities?.data?.map(
+              ({ attributes }) => attributes
+            ),
+            dimensions: attributes.dimensions?.data?.map(
+              ({ attributes }) => attributes
+            ),
+          })
+        ),
+      }),
     }),
     getDimensions: builder.query<User[], null>({
       query() {
@@ -277,6 +303,7 @@ export const {
   useGetRegistrationInfoQuery,
   useRegisterWithConfirmationTokenMutation,
   useGetProgramsQuery,
+  useFindProgramQuery,
   useGetDimensionsQuery,
   useCreateMentorMutation,
 } = userApi;

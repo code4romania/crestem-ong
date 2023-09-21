@@ -20,6 +20,8 @@ import UsersList from "@/pages/UsersList";
 import Profile from "@/pages/Profile";
 import Mentors from "@/pages/Mentors";
 import CreateMentor from "@/pages/CreateMentor";
+import ProgramsList from "@/pages/admin/ProgramsList";
+import Program from "@/pages/admin/Program";
 
 const Router = () => {
   const user = useAppSelector((state) => state.userState.user);
@@ -41,6 +43,8 @@ const Router = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/mentors" element={<Mentors />} />
           <Route path="/create/mentor" element={<CreateMentor />} />
+          <Route path="/programs" element={<ProgramsList />} />
+          <Route path="/programs/:programId" element={<Program />} />
         </Route>
       ) : user ? (
         <Route element={<LayoutApp />}>
