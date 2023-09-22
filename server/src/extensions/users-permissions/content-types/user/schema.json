@@ -185,6 +185,17 @@
     },
     "lastName": {
       "type": "string"
+    },
+    "program": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::program.program",
+      "inversedBy": "users"
+    },
+    "available": {
+      "type": "boolean",
+      "required": false,
+      "default": false
     }
   }
 }

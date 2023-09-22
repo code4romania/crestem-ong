@@ -756,6 +756,12 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     expertise: Attribute.Text;
     firstName: Attribute.String;
     lastName: Attribute.String;
+    program: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToOne',
+      'api::program.program'
+    >;
+    available: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1024,6 +1030,11 @@ export interface ApiProgramProgram extends Schema.CollectionType {
     mentors: Attribute.Relation<
       'api::program.program',
       'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    users: Attribute.Relation<
+      'api::program.program',
+      'oneToMany',
       'plugin::users-permissions.user'
     >;
     createdAt: Attribute.DateTime;
