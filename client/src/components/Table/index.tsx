@@ -5,7 +5,7 @@ interface TableProps {
   head?: string[];
   title?: string;
   description?: string;
-  button?: string;
+  button?: string | ReactNode;
 }
 
 const Table = ({ title, description, button, head, body }: TableProps) => {
