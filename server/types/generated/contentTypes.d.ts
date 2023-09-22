@@ -1013,20 +1013,7 @@ export interface ApiProgramProgram extends Schema.CollectionType {
     name: Attribute.String & Attribute.Required;
     startDate: Attribute.Date & Attribute.Required;
     endDate: Attribute.Date & Attribute.Required;
-    logo: Attribute.Media;
     sponsorName: Attribute.String;
-    sponsorLogo: Attribute.Media;
-    description: Attribute.Text &
-      Attribute.Required &
-      Attribute.SetMinMaxLength<{
-        maxLength: 600;
-      }>;
-    advantageName: Attribute.Text &
-      Attribute.SetMinMaxLength<{
-        maxLength: 100;
-      }>;
-    advantageIcon: Attribute.Media;
-    advantageDescription: Attribute.Text;
     mentors: Attribute.Relation<
       'api::program.program',
       'manyToMany',

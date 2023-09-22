@@ -24,53 +24,8 @@
       "type": "date",
       "required": true
     },
-    "logo": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
-    },
     "sponsorName": {
       "type": "string"
-    },
-    "sponsorLogo": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
-    },
-    "description": {
-      "type": "text",
-      "maxLength": 600,
-      "required": true
-    },
-    "advantageName": {
-      "type": "text",
-      "maxLength": 100
-    },
-    "advantageIcon": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
-    },
-    "advantageDescription": {
-      "type": "text"
     },
     "mentors": {
       "type": "relation",
