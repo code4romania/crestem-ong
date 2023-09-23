@@ -4,6 +4,7 @@ import { ReportInput } from "@/pages/NewReport";
 import { RootState } from "@/redux/store";
 import { setUser } from "../features/userSlice";
 import { User, Report, Evaluation, Matrix, Program, Dimension } from "./types";
+import { ActivityInput } from "@/pages/mentor/NewActivity";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
@@ -32,7 +33,7 @@ export const userApi = createApi({
     getMe: builder.query<User, null>({
       query() {
         return {
-          url: "users/me?populate[0]=reports.evaluations.dimensions.quiz&populate[1]=avatar&populate[2]=role",
+          url: "users/me?populate[0]=reports.evaluations.dimensions.quiz&populate[1]=avatar&populate[2]=role&populate[3]=programs.users&populate[4]=activities",
         };
       },
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
@@ -128,7 +129,7 @@ export const userApi = createApi({
         ),
       }),
     }),
-    getDimensions: builder.query<User[], null>({
+    getDimensions: builder.query<Dimension[], null>({
       query() {
         return {
           url: `dimensions`,
@@ -139,6 +140,27 @@ export const userApi = createApi({
           id: report.id,
           ...report.attributes,
         })),
+    }),
+    getActivityTypes: builder.query<User[], null>({
+      query() {
+        return {
+          url: `activity-types`,
+        };
+      },
+      transformResponse: (result: { data: any }) =>
+        result.data.map((report: any) => ({
+          id: report.id,
+          ...report.attributes,
+        })),
+    }),
+    createActivity: builder.mutation<any, ActivityInput>({
+      query: (data) => ({
+        method: "POST",
+        url: "activities",
+        body: {
+          data,
+        },
+      }),
     }),
     createReport: builder.mutation<Report, ReportInput>({
       query: ({ deadline, evaluations }) => ({
@@ -198,7 +220,7 @@ export const userApi = createApi({
         };
       },
       transformResponse: (result: { data: any }) =>
-        result.data.attributes.dimensions.data.map(
+        result?.data?.attributes?.dimensions?.data?.map(
           ({ attributes }: { attributes: Dimension }) => attributes
         ),
     }),
@@ -218,7 +240,7 @@ export const userApi = createApi({
         url: "evaluations?populate=dimensions.quiz&pagination[pageSize]=1000",
       }),
       transformResponse: (result: { data: any }) =>
-        result.data.map((evaluation: any) => ({
+        result?.data.map((evaluation: any) => ({
           id: evaluation.id,
           ...evaluation.attributes,
         })),
@@ -317,4 +339,7 @@ export const {
   useFindProgramQuery,
   useGetDimensionsQuery,
   useCreateMentorMutation,
+  useGetMatrixQuery,
+  useGetActivityTypesQuery,
+  useCreateActivityMutation,
 } = userApi;

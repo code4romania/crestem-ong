@@ -5,132 +5,146 @@ import Button from "@/components/Button";
 import UserMenu from "@/components/UserMenu";
 import { useAppSelector } from "@/redux/store";
 import logo from "@/assets/platforma_FDSC_Kaufland.svg";
+import getUserType from "@/lib/userType";
+
+const MENU = {
+  public: [
+    {
+      text: "Acasă",
+      link: "https://crestem.ong/ro/acasa",
+    },
+    {
+      text: "Despre",
+      link: "https://crestem.ong/ro/despre-proiect",
+    },
+    {
+      text: "Evaluare ONG",
+      link: "/",
+    },
+    {
+      text: "Bibliotecă",
+      link: "https://crestem.ong/ro/biblioteca",
+    },
+    {
+      text: "Programele noastre",
+      link: "https://crestem.ong/ro/programele-noastre",
+    },
+    {
+      text: "FAQ",
+      link: "https://crestem.ong/ro/intrebari-frecvente",
+    },
+    {
+      text: "Contact",
+      link: "https://crestem.ong/ro/contact",
+    },
+  ],
+  fdsc: [
+    {
+      text: "Panou de control",
+      link: "/",
+    },
+    {
+      text: "Evaluări",
+      link: "/reports",
+    },
+    {
+      text: "Organizații",
+      link: "/users",
+    },
+    {
+      text: "Persoane resursă",
+      link: "/mentors",
+    },
+    {
+      text: "Programe",
+      link: "/programs",
+    },
+  ],
+  authenticated: [
+    {
+      text: "Acasă",
+      link: "https://crestem.ong/ro/acasa",
+    },
+    {
+      text: "Despre",
+      link: "https://crestem.ong/ro/despre-proiect",
+    },
+    {
+      text: "Evaluare ONG",
+      link: "/",
+    },
+    {
+      text: "Bibliotecă",
+      link: "https://crestem.ong/ro/biblioteca",
+    },
+    { text: "Persoane resursă", link: "/mentors" },
+    {
+      text: "Programele noastre",
+      link: "https://crestem.ong/ro/programele-noastre",
+    },
+    {
+      text: "FAQ",
+      link: "https://crestem.ong/ro/intrebari-frecvente",
+    },
+    {
+      text: "Contact",
+      link: "https://crestem.ong/ro/contact",
+    },
+  ],
+  mentor: [
+    // {
+    //   text: "Acasă",
+    //   link: "https://crestem.ong/ro/acasa",
+    // },
+    // {
+    //   text: "Despre",
+    //   link: "https://crestem.ong/ro/despre-proiect",
+    // },
+    {
+      text: "Evaluare ONG",
+      link: "/",
+    },
+    // {
+    //   text: "Bibliotecă",
+    //   link: "https://crestem.ong/ro/biblioteca",
+    // },
+    { text: "Jurnal de activitate", link: "/activities" },
+    // {
+    //   text: "FAQ",
+    //   link: "https://crestem.ong/ro/intrebari-frecvente",
+    // },
+    // {
+    //   text: "Contact",
+    //   link: "https://crestem.ong/ro/contact",
+    // },
+  ],
+};
 
 const Menu = () => {
   const user = useAppSelector((state) => state.userState.user);
-  const isFDSC = user?.role?.type === "fdsc";
+  const userType = getUserType(user);
+  console.log("userType", userType);
+  const menu = MENU[userType];
 
   const linkClassName =
     "flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600";
 
   return (
     <ul className="items-center hidden text-sm gap-x-3 lg:flex lg:flex-wrap">
-      {isFDSC ? (
-        <>
-          <li>
-            <NavLink
-              to="/"
-              className={({ isActive, isPending }) =>
-                `flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 ${
-                  isPending ? "bg-gray-50" : isActive ? "bg-gray-100" : ""
-                }`
-              }
-            >
-              Panou de control
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/reports"
-              className={({ isActive, isPending }) =>
-                `flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 ${
-                  isPending ? "bg-gray-50" : isActive ? "bg-gray-100" : ""
-                }`
-              }
-            >
-              Evaluări
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/users"
-              className={({ isActive, isPending }) =>
-                `flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 ${
-                  isPending ? "bg-gray-50" : isActive ? "bg-gray-100" : ""
-                }`
-              }
-            >
-              Organizații
-            </NavLink>
-          </li>
-          <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-            <NavLink
-              to="/mentors"
-              className={({ isActive, isPending }) =>
-                `flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 ${
-                  isPending ? "bg-gray-50" : isActive ? "bg-gray-100" : ""
-                }`
-              }
-            >
-              Persoane resursă
-            </NavLink>
-          </li>
-          <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-            <NavLink
-              to="/programs"
-              className={({ isActive, isPending }) =>
-                `flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 ${
-                  isPending ? "bg-gray-50" : isActive ? "bg-gray-100" : ""
-                }`
-              }
-            >
-              Programe
-            </NavLink>
-          </li>
-        </>
-      ) : (
-        <>
-          <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-            <a href="https://crestem.ong/ro/acasa" className="">
-              Acasă
-            </a>
-          </li>
-          <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-            <a href="https://crestem.ong/ro/despre-proiect" className="">
-              Despre
-            </a>
-          </li>
-          <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 bg-gray-100">
-            <NavLink to="/" className="">
-              Evaluare ONG
-            </NavLink>
-          </li>
-          <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-            <a href="https://crestem.ong/ro/biblioteca" className="">
-              Biblioteca
-            </a>
-          </li>
-          <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-            <NavLink
-              to="/mentors"
-              className={({ isActive, isPending }) =>
-                `flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 ${
-                  isPending ? "bg-gray-50" : isActive ? "bg-gray-100" : ""
-                }`
-              }
-            >
-              Persoane resursă
-            </NavLink>
-          </li>
-          <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-            <NavLink
-              to="/programs"
-              className={({ isActive, isPending }) =>
-                `flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 ${
-                  isPending ? "bg-gray-50" : isActive ? "bg-gray-100" : ""
-                }`
-              }
-            >
-              Programele noastre
-            </NavLink>
-          </li>
-          <li className="flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-700 hover:bg-gray-100">
-            <a href="https://crestem.ong/ro/contact" className="">
-              Contact
-            </a>
-          </li>
-        </>
-      )}
+      {menu.map((menuItem) => (
+        <li>
+          <NavLink
+            to={menuItem.link}
+            className={({ isActive, isPending }) =>
+              `flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 ${
+                isPending ? "bg-gray-50" : isActive ? "bg-gray-100" : ""
+              }`
+            }
+          >
+            {menuItem.text}
+          </NavLink>
+        </li>
+      ))}
     </ul>
   );
 };

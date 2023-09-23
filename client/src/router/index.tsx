@@ -19,22 +19,25 @@ import ReportsList from "@/pages/ReportsList";
 import UsersList from "@/pages/UsersList";
 import Profile from "@/pages/Profile";
 import Mentors from "@/pages/Mentors";
-import CreateMentor from "@/pages/CreateMentor";
+import CreateMentor from "@/pages/admin/CreateMentor";
 import ProgramsList from "@/pages/admin/ProgramsList";
 import Program from "@/pages/admin/Program";
 import CreateProgram from "@/pages/admin/CreateProgram";
+import getUserType from "@/lib/userType";
+import HomeMentor from "@/pages/mentor/Home";
+import Activities from "@/pages/mentor/Activities";
+import NewActivity from "@/pages/mentor/NewActivity";
 
 const Router = () => {
   const user = useAppSelector((state) => state.userState.user);
-  const userType = user?.role?.type;
-  const isFDSC = userType === "fdsc";
+  const userType = getUserType(user);
 
   return (
     <Routes>
       <Route element={<LayoutEvaluation />}>
         <Route path="/evaluation/:evaluationId" element={<Evaluation />} />
       </Route>
-      {isFDSC ? (
+      {userType === "fdsc" ? (
         <Route element={<LayoutDashboard />}>
           <Route index element={<Dashboard />} />
           <Route path="/reports" element={<ReportsList />} />
@@ -48,13 +51,19 @@ const Router = () => {
           <Route path="/programs" element={<ProgramsList />} />
           <Route path="/programs/:programId" element={<Program />} />
         </Route>
-      ) : user ? (
+      ) : userType === "authenticated" ? (
         <Route element={<LayoutApp />}>
           <Route index element={<Home />} />
           <Route path="/reports/:reportId" element={<Report />} />
           <Route path="/users/:userId" element={<UserReports />} />
           <Route path="/create/report" element={<NewReport />} />
           <Route path="/profile" element={<Profile />} />
+        </Route>
+      ) : userType === "mentor" ? (
+        <Route element={<LayoutApp />}>
+          <Route index element={<HomeMentor />} />
+          <Route path={"/activities"} element={<Activities />} />
+          <Route path={"/create/activity"} element={<NewActivity />} />
         </Route>
       ) : (
         <Route element={<LayoutApp />}>
