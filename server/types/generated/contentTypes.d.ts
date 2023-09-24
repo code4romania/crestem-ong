@@ -747,6 +747,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToMany',
       'api::dimension.dimension'
     >;
+    activities: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::activity.activity'
+    >;
     bio: Attribute.Text;
     expertise: Attribute.Text;
     firstName: Attribute.String;
@@ -757,16 +762,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::program.program'
     >;
     available: Attribute.Boolean & Attribute.DefaultTo<false>;
-    mentorActivities: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::activity.activity'
-    >;
-    userActivities: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::activity.activity'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -796,29 +791,25 @@ export interface ApiActivityActivity extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
+    organisation: Attribute.Relation<
+      'api::activity.activity',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     type: Attribute.Relation<
       'api::activity.activity',
       'oneToOne',
       'api::activity-type.activity-type'
     >;
-    dimension: Attribute.Relation<
+    dimensions: Attribute.Relation<
       'api::activity.activity',
-      'manyToOne',
+      'oneToMany',
       'api::dimension.dimension'
     >;
     startDate: Attribute.Date & Attribute.Required;
+    endDate: Attribute.Date & Attribute.Required;
     notes: Attribute.RichText;
     duration: Attribute.Integer;
-    mentor: Attribute.Relation<
-      'api::activity.activity',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
-    user: Attribute.Relation<
-      'api::activity.activity',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -884,11 +875,6 @@ export interface ApiDimensionDimension extends Schema.CollectionType {
       'api::dimension.dimension',
       'manyToMany',
       'plugin::users-permissions.user'
-    >;
-    activities: Attribute.Relation<
-      'api::dimension.dimension',
-      'oneToMany',
-      'api::activity.activity'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

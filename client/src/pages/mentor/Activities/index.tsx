@@ -1,25 +1,39 @@
 import React from "react";
+import { useAppSelector } from "@/redux/store";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
+import Feed from "@/components/Feed";
 import EmptyScreen from "@/components/EmptyScreen";
 import Button from "@/components/Button";
-import { useAppSelector } from "@/redux/store";
 
 const Activities = () => {
   const user = useAppSelector((state) => state.userState.user);
-  console.log("user", user);
+  const { mentorActivities } = user;
+
   return (
     <div>
       <Section>
         <Heading level={"h2"}>Jurnal de activitate</Heading>
       </Section>
       <Section>
-        <EmptyScreen
-          title="Nu aveti nicio activitate creata"
-          button={
-            <Button to={"/create/activity"}>Începe prima activitate</Button>
-          }
-        />
+        <div className="flex justify-between">
+          <div className="text-lg font-semibold">Jurnal de activitate</div>
+          <div>
+            <Button to="/create/activity">Adaugă activitate</Button>
+          </div>
+        </div>
+      </Section>
+      <Section>
+        {mentorActivities ? (
+          <Feed activity={mentorActivities} />
+        ) : (
+          <EmptyScreen
+            title="Nu aveti nicio activitate creata"
+            button={
+              <Button to={"/create/activity"}>Începe prima activitate</Button>
+            }
+          />
+        )}
       </Section>
     </div>
   );

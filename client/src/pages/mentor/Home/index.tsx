@@ -21,9 +21,7 @@ const Home = () => {
           beneficiare, Advocacy și parteneriate, Comunicare externă. În mod
           ideal, va fi completată de toate persoanele care lucrează în
           organizație, astfel încât rezultatele să includă perspective cât mai
-          diverse. Sign up to get notified when it’s ready. Enter your email
-          Notify me We care about the protection of your data. Read our Privacy
-          Policy.
+          diverse.
         </p>
       </Section>
       <Section>

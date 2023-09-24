@@ -29,7 +29,8 @@ export interface Quiz {
 export interface User {
   id: number;
   createdAt: string;
-  activities: string;
+  userActivities?: Activity[];
+  mentorActivities?: Activity[];
   city: string;
   confirmPassword: string;
   contactEmail: string;

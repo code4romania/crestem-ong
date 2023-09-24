@@ -28,7 +28,7 @@ const ButtonGroup = ({ className }: { className?: string }) => (
 
 const activitySchema = object({
   user: string(),
-  dimensions: string(),
+  dimension: string(),
   startDate: string().min(1, "Introduceti data activitatii"),
   type: string(),
   duration: string().min(1, "Introduceti durata activitatii"),
@@ -53,8 +53,6 @@ const NewActivity = () => {
       createActivity({
         ...data,
         mentor: user.id,
-        dimensions: [data.dimensions],
-        endDate: data.startDate,
       });
     },
     [createActivity]
@@ -112,7 +110,7 @@ const NewActivity = () => {
           {dimensions && (
             <div>
               <Select
-                name="dimensions"
+                name="dimension"
                 label="Dimensiune"
                 options={dimensions.map((dimension) => ({
                   label: dimension.name,
@@ -122,31 +120,33 @@ const NewActivity = () => {
               />
             </div>
           )}
-          <div>
-            <div className="text-gray-700 text-sm leading-5 font-medium mb-1">
-              Durată activitate (ore)
+          <div className="flex space-x-4">
+            <div className="w-1/2">
+              <div className="text-gray-700 text-sm leading-5 font-medium mb-1">
+                Durată activitate (ore)
+              </div>
+              <input
+                className="w-full border-gray-300 rounded-md"
+                placeholder="Durată activitate (ore)"
+                type="number"
+                {...register("duration")}
+              />
+              <div className="text-red-600 text-sm mt-1">
+                <ErrorMessage name="duration" errors={formState.errors} />
+              </div>
             </div>
-            <input
-              className="border-gray-300 rounded-md"
-              placeholder="Durată activitate (ore)"
-              type="number"
-              {...register("duration")}
-            />
-            <div className="text-red-600 text-sm mt-1">
-              <ErrorMessage name="duration" errors={formState.errors} />
-            </div>
-          </div>
-          <div>
-            <div className="text-gray-700 text-sm leading-5 font-medium mb-1">
-              Dată
-            </div>
-            <input
-              type="date"
-              className="border-gray-300 rounded-md"
-              {...register("startDate")}
-            />
-            <div className="text-red-600 text-sm mt-1">
-              <ErrorMessage name="startDate" errors={formState.errors} />
+            <div className="w-1/2">
+              <div className="text-gray-700 text-sm leading-5 font-medium mb-1">
+                Dată
+              </div>
+              <input
+                type="date"
+                className="w-full border-gray-300 rounded-md"
+                {...register("startDate")}
+              />
+              <div className="text-red-600 text-sm mt-1">
+                <ErrorMessage name="startDate" errors={formState.errors} />
+              </div>
             </div>
           </div>
           <div className="border-gray-300 rounded-md">

@@ -28,12 +28,12 @@ export const userApi = createApi({
       }
     },
   }),
-  tagTypes: ["User", "Report", "Evaluation"],
+  tagTypes: ["User", "Report", "Evaluation", "Activity"],
   endpoints: (builder) => ({
     getMe: builder.query<User, null>({
       query() {
         return {
-          url: "users/me?populate[0]=reports.evaluations.dimensions.quiz&populate[1]=avatar&populate[2]=role&populate[3]=programs.users&populate[4]=activities",
+          url: "users/me?populate[0]=reports.evaluations.dimensions.quiz&populate[1]=avatar&populate[2]=role&populate[3]=programs.users&populate[4]=userActivities&populate[5]=mentorActivities.user&populate[6]=mentorActivities.type&populate[7]=mentorActivities.dimension",
         };
       },
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
@@ -42,6 +42,7 @@ export const userApi = createApi({
           dispatch(setUser(data));
         } catch (error) {}
       },
+      providesTags: ["Activity"],
     }),
     getUsers: builder.query<User[], null>({
       query() {
@@ -161,6 +162,7 @@ export const userApi = createApi({
           data,
         },
       }),
+      invalidatesTags: ["Activity"],
     }),
     createReport: builder.mutation<Report, ReportInput>({
       query: ({ deadline, evaluations }) => ({
