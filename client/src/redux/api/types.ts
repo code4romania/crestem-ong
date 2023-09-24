@@ -1,6 +1,20 @@
+export type RoleType = "public" | "authenticated" | "mentor" | "fdsc";
 interface Role {
   id: number;
-  type: "fdsc";
+  type: RoleType;
+}
+interface ActivityType {
+  name: string;
+}
+
+export interface Activity {
+  organisation: User;
+  type: ActivityType;
+  dimensions: Dimension[];
+  startDate: string;
+  endDate: string;
+  notes: string;
+  duration: number;
 }
 
 export interface Quiz {
@@ -76,6 +90,10 @@ export interface Domain {
 
 export interface Program {
   name: string;
+  startDate: string;
+  endDate: string;
+  mentors?: User[];
+  sponsorName?: string;
 }
 
 export type Matrix = {

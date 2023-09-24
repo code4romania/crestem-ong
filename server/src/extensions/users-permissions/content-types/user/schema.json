@@ -168,12 +168,6 @@
       "target": "api::dimension.dimension",
       "inversedBy": "mentors"
     },
-    "activities": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::activity.activity",
-      "mappedBy": "organisation"
-    },
     "bio": {
       "type": "text"
     },
@@ -196,6 +190,18 @@
       "type": "boolean",
       "required": false,
       "default": false
+    },
+    "mentorActivities": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::activity.activity",
+      "mappedBy": "mentor"
+    },
+    "userActivities": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::activity.activity",
+      "mappedBy": "user"
     }
   }
 }

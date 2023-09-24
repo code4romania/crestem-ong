@@ -7,9 +7,7 @@ import { useAppSelector } from "@/redux/store";
 import empty from "@/assets/empty.svg";
 import TableHeadReports from "@/components/index/TableHeadReports";
 import TableRowReport from "@/components/TableRowReport";
-import UsersTable from "@/pages/Home/UsersTable";
-import Stats from "@/components/Stats";
-import Dashboard from "@/pages/Dashboard";
+import EmptyScreen from "@/components/EmptyScreen";
 
 const Home = () => {
   const user = useAppSelector((state) => state.userState.user);
@@ -97,14 +95,13 @@ const Home = () => {
             )}
           </>
         ) : (
-          <Section key="no-reports" className={"text-center pb-8"}>
-            <img src={empty} className={"mx-auto mb-4"} />
-            <Heading level={"h4"}> Nicio evaluare realizată</Heading>
-            <p className={"mt-2 mb-4 max-w-xl mx-auto"}>
-              Realizează evaluarea pentru a descoperi dimensiunile organizației
-              care necesită dezvoltare{" "}
-            </p>
-            <Button to={"/create/report"}>Începe prima evaluare</Button>
+          <Section key="no-reports" className="pb-8">
+            <EmptyScreen
+              title="Nicio evaluare realizată"
+              button={
+                <Button to={"/create/report"}>Începe prima evaluare</Button>
+              }
+            />
           </Section>
         )
       ) : (

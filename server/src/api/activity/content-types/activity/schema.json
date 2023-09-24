@@ -12,27 +12,18 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "organisation": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "activities"
-    },
     "type": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::activity-type.activity-type"
     },
-    "dimensions": {
+    "dimension": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::dimension.dimension"
+      "relation": "manyToOne",
+      "target": "api::dimension.dimension",
+      "inversedBy": "activities"
     },
     "startDate": {
-      "type": "date",
-      "required": true
-    },
-    "endDate": {
       "type": "date",
       "required": true
     },
@@ -41,6 +32,18 @@
     },
     "duration": {
       "type": "integer"
+    },
+    "mentor": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "mentorActivities"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "userActivities"
     }
   }
 }

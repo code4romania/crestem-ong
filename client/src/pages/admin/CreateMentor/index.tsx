@@ -155,7 +155,7 @@ const CreateMentor = () => {
               <ErrorMessage name="expertise" errors={errors} />
             </div>
           </InputField>
-          {!isLoadingDimensions && (
+          {!isLoadingDimensions && dimensionsOptions?.length > 0 && (
             <InputField label="Specializare pe dimensiuni">
               <MultiSelect
                 options={dimensionsOptions}
@@ -166,7 +166,7 @@ const CreateMentor = () => {
               </div>
             </InputField>
           )}
-          {!isLoadingPrograms && (
+          {!isLoadingPrograms && programsOptions?.length > 0 && (
             <InputField label="Program asociat">
               <MultiSelect
                 options={programsOptions}
