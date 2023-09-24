@@ -762,7 +762,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::activity.activity'
     >;
-    activities: Attribute.Relation<
+    userActivities: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToMany',
       'api::activity.activity'
@@ -796,11 +796,6 @@ export interface ApiActivityActivity extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    user: Attribute.Relation<
-      'api::activity.activity',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
     type: Attribute.Relation<
       'api::activity.activity',
       'oneToOne',
@@ -815,6 +810,11 @@ export interface ApiActivityActivity extends Schema.CollectionType {
     notes: Attribute.RichText;
     duration: Attribute.Integer;
     mentor: Attribute.Relation<
+      'api::activity.activity',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    user: Attribute.Relation<
       'api::activity.activity',
       'manyToOne',
       'plugin::users-permissions.user'

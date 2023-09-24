@@ -197,7 +197,7 @@
       "target": "api::activity.activity",
       "mappedBy": "mentor"
     },
-    "activities": {
+    "userActivities": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::activity.activity",
