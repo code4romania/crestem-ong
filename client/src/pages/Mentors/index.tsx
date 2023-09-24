@@ -32,10 +32,10 @@ const Mentors = () => {
               `${mentor.firstName} ${mentor.lastName}`,
               `${mentor.dimensions.map((dimension) => dimension.name)}`,
               "Disponibil",
-              `${mentor.programs.map((program) => program.name)}`,
+              `${mentor.program.name}`,
               `${
-                (mentor.activities &&
-                  mentor.activities[mentor.activities?.length - 1]
+                (mentor.mentorActivities &&
+                  mentor.mentorActivities[mentor.mentorActivities?.length - 1]
                     ?.createdAt) ||
                 "-"
               } `,

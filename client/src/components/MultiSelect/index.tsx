@@ -10,15 +10,17 @@ import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 export default function MultiSelect({
   name,
   label,
+  defaultValues = [],
   options,
   onChange,
 }: {
   name: string;
   label: string;
+  defaultValues: { label: string; name: string }[];
   options: { label: string; name: string }[];
   onChange: ChangeEventHandler;
 }) {
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState(defaultValues);
   const [query, setQuery] = useState("");
   const filteredPeople =
     query === ""
@@ -31,6 +33,10 @@ export default function MultiSelect({
         );
 
   useEffect(() => {
+    console.log(
+      "selectedItems.map(({ id }) => id)",
+      selectedItems.map(({ id }) => id)
+    );
     onChange({
       target: {
         value: selectedItems.map(({ id }) => id),

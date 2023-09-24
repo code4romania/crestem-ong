@@ -27,6 +27,8 @@ import getUserType from "@/lib/userType";
 import HomeMentor from "@/pages/mentor/Home";
 import Activities from "@/pages/mentor/Activities";
 import NewActivity from "@/pages/mentor/NewActivity";
+import MentorProfile from "@/pages/mentor/Profile";
+import MentorEditProfile from "@/pages/mentor/EditProfile";
 
 const Router = () => {
   const user = useAppSelector((state) => state.userState.user);
@@ -64,6 +66,8 @@ const Router = () => {
           <Route index element={<HomeMentor />} />
           <Route path={"/activities"} element={<Activities />} />
           <Route path={"/create/activity"} element={<NewActivity />} />
+          <Route path={"/profile"} element={<MentorProfile />} />
+          <Route path="/profile/edit" element={<MentorEditProfile />} />
         </Route>
       ) : (
         <Route element={<LayoutApp />}>

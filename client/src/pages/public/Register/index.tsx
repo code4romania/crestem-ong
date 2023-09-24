@@ -1,12 +1,7 @@
 import React, { useEffect } from "react";
 import { useRegisterUserMutation } from "@/redux/api/authApi";
 import { array, custom, literal, number, object, string, TypeOf } from "zod";
-import {
-  SubmitHandler,
-  useForm,
-  FormProvider,
-  useWatch,
-} from "react-hook-form";
+import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
