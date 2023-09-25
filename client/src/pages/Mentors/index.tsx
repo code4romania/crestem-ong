@@ -30,9 +30,9 @@ const Mentors = () => {
             ]}
             body={mentors.map((mentor) => [
               `${mentor.firstName} ${mentor.lastName}`,
-              `${mentor.dimensions.map((dimension) => dimension.name)}`,
+              `${mentor.dimensions?.map((dimension) => dimension.name)}`,
               "Disponibil",
-              `${mentor.program.name}`,
+              `${mentor?.program?.name}`,
               `${
                 (mentor.mentorActivities &&
                   mentor.mentorActivities[mentor.mentorActivities?.length - 1]

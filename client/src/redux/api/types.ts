@@ -50,6 +50,10 @@ export interface User {
   reports: Report[];
   domains?: Domain[];
   role?: Role;
+  //   Mentor
+  available: boolean;
+  program: Program;
+  dimensions: Dimension[];
 }
 
 export interface Question {

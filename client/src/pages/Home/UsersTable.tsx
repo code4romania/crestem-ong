@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { downloadExcel } from "react-export-table-to-excel";
 import Input from "@/components/Input";
 import { useGetUsersQuery } from "@/redux/api/userApi";
@@ -36,14 +35,14 @@ const UsersTable = () => {
     "ULTIMA EVALUARE",
   ];
 
-  const body = filtered.map(({ ongName, createdAt, reports }) => ({
+  const body = filtered.map(({ ongName, createdAt, reports, program }) => ({
     ongName,
     createdAt: new Date(createdAt).toLocaleString("ro-RO", {
       month: "short",
       day: "numeric",
       year: "numeric",
     }),
-    program: "-",
+    program: program || "-",
     lastEvaluationDate: reports?.length
       ? new Date(reports[reports?.length - 1].createdAt).toLocaleString(
           "ro-RO",

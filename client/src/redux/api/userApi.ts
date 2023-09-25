@@ -57,7 +57,7 @@ export const userApi = createApi({
     getUsers: builder.query<User[], null>({
       query() {
         return {
-          url: `users?filters[role][type][$eq]=authenticated&populate[0]=role&populate[1]=domains&populate[2]=reports&sort=createdAt%3Adesc`,
+          url: `users?filters[role][type][$eq]=authenticated&populate[0]=role&populate[1]=domains&populate[2]=reports&populate[3]=program&sort=createdAt%3Adesc`,
         };
       },
       transformResponse: (result: User[]) =>
@@ -79,7 +79,7 @@ export const userApi = createApi({
     getMentors: builder.query<User[], null>({
       query() {
         return {
-          url: `users?filters[role][type][$eq]=mentor&populate[0]=role&populate[1]=domains&populate[2]=programs&populate[3]=dimensions&sort=createdAt%3Adesc`,
+          url: `users?filters[role][type][$eq]=mentor&populate[0]=role&populate[1]=domains&populate[2]=program&populate[3]=dimensions&sort=createdAt%3Adesc`,
         };
       },
     }),

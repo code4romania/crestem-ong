@@ -38,9 +38,9 @@ const EditProfile = () => {
   const [updateMentorProfile, { isSuccess, isError, error, data }] =
     useUpdateUserMutation();
   const { data: programs, isLoading: isLoadingPrograms } =
-    useGetProgramsQuery();
+    useGetProgramsQuery(null);
   const { data: dimensions, isLoading: isLoadingDimensions } =
-    useGetDimensionsQuery();
+    useGetDimensionsQuery(null);
 
   const methods = useForm<MentorProfileInput>({
     resolver: zodResolver(mentorProfileSchema),
@@ -52,24 +52,14 @@ const EditProfile = () => {
     },
   });
 
-  console.log("programs", programs);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (error?.data?.error?.message) {
-      if (
-        error?.data?.error?.details?.errors?.length > 0 &&
-        error?.data.error.details.errors.find(({ path }) =>
-          path.includes("ongIdentificationNumber")
-        )
-      ) {
-        toast.error("Organizație deja înregistrată în platformă");
-      } else {
-        toast.error(error.data.error.message);
-      }
+      toast.error(error.data.error.message);
     }
-  }, [error?.data?.error?.message, error?.data?.error?.details?.errors]);
+  }, [error?.data?.error?.message]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -78,7 +68,6 @@ const EditProfile = () => {
   }, [isSuccess, dispatch]);
 
   const onSubmitHandler: SubmitHandler<MentorProfileInput> = async (data) => {
-    console.log("data", data);
     updateMentorProfile({
       id: user?.id,
       ...data,
