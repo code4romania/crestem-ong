@@ -28,7 +28,14 @@ export const userApi = createApi({
       }
     },
   }),
-  tagTypes: ["User", "Report", "Evaluation", "Activity", "ProgramUser"],
+  tagTypes: [
+    "User",
+    "Report",
+    "Evaluation",
+    "Activity",
+    "Program",
+    "ProgramUser",
+  ],
   endpoints: (builder) => ({
     getMe: builder.query<User, null>({
       query() {
@@ -102,6 +109,7 @@ export const userApi = createApi({
           },
         };
       },
+      invalidatesTags: ["Program"],
     }),
     getPrograms: builder.query<Program[], null>({
       query() {
@@ -117,6 +125,7 @@ export const userApi = createApi({
             ({ attributes }) => attributes
           ),
         })),
+      providesTags: ["Program"],
     }),
     findProgram: builder.query<Program, { programId: string }>({
       query({ programId }) {
