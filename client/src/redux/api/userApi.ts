@@ -121,7 +121,7 @@ export const userApi = createApi({
     findProgram: builder.query<Program, { programId: string }>({
       query({ programId }) {
         return {
-          url: `programs/${programId}?populate[0]=mentors.dimensions&populate[1]=mentors.activities&populate[2]=users.reports`,
+          url: `programs/${programId}?populate[0]=mentors.dimensions&populate[1]=mentors.mentorActivities&populate[2]=users.reports`,
         };
       },
       transformResponse: (result) => ({
@@ -130,7 +130,7 @@ export const userApi = createApi({
           ({ id, attributes }) => ({
             ...attributes,
             id,
-            activities: attributes.activities?.data?.map(
+            mentorActivities: attributes.mentorActivities?.data?.map(
               ({ attributes }) => attributes
             ),
             dimensions: attributes.dimensions?.data?.map(

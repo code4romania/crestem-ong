@@ -3,6 +3,7 @@ import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import {
   useFindProgramQuery,
+  useGetMentorsQuery,
   useGetUsersQuery,
   useUpdateProgramMutation,
 } from "@/redux/api/userApi";
@@ -11,29 +12,49 @@ import FullScreenLoader from "@/components/FullScreenLoader";
 import Table from "@/components/Table";
 import Button from "@/components/Button";
 import AddUserInProgram from "@/components/AddUserInProgram";
+import AddMentorInProgram from "@/components/AddMentorInProgram";
 
 const Program = () => {
   const { programId = "" } = useParams();
   const [openUserInProgram, setOpenUserInProgram] = useState(false);
+  const [openMentorInProgram, setOpenMentorInProgram] = useState(false);
+
   const [updateProgram, { isSuccess: isUpdateSuccess, isError }] =
     useUpdateProgramMutation();
   const { isLoading, data } = useFindProgramQuery({ programId });
   const programUserIds = data?.users?.map(({ id }) => id) || [];
+  const programMentorIds = data?.mentors?.map(({ id }) => id) || [];
   const { data: users } = useGetUsersQuery();
+  const { data: mentors } = useGetMentorsQuery();
   const availableUsers = useMemo(
     () => users?.filter(({ id }) => !programUserIds.includes(id)),
     [users, programUserIds]
   );
+  const availableMentors = useMemo(
+    () => mentors?.filter(({ id }) => !programMentorIds.includes(id)),
+    [mentors, programMentorIds]
+  );
 
   const handleOnAddUserInProgram = useCallback(
-    ({ user }, close) => {
+    ({ user }, setModalOpen) => {
       updateProgram({
         id: programId,
         users: data.users?.map(({ id }) => id).concat(+user),
       });
-      close();
+      setModalOpen(false);
     },
     [data?.users]
+  );
+
+  const handleOnAddUMentorInProgram = useCallback(
+    ({ mentor }, setModalOpen) => {
+      updateProgram({
+        id: programId,
+        mentors: data.mentors?.map(({ id }) => id).concat(+mentor),
+      });
+      setModalOpen(false);
+    },
+    [data?.mentors]
   );
 
   useEffect(() => {
@@ -79,17 +100,19 @@ const Program = () => {
           <Table
             title="ONG-uri în program"
             button={
-              <>
-                <Button onClick={() => setOpenUserInProgram(true)}>
-                  Adaugă ONG
-                </Button>
-                <AddUserInProgram
-                  open={openUserInProgram}
-                  users={availableUsers}
-                  setOpen={setOpenUserInProgram}
-                  onSave={handleOnAddUserInProgram}
-                />
-              </>
+              availableUsers?.length > 0 && (
+                <>
+                  <Button onClick={() => setOpenUserInProgram(true)}>
+                    Adaugă ONG
+                  </Button>
+                  <AddUserInProgram
+                    open={openUserInProgram}
+                    users={availableUsers}
+                    setOpen={setOpenUserInProgram}
+                    onSave={handleOnAddUserInProgram}
+                  />
+                </>
+              )
             }
             head={[
               "Nume ONG",
@@ -124,7 +147,19 @@ const Program = () => {
           <Table
             title="Persoane resursă în program"
             button={
-              <AddUserInProgram open={false} setOpen={setOpenUserInProgram} />
+              availableMentors?.length > 0 && (
+                <>
+                  <Button onClick={() => setOpenMentorInProgram(true)}>
+                    Adaugă persoană resursă
+                  </Button>
+                  <AddMentorInProgram
+                    open={openMentorInProgram}
+                    mentors={availableMentors}
+                    setOpen={setOpenMentorInProgram}
+                    onSave={handleOnAddUMentorInProgram}
+                  />
+                </>
+              )
             }
             head={[
               "Nume",
@@ -136,8 +171,18 @@ const Program = () => {
             body={data.mentors.map((mentor) => [
               `${mentor.firstName} ${mentor.lastName}`,
               mentor.dimensions?.map((dimension) => dimension.name).join(", "),
-              "Indisponibil",
-              "-",
+              `${mentor.available ? "Disponibil" : "Indisponibil"}`,
+              `${
+                mentor.mentorActivities?.length
+                  ? new Date(
+                      mentor.mentorActivities[0]?.createdAt
+                    )?.toLocaleString("ro-RO", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })
+                  : "-"
+              }`,
               <NavLink to={`/users/${mentor.id}`}>Vezi</NavLink>,
             ])}
           />

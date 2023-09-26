@@ -7,12 +7,12 @@ import { object, string, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 
 const userIdSchema = object({
-  user: string(),
+  mentor: string(),
 });
 
 export type UserIdSchema = TypeOf<typeof userIdSchema>;
 
-const AddUserInProgram = ({ open, setOpen, onSave, users }) => {
+const AddMentorInProgram = ({ open, setOpen, onSave, mentors }) => {
   const cancelButtonRef = useRef(null);
   const methods = useForm<UserIdSchema>({
     resolver: zodResolver(userIdSchema),
@@ -60,18 +60,18 @@ const AddUserInProgram = ({ open, setOpen, onSave, users }) => {
                           as="h3"
                           className="text-base font-semibold leading-6 text-gray-900"
                         >
-                          Adaugă ONG în program
+                          Adaugă persoană resursă în program
                         </Dialog.Title>
                       </div>
                       <div className="mt-10">
                         <Select
-                          name="user"
-                          label={"Organizație"}
+                          name="mentor"
+                          label={"Persoană resursă"}
                           register={methods.register}
                           options={
-                            users?.map((user) => ({
+                            mentors?.map((user) => ({
                               name: user.id,
-                              label: user.ongName,
+                              label: `${user.firstName} ${user.lastName}`,
                             })) || []
                           }
                         />
@@ -94,4 +94,4 @@ const AddUserInProgram = ({ open, setOpen, onSave, users }) => {
   );
 };
 
-export default AddUserInProgram;
+export default AddMentorInProgram;

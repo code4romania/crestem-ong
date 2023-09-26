@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import Section from "@/components/Section";
 import Heading from "@/components/Heading";
 import Button from "@/components/Button";
@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import { array, number, object, string, TypeOf } from "zod";
 import { ErrorMessage } from "@hookform/error-message";
 import MultiSelect from "@/components/MultiSelect";
+import { useNavigate } from "react-router-dom";
 
 const mentorSchema = object({
   lastName: string(),
@@ -52,11 +53,12 @@ const Input = ({ register, name, label, errors, ...rest }) => (
 );
 
 const CreateMentor = () => {
+  const navigate = useNavigate();
   const { data: programs, isLoading: isLoadingPrograms } =
     useGetProgramsQuery();
   const { data: dimensions, isLoading: isLoadingDimensions } =
     useGetDimensionsQuery();
-  const [createMentor] = useCreateMentorMutation();
+  const [createMentor, { isSuccess }] = useCreateMentorMutation();
 
   const {
     register,
@@ -65,6 +67,12 @@ const CreateMentor = () => {
   } = useForm<MentorInput>({
     resolver: zodResolver(mentorSchema),
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/mentors");
+    }
+  }, [isSuccess]);
 
   const onSubmitHandler: SubmitHandler<MentorInput> = (values) => {
     createMentor({

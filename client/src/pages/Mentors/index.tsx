@@ -31,7 +31,7 @@ const Mentors = () => {
             body={mentors.map((mentor) => [
               `${mentor.firstName} ${mentor.lastName}`,
               `${mentor.dimensions?.map((dimension) => dimension.name)}`,
-              "Disponibil",
+              `${mentor.available ? "Disponibil" : "Indisponibil"}`,
               `${mentor?.program?.name}`,
               `${
                 (mentor.mentorActivities &&
