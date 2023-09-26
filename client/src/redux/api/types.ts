@@ -94,11 +94,13 @@ export interface Domain {
 }
 
 export interface Program {
+  id: string | number;
   name: string;
   startDate: string;
   endDate: string;
   mentors?: User[];
   sponsorName?: string;
+  users?: User[];
 }
 
 export type Matrix = {

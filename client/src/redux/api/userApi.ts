@@ -28,7 +28,7 @@ export const userApi = createApi({
       }
     },
   }),
-  tagTypes: ["User", "Report", "Evaluation", "Activity"],
+  tagTypes: ["User", "Report", "Evaluation", "Activity", "ProgramUser"],
   endpoints: (builder) => ({
     getMe: builder.query<User, null>({
       query() {
@@ -54,7 +54,7 @@ export const userApi = createApi({
       },
       invalidatesTags: ["User"],
     }),
-    getUsers: builder.query<User[], null>({
+    getUsers: builder.query<User[], void>({
       query() {
         return {
           url: `users?filters[role][type][$eq]=authenticated&populate[0]=role&populate[1]=domains&populate[2]=reports&populate[3]=program&sort=createdAt%3Adesc`,
@@ -106,7 +106,7 @@ export const userApi = createApi({
     getPrograms: builder.query<Program[], null>({
       query() {
         return {
-          url: `programs?populate[0]=mentors`,
+          url: `programs?populate[0]=mentors&populate[1]=users`,
         };
       },
       transformResponse: (result: { data: any }) =>
@@ -121,7 +121,7 @@ export const userApi = createApi({
     findProgram: builder.query<Program, { programId: string }>({
       query({ programId }) {
         return {
-          url: `programs/${programId}?populate[0]=mentors.dimensions&populate[1]=mentors.activities`,
+          url: `programs/${programId}?populate[0]=mentors.dimensions&populate[1]=mentors.activities&populate[2]=users.reports`,
         };
       },
       transformResponse: (result) => ({
@@ -138,7 +138,28 @@ export const userApi = createApi({
             ),
           })
         ),
+        users: result.data.attributes.users?.data?.map(
+          ({ id, attributes }) => ({
+            ...attributes,
+            id,
+            reports: attributes.reports.data.map(
+              ({ attributes }) => attributes
+            ),
+          })
+        ),
       }),
+      providesTags: ["ProgramUser"],
+    }),
+    updateProgram: builder.mutation<Program, Program>({
+      query: ({ id, ...rest }) => {
+        return {
+          method: "PUT",
+          url: `programs/${id}`,
+          credentials: "include",
+          body: { data: rest },
+        };
+      },
+      invalidatesTags: ["ProgramUser"],
     }),
     getDimensions: builder.query<Dimension[], null>({
       query() {
@@ -350,6 +371,7 @@ export const {
   useCreateProgramMutation,
   useGetProgramsQuery,
   useFindProgramQuery,
+  useUpdateProgramMutation,
   useGetDimensionsQuery,
   useCreateMentorMutation,
   useGetMatrixQuery,
