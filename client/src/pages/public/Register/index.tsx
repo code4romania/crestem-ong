@@ -324,7 +324,6 @@ const Register = () => {
                     <div className="mt-1">
                       <input
                         type="text"
-                        autoComplete="family-name"
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("website")}
                       />
@@ -340,7 +339,6 @@ const Register = () => {
                     <div className="mt-1">
                       <input
                         type="text"
-                        autoComplete="family-name"
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("keywords")}
                       />

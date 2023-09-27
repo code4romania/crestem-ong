@@ -53,7 +53,6 @@ const CreateEvaluation = ({ reportId }: { reportId: string }) => {
         <div className="my-2">
           <input
             type="email"
-            autoComplete="family-name"
             className="inline-flex w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
             {...register("email")}
           />{" "}
