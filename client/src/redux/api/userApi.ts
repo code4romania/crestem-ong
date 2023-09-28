@@ -204,6 +204,18 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["Activity"],
     }),
+    createMentorshipRequest: builder.mutation<
+      any,
+      { user: number; mentor: number }
+    >({
+      query: (data) => ({
+        method: "POST",
+        url: "mentorship-requests",
+        body: {
+          data,
+        },
+      }),
+    }),
     createReport: builder.mutation<Report, ReportInput>({
       query: ({ deadline, evaluations }) => ({
         method: "POST",
@@ -386,4 +398,5 @@ export const {
   useGetMatrixQuery,
   useGetActivityTypesQuery,
   useCreateActivityMutation,
+  useCreateMentorshipRequestMutation,
 } = userApi;

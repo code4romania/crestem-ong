@@ -49,10 +49,13 @@ export interface User {
   website: string;
   reports: Report[];
   domains?: Domain[];
+  program: Program;
   role?: Role;
   //   Mentor
+  firstName: string;
+  lastName: string;
   available: boolean;
-  program: Program;
+  programs: Program[];
   dimensions: Dimension[];
 }
 
