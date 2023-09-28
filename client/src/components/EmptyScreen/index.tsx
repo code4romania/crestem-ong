@@ -9,13 +9,13 @@ const EmptyScreen = ({
 }: {
   title: string;
   description?: string;
-  button: ReactNode;
+  button?: ReactNode;
 }) => (
   <div className="flex flex-col text-center pb-8 space-y-4">
     <img alt={title} src={empty} className="mx-auto mb-4" />
     <Heading level="h4">{title}</Heading>
     {description && <p className="mt-2 max-w-xl mx-auto">{description}</p>}
-    <div>{button}</div>
+    {button && <div>{button}</div>}
   </div>
 );
 

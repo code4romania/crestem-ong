@@ -83,7 +83,7 @@ export const userApi = createApi({
         ),
       }),
     }),
-    getMentors: builder.query<User[], null>({
+    getMentors: builder.query<User[], void>({
       query() {
         return {
           url: `users?filters[role][type][$eq]=mentor&populate[0]=role&populate[1]=domains&populate[2]=program&populate[3]=dimensions&sort=createdAt%3Adesc`,
