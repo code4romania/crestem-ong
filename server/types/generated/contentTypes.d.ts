@@ -747,11 +747,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToMany',
       'api::dimension.dimension'
     >;
-    activities: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::activity.activity'
-    >;
     bio: Attribute.Text;
     expertise: Attribute.Text;
     firstName: Attribute.String;
@@ -762,6 +757,26 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::program.program'
     >;
     available: Attribute.Boolean & Attribute.DefaultTo<false>;
+    mentorActivities: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::activity.activity'
+    >;
+    userActivities: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::activity.activity'
+    >;
+    mentorSessions: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::mentorship-request.mentorship-request'
+    >;
+    userSessions: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::mentorship-request.mentorship-request'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -791,25 +806,29 @@ export interface ApiActivityActivity extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    organisation: Attribute.Relation<
-      'api::activity.activity',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
     type: Attribute.Relation<
       'api::activity.activity',
       'oneToOne',
       'api::activity-type.activity-type'
     >;
-    dimensions: Attribute.Relation<
+    dimension: Attribute.Relation<
       'api::activity.activity',
-      'oneToMany',
+      'manyToOne',
       'api::dimension.dimension'
     >;
     startDate: Attribute.Date & Attribute.Required;
-    endDate: Attribute.Date & Attribute.Required;
     notes: Attribute.RichText;
     duration: Attribute.Integer;
+    mentor: Attribute.Relation<
+      'api::activity.activity',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    user: Attribute.Relation<
+      'api::activity.activity',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -875,6 +894,11 @@ export interface ApiDimensionDimension extends Schema.CollectionType {
       'api::dimension.dimension',
       'manyToMany',
       'plugin::users-permissions.user'
+    >;
+    activities: Attribute.Relation<
+      'api::dimension.dimension',
+      'oneToMany',
+      'api::activity.activity'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -998,6 +1022,46 @@ export interface ApiMatrixMatrix extends Schema.SingleType {
   };
 }
 
+export interface ApiMentorshipRequestMentorshipRequest
+  extends Schema.CollectionType {
+  collectionName: 'mentorship_requests';
+  info: {
+    singularName: 'mentorship-request';
+    pluralName: 'mentorship-requests';
+    displayName: 'Mentorship Request';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    mentor: Attribute.Relation<
+      'api::mentorship-request.mentorship-request',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    user: Attribute.Relation<
+      'api::mentorship-request.mentorship-request',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::mentorship-request.mentorship-request',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::mentorship-request.mentorship-request',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiProgramProgram extends Schema.CollectionType {
   collectionName: 'programs';
   info: {
@@ -1108,6 +1172,7 @@ declare module '@strapi/strapi' {
       'api::domain.domain': ApiDomainDomain;
       'api::evaluation.evaluation': ApiEvaluationEvaluation;
       'api::matrix.matrix': ApiMatrixMatrix;
+      'api::mentorship-request.mentorship-request': ApiMentorshipRequestMentorshipRequest;
       'api::program.program': ApiProgramProgram;
       'api::report.report': ApiReportReport;
     }
