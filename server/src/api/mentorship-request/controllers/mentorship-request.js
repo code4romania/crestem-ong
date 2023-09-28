@@ -45,6 +45,7 @@ module.exports = createCoreController(
           }
 
           sendEmailToMentorFromUser(mentorData.email, {
+            USER_NAME: userData.ongName,
             USER_EMAIL: userData.email,
           });
 
