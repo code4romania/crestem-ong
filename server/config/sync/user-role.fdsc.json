@@ -1,0 +1,70 @@
+{
+  "name": "FDSC",
+  "description": "FDSC",
+  "type": "fdsc",
+  "permissions": [
+    {
+      "action": "api::activity-type.activity-type.find"
+    },
+    {
+      "action": "api::activity.activity.find"
+    },
+    {
+      "action": "api::dimension.dimension.find"
+    },
+    {
+      "action": "api::dimension.dimension.findOne"
+    },
+    {
+      "action": "api::domain.domain.find"
+    },
+    {
+      "action": "api::evaluation.evaluation.find"
+    },
+    {
+      "action": "api::evaluation.evaluation.findOne"
+    },
+    {
+      "action": "api::evaluation.evaluation.update"
+    },
+    {
+      "action": "api::matrix.matrix.find"
+    },
+    {
+      "action": "api::program.program.create"
+    },
+    {
+      "action": "api::program.program.find"
+    },
+    {
+      "action": "api::program.program.findOne"
+    },
+    {
+      "action": "api::program.program.update"
+    },
+    {
+      "action": "api::report.report.find"
+    },
+    {
+      "action": "api::report.report.findOne"
+    },
+    {
+      "action": "api::report.report.update"
+    },
+    {
+      "action": "plugin::users-permissions.role.find"
+    },
+    {
+      "action": "plugin::users-permissions.user.create"
+    },
+    {
+      "action": "plugin::users-permissions.user.find"
+    },
+    {
+      "action": "plugin::users-permissions.user.findOne"
+    },
+    {
+      "action": "plugin::users-permissions.user.me"
+    }
+  ]
+}
