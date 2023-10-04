@@ -14,7 +14,7 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "types": ["node", "vite/client"],
+    "types": ["node", "vite/client", "cypress", "@testing-library/cypress"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

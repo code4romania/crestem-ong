@@ -138,13 +138,14 @@ const Register = () => {
                 <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                   <div className="sm:col-span-3">
                     <label
-                      htmlFor="ong_name"
+                      htmlFor="ongName"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Numele organizației
                     </label>
                     <div className="mt-1">
                       <input
+                        id="ongName"
                         type="text"
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("ongName")}
@@ -157,13 +158,14 @@ const Register = () => {
 
                   <div className="sm:col-span-3">
                     <label
-                      htmlFor="ong_identification_number"
+                      htmlFor="ongIdentificationNumber"
                       className="block text-sm font-medium text-gray-700"
                     >
                       CIF-ul organizației
                     </label>
                     <div className="mt-1">
                       <input
+                        id="ongIdentificationNumber"
                         type="text"
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("ongIdentificationNumber")}
@@ -176,13 +178,14 @@ const Register = () => {
 
                   <div className="sm:col-span-3">
                     <label
-                      htmlFor="country"
+                      htmlFor="county"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Județ
                     </label>
                     <div className="mt-1">
                       <input
+                        id="county"
                         type="text"
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("county")}
@@ -195,13 +198,14 @@ const Register = () => {
 
                   <div className="sm:col-span-3">
                     <label
-                      htmlFor="country"
+                      htmlFor="city"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Localitate
                     </label>
                     <div className="mt-1">
                       <input
+                        id="city"
                         type="text"
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("city")}
@@ -216,13 +220,14 @@ const Register = () => {
                 <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                   <div className="sm:col-span-3">
                     <label
-                      htmlFor="first-name"
+                      htmlFor="email"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Email organizație
                     </label>
                     <div className="mt-1">
                       <input
+                        id="email"
                         type="email"
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("email")}
@@ -235,13 +240,14 @@ const Register = () => {
 
                   <div className="sm:col-span-3">
                     <label
-                      htmlFor="last-name"
+                      htmlFor="phone"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Telefon organizație
                     </label>
                     <div className="mt-1">
                       <input
+                        id="phone"
                         type="tel"
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("phone")}
@@ -256,13 +262,14 @@ const Register = () => {
                 <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                   <div className="sm:col-span-3">
                     <label
-                      htmlFor="first-name"
+                      htmlFor="password"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Parola
                     </label>
                     <div className="mt-1">
                       <input
+                        id="password"
                         type="password"
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("password")}
@@ -275,13 +282,14 @@ const Register = () => {
 
                   <div className="sm:col-span-3">
                     <label
-                      htmlFor="last-name"
+                      htmlFor="confirmPassword"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Confirmă parola
                     </label>
                     <div className="mt-1">
                       <input
+                        id="confirmPassword"
                         type="password"
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("confirmPassword")}
