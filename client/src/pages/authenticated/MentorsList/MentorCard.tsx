@@ -15,10 +15,12 @@ const MentorCard = ({
   dimensions,
   available,
 }) => {
-  const [createMentorshipRequest] = useCreateMentorshipRequestMutation();
+  const [createMentorshipRequest, { isSuccess }] =
+    useCreateMentorshipRequestMutation();
 
   const handleClickEmail = () => {
-    createMentorshipRequest({ mentor: +id, user: +userId });
+    console.log("-->");
+    // createMentorshipRequest({ mentor: +id, user: +userId });
   };
 
   return (

@@ -45,11 +45,13 @@ module.exports = createCoreController(
       if (mentorData?.role?.type !== "mentor") {
         throw new PolicyError(`Persoana resursa nu este valida`);
       }
+      console.log("mentorData.email", mentorData.email, userData.ongName);
 
       sendEmailToMentorFromUser(mentorData.email, {
         USER_NAME: userData.ongName,
         USER_EMAIL: userData.email,
       }).catch((e) => {
+        console.log("e", e);
         throw new PolicyError(`A aparut o eroare la trimiterea email-ului`);
       });
 

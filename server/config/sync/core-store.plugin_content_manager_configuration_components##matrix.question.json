@@ -1,0 +1,173 @@
+{
+  "key": "plugin_content_manager_configuration_components::matrix.question",
+  "value": {
+    "uid": "matrix.question",
+    "settings": {
+      "bulkable": true,
+      "filterable": true,
+      "searchable": true,
+      "pageSize": 10,
+      "mainField": "question",
+      "defaultSortBy": "question",
+      "defaultSortOrder": "ASC"
+    },
+    "metadatas": {
+      "id": {
+        "edit": {},
+        "list": {
+          "label": "id",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "question": {
+        "edit": {
+          "label": "question",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "question",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "option_1": {
+        "edit": {
+          "label": "option_1",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "option_1",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "option_2": {
+        "edit": {
+          "label": "option_2",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "option_2",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "option_3": {
+        "edit": {
+          "label": "option_3",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "option_3",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "option_4": {
+        "edit": {
+          "label": "option_4",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "option_4",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "option_5": {
+        "edit": {
+          "label": "option_5",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "option_5",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "tag": {
+        "edit": {
+          "label": "tag",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "tag",
+          "searchable": true,
+          "sortable": true
+        }
+      }
+    },
+    "layouts": {
+      "list": [
+        "id",
+        "question",
+        "option_1",
+        "option_2"
+      ],
+      "edit": [
+        [
+          {
+            "name": "question",
+            "size": 6
+          },
+          {
+            "name": "option_1",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "option_2",
+            "size": 6
+          },
+          {
+            "name": "option_3",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "option_4",
+            "size": 6
+          },
+          {
+            "name": "option_5",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "tag",
+            "size": 6
+          }
+        ]
+      ]
+    },
+    "isComponent": true
+  },
+  "type": "object",
+  "environment": null,
+  "tag": null
+}

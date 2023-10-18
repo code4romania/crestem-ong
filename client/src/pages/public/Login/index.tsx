@@ -61,9 +61,12 @@ const FormFooter = memo(() => (
 
 const Input = ({ register, name, label, errors, ...rest }) => (
   <div className="container mt-0 mr-auto mb-0 ml-auto pt-2 pr-4 pb-2">
-    <label className="block text-sm font-medium text-gray-700">{label}</label>
+    <label className="block text-sm font-medium text-gray-700" htmlFor={name}>
+      {label}
+    </label>
     <div className="mt-1 mr-0 mb-0 ml-0 rounded-md shadow-sm relative">
       <input
+        id={name}
         className="border focus:ring-teal-500 focus:border-teal-500
             w-full h-10 block border-gray-300 shadow-sm pt-0 pr-0 pb-0 pl-4 rounded-md sm:text-sm"
         {...register(name)}

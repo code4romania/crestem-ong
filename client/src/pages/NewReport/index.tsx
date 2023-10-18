@@ -98,10 +98,14 @@ const NewReport = () => {
                 />
               </div>
               <div>
-                <div className="text-gray-700 text-sm leading-5 font-medium mb-1">
+                <label
+                  className="block text-gray-700 text-sm leading-5 font-medium mb-1"
+                  htmlFor="deadline"
+                >
                   Dată final
-                </div>
+                </label>
                 <input
+                  id="deadline"
                   type="date"
                   className="border-gray-300 rounded-md"
                   min={today}
