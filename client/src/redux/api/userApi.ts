@@ -35,6 +35,7 @@ export const userApi = createApi({
     "Activity",
     "Program",
     "ProgramUser",
+    "Mentor",
   ],
   endpoints: (builder) => ({
     getMe: builder.query<User, null>({
@@ -49,7 +50,7 @@ export const userApi = createApi({
           dispatch(setUser(data));
         } catch (error) {}
       },
-      providesTags: ["User", "Activity"],
+      providesTags: ["User", "Activity", "Report"],
     }),
     updateUser: builder.mutation({
       query({ id, ...user }) {
@@ -82,13 +83,15 @@ export const userApi = createApi({
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         ),
       }),
+      providesTags: ["Report"],
     }),
     getMentors: builder.query<User[], void>({
       query() {
         return {
-          url: `users?filters[role][type][$eq]=mentor&populate[0]=role&populate[1]=domains&populate[2]=program&populate[3]=dimensions&sort=createdAt%3Adesc`,
+          url: `users?filters[role][type][$eq]=mentor&populate[0]=role&populate[1]=domains&populate[2]=programs&populate[3]=dimensions&populate[4]=mentorActivities&sort=createdAt%3Adesc`,
         };
       },
+      providesTags: ["Mentor"],
     }),
     createMentor: builder.mutation<User, User>({
       query(body) {
@@ -98,6 +101,7 @@ export const userApi = createApi({
           body,
         };
       },
+      invalidatesTags: ["Mentor"],
     }),
     createProgram: builder.mutation<User, Program>({
       query(body) {
@@ -111,7 +115,7 @@ export const userApi = createApi({
       },
       invalidatesTags: ["Program"],
     }),
-    getPrograms: builder.query<Program[], null>({
+    getPrograms: builder.query<Program[], void>({
       query() {
         return {
           url: `programs?populate[0]=mentors&populate[1]=users`,
@@ -170,7 +174,7 @@ export const userApi = createApi({
       },
       invalidatesTags: ["ProgramUser"],
     }),
-    getDimensions: builder.query<Dimension[], null>({
+    getDimensions: builder.query<Dimension[], void>({
       query() {
         return {
           url: `dimensions`,
@@ -182,7 +186,7 @@ export const userApi = createApi({
           ...report.attributes,
         })),
     }),
-    getActivityTypes: builder.query<User[], null>({
+    getActivityTypes: builder.query<User[], void>({
       query() {
         return {
           url: `activity-types`,
@@ -233,7 +237,7 @@ export const userApi = createApi({
         },
       }),
     }),
-    getReports: builder.query<Report[], null>({
+    getReports: builder.query<Report[], void>({
       query: () => ({
         url: "reports?pagination[pageSize]=1000&populate[0]=user&populate[1]=evaluations.dimensions.quiz&sort=createdAt%3Adesc",
       }),
@@ -246,6 +250,7 @@ export const userApi = createApi({
             ({ attributes }) => attributes
           ),
         })),
+      providesTags: ["Report"],
     }),
     findReport: builder.query<Report, string>({
       query: (reportId) =>
@@ -289,7 +294,7 @@ export const userApi = createApi({
         };
       },
     }),
-    getEvaluationsCount: builder.query<Report[], null>({
+    getEvaluationsCount: builder.query<Report[], void>({
       query: () => ({
         url: "evaluations?populate=dimensions.quiz&pagination[pageSize]=1000",
       }),

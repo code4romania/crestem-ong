@@ -13,7 +13,6 @@ const Dashboard = () => {
   const { data: reports } = useGetReportsQuery(null);
   const { data: users } = useGetUsersQuery();
   const { data: evaluations } = useGetEvaluationsCountQuery();
-  console.log("evaluations", evaluations);
 
   return (
     <Section className="py-4">

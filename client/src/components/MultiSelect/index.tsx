@@ -33,10 +33,6 @@ export default function MultiSelect({
         );
 
   useEffect(() => {
-    console.log(
-      "selectedItems.map(({ id }) => id)",
-      selectedItems.map(({ id }) => id)
-    );
     onChange({
       target: {
         value: selectedItems.map(({ id }) => id),

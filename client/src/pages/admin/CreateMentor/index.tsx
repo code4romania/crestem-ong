@@ -13,6 +13,7 @@ import { array, number, object, string, TypeOf } from "zod";
 import { ErrorMessage } from "@hookform/error-message";
 import MultiSelect from "@/components/MultiSelect";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const mentorSchema = object({
   lastName: string(),
@@ -58,7 +59,8 @@ const CreateMentor = () => {
     useGetProgramsQuery();
   const { data: dimensions, isLoading: isLoadingDimensions } =
     useGetDimensionsQuery();
-  const [createMentor, { isSuccess }] = useCreateMentorMutation();
+  const [createMentor, { isSuccess, isError, error: submitError }] =
+    useCreateMentorMutation();
 
   const {
     register,
@@ -71,8 +73,19 @@ const CreateMentor = () => {
   useEffect(() => {
     if (isSuccess) {
       navigate("/mentors");
+      toast.success("Persoana resursa a fost invitata prim email cu succes!");
     }
   }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      if (submitError?.data?.error?.message === "Email already taken") {
+        toast.error("Persoana resursa are un cont in platforma");
+      } else {
+        toast.error(submitError?.data?.error?.message || "A aparut o problema");
+      }
+    }
+  }, [isError, submitError]);
 
   const onSubmitHandler: SubmitHandler<MentorInput> = (values) => {
     createMentor({

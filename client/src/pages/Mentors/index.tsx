@@ -32,13 +32,22 @@ const Mentors = () => {
               `${mentor.firstName} ${mentor.lastName}`,
               `${mentor.dimensions?.map((dimension) => dimension.name)}`,
               `${mentor.available ? "Disponibil" : "Indisponibil"}`,
-              `${mentor?.program?.name}`,
+              `${mentor?.programs.map((program) => program.name).join(",")}`,
+
               `${
-                (mentor.mentorActivities &&
-                  mentor.mentorActivities[mentor.mentorActivities?.length - 1]
-                    ?.createdAt) ||
-                "-"
-              } `,
+                mentor.mentorActivities.length > 0
+                  ? new Date(
+                      mentor.mentorActivities &&
+                        mentor.mentorActivities[
+                          mentor.mentorActivities?.length - 1
+                        ]?.createdAt
+                    ).toLocaleString("ro-RO", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })
+                  : "-"
+              }`,
             ])}
             button={
               <Button to={"/create/mentor"}>Adaugă persoană resursă</Button>
