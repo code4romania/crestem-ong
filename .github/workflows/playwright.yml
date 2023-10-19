@@ -22,6 +22,13 @@ jobs:
     - name: Run Playwright tests
       working-directory: ./client
       run: yarn playwright test
+      env:
+        TEST_USER_EMAIL: platica.ciprian+user@gmail.com
+        TEST_USER_PASSWORD: Hello12345
+        TEST_MENTOR_EMAIL: platica.ciprian+mentor@gmail.com
+        TEST_MENTOR_PASSWORD: Hello12345
+        TEST_ADMIN_EMAIL: platica.ciprian+admin@gmail.com
+        TEST_ADMIN_PASSWORD: Hello12345
     - uses: actions/upload-artifact@v3
       if: always()
       with:
