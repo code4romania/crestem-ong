@@ -14,10 +14,13 @@ jobs:
       with:
         node-version: 18
     - name: Install dependencies
+      working-directory: ./client
       run: yarn
     - name: Install Playwright Browsers
+      working-directory: ./client
       run: yarn playwright install --with-deps
     - name: Run Playwright tests
+      working-directory: ./client
       run: yarn playwright test
     - uses: actions/upload-artifact@v3
       if: always()
