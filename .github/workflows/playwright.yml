@@ -23,6 +23,13 @@ jobs:
     - name: Install dependencies
       working-directory: ./client
       run: yarn
+    - name: Cache Playwright browsers
+      uses: actions/cache@v3
+      with:
+       path: ~/.cache/ms-playwright/
+       key: ${{ runner.OS }}-pw-browsers-${{ hashFiles('client/yarn.lock') }}
+       restore-keys: |
+         ${{ runner.OS }}-pw-browsers-
     - name: Install Playwright Browsers
       working-directory: ./client
       run: yarn playwright install --with-deps
