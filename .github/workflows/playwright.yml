@@ -13,6 +13,13 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: 18
+    - name: Cache node modules
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: ${{ runner.OS }}-node-${{ hashFiles('client/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-node-
     - name: Install dependencies
       working-directory: ./client
       run: yarn
