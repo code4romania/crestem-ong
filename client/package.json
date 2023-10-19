@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "npx playwright test --ui"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
@@ -28,8 +29,10 @@
     "zod": "^3.20.6"
   },
   "devDependencies": {
+    "@playwright/test": "^1.39.0",
     "@tailwindcss/forms": "^0.5.3",
     "@types/js-cookie": "^3.0.3",
+    "@types/node": "^20.8.7",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react-swc": "^3.0.0",

@@ -119,10 +119,11 @@ const UsersTable = () => {
             <Input name="endDate" type="date" onChange={handleChangeEndDate} />
           </div>
         </div>
-        <div>
-          <Button type="button" onClick={handleDownloadExcel}>
+        <div className="flex space-x-4">
+          <Button color="white" type="button" onClick={handleDownloadExcel}>
             Descarcă tabel
           </Button>
+          <Button to="/create/user">Adauga organizatie</Button>
         </div>
       </form>
       <table

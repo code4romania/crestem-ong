@@ -31,7 +31,7 @@ import MentorProfile from "@/pages/mentor/Profile";
 import MentorEditProfile from "@/pages/mentor/EditProfile";
 import AuthenticatedMentorsList from "@/pages/authenticated/MentorsList";
 import AuthenticatedMentor from "@/pages/authenticated/Mentor";
-
+import CreateUser from "@/pages/admin/CreateUser";
 const Router = () => {
   const user = useAppSelector((state) => state.userState.user);
   const userType = getUserType(user);
@@ -52,6 +52,7 @@ const Router = () => {
           <Route path="/mentors" element={<Mentors />} />
           <Route path="/create/mentor" element={<CreateMentor />} />
           <Route path="/create/program" element={<CreateProgram />} />
+          <Route path="/create/user" element={<CreateUser />} />
           <Route path="/programs" element={<ProgramsList />} />
           <Route path="/programs/:programId" element={<Program />} />
         </Route>
