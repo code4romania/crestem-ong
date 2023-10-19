@@ -52,6 +52,7 @@ jobs:
         retention-days: 30
   deploy:
     needs: test
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
