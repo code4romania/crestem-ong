@@ -88,12 +88,12 @@ export const fillEvaluation = async (page) => {
   await page.getByText("Nu există o practică clară de monitorizare").click();
   await page
     .getByText(
-      "Chiar dacă organizația monitorizează și evaluează obiectivele activităților, o f"
+      "Chiar dacă organizația monitorizează și evaluează obiectivele activităților"
     )
     .click();
   await page
     .getByText(
-      "Nu se realizează monitorizare și evaluare în cadrul organizației.Există câteva p"
+      "Nu se realizează monitorizare și evaluare în cadrul organizației."
     )
     .click();
   await page
@@ -132,7 +132,7 @@ export const fillEvaluation = async (page) => {
     .click();
   await page
     .getByText(
-      "Organizația consultă viziunea și misiunea în luarea deciziilor. Cu toate acestea"
+      "Organizația consultă viziunea și misiunea în luarea deciziilor."
     )
     .first()
     .click();
