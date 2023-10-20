@@ -95,7 +95,7 @@ export const fillEvaluation = async (page) => {
   await page.getByRole("button", { name: "Continuă" }).click();
   await page
     .getByText(
-      "Nu există o practică clară de monitorizare și evaluare la nivel de organizațieMo"
+      "Nu există o practică clară de monitorizare și evaluare la nivel de organizație"
     )
     .click();
   await page
