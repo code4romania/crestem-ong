@@ -69,21 +69,13 @@ export const fillEvaluation = async (page) => {
       "Există un sistem de date intern (ex. server/ drive), totuși nu există o procedur"
     )
     .click();
-  await page
-    .getByText(
-      "Nu este implementat un sistem de management.Există o practică minimă de lucru cu"
-    )
-    .click();
+  await page.getByText("Nu este implementat un sistem de management").click();
   await page
     .getByText(
       "Experiențele anterioare și lecțiile învățate sunt folosite pentru a planifica ac"
     )
     .click();
-  await page
-    .getByText(
-      "Organizația nu are un raport anual.Sunt publicate câteva informații (articole/ s"
-    )
-    .click();
+  await page.getByText("Organizația nu are un raport anual").click();
   await page
     .locator("form div")
     .filter({
@@ -179,14 +171,7 @@ export const fillEvaluation = async (page) => {
       "Leadership-ul organizației împuternicește oamenii să se dezvolte, dar nu într-o "
     )
     .click();
-  await page
-    .locator("div")
-    .filter({
-      hasText:
-        /^Te rugăm să argumentezi selecțiile făcute pentru indicatorul Leadership$/,
-    })
-    .click();
-  await page.getByRole("textbox").click();
+
   await page.getByRole("textbox").fill("test");
   await page.getByRole("button", { name: "Continuă" }).click();
   await page
