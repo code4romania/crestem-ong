@@ -243,23 +243,13 @@ export const fillEvaluation = async (page) => {
     .click();
 
   await page.getByRole("textbox").fill("asdasdad");
-  await page
-    .frameLocator('[data-testid="dialog_iframe"]')
-    .locator("._94ve")
-    .click();
   await page.getByRole("button", { name: "Continuă" }).click();
   await page
     .getByText(
       "Identitate vizuală/ brand există, dar fără o viziune clară de utilizare și nu to"
     )
     .click();
-  await page
-    .locator("#root div")
-    .filter({
-      hasText: "Nu există un plan de comunicare.",
-    })
-    .nth(3)
-    .click();
+  await page.getByText("Nu există un plan de comunicare.").click();
   await page
     .getByText(
       "Organizația folosește diferite canale de comunicare în funcție de ce comunică în"
