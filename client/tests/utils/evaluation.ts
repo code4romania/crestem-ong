@@ -97,9 +97,7 @@ export const fillEvaluation = async (page) => {
     )
     .click();
   await page
-    .getByText(
-      "Nu există un proces de reflecție sau învățare.Practici limitate privind privind "
-    )
+    .getByText("Nu există un proces de reflecție sau învățare.")
     .click();
   await page
     .getByText(
@@ -142,14 +140,10 @@ export const fillEvaluation = async (page) => {
   await page.getByRole("textbox").fill("asdasd");
   await page.getByRole("button", { name: "Continuă" }).click();
   await page
-    .getByText(
-      "Nu există niciun mix între leadership și management.Există un oarecare mix, cu a"
-    )
+    .getByText("Nu există niciun mix între leadership și management.")
     .click();
   await page
-    .getByText(
-      "Există un oarecare mix, cu accent pe management. Abilitățile de leadership lipse"
-    )
+    .getByText("Există un oarecare mix, cu accent pe management.")
     .click();
   await page
     .getByText(
@@ -158,13 +152,11 @@ export const fillEvaluation = async (page) => {
     .click();
   await page
     .getByText(
-      "Motivația este recunoscută ca parte integrală a leadership-ului. Liderii își ded"
+      "Motivația este recunoscută ca parte integrală a leadership-ului."
     )
     .click();
   await page
-    .getByText(
-      "Nu există o abordare sistematică asupra creșterii liderilor, dar se întâmplă din"
-    )
+    .getByText("Nu există o abordare sistematică asupra creșterii liderilor")
     .click();
   await page
     .getByText(
@@ -195,36 +187,30 @@ export const fillEvaluation = async (page) => {
     )
     .click();
   await page
-    .getByText(
-      "Organizația recunoaște în totalitate munca oamenilor, atât formal (de ex. perfor"
-    )
+    .getByText("Organizația recunoaște în totalitate munca oamenilor")
     .click();
   await page.getByRole("textbox").click();
   await page.getByRole("textbox").fill("test");
   await page.getByRole("button", { name: "Continuă" }).click();
   await page
+    .getByText("Există câteva practici pentru identificarea de nevoi")
+    .click();
+  await page
+    .getByText("Nicio implicare a persoanelor beneficiare în organizație.")
+    .click();
+  await page
     .getByText(
-      "Există câteva practici pentru identificarea de nevoi, dar fără criterii/ metodol"
+      "Persoanele beneficiare sunt implicate într-o anumită măsură în activități"
     )
     .click();
   await page
     .getByText(
-      "Nicio implicare a persoanelor beneficiare în organizație.Implicare limitată, în "
+      "Noile persoane beneficiare sunt selectate doar pentru activități specifice"
     )
     .click();
   await page
     .getByText(
-      "Persoanele beneficiare sunt implicate într-o anumită măsură în activități, în ma"
-    )
-    .click();
-  await page
-    .getByText(
-      "Noile persoane beneficiare sunt selectate doar pentru activități specifice, punc"
-    )
-    .click();
-  await page
-    .getByText(
-      "Persoanele beneficiare sunt împuternicite să acționeze însă doar în activități p"
+      "Persoanele beneficiare sunt împuternicite să acționeze însă doar în activități"
     )
     .click();
   await page.getByRole("textbox").click();
@@ -232,12 +218,12 @@ export const fillEvaluation = async (page) => {
   await page.getByRole("button", { name: "Continuă" }).click();
   await page
     .getByText(
-      "Advocacy este pe agenda organizației, dar în mare parte la nivel reactiv, fără o"
+      "Advocacy este pe agenda organizației, dar în mare parte la nivel reactiv"
     )
     .click();
   await page
     .getByText(
-      "Organizația consultă în mod constant persoanele beneficiare pentru acțiunile de "
+      "Organizația consultă în mod constant persoanele beneficiare pentru acțiunile de"
     )
     .click();
   await page
@@ -247,7 +233,7 @@ export const fillEvaluation = async (page) => {
     .click();
   await page
     .getByText(
-      "Organizația are parteneriate cu diferite entități, în special din zona privată, "
+      "Organizația are parteneriate cu diferite entități, în special din zona privată"
     )
     .click();
   await page
@@ -255,13 +241,7 @@ export const fillEvaluation = async (page) => {
       "Implicare clară, proactivă în cadrul a diferite structuri, mai degrabă implicată"
     )
     .click();
-  await page
-    .locator("form div")
-    .filter({
-      hasText:
-        "Te rugăm să argumentezi selecțiile făcute pentru indicatorul Advocacy și partene",
-    })
-    .click();
+
   await page.getByRole("textbox").fill("asdasdad");
   await page
     .frameLocator('[data-testid="dialog_iframe"]')
@@ -276,8 +256,7 @@ export const fillEvaluation = async (page) => {
   await page
     .locator("#root div")
     .filter({
-      hasText:
-        "Nu există un plan de comunicare. Organizația acționează doar conform regulamente",
+      hasText: "Nu există un plan de comunicare.",
     })
     .nth(3)
     .click();
