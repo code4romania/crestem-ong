@@ -93,11 +93,7 @@ export const fillEvaluation = async (page) => {
     .click();
   await page.getByRole("textbox").fill("test coment");
   await page.getByRole("button", { name: "Continuă" }).click();
-  await page
-    .getByText(
-      "Nu există o practică clară de monitorizare și evaluare la nivel de organizație"
-    )
-    .click();
+  await page.getByText("Nu există o practică clară de monitorizare").click();
   await page
     .getByText(
       "Chiar dacă organizația monitorizează și evaluează obiectivele activităților, o f"
