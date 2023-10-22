@@ -1,6 +1,10 @@
 import { test, expect } from "@playwright/test";
-import { login, waitForLoginError, waitForLoginSuccess } from "../utils/login";
-import { fillEvaluation } from "../utils/evaluation";
+import {
+  login,
+  waitForLoginError,
+  waitForLoginSuccess,
+} from "../../utils/login";
+import { fillEvaluation } from "../../utils/evaluation";
 
 test("creates evaluation and completes it", async ({ page }) => {
   await login(page, {

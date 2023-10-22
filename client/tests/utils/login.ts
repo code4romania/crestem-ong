@@ -1,5 +1,5 @@
 export const login = async (page, { email, password }) => {
-  await page.goto("https://app.crestem.ong/login");
+  await page.goto("/login");
   await page.getByPlaceholder("Introdu email").click();
   await page.getByPlaceholder("Introdu email").fill(email);
   await page.getByPlaceholder("Introdu email").press("Tab");

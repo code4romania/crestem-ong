@@ -1,5 +1,9 @@
-import { test, expect } from "@playwright/test";
-import { login, waitForLoginError, waitForLoginSuccess } from "../utils/login";
+import { test } from "@playwright/test";
+import {
+  login,
+  waitForLoginError,
+  waitForLoginSuccess,
+} from "../../utils/login";
 
 test("success", async ({ page }) => {
   await login(page, {
