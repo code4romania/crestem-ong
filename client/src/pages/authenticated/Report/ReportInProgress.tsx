@@ -16,7 +16,15 @@ const CallToAction = ({ reportId }: { reportId: number }) => {
 
   return (
     <>
-      <Confirm open={open} setOpen={setOpen} handleComplete={handleComplete} />
+      <Confirm
+        header="Ești sigur că vrei să finalizezi evaluarea?"
+        body="Dacă finalizezi acum, persoanele care nu au răspuns la chestionarul de evaluare nu vor putea să mai completeze.
+Asigură-te că ai toate răspunsurile înainte de a face această acțiune"
+        buttonText="Finalizează evaluarea"
+        open={open}
+        setOpen={setOpen}
+        handleComplete={handleComplete}
+      />
       <Button onClick={() => setOpen(true)}>Finalizează evaluare</Button>
     </>
   );

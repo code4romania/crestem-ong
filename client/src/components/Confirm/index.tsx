@@ -1,7 +1,15 @@
 import { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
-const Confirm = ({ open, setOpen, handleComplete }) => {
+const Confirm = ({
+  header,
+  body,
+  footer,
+  buttonText,
+  open,
+  setOpen,
+  handleComplete,
+}) => {
   const cancelButtonRef = useRef(null);
 
   return (
@@ -25,7 +33,7 @@ const Confirm = ({ open, setOpen, handleComplete }) => {
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="flex min-h-full items-end justify-center p-4 sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -37,42 +45,43 @@ const Confirm = ({ open, setOpen, handleComplete }) => {
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                 <div>
-                  <div className="mt-3 text-center sm:mt-5">
+                  <div className="mt-3 sm:mt-5">
                     <Dialog.Title
                       as="h3"
                       className="text-base font-semibold leading-6 text-gray-900"
                     >
-                      Ești sigur că vrei să finalizezi evaluarea?
+                      {header}
                     </Dialog.Title>
                     <div className="mt-2">
-                      <p className="text-sm text-gray-500">
-                        Dacă finalizezi acum, persoanele care nu au răspuns la
-                        chestionarul de evaluare nu vor putea să mai completeze.
-                        Asigură-te că ai toate răspunsurile înainte de a face
-                        această acțiune
-                      </p>
+                      <p className="text-sm text-gray-500">{body}</p>
                     </div>
                   </div>
                 </div>
                 <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
-                  <button
-                    type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 sm:col-start-2"
-                    onClick={() => {
-                      handleComplete();
-                      setOpen(false);
-                    }}
-                  >
-                    Finalizează evaluarea
-                  </button>
-                  <button
-                    type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
-                    onClick={() => setOpen(false)}
-                    ref={cancelButtonRef}
-                  >
-                    Renunță
-                  </button>
+                  {footer ? (
+                    footer
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        className="inline-flex w-full justify-center rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 sm:col-start-2"
+                        onClick={() => {
+                          handleComplete();
+                          setOpen(false);
+                        }}
+                      >
+                        {buttonText}
+                      </button>
+                      <button
+                        type="button"
+                        className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
+                        onClick={() => setOpen(false)}
+                        ref={cancelButtonRef}
+                      >
+                        Renunță
+                      </button>
+                    </>
+                  )}
                 </div>
               </Dialog.Panel>
             </Transition.Child>
