@@ -29,6 +29,7 @@ export const userApi = createApi({
     },
   }),
   tagTypes: [
+    "Auth",
     "User",
     "Report",
     "Evaluation",
@@ -50,7 +51,7 @@ export const userApi = createApi({
           dispatch(setUser(data));
         } catch (error) {}
       },
-      providesTags: ["User", "Activity", "Report"],
+      providesTags: ["Auth", "Activity", "Report"],
     }),
     updateUser: builder.mutation({
       query({ id, ...user }) {
@@ -60,7 +61,7 @@ export const userApi = createApi({
           body: user,
         };
       },
-      invalidatesTags: ["User"],
+      invalidatesTags: ["Auth", "User"],
     }),
     getUsers: builder.query<User[], void>({
       query() {
@@ -102,6 +103,16 @@ export const userApi = createApi({
         };
       },
       invalidatesTags: ["Mentor"],
+    }),
+    createUser: builder.mutation<User, User>({
+      query(body) {
+        return {
+          method: "POST",
+          url: "users",
+          body,
+        };
+      },
+      invalidatesTags: ["User"],
     }),
     createProgram: builder.mutation<User, Program>({
       query(body) {
@@ -400,6 +411,7 @@ export const {
   useUpdateProgramMutation,
   useGetDimensionsQuery,
   useCreateMentorMutation,
+  useCreateUserMutation,
   useGetMatrixQuery,
   useGetActivityTypesQuery,
   useCreateActivityMutation,
