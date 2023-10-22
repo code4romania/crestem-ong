@@ -28,11 +28,15 @@ const MentorCard = ({
   };
 
   useEffect(() => {
-    toast.success("Trimis cu succes");
+    if (isSuccess) {
+      toast.success("Trimis cu succes");
+    }
   }, [isSuccess]);
 
   useEffect(() => {
-    toast.error("Această acțiune nu a putut fi realizată");
+    if (isError) {
+      toast.error("Această acțiune nu a putut fi realizată");
+    }
   }, [isError]);
 
   return (
