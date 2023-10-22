@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   setup:
-    name: Test setup
+    name: Get Vercel preview url
     runs-on: ubuntu-latest
     outputs:
       preview_url: ${{ steps.waitForVercelPreviewDeployment.outputs.url }}
@@ -31,7 +31,7 @@ jobs:
 
   test:
     needs: setup
-    name: Playwright tests
+    name: Run Playwright tests
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -65,7 +65,7 @@ jobs:
         working-directory: ./client
         run: yarn playwright test
         env:
-          PLAYWRIGHT_TEST_BASE_URL: ${{ needs.test_setup.outputs.preview_url }}
+          PLAYWRIGHT_TEST_BASE_URL: ${{ needs.setup.outputs.preview_url }}
           TEST_USER_EMAIL: platica.ciprian+user@gmail.com
           TEST_USER_PASSWORD: Hello12345
           TEST_MENTOR_EMAIL: platica.ciprian+mentor@gmail.com
@@ -82,6 +82,7 @@ jobs:
 
   deploy:
     needs: test
+    name: Deploy report to GitHub pages
     if: always()
     runs-on: ubuntu-latest
     steps:
