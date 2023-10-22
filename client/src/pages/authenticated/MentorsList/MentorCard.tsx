@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   EnvelopeIcon,
   SignalSlashIcon,
@@ -9,6 +9,7 @@ import Confirm from "@/components/Confirm";
 import { useAppSelector } from "@/redux/store";
 import { selectHasFinishedReports } from "@/redux/features/userSlice";
 import Button from "@/components/Button";
+import { toast } from "react-toastify";
 
 const MentorCard = ({
   id,
@@ -19,11 +20,20 @@ const MentorCard = ({
   available,
 }) => {
   const [openConfirm, setOpenConfirm] = useState(false);
-  const [createMentorshipRequest] = useCreateMentorshipRequestMutation();
+  const [createMentorshipRequest, { isSuccess, isError }] =
+    useCreateMentorshipRequestMutation();
   const hasFinishedReports = useAppSelector(selectHasFinishedReports);
   const handleClickEmail = () => {
     setOpenConfirm(true);
   };
+
+  useEffect(() => {
+    toast.success("Trimis cu succes");
+  }, [isSuccess]);
+
+  useEffect(() => {
+    toast.error("Această acțiune nu a putut fi realizată");
+  }, [isError]);
 
   return (
     <li className="flex flex-col justify-between overflow-hidden bg-white sm:rounded-lg sm:shadow text-center divide-y ">
