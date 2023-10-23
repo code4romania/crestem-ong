@@ -55,7 +55,7 @@ export const calcScoreByDimension = ({
   matrix: Matrix;
 }) => {
   if (!matrix) {
-    return null;
+    return undefined;
   }
   const object = evaluationsCompleted.reduce(
     (acc, evaluation) =>

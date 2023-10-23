@@ -10,6 +10,7 @@ import { useAppSelector } from "@/redux/store";
 import { selectHasFinishedReports } from "@/redux/features/userSlice";
 import Button from "@/components/Button";
 import { toast } from "react-toastify";
+import { Dimension } from "@/redux/api/types";
 
 const MentorCard = ({
   id,
@@ -18,6 +19,13 @@ const MentorCard = ({
   lastName,
   dimensions,
   available,
+}: {
+  id: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+  dimensions: Dimension[];
+  available: boolean;
 }) => {
   const [openConfirm, setOpenConfirm] = useState(false);
   const [createMentorshipRequest, { isSuccess, isError }] =
@@ -76,7 +84,7 @@ const MentorCard = ({
           {firstName} {lastName}
         </h3>
         <p className="text-base leading-7 text-gray-500">
-          {dimensions?.map((dimension) => dimension.name).join("; ")}
+          {dimensions?.map((dimension) => dimension?.name).join("; ")}
         </p>
       </div>
       <ul
