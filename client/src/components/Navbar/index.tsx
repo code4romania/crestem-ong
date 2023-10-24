@@ -134,6 +134,11 @@ const Menu = () => {
       {menu.map((menuItem) => (
         <li>
           <NavLink
+            target={
+              menuItem.link.startsWith("https://crestem.ong")
+                ? "_blank"
+                : undefined
+            }
             to={menuItem.link}
             className={({ isActive, isPending }) =>
               `flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 ${

@@ -7,7 +7,7 @@ const ResultsByDimension = ({
   scoreByEvaluation,
 }: {
   scoreByEvaluation: {
-    id: number;
+    id: string;
     name: string;
     score: number;
     tags: string[];

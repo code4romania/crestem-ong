@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Matrix, User } from "../api/types";
 import { userApi } from "../api/userApi";
 import Cookies from "js-cookie";
+import { RootState } from "@/redux/store";
 
 interface UserState {
   user?: User;
@@ -41,6 +42,9 @@ export const userSlice = createSlice({
     );
   },
 });
+
+export const selectHasFinishedReports = (state: RootState) =>
+  state.userState?.user?.reports?.some((report) => report.finished) ?? false;
 
 export default userSlice.reducer;
 

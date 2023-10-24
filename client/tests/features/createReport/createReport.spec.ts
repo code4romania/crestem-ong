@@ -29,14 +29,14 @@ test("creates evaluation and completes it", async ({ page }) => {
   );
   const data = await response.json();
   await page.goto(
-    `https://app.crestem.ong/evaluation/${
-      data.evaluations[0].id
-    }?email=${encodeURIComponent(data.evaluations[0].email)}`
+    `/evaluation/${data.evaluations[0].id}?email=${encodeURIComponent(
+      data.evaluations[0].email
+    )}`
   );
   await fillEvaluation(page);
   await page.waitForTimeout(5000);
 
-  await await page.goto(`https://app.crestem.ong/reports/${data.id}`);
+  await await page.goto(`/reports/${data.id}`);
 
   await page.waitForResponse(
     (response) =>
