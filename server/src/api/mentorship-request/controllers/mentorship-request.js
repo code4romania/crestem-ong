@@ -36,8 +36,13 @@ module.exports = createCoreController(
       const userData = await strapi.entityService.findOne(
         "plugin::users-permissions.user",
         user,
-        { populate: "role" }
+        { populate: ["role", "reports"] }
       );
+      const reportId = userData.reports
+        .filter(({ finished }) => finished)
+        .sort(({ createdAt }) => createdAt)
+        .reverse()
+        .at(0);
 
       if (userData?.role?.type !== "authenticated") {
         throw new PolicyError(`Organizatia nu este valida`);
@@ -49,6 +54,7 @@ module.exports = createCoreController(
       sendEmailToMentorFromUser(mentorData.email, {
         USER_NAME: userData.ongName,
         USER_EMAIL: userData.email,
+        REPORT_ID: reportId,
       }).catch((e) => {
         throw new PolicyError(`A aparut o eroare la trimiterea email-ului`);
       });

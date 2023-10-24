@@ -78,11 +78,11 @@ export const userApi = createApi({
           url: `users/${userId}?populate[0]=reports.evaluations.dimensions.quiz&populate[1]=domains`,
         };
       },
-      transformResponse: (result: User[]) => ({
+      transformResponse: (result: User) => ({
         ...result,
-        reports: result.reports.sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        ),
+        reports: result.reports?.sort((a: Report, b: Report) => {
+          return new Date(b?.createdAt) - new Date(a?.createdAt);
+        }),
       }),
       providesTags: ["Report"],
     }),
@@ -247,6 +247,7 @@ export const userApi = createApi({
           },
         },
       }),
+      invalidatesTags: ["Report"],
     }),
     getReports: builder.query<Report[], void>({
       query: () => ({
