@@ -139,6 +139,9 @@ export const userApi = createApi({
           mentors: report.attributes.mentors.data.map(
             ({ attributes }) => attributes
           ),
+          users: report.attributes.users.data.map(
+            ({ attributes }) => attributes
+          ),
         })),
       providesTags: ["Program"],
     }),
