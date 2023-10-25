@@ -38,11 +38,11 @@ const UsersTable = () => {
 
   console.log({ data });
 
-  const body = data?.map(({ name, mentors }) => ({
+  const body = data?.map(({ name, mentors, users }) => ({
     name,
     status: new Date() < new Date(endDate) ? "In desfasurare" : "Incheiat",
-    usersCount: "-",
-    mentorsCount: mentors.length,
+    usersCount: users?.length || "-",
+    mentorsCount: mentors?.length || "-",
   }));
   const handleChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
