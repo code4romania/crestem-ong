@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useRegisterUserMutation } from "@/redux/api/authApi";
 import { array, custom, literal, number, object, string, TypeOf } from "zod";
 import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import MultiSelect from "@/components/MultiSelect";
 import { ErrorMessage } from "@hookform/error-message";
+import citiesByCounty from "@/lib/orase-dupa-judet.json";
+import Select from "@/components/Select";
 
 const registerSchema = object({
   ongName: string().min(1, "Numele organizatiei este obligatoriu"),
@@ -69,6 +71,8 @@ const Register = () => {
     resolver: zodResolver(registerSchema),
   });
   const avatar = methods.watch("avatar");
+  const county = methods.watch("county");
+
   const hasAvatar = !!avatar;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -114,6 +118,24 @@ const Register = () => {
       uploadAvatar(formData);
     }
   };
+
+  const counties = Object.keys(citiesByCounty).map((county: string) => ({
+    label: county,
+    name: county,
+  }));
+
+  const cities = useMemo(
+    () =>
+      county
+        ? [...new Set(citiesByCounty[county].map((city) => city.nume))].map(
+            (city) => ({
+              name: city,
+              label: city,
+            })
+          )
+        : [],
+    [citiesByCounty, county]
+  );
 
   return (
     <div>
@@ -185,10 +207,10 @@ const Register = () => {
                       <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
-                      <input
-                        type="text"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("county")}
+                      <Select
+                        options={counties}
+                        register={methods.register}
+                        name="county"
                       />
                       <div className="text-red-400 text-sm py-2">
                         <ErrorMessage name={"county"} />
@@ -205,10 +227,11 @@ const Register = () => {
                       <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
-                      <input
-                        type="text"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("city")}
+                      <Select
+                        options={cities}
+                        register={methods.register}
+                        name="city"
+                        defaultValue={cities[0]?.name}
                       />
                       <div className="text-red-400 text-sm py-2">
                         <ErrorMessage name={"city"} />

@@ -29,8 +29,8 @@ const Select = ({
       onChange={onChange}
       {...(register && register(name))}
     >
-      {options.map((option: { name: string; label: string }) => (
-        <option key={option.name} value={option.name}>
+      {options.map((option: { name: string; label: string }, index) => (
+        <option key={option.name} value={option.name} selected={index === 0}>
           {option.label}
         </option>
       ))}
