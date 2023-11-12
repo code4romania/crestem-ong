@@ -142,6 +142,7 @@ const Register = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Numele organizației
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
@@ -161,6 +162,7 @@ const Register = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       CIF-ul organizației
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
@@ -180,6 +182,7 @@ const Register = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Județ
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
@@ -199,6 +202,7 @@ const Register = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Localitate
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
@@ -220,6 +224,7 @@ const Register = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Email organizație
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
@@ -239,6 +244,7 @@ const Register = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Telefon organizație
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
@@ -260,6 +266,7 @@ const Register = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Parola
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
@@ -279,6 +286,7 @@ const Register = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Confirmă parola
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
