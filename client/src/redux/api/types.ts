@@ -51,6 +51,13 @@ export interface User {
   domains?: Domain[];
   program: Program;
   role?: Role;
+  accountFacebook?: string;
+  accountTwitter?: string;
+  accountTiktok?: string;
+  accountInstagram?: string;
+  accountLinkedin?: string;
+
+
   //   Mentor
   firstName: string;
   lastName: string;
@@ -93,6 +100,7 @@ export interface RegisterResponse {
 }
 
 export interface Domain {
+  id: number;
   name: string;
 }
 

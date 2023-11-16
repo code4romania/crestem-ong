@@ -30,7 +30,7 @@ const Profile = () => {
             ["Telefon organizație", user.ongName],
             [
               "Domenii de activitate",
-              user.domains?.map((domain) => domain.name),
+              user.domains?.map((domain) => domain.name)?.join(", "),
             ],
             ["Cuvinte cheie despre activitate", user.ongName],
             ["Descriere organizație", user.ongName],
