@@ -29,7 +29,7 @@ const registerSchema = object({
   city: string().min(1, "Orasul este obligatoriu"),
   email: string()
     .min(1, "Adresa de email este obligatorie")
-    .email("Email Address is invalid"),
+    .email("Adresa de email este invalidă"),
   phone: string().min(1, "Telefonul este obligatoriu"),
   avatar: custom<File[]>(),
   domains: array(number()),

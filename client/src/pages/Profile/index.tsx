@@ -19,7 +19,6 @@ const Profile = () => {
       <Section>
         <Table
           title="Informații despre ONG"
-          description="Use a permanent address where you can receive mail."
           button={<Button to="/profile/edit">Editeaza</Button>}
           body={[
             ["Nume organizație", user.ongName],
