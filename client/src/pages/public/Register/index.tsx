@@ -36,7 +36,7 @@ const registerSchema = object({
     .max(32, "Password must be less than 32 characters"),
   confirmPassword: string(),
   avatar: custom<File[]>(),
-  domains: array(number()),
+  domains: array(number()).optional(),
   website: string(),
   keywords: string(),
   description: string(),
