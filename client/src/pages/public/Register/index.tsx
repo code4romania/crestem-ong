@@ -36,7 +36,7 @@ const registerSchema = object({
     .max(32, "Password must be less than 32 characters"),
   confirmPassword: string(),
   avatar: custom<File[]>(),
-  domains: array(number()),
+  domains: array(number()).optional(),
   website: string(),
   keywords: string(),
   description: string(),
@@ -119,7 +119,7 @@ const Register = () => {
     }
   };
 
-  const counties = Object.keys(citiesByCounty).map((county: string) => ({
+  const counties = Object.keys(citiesByCounty).sort().map((county: string) => ({
     label: county,
     name: county,
   }));
@@ -127,7 +127,7 @@ const Register = () => {
   const cities = useMemo(
     () =>
       county
-        ? [...new Set(citiesByCounty[county].map((city) => city.nume))].map(
+        ? [...new Set(citiesByCounty[county].map((city) => city.nume))].sort().map(
             (city) => ({
               name: city,
               label: city,
