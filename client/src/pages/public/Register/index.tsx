@@ -9,7 +9,7 @@ import Button from "@/components/Button";
 import { setToken } from "@/redux/features/userSlice";
 import { useAppDispatch } from "@/redux/store";
 import { toast } from "react-toastify";
-import SocialNetworkLinks from "@/pages/public/Register/SocialNetworkLinks";
+import SocialNetworkLinks from "@/components/SocialNetworkLinks";
 import { useGetDomainsQuery, useUploadMutation } from "@/redux/api/userApi";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -28,12 +28,12 @@ const registerSchema = object({
   city: string().min(1, "Orasul este obligatoriu"),
   email: string()
     .min(1, "Adresa de email este obligatorie")
-    .email("Email Address is invalid"),
+    .email("Adresa de email este invalidă"),
   phone: string().min(1, "Telefonul este obligatoriu"),
   password: string()
-    .min(1, "Password is required")
-    .min(8, "Password must be more than 8 characters")
-    .max(32, "Password must be less than 32 characters"),
+    .min(1, "Parola este obligatorie")
+    .min(8, "Parola trebuie sa contina cel putin 8 caractere")
+    .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
   confirmPassword: string(),
   avatar: custom<File[]>(),
   domains: array(number()).optional(),
@@ -110,7 +110,7 @@ const Register = () => {
   const onSubmitHandler: SubmitHandler<RegisterInput> = async (values) => {
     const formData = new FormData();
     const res = await submitRegister({ ...values, username: values.email });
-    if (values.avatar[0].name) {
+    if (values.avatar?.length && values.avatar[0].name) {
       formData.append(`files`, values.avatar[0], values.avatar[0].name);
       formData.append(`ref`, "plugin::users-permissions.user");
       formData.append(`refId`, res.data.user.id);

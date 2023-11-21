@@ -23,7 +23,7 @@ const mentorProfileSchema = object({
   lastName: string(),
   email: string()
     .min(1, "Adresa de email este obligatorie")
-    .email("Email Address is invalid"),
+    .email("Adresa de email este invalidă"),
   bio: string().min(1, "Adaugati o scurta descriere"),
   expertise: string(),
   dimensions: array(number()),

@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import { ErrorMessage } from "@hookform/error-message";
 import { toast } from "react-toastify";
 
-const emailListSchema = array(string().email()).nonempty();
+const emailListSchema = array(string().email("Adresa de email este invalidă")).nonempty();
 const validateEmails = (input: string) => {
   const emails = input.trim().split(/\r?\n/); // split input by new line
   const emailList = emailListSchema.safeParse(emails);

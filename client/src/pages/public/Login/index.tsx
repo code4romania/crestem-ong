@@ -16,12 +16,12 @@ import Cookies from "js-cookie";
 
 const loginSchema = object({
   identifier: string()
-    .min(1, "Email address is required")
-    .email("Email Address is invalid"),
+    .min(1, "Adresa de email este obligatorie")
+    .email("Adresa de email este invalidă"),
   password: string()
-    .min(1, "Password is required")
-    .min(8, "Password must be more than 8 characters")
-    .max(32, "Password must be less than 32 characters"),
+    .min(1, "Parola este obligatorie")
+    .min(8, "Parola trebuie sa contina cel putin 8 caractere")
+    .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
 });
 
 export type LoginInput = TypeOf<typeof loginSchema>;

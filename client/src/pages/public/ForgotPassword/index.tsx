@@ -10,8 +10,8 @@ import { useForgotPasswordMutation } from "@/redux/api/authApi";
 
 const forgotPasswordSchema = object({
   email: string()
-    .min(1, "Email address is required")
-    .email("Email Address is invalid"),
+    .min(1, "Adresa de email este obligatorie")
+    .email("Adresa de email este invalidă"),
 });
 export type ForgotPasswordInput = TypeOf<typeof forgotPasswordSchema>;
 

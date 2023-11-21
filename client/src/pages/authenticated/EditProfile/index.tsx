@@ -1,25 +1,25 @@
-import React, { useEffect } from "react";
-import { array, custom, literal, number, object, string, TypeOf } from "zod";
+import { useEffect, useMemo } from "react";
+import { custom, literal, number, object, string, TypeOf } from "zod";
 import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import Button from "@/components/Button";
-import { setToken } from "@/redux/features/userSlice";
-import { useAppDispatch } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { toast } from "react-toastify";
-import SocialNetworkLinks from "@/components/SocialNetworkLinks";
 import {
-  useCreateUserMutation,
   useGetDomainsQuery,
-  useUploadMutation,
+  useUpdateUserMutation, useUploadMutation,
 } from "@/redux/api/userApi";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import MultiSelect from "@/components/MultiSelect";
 import { ErrorMessage } from "@hookform/error-message";
+import Select from "@/components/Select";
+import citiesByCounty from "@/lib/orase-dupa-judet.json";
+import SocialNetworkLinks from "@/components/SocialNetworkLinks";
 
-const registerSchema = object({
+const ongProfileSchema = object({
+  id: number(),
   ongName: string().min(1, "Numele organizatiei este obligatoriu"),
   ongIdentificationNumber: string().min(
     1,
@@ -32,7 +32,7 @@ const registerSchema = object({
     .email("Adresa de email este invalidă"),
   phone: string().min(1, "Telefonul este obligatoriu"),
   avatar: custom<File[]>(),
-  domains: array(number()),
+  domains: number().array().optional(),
   website: string(),
   keywords: string(),
   description: string(),
@@ -48,83 +48,109 @@ const registerSchema = object({
   accountTiktok: string().optional(),
   accountInstagram: string().optional(),
   accountLinkedin: string().optional(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Ne pare rau, parola nu coincide",
-  path: ["confirmPassword"],
 });
 
-export type RegisterInput = TypeOf<typeof registerSchema>;
+export type OngProfileInput = TypeOf<typeof ongProfileSchema>;
 
-const CreateUser = () => {
-  const [submitRegister, { isSuccess, isError, error, data }] =
-    useCreateUserMutation();
+const OngEditProfile = () => {
+  const user = useAppSelector((state) => state.userState.user);
+
+  const ongDomains = useMemo(() => {
+    return user?.domains
+      ? user?.domains?.map(d=>({id: d.id, name: d.name, label: d.name}))
+      : [];
+  }, [user]);
+
+  const [updateOngProfile, { isSuccess, isError, error, data }] = useUpdateUserMutation();
+
   const [
     uploadAvatar,
     { isError: isUploadAvatarError, error: uploadAvatarError },
   ] = useUploadMutation();
   const { data: domains } = useGetDomainsQuery(null);
-  const methods = useForm<RegisterInput>({
-    resolver: zodResolver(registerSchema),
+
+  const methods = useForm<OngProfileInput>({
+    resolver: zodResolver(ongProfileSchema),
+    defaultValues: {
+      ...user,
+      domains: user?.domains?.map(d => d.id),
+      accountFacebook: user?.accountFacebook || '',
+      accountTwitter: user?.accountTwitter || '',
+      accountTiktok: user?.accountTiktok || '',
+      accountInstagram: user?.accountInstagram || '',
+      accountLinkedin: user?.accountLinkedin || '',
+    },
   });
+
   const avatar = methods.watch("avatar");
+  const county = methods.watch("county");
+
   const hasAvatar = !!avatar;
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (error?.data?.error?.message) {
-      if (
-        error?.data?.error?.details?.errors?.length > 0 &&
-        error?.data.error.details.errors.find(({ path }) =>
-          path.includes("ongIdentificationNumber")
-        )
-      ) {
-        toast.error("Organizație deja înregistrată în platformă");
-      } else {
-        toast.error(error.data.error.message);
-      }
+      toast.error(error.data.error.message);
     }
-  }, [error?.data?.error?.message, error?.data?.error?.details?.errors]);
+  }, [error?.data?.error?.message]);
 
   useEffect(() => {
-    const message = uploadAvatarError?.data?.error?.message;
-    if (isUploadAvatarError && message) {
-      toast.error(message);
+    if (isSuccess) {
+      navigate("/profile");
     }
-  }, [isUploadAvatarError, uploadAvatarError?.data?.error?.message]);
+  }, [isSuccess, dispatch]);
 
-  useEffect(() => {
-    if (isSuccess && data?.jwt) {
-      dispatch(setToken(data.jwt));
-      Cookies.set("jwt", data.jwt);
-      navigate("/");
-    }
-  }, [isSuccess, data?.jwt, dispatch]);
+  const onSubmitHandler: SubmitHandler<OngProfileInput> = async (data) => {
+    updateOngProfile({
+      ...data,
+    });
 
-  const onSubmitHandler: SubmitHandler<RegisterInput> = async (values) => {
-    const formData = new FormData();
-    const res = await submitRegister({ ...values, username: values.email });
-    if (values.avatar?.length && values.avatar[0]?.name) {
-      formData.append(`files`, values.avatar[0], values.avatar[0].name);
+    if (data.avatar?.length && data.avatar[0].name) {
+      const formData = new FormData();
+      formData.append(`files`, data.avatar[0], data.avatar[0].name);
       formData.append(`ref`, "plugin::users-permissions.user");
-      formData.append(`refId`, res.data.user.id);
+      formData.append(`refId`, user!.id!.toString());
       formData.append(`field`, "avatar");
       uploadAvatar(formData);
     }
   };
+  const onError: any = (data) => {
+    console.log(data);
+  };
+
+  const counties = Object.keys(citiesByCounty).sort().map((county: string) => ({
+    label: county,
+    name: county,
+  }));
+
+  const cities = useMemo(
+    () =>
+      county
+        ? [...new Set(citiesByCounty[county].map((city) => city.nume))].sort().map(
+          (city) => ({
+            name: city,
+            label: city,
+          })
+        )
+        : [],
+    [citiesByCounty, county]
+  );
+
 
   return (
     <div>
       <Section>
         <div className={"space-y-2"}>
-          <Heading level={"h2"}>Adaugă organizație</Heading>
+          <Heading level={"h2"}>Editeaza profilul</Heading>
         </div>
       </Section>
       <Section>
         <FormProvider {...methods}>
           <form
-            onSubmit={methods.handleSubmit(onSubmitHandler)}
-            className="space-y-8 divide-y divide-gray-200 mx-auto"
+            onSubmit={methods.handleSubmit(onSubmitHandler, onError)}
+            className="space-y-8 divide-y divide-gray-200 max-w-3xl mx-auto"
           >
             <div className="space-y-8 divide-y divide-gray-200">
               <div>
@@ -140,6 +166,7 @@ const CreateUser = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Numele organizației
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
@@ -159,6 +186,7 @@ const CreateUser = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       CIF-ul organizației
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
@@ -178,12 +206,13 @@ const CreateUser = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Județ
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
-                      <input
-                        type="text"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("county")}
+                      <Select
+                        options={counties}
+                        register={methods.register}
+                        name="county"
                       />
                       <div className="text-red-400 text-sm py-2">
                         <ErrorMessage name={"county"} />
@@ -197,12 +226,14 @@ const CreateUser = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Localitate
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
-                      <input
-                        type="text"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("city")}
+                      <Select
+                        options={cities}
+                        register={methods.register}
+                        name="city"
+                        defaultValue={cities[0]?.name}
                       />
                       <div className="text-red-400 text-sm py-2">
                         <ErrorMessage name={"city"} />
@@ -218,6 +249,7 @@ const CreateUser = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Email organizație
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
@@ -237,6 +269,7 @@ const CreateUser = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Telefon organizație
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
@@ -250,6 +283,7 @@ const CreateUser = () => {
                     </div>
                   </div>
                 </div>
+
               </div>
 
               <div className="pt-8">
@@ -264,6 +298,7 @@ const CreateUser = () => {
                       <MultiSelect
                         options={domains}
                         label={"Domenii activitate"}
+                        defaultValues={ongDomains}
                         {...methods.register("domains")}
                       />
                       <div className="text-red-400 text-sm py-2">
@@ -329,7 +364,7 @@ const CreateUser = () => {
                         )}
                         <div className={"pointer-events-none"}>
                           <Button color={"white"} type="button">
-                            {!hasAvatar ? "Încarcă logo" : "Alege fisier"}
+                            {!hasAvatar ? "Încarcă logo" : "Schimbă logo"}
                           </Button>
                         </div>
                         <input
@@ -451,4 +486,4 @@ const CreateUser = () => {
     </div>
   );
 };
-export default CreateUser;
+export default OngEditProfile;

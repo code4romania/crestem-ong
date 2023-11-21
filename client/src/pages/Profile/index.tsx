@@ -19,7 +19,6 @@ const Profile = () => {
       <Section>
         <Table
           title="Informații despre ONG"
-          description="Use a permanent address where you can receive mail."
           button={<Button to="/profile/edit">Editeaza</Button>}
           body={[
             ["Nume organizație", user.ongName],
@@ -30,7 +29,7 @@ const Profile = () => {
             ["Telefon organizație", user.ongName],
             [
               "Domenii de activitate",
-              user.domains?.map((domain) => domain.name),
+              user.domains?.map((domain) => domain.name)?.join(", "),
             ],
             ["Cuvinte cheie despre activitate", user.ongName],
             ["Descriere organizație", user.ongName],
