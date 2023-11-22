@@ -388,6 +388,7 @@ export const userApi = createApi({
           body: data,
         };
       },
+      invalidatesTags: ["Auth"],
     }),
   }),
 });
