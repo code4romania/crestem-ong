@@ -52,11 +52,14 @@ const Table = ({ title, description, button, head, body }: TableProps) => {
                 </thead>
               )}
               <tbody className="bg-white">
-                {body.map((row) => (
-                  <tr key={row[0]} className="even:bg-gray-50">
-                    {row.map((cell) => (
+                {body.map((row, index) => (
+                  <tr
+                    key={typeof row[0] === "string" ? row[0] : index}
+                    className="even:bg-gray-50"
+                  >
+                    {row.map((cell, index) => (
                       <td
-                        key={cell}
+                        key={typeof cell === "string" ? cell : `${index}`}
                         className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3"
                       >
                         {cell}

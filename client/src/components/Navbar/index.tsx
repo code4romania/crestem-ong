@@ -132,7 +132,7 @@ const Menu = () => {
   return (
     <ul className="items-center hidden text-sm gap-x-3 lg:flex lg:flex-wrap">
       {menu.map((menuItem) => (
-        <li>
+        <li key={menuItem.link}>
           <NavLink
             target={
               menuItem.link.startsWith("https://crestem.ong")

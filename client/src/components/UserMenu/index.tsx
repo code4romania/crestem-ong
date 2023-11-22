@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { logout } from "@/redux/features/userSlice";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
+import Avatar from "@/components/Avatar";
 
 const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(" ");
@@ -56,30 +57,12 @@ const UserMenu = () => {
     <Menu as="div" className="relative ml-3">
       <div className="flex space-x-4">
         <span>{user.ongName}</span>
-        <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+        <Menu.Button className="flex rounded-full bg-gray-800 text-sm">
           <span className="sr-only">Open user menu</span>
-          {user?.avatar ? (
-            <img
-              className="h-8 w-8 rounded-full"
-              src={user?.avatar?.url}
-              alt="avatar"
-            />
-          ) : (
-            <div className="relative h-8 w-8 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-              <svg
-                className="absolute w-6 h-6 text-gray-400 left-1 top-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </div>
-          )}
+          <Avatar
+            src={user.avatar?.url}
+            alt={user.ongName || user.firstName || "FDSC"}
+          />
         </Menu.Button>
       </div>
       <Transition

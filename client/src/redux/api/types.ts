@@ -27,6 +27,7 @@ export interface Quiz {
 }
 
 export interface User {
+  avatar: any;
   id: number;
   createdAt: string;
   userActivities?: Activity[];
@@ -56,7 +57,6 @@ export interface User {
   accountTiktok?: string;
   accountInstagram?: string;
   accountLinkedin?: string;
-
 
   //   Mentor
   firstName: string;

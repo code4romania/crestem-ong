@@ -4,6 +4,8 @@ import Section from "@/components/Section";
 import Heading from "@/components/Heading";
 import Table from "@/components/Table";
 import Button from "@/components/Button";
+import Avatar from "@/components/Avatar";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const user = useAppSelector((state) => state.userState.user);
@@ -11,6 +13,7 @@ const Profile = () => {
     return <></>;
   }
 
+  // @ts-ignore
   return (
     <>
       <Section>
@@ -31,21 +34,27 @@ const Profile = () => {
               "Domenii de activitate",
               user.domains?.map((domain) => domain.name)?.join(", "),
             ],
-            ["Cuvinte cheie despre activitate", user.ongName],
-            ["Descriere organizație", user.ongName],
-            ["Website organizație", user.website],
+            user.keywords && ["Cuvinte cheie despre activitate", user.keywords],
+            user.description && ["Descriere organizație", user.description],
+            user.website && [
+              "Website organizație",
+              <Link to={user.website}>{user.website}</Link>,
+            ],
             [
               "Link-uri social media",
               `${user.accountFacebook || ""} ${user.accountInstagram || ""} ${
                 user.accountLinkedin || ""
               } ${user.accountTiktok || ""} ${user.accountTwitter || ""}`,
             ],
-            ["Logo organizație", user.avatar],
+            [
+              "Logo organizație",
+              <Avatar src={user.avatar?.url} alt={user.ongName} />,
+            ],
             ["Nume reprezentant organizație", user.contactFirstName],
             ["Prenume reprezentant organizație", user.contactFirstName],
             ["Email reprezentant organizație", user.contactEmail],
             ["Telefon reprezentant organizație", user.contactPhone],
-          ]}
+          ].filter(Boolean)}
         />
       </Section>
     </>
