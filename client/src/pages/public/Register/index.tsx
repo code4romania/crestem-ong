@@ -17,6 +17,7 @@ import MultiSelect from "@/components/MultiSelect";
 import { ErrorMessage } from "@hookform/error-message";
 import citiesByCounty from "@/lib/orase-dupa-judet.json";
 import Select from "@/components/Select";
+import Form from "@/components/Form";
 
 const registerSchema = object({
   ongName: string().min(1, "Numele organizatiei este obligatoriu"),
@@ -34,7 +35,10 @@ const registerSchema = object({
     .min(1, "Parola este obligatorie")
     .min(8, "Parola trebuie sa contina cel putin 8 caractere")
     .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
-  confirmPassword: string(),
+  confirmPassword: string()
+    .min(1, "Parola este obligatorie")
+    .min(8, "Parola trebuie sa contina cel putin 8 caractere")
+    .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
   avatar: custom<File[]>(),
   domains: array(number()).optional(),
   website: string(),
@@ -119,20 +123,22 @@ const Register = () => {
     }
   };
 
-  const counties = Object.keys(citiesByCounty).sort().map((county: string) => ({
-    label: county,
-    name: county,
-  }));
+  const counties = Object.keys(citiesByCounty)
+    .sort()
+    .map((county: string) => ({
+      label: county,
+      name: county,
+    }));
 
   const cities = useMemo(
     () =>
       county
-        ? [...new Set(citiesByCounty[county].map((city) => city.nume))].sort().map(
-            (city) => ({
+        ? [...new Set(citiesByCounty[county].map((city) => city.nume))]
+            .sort()
+            .map((city) => ({
               name: city,
               label: city,
-            })
-          )
+            }))
         : [],
     [citiesByCounty, county]
   );
@@ -233,9 +239,6 @@ const Register = () => {
                         name="city"
                         defaultValue={cities[0]?.name}
                       />
-                      <div className="text-red-400 text-sm py-2">
-                        <ErrorMessage name={"city"} />
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -284,43 +287,29 @@ const Register = () => {
 
                 <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                   <div className="sm:col-span-3">
-                    <label
-                      htmlFor="first-name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Parola
-                      <span className="text-red-700 ml-1.5">*</span>
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="password"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("password")}
-                      />
-                      <div className="text-red-400 text-sm py-2">
-                        <ErrorMessage name={"password"} />
-                      </div>
-                    </div>
+                    <Form.Password
+                      register={methods.register}
+                      name="password"
+                      label={
+                        <>
+                          Parola
+                          <span className="text-red-700 ml-1.5">*</span>
+                        </>
+                      }
+                    />
                   </div>
 
                   <div className="sm:col-span-3">
-                    <label
-                      htmlFor="last-name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Confirmă parola
-                      <span className="text-red-700 ml-1.5">*</span>
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="password"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("confirmPassword")}
-                      />
-                      <div className="text-red-400 text-sm py-2">
-                        <ErrorMessage name={"confirmPassword"} />
-                      </div>
-                    </div>
+                    <Form.Password
+                      register={methods.register}
+                      name="password"
+                      label={
+                        <>
+                          Confirmă parola
+                          <span className="text-red-700 ml-1.5">*</span>
+                        </>
+                      }
+                    />
                   </div>
                 </div>
               </div>

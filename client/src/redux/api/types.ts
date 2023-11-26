@@ -27,6 +27,8 @@ export interface Quiz {
 }
 
 export interface User {
+  expertise: string;
+  bio: string;
   avatar: any;
   id: number;
   createdAt: string;
@@ -74,6 +76,7 @@ export interface Question {
 export interface Dimension {
   id: number | string;
   quiz: Question[];
+  name: string;
 }
 
 export interface Evaluation {

@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import Heading from "@/components/Heading";
 import screenshot from "@/assets/illustration.svg";
 import Button from "@/components/Button";
+import Form from "@/components/Form";
 import Cookies from "js-cookie";
 
 const loginSchema = object({
@@ -133,14 +134,11 @@ const Login = memo(() => {
             errors={errors}
             required
           />
-          <Input
+          <Form.Password
+            register={register}
+            name={"password"}
             label="Parola"
             placeholder="Introdu parola"
-            name="password"
-            type="password"
-            register={register}
-            errors={errors}
-            required
           />
           <FormFooter />
           <Button>Intra in cont</Button>
