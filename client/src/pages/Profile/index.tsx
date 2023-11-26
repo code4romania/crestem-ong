@@ -24,13 +24,16 @@ const Profile = () => {
           title="Informații despre ONG"
           button={<Button to="/profile/edit">Editeaza</Button>}
           body={[
-            ["Nume organizație", user.ongName],
-            ["CIF-ul organizației", user.ongIdentificationNumber],
-            ["Județ", user.city],
-            ["Localitate", user.county],
-            ["Email organizație", user.email],
-            ["Telefon organizație", user.ongName],
-            [
+            user.ongName && ["Nume organizație", user.ongName],
+            user.ongIdentificationNumber && [
+              "CIF-ul organizației",
+              user.ongIdentificationNumber,
+            ],
+            user.city && ["Județ", user.city],
+            user.county && ["Localitate", user.county],
+            user.email && ["Email organizație", user.email],
+            user.ongName && ["Telefon organizație", user.ongName],
+            user.domains?.length && [
               "Domenii de activitate",
               user.domains?.map((domain) => domain.name)?.join(", "),
             ],
@@ -46,14 +49,23 @@ const Profile = () => {
                 user.accountLinkedin || ""
               } ${user.accountTiktok || ""} ${user.accountTwitter || ""}`,
             ],
-            [
+            user.avatar?.url && [
               "Logo organizație",
               <Avatar src={user.avatar?.url} alt={user.ongName} />,
             ],
-            ["Nume reprezentant organizație", user.contactFirstName],
+            user.contactLastName && [
+              "Nume reprezentant organizație",
+              user.contactLastName,
+            ],
             ["Prenume reprezentant organizație", user.contactFirstName],
-            ["Email reprezentant organizație", user.contactEmail],
-            ["Telefon reprezentant organizație", user.contactPhone],
+            user.contactEmail && [
+              "Email reprezentant organizație",
+              user.contactEmail,
+            ],
+            user.contactPhone && [
+              "Telefon reprezentant organizație",
+              user.contactPhone,
+            ],
           ].filter(Boolean)}
         />
       </Section>
