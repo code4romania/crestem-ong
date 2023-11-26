@@ -34,6 +34,7 @@ import AuthenticatedMentor from "@/pages/authenticated/Mentor";
 import CreateUser from "@/pages/admin/CreateUser";
 import MentorReport from "@/pages/mentor/Report";
 import OngEditProfile from "@/pages/authenticated/EditProfile";
+import AuthenticatedMatrix from "@/pages/authenticated/Matrix";
 
 const Router = () => {
   const user = useAppSelector((state) => state.userState.user);
@@ -67,6 +68,7 @@ const Router = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/edit" element={<OngEditProfile />} />
           <Route path="/mentors" element={<AuthenticatedMentorsList />} />
+          <Route path="/matrix" element={<AuthenticatedMatrix />} />
           <Route path="/users/:userId" element={<AuthenticatedMentor />} />
         </Route>
       ) : userType === "mentor" ? (

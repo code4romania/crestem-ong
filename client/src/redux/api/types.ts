@@ -117,6 +117,7 @@ export interface Program {
 export type Matrix = {
   name: string;
   quiz: {
+    id: string;
     question: string;
     option_1: string;
     option_2: string;

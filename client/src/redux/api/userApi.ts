@@ -286,7 +286,7 @@ export const userApi = createApi({
       },
       invalidatesTags: ["Report"],
     }),
-    getMatrix: builder.query<Matrix, null>({
+    getMatrix: builder.query<Matrix, void>({
       query() {
         return {
           url: "matrix?populate=dimensions.quiz",

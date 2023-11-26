@@ -22,8 +22,9 @@ const Home = () => {
   return (
     <div>
       <Section>
-        <div className={"space-y-2"}>
+        <div className={"flex justify-between space-y-2"}>
           <Heading level={"h2"}>Evaluare organizațională</Heading>
+          <Button to="/matrix">Vezi matricea</Button>
         </div>
       </Section>
       {!hasReports && (
