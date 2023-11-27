@@ -118,21 +118,17 @@ const NewReport = () => {
         <div className="divide-y divide-gray-300">
           <div className="py-6">
             <div className="text-xl">Invită membrii organizației</div>
-            <p className="text-gray-500 text-sm leading-5 font-normal mt-2">
-              Pentru a putea păstra confidențialitatea răspunsurilor individuale
-              este necesar ca și tu, ca administrator al organizației să îți
-              trimiți o invitație de completare a matricei de evaluare. Adaugă
-              aici toate adresele de email ale colegilor pe care îi inviți să
-              completeze și adaugă și adresa ta de email. Această adresă trebuie
-              să fie diferită de adresa pe care ai completat-o ca email al
-              organizației la crearea contului.
+            <p className="text-gray-700 text-sm leading-5 font-bold mt-2">
+              Pentru a putea păstra confidențialitatea răspunsurilor individuale este necesar ca și tu, ca administrator al organizației să îți trimiți o invitație de completare a matricei de evaluare.
+            </p>
+            <p className="text-gray-700 text-sm leading-5 font-normal mt-2">
+              Adaugă aici toate adresele de email ale colegilor pe care îi inviți să completeze și adaugă și adresa ta de email. Această adresă trebuie să fie diferită de adresa pe care ai completat-o ca email al organizației la crearea contului.
             </p>
           </div>
           <div className="py-6 space-y-2">
-            <div>
-              Adaugă adresele de email către care vrei să trimiți invitațiile,
-              separate de tasta [Enter].
-            </div>
+            <p>
+              Adaugă adresele de email către care vrei să trimiți invitațiile, inclusiv a ta, separate de tasta [Enter].
+            </p>
             <div className="flex gap-10 w-full md:w-2/3 lg:w-1/2">
               <textarea
                 rows={4}
