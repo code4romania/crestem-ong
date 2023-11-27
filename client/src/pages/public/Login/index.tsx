@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { object, string, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -82,13 +82,15 @@ const Input = ({ register, name, label, errors, ...rest }) => (
 const Login = memo(() => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const methods = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
+  });
+
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<LoginInput>({
-    resolver: zodResolver(loginSchema),
-  });
+  } = methods;
 
   const [loginUser, { isLoading, isError, error, isSuccess, data }] =
     useLoginUserMutation();
@@ -123,26 +125,28 @@ const Login = memo(() => {
   return (
     <Section>
       <div className="grid md:grid-cols-2 items-center justify-center mt-0 mr-auto mb-0 ml-auto gap-8">
-        <form onSubmit={handleSubmit(onSubmitHandler)}>
-          <FormHeader />
-          <Input
-            label="Email"
-            placeholder="Introdu email"
-            name="identifier"
-            type="email"
-            register={register}
-            errors={errors}
-            required
-          />
-          <Form.Password
-            register={register}
-            name={"password"}
-            label="Parola"
-            placeholder="Introdu parola"
-          />
-          <FormFooter />
-          <Button>Intra in cont</Button>
-        </form>
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onSubmitHandler)}>
+            <FormHeader />
+            <Input
+              label="Email"
+              placeholder="Introdu email"
+              name="identifier"
+              type="email"
+              register={register}
+              errors={errors}
+              required
+            />
+            <Form.Password
+              register={register}
+              name={"password"}
+              label="Parola"
+              placeholder="Introdu parola"
+            />
+            <FormFooter />
+            <Button>Intra in cont</Button>
+          </form>
+        </FormProvider>
         <div>
           <img src={screenshot} alt={"screenshot"} />
         </div>
