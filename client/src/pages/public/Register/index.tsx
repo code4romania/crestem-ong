@@ -302,7 +302,7 @@ const Register = () => {
                   <div className="sm:col-span-3">
                     <Form.Password
                       register={methods.register}
-                      name="password"
+                      name="confirmPassword"
                       label={
                         <>
                           Confirmă parola

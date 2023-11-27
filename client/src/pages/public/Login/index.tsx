@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { object, string, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -82,11 +82,8 @@ const Input = ({ register, name, label, errors, ...rest }) => (
 const Login = memo(() => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<LoginInput>({
+
+  const methods = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
   });
 
@@ -123,26 +120,29 @@ const Login = memo(() => {
   return (
     <Section>
       <div className="grid md:grid-cols-2 items-center justify-center mt-0 mr-auto mb-0 ml-auto gap-8">
-        <form onSubmit={handleSubmit(onSubmitHandler)}>
-          <FormHeader />
-          <Input
-            label="Email"
-            placeholder="Introdu email"
-            name="identifier"
-            type="email"
-            register={register}
-            errors={errors}
-            required
-          />
-          <Form.Password
-            register={register}
-            name={"password"}
-            label="Parola"
-            placeholder="Introdu parola"
-          />
-          <FormFooter />
-          <Button>Intra in cont</Button>
-        </form>
+        <FormProvider {...methods}>
+          <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
+            <FormHeader />
+            <Input
+              label="Email"
+              placeholder="Introdu email"
+              name="identifier"
+              type="email"
+              register={methods.register}
+              errors={methods.formState.errors}
+              required
+            />
+
+            <Form.Password
+              register={methods.register}
+              name={"password"}
+              label="Parola"
+              placeholder="Introdu parola"
+            />
+            <FormFooter />
+            <Button>Intra in cont</Button>
+          </form>
+        </FormProvider>
         <div>
           <img src={screenshot} alt={"screenshot"} />
         </div>
