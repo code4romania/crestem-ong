@@ -32,7 +32,7 @@ const registerSchema = object({
     .email("Adresa de email este invalidă"),
   phone: string().min(1, "Telefonul este obligatoriu"),
   avatar: custom<File[]>(),
-  domains: array(number()),
+  domains: array(number()).nonempty("Alege minim un domeniu de activitate"),
   website: string(),
   keywords: string(),
   description: string(),
@@ -102,6 +102,7 @@ const CreateUser = () => {
   }, [isSuccess, data?.jwt, dispatch]);
 
   const onSubmitHandler: SubmitHandler<RegisterInput> = async (values) => {
+    debugger;
     const formData = new FormData();
     const res = await submitRegister({ ...values, username: values.email });
     if (values.avatar?.length && values.avatar[0]?.name) {
@@ -255,7 +256,7 @@ const CreateUser = () => {
               <div className="pt-8">
                 <div>
                   <h3 className="text-base font-semibold leading-6 text-gray-900">
-                    Informații adiționale despre ONG (opționale)
+                    Informații adiționale despre ONG
                   </h3>
                 </div>
                 <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
@@ -263,7 +264,12 @@ const CreateUser = () => {
                     <div className="sm:col-span-3">
                       <MultiSelect
                         options={domains}
-                        label={"Domenii activitate"}
+                        label={
+                          <>
+                            Domenii activitate
+                            <span className="text-red-700 ml-1.5">*</span>
+                          </>
+                        }
                         {...methods.register("domains")}
                       />
                       <div className="text-red-400 text-sm py-2">

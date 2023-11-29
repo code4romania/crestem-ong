@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { custom, literal, number, object, string, TypeOf } from "zod";
+import { array, custom, literal, number, object, string, TypeOf } from "zod";
 import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import Heading from "@/components/Heading";
@@ -32,7 +32,7 @@ const ongProfileSchema = object({
     .email("Adresa de email este invalidă"),
   phone: string().min(1, "Telefonul este obligatoriu"),
   avatar: custom<File[]>(),
-  domains: number().array().optional(),
+  domains: array(number()).nonempty("Alege minim un domeniu de activitate"),
   website: string(),
   keywords: string(),
   description: string(),
@@ -57,7 +57,7 @@ const OngEditProfile = () => {
 
   const ongDomains = useMemo(() => {
     return user?.domains
-      ? user?.domains?.map(d=>({id: d.id, name: d.name, label: d.name}))
+      ? user?.domains?.map(d => ({ id: d.id, name: d.name, label: d.name }))
       : [];
   }, [user]);
 
@@ -289,7 +289,7 @@ const OngEditProfile = () => {
               <div className="pt-8">
                 <div>
                   <h3 className="text-base font-semibold leading-6 text-gray-900">
-                    Informații adiționale despre ONG (opționale)
+                    Informații adiționale despre ONG
                   </h3>
                 </div>
                 <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
@@ -297,7 +297,12 @@ const OngEditProfile = () => {
                     <div className="sm:col-span-3">
                       <MultiSelect
                         options={domains}
-                        label={"Domenii activitate"}
+                        label={
+                          <>
+                            Domenii activitate
+                            <span className="text-red-700 ml-1.5">*</span>
+                          </>
+                        }
                         defaultValues={ongDomains}
                         {...methods.register("domains")}
                       />

@@ -40,7 +40,7 @@ const registerSchema = object({
     .min(8, "Parola trebuie sa contina cel putin 8 caractere")
     .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
   avatar: custom<File[]>(),
-  domains: array(number()).optional(),
+  domains: array(number()).nonempty("Alege minim un domeniu de activitate"),
   website: string(),
   keywords: string(),
   description: string(),
@@ -134,11 +134,11 @@ const Register = () => {
     () =>
       county
         ? [...new Set(citiesByCounty[county].map((city) => city.nume))]
-            .sort()
-            .map((city) => ({
-              name: city,
-              label: city,
-            }))
+          .sort()
+          .map((city) => ({
+            name: city,
+            label: city,
+          }))
         : [],
     [citiesByCounty, county]
   );
@@ -317,7 +317,7 @@ const Register = () => {
               <div className="pt-8">
                 <div>
                   <h3 className="text-base font-semibold leading-6 text-gray-900">
-                    Informații adiționale despre ONG (opționale)
+                    Informații adiționale despre ONG
                   </h3>
                 </div>
                 <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
@@ -325,7 +325,12 @@ const Register = () => {
                     <div className="sm:col-span-3">
                       <MultiSelect
                         options={domains}
-                        label={"Domenii activitate"}
+                        label={
+                          <>
+                            Domenii activitate
+                            <span className="text-red-700 ml-1.5">*</span>
+                          </>
+                        }
                         {...methods.register("domains")}
                       />
                       <div className="text-red-400 text-sm py-2">
