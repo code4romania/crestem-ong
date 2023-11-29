@@ -1,6 +1,7 @@
-import React, {
+import {
   ChangeEventHandler,
   Fragment,
+  ReactNode,
   useEffect,
   useState,
 } from "react";
@@ -15,22 +16,22 @@ export default function MultiSelect({
   onChange,
 }: {
   name: string;
-  label: string;
-  defaultValues: { label: string; name: string }[];
-  options: { label: string; name: string }[];
+  label: string | ReactNode;
+  defaultValues: { id: number; label: string; name: string }[];
+  options: { id: number; label: string; name: string }[];
   onChange: ChangeEventHandler;
 }) {
   const [selectedItems, setSelectedItems] = useState(defaultValues);
   const [query, setQuery] = useState("");
-  const filteredPeople =
+  const filteredItems =
     query === ""
       ? options
       : options.filter((option) =>
-          option.name
-            .toLowerCase()
-            .replace(/\s+/g, "")
-            .includes(query.toLowerCase().replace(/\s+/g, ""))
-        );
+        option.name
+          .toLowerCase()
+          .replace(/\s+/g, "")
+          .includes(query.toLowerCase().replace(/\s+/g, ""))
+      );
 
   useEffect(() => {
     onChange({
@@ -41,6 +42,10 @@ export default function MultiSelect({
     });
   }, [selectedItems]);
 
+  function handleChange(value: { id: number; label: string; name: string; }[]): void {
+    setSelectedItems(value)
+  }
+
   return (
     <div className="flex justify-center items-center w-full">
       <div className="w-full">
@@ -50,7 +55,7 @@ export default function MultiSelect({
         >
           {label}
         </label>
-        <Combobox value={selectedItems} onChange={setSelectedItems} multiple>
+        <Combobox value={selectedItems} onChange={handleChange} multiple>
           <div className="relative mt-1">
             <div className="">
               <Combobox.Input
@@ -75,17 +80,16 @@ export default function MultiSelect({
               afterLeave={() => setQuery("")}
             >
               <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-20">
-                {filteredPeople.length === 0 && query !== "" ? (
+                {filteredItems.length === 0 && query !== "" ? (
                   <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                     Nu am găsit niciun domeniu similar.
                   </div>
                 ) : (
-                  filteredPeople.map((option) => (
+                  filteredItems.map((option) => (
                     <Combobox.Option
                       key={option.id}
                       className={({ active }) =>
-                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                          active ? "bg-teal-600 text-white" : "text-gray-900"
+                        `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? "bg-teal-600 text-white" : "text-gray-900"
                         }`
                       }
                       value={option}
@@ -93,17 +97,15 @@ export default function MultiSelect({
                       {({ selected, active }) => (
                         <>
                           <span
-                            className={`block truncate ${
-                              selected ? "font-medium" : "font-normal"
-                            }`}
+                            className={`block truncate ${selected ? "font-medium" : "font-normal"
+                              }`}
                           >
                             {option.name}
                           </span>
                           {selected ? (
                             <span
-                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                active ? "text-white" : "text-teal-600"
-                              }`}
+                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? "text-white" : "text-teal-600"
+                                }`}
                             >
                               <CheckIcon
                                 className="h-5 w-5"
