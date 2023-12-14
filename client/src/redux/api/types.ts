@@ -77,6 +77,7 @@ export interface Dimension {
   id: number | string;
   quiz: Question[];
   name: string;
+  link: string;
 }
 
 export interface Evaluation {

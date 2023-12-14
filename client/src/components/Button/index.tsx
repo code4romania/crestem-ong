@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 interface IButton {
   children: ReactNode;
   to?: string;
+  openInNewTab?: boolean;
   onClick?: () => void;
   type?: "submit" | "button";
   color?: "teal" | "white";
@@ -19,15 +20,17 @@ const variation = {
 const Button = ({
   children,
   to,
+  openInNewTab,
   onClick,
   type,
   color = "teal",
   disabled,
 }: IButton) => {
   const className = variation[color];
+  const linkProps = openInNewTab ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
   return to ? (
-    <Link to={to} className={className}>
+    <Link to={to} className={className} {...linkProps}>
       {children}
     </Link>
   ) : (

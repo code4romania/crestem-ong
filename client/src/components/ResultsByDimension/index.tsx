@@ -9,6 +9,7 @@ const ResultsByDimension = ({
   scoreByEvaluation: {
     id: string;
     name: string;
+    link: string;
     score: number;
     tags: string[];
   }[];
@@ -19,10 +20,10 @@ const ResultsByDimension = ({
         <div className="font-medium text-lg">Rezultate pe dimensiuni</div>
       </div>
       <div className="space-y-6">
-        {scoreByEvaluation?.map(({ id, name, score, tags }, i) => (
+        {scoreByEvaluation?.map(({ id, name, link, score, tags }, i) => (
           <div key={id} className="flex space-x-12 items-end">
             <div className="md:w-1/2">
-              <ProgressBar label={name} percentage={score} />
+              <ProgressBar label={name} link={link} percentage={score} />
             </div>
             <div className="md:w-1/2 flex space-x-4 text-sm">
               {score < 50 ? <img src={badIcon} /> : <img src={goodIcon} />}

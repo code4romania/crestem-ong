@@ -35,6 +35,7 @@ import CreateUser from "@/pages/admin/CreateUser";
 import MentorReport from "@/pages/mentor/Report";
 import OngEditProfile from "@/pages/authenticated/EditProfile";
 import AuthenticatedMatrix from "@/pages/authenticated/Matrix";
+import Matrix from "@/components/Matrix";
 
 const Router = () => {
   const user = useAppSelector((state) => state.userState.user);
@@ -88,6 +89,7 @@ const Router = () => {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/confirm-email" element={<SetPassword />} />
+          <Route path="/matrix" element={<Matrix />} />
         </Route>
       )}
       <Route path="*" element={<Navigate to="/" />} />

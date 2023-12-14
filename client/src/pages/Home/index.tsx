@@ -24,7 +24,7 @@ const Home = () => {
       <Section>
         <div className={"flex justify-between space-y-2"}>
           <Heading level={"h2"}>Evaluare organizațională</Heading>
-          <Button to="/matrix">Vezi matricea</Button>
+          <Button to="/matrix" openInNewTab={true}>Vezi matricea</Button>
         </div>
       </Section>
       {!hasReports && (

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const getColor = (percentage: number) =>
   percentage >= 70
@@ -15,16 +16,20 @@ const getColor = (percentage: number) =>
 
 const ProgressBar = ({
   label,
+  link,
   percentage,
 }: {
   label: string;
+  link: string;
   percentage: number;
 }) => {
   const color = getColor(percentage);
   return (
     <div>
       <div className="flex justify-between mb-2">
-        <div className="text-lg">{label}</div>
+        <Link className="text-lg hover:underline" to={link} target="_blank" rel="noopener noreferrer">
+          {label}
+        </Link>
         <div
           className={`text-sm`}
           style={{ color: percentage >= 50 ? "#047B7D" : "#D95040" }}
