@@ -48,8 +48,8 @@ export const calcScore = (evaluations) => {
 };
 
 export const calcScoreByDimension = ({
-  evaluationsCompleted,
   matrix,
+  evaluationsCompleted,
 }: {
   evaluationsCompleted: Evaluation[];
   matrix: Matrix;
@@ -93,9 +93,7 @@ export const calcScoreByDimension = ({
       const score = Math.floor(
         (object[index].score * 25) / evaluationsCompleted.length
       );
-      const quiz1 = Math.floor(
-        (object[index].option1 * 25) / evaluationsCompleted.length
-      );
+ 
       const tags = [
         {
           quiz: matrix[index].quiz[0].tag,
@@ -122,6 +120,7 @@ export const calcScoreByDimension = ({
       return {
         id: index,
         name: matrix[index].name,
+        link: matrix[index].link,
         score: score,
         tags:
           score >= 50

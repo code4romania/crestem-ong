@@ -67,8 +67,10 @@ module.exports = createCoreController(
               ""
             )}${
               dimensions[dimensionIndex]?.comment &&
-              `<p>Comentariu: ${dimensions[dimensionIndex]?.comment}</p>`
-            }`;
+              `<p><b>Argumentare:</b> ${dimensions[dimensionIndex]?.comment}</p>`
+            }
+            <hr>
+            `;
           },
           ""
         );

@@ -77,9 +77,10 @@ const EvaluationResults = ({ evaluationData }) => {
               </div>
               {dimensions[dimensionIndex].comment && (
                 <div className="mt-2 text-sm">
-                  Comentariu: {dimensions[dimensionIndex].comment}
+                  <b>Argumentare:</b> {dimensions[dimensionIndex].comment}
                 </div>
               )}
+              <hr/>
             </div>
           </div>
         ))}
