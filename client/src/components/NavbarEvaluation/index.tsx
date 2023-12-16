@@ -10,8 +10,8 @@ const NavbarEvaluation = ({
   menu?: ReactNode;
 }) => (
   <header className={"shadow"}>
-    <nav className="container mx-auto py-6 px-2.5 space-y-4">
-      <div className="relative flex items-center justify-between gap-3">
+    <nav className="container mx-auto py-6 px-2.5 space-y-4 flex items-center justify-between gap-3 lg:block">
+      <div className="relative flex items-center justify-between gap-3 w-full">
         <Link to="/">
           <img
             className="object-contain max-w-[180px]"
