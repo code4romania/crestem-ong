@@ -126,9 +126,6 @@ const Menu = () => {
   console.log("userType", userType);
   const menu = MENU[userType];
 
-  const linkClassName =
-    "flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600";
-
   return (
     <ul className="items-center hidden text-sm gap-x-3 lg:flex lg:flex-wrap">
       {menu.map((menuItem) => (
@@ -154,7 +151,7 @@ const Menu = () => {
   );
 };
 
-const Example = () => {
+const Navbar = () => {
   const user = useAppSelector((state) => state.userState.user);
 
   return (
@@ -194,4 +191,4 @@ const Example = () => {
   );
 };
 
-export default Example;
+export default Navbar;

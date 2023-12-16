@@ -67,7 +67,7 @@ module.exports = createCoreController(
               ""
             )}${
               dimensions[dimensionIndex]?.comment &&
-              `<p><b>Argumentare:</b> ${dimensions[dimensionIndex]?.comment}</p>`
+              `<div style="padding: 1em 0 1em 0"><b>Argumentare:</b> ${dimensions[dimensionIndex]?.comment}</p>`
             }
             <hr>
             `;
