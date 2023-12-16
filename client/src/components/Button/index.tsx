@@ -27,7 +27,9 @@ const Button = ({
   disabled,
 }: IButton) => {
   const className = variation[color];
-  const linkProps = openInNewTab ? { target: "_blank", rel: "noopener noreferrer" } : {};
+  const linkProps = openInNewTab
+    ? { target: "_blank", rel: "noopener noreferrer" }
+    : { onClick };
 
   return to ? (
     <Link to={to} className={className} {...linkProps}>

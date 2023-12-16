@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import NavbarEvaluation from "@/components/NavbarEvaluation";
 import Button from "@/components/Button";
@@ -6,6 +6,8 @@ import UserMenu from "@/components/UserMenu";
 import { useAppSelector } from "@/redux/store";
 import logo from "@/assets/platforma_FDSC_Kaufland.svg";
 import getUserType from "@/lib/userType";
+import { Bars3Icon } from "@heroicons/react/20/solid";
+import { Menu as MenuHeadless, Transition } from "@headlessui/react";
 
 const MENU = {
   public: [
@@ -120,34 +122,92 @@ const MENU = {
   ],
 };
 
-const Menu = () => {
+export const Menu = () => {
   const user = useAppSelector((state) => state.userState.user);
   const userType = getUserType(user);
-  console.log("userType", userType);
   const menu = MENU[userType];
 
   return (
-    <ul className="items-center hidden text-sm gap-x-3 lg:flex lg:flex-wrap">
-      {menu.map((menuItem) => (
-        <li key={menuItem.link}>
-          <NavLink
-            target={
-              menuItem.link.startsWith("https://crestem.ong")
-                ? "_blank"
-                : undefined
-            }
-            to={menuItem.link}
-            className={({ isActive, isPending }) =>
-              `flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 ${
-                isPending ? "bg-gray-50" : isActive ? "bg-gray-100" : ""
-              }`
-            }
-          >
-            {menuItem.text}
-          </NavLink>
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className="items-center hidden text-sm gap-x-3 lg:flex lg:flex-wrap">
+        {menu.map((menuItem) => (
+          <li key={menuItem.link}>
+            <NavLink
+              target={
+                menuItem.link.startsWith("https://crestem.ong")
+                  ? "_blank"
+                  : undefined
+              }
+              to={menuItem.link}
+              className={({ isActive, isPending }) =>
+                `flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 ${
+                  isPending ? "bg-gray-50" : isActive ? "bg-gray-100" : ""
+                }`
+              }
+            >
+              {menuItem.text}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+      <MenuHeadless
+        as="div"
+        className="lg:hidden !mt-0 relative flex items-center"
+      >
+        <MenuHeadless.Button>
+          <Bars3Icon className="h-5" />
+        </MenuHeadless.Button>
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          <MenuHeadless.Items className="absolute top-5 right-0 z-10 mt-2 w-60 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none flex flex-col">
+            {menu.map((menuItem) => (
+              <MenuHeadless.Item key={menuItem.text}>
+                <NavLink
+                  target={
+                    menuItem.link.startsWith("https://crestem.ong")
+                      ? "_blank"
+                      : undefined
+                  }
+                  to={menuItem.link}
+                  className={({ isActive, isPending }) =>
+                    `flex flex-wrap border-b-2 border-transparent px-3 py-2 font-medium items-center text-gray-900 border-teal-600 ${
+                      isPending ? "bg-gray-50" : isActive ? "bg-gray-100" : ""
+                    }`
+                  }
+                >
+                  {menuItem.text}
+                </NavLink>
+              </MenuHeadless.Item>
+            ))}
+            {!user && (
+              <>
+                <MenuHeadless.Item as="div" className="px-2 flex mb-2">
+                  {({ close }) => (
+                    <Button color="white" to={"/login"} onClick={close}>
+                      Intră în cont
+                    </Button>
+                  )}
+                </MenuHeadless.Item>
+                <MenuHeadless.Item as="div" className="px-2 flex mb-1">
+                  {({ close }) => (
+                    <Button to={"/register"} onClick={close}>
+                      Înregistrează-te
+                    </Button>
+                  )}
+                </MenuHeadless.Item>
+              </>
+            )}
+          </MenuHeadless.Items>
+        </Transition>
+      </MenuHeadless>
+    </>
   );
 };
 
@@ -161,13 +221,13 @@ const Navbar = () => {
           {user ? (
             <UserMenu />
           ) : (
-            <div className="flex justify-center items-center md:justify-start gap-4">
+            <div className="hidden lg:flex justify-center items-center md:justify-start gap-4">
               <div>
                 <Button color="white" to={"/login"}>
                   Intră în cont
                 </Button>
               </div>
-              <div className="hidden md:block">
+              <div>
                 <Button to={"/register"}>Înregistrează-te</Button>
               </div>
             </div>
