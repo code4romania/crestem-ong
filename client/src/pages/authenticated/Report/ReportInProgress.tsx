@@ -1,10 +1,14 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Button from "@/components/Button";
 import { DonutChart } from "react-circle-chart";
 import CreateEvaluation from "@/components/CreateEvaluation";
 import TableEvaluations from "@/components/TableEvaluations";
 import Confirm from "@/components/Confirm";
 import { useUpdateReportMutation } from "@/redux/api/userApi";
+import { ErrorMessage } from "@hookform/error-message";
+import { object, string, date, preprocess, array, TypeOf } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
+import { useForm } from "react-hook-form";
 
 const CallToAction = ({ reportId }: { reportId: number }) => {
   const [updateReport] = useUpdateReportMutation();
@@ -38,6 +42,35 @@ const ReportInProgress = ({ report }) => {
     [report?.evaluations]
   );
   const canFinish = evaluationsCompleted.length > 0;
+  const [editDeadline, setEditDeadline] = useState(false);
+
+  const [updateReport, { isSuccess }] = useUpdateReportMutation();
+  useEffect(() => {
+    if (isSuccess) {
+      setEditDeadline(false);
+    }
+  }, [isSuccess]);
+
+  const reportSchema = object({
+    deadline: preprocess((arg) => {
+      if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
+    }, date().min(new Date(), { message: "Alegeti o data in viitor" })),
+  });
+
+  type ReportInput = TypeOf<typeof reportSchema>;
+
+  const { register, handleSubmit, formState } = useForm<ReportInput>({
+    resolver: zodResolver(reportSchema),
+  });
+
+  const today = new Date().toISOString().split('T')[0];
+
+  const onSubmitHandler = useCallback((form: ReportInput) => {
+    updateReport({
+      id: reportId,
+      deadline: form.deadline,
+    });
+  }, []);
 
   return (
     <div>
@@ -89,33 +122,59 @@ const ReportInProgress = ({ report }) => {
               Perioada de evaluare
             </div>
             <div className="flex mt-4 space-x-8">
-              {report.createdAt && (
-                <div>
-                  <div className="text-sm leading-5 font-medium">
-                    Data de început:
-                  </div>
-                  <div className="mt-2.5">
-                    {new Date(report.createdAt).toLocaleDateString("ro-RO", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </div>
+              <div>
+                <div className="text-sm leading-5 font-medium">
+                  Data de început:
                 </div>
-              )}
-              {report.deadline && (
+                <div className="mt-2.5">
+                  {new Date(report.createdAt).toLocaleDateString("ro-RO", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </div>
+              </div>
+
+              {!editDeadline ? (
                 <div>
                   <div className="text-sm leading-5 font-medium">
                     Data de final:
                   </div>
+
                   <div className="mt-2.5">
-                    {new Date(report.deadline).toLocaleDateString("ro-RO", {
+                    <div>{new Date(report.deadline).toLocaleDateString("ro-RO", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
-                    })}
+                    })}</div>
+                    <button className="whitespace-nowrap text-sm font-medium text-teal-600 hover:underline mt-2" onClick={() => setEditDeadline(true)}>Editează</button>
                   </div>
                 </div>
+              ) : (
+                <form onSubmit={handleSubmit(onSubmitHandler)}>
+                  <div>
+                    <div className="text-sm leading-5 font-medium mb-1">
+                      Data de final:
+                    </div>
+                    <input
+                      type="date"
+                      className="border-gray-300 rounded-md"
+                      min={today}
+                      defaultValue={report.deadline}
+                      {...register('deadline')}
+                    />
+                    <div className="text-red-600 text-sm mt-1">
+                      <ErrorMessage name="deadline" errors={formState.errors} />
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-4">
+                    <Button color="white" type={"reset"} onClick={()=>setEditDeadline(false)}>
+                      Renunță
+                    </Button>
+                    <Button type="submit">Salvează modificări</Button>
+                  </div>
+                </form>
               )}
             </div>
           </div>
