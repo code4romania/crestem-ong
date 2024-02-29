@@ -66,6 +66,7 @@ const Home = () => {
                           deadline={report.deadline}
                           evaluations={report.evaluations}
                           finished={report.finished}
+                          actionLabel={"Vezi rezultatele"}
                         />
                       );
                     })}
