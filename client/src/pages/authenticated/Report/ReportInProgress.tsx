@@ -11,7 +11,7 @@ const CallToAction = ({ reportId }: { reportId: number }) => {
   const [open, setOpen] = useState(false);
 
   const handleComplete = useCallback(() => {
-    updateReport({ id: reportId, finished: true });
+    updateReport({ id: reportId, finished: true, deadline: new Date().toISOString().split('T')[0] });
   }, [reportId]);
 
   return (
