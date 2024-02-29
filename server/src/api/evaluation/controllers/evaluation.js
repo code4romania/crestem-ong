@@ -16,6 +16,7 @@ const sendMailToUserWhenEvaluationIsFinished = (to, data) =>
 
 const { createCoreController } = require("@strapi/strapi").factories;
 const { UnauthorizedError, ForbiddenError } = require("@strapi/utils").errors;
+const { deadlineHasPassed } = require("../../../helpers/reports");
 
 module.exports = createCoreController(
   "api::evaluation.evaluation",
@@ -33,7 +34,7 @@ module.exports = createCoreController(
       );
       const { report, email: userEmail, ...response } = data;
 
-      if (report.finished && !isFDSC) {
+      if ((report.finished || deadlineHasPassed(report.deadline)) && !isFDSC) {
         throw new UnauthorizedError(
           `Perioada de evaluare a luat sfarsit. Va rugam luati legatura cu organizatia ${report.user.ongName} pentru mai multe detalii.`
         );
