@@ -27,6 +27,7 @@ const ReportsList = () => {
     "DATĂ FINAL",
     "SCOR OBȚINUT",
     "NUMĂR COMPLETĂRI",
+    "NUMĂR INVITAȚII",
   ];
 
   const data = useMemo(
@@ -41,7 +42,8 @@ const ReportsList = () => {
             startDate: new Date(createdAt),
             endDate: new Date(deadline),
             score: calcScore(completedEvaluations) || 0,
-            count: `${completedEvaluations.length} / ${evaluations.length}`,
+            completedEvaluationsCount: completedEvaluations.length,
+            evaluationsCount: evaluations.length,
             evaluations: evaluations,
           };
         }
@@ -52,7 +54,7 @@ const ReportsList = () => {
   const body = useMemo(
     () =>
       data?.map(
-        ({ id, ongName, startDate, endDate, finished, score, count }) => {
+        ({ id, ongName, startDate, endDate, finished, score, completedEvaluationsCount, evaluationsCount }) => {
           return {
             id,
             ongName: ongName,
@@ -69,7 +71,8 @@ const ReportsList = () => {
                 })
               : "În progres",
             score: finished ? `${score}%` : "În progres",
-            count: count,
+            completedEvaluationsCount: completedEvaluationsCount,
+            evaluationsCount: evaluationsCount,
           };
         }
       ),
