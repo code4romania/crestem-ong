@@ -8,15 +8,21 @@ import empty from "@/assets/empty.svg";
 import TableHeadReports from "@/components/index/TableHeadReports";
 import TableRowReport from "@/components/TableRowReport";
 import EmptyScreen from "@/components/EmptyScreen";
+import { deadlineHasPassed } from "@/lib/reports";
 
 const Home = () => {
   const user = useAppSelector((state) => state.userState.user);
-  const hasReports = !!user?.reports?.length;
+  const reports = user?.reports?.map((report) => ({
+    ...report,
+    finished: deadlineHasPassed(report.deadline) || report.finished
+  }));
+
+  const hasReports = !!reports?.length;
   const hasReportsInProgress = useMemo(
     () =>
       hasReports &&
-      user.reports.filter((report) => !report.finished).length > 0,
-    [hasReports, user?.reports]
+      reports.filter((report) => !report.finished).length > 0,
+    [hasReports, reports]
   );
 
   return (
@@ -57,7 +63,7 @@ const Home = () => {
                 <table className="min-w-full divide-y divide-gray-300">
                   <TableHeadReports />
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {user.reports?.map((report) => {
+                    {reports?.map((report) => {
                       return (
                         <TableRowReport
                           key={report.id}

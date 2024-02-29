@@ -5,6 +5,7 @@
  */
 
 const { createCoreController } = require("@strapi/strapi").factories;
+const { deadlineHasPassed } = require("../../../helpers/reports");
 
 module.exports = createCoreController("api::report.report", ({ strapi }) => ({
   async create(ctx) {
@@ -32,6 +33,11 @@ module.exports = createCoreController("api::report.report", ({ strapi }) => ({
     const data = await strapi.entityService.findOne("api::report.report", id, {
       populate: ["evaluations.dimensions.quiz", "user"],
     });
+
+    if (deadlineHasPassed(data.deadline)) {
+      data.finished = true;
+    }
+
     return data;
   },
 }));
