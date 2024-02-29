@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import { calcScore } from "@/lib/score";
 
-const TableRowReport = ({ id, createdAt, deadline, evaluations, finished }) => {
+const TableRowReport = ({ id, createdAt, deadline, evaluations, finished, actionLabel = "Vezi"}) => {
   const evaluationsCompleted = evaluations
     ? evaluations.filter(({ dimensions }) => dimensions.length === 10)
     : [];
@@ -38,7 +38,7 @@ const TableRowReport = ({ id, createdAt, deadline, evaluations, finished }) => {
         {finished ? "Finalizat" : "In desfasurare"}
       </td>
       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 text-teal-600">
-        <Link to={`/reports/${id}`}>Vezi</Link>
+        <Link to={`/reports/${id}`}>{actionLabel}</Link>
       </td>
     </tr>
   );
