@@ -34,7 +34,7 @@ const ReportResults = ({ report, evaluationsCompleted, scoreByEvaluation }) => {
       <LibraryBanner />
       <div className="mt-10">
         <div className="font-medium text-lg mb-4">Invitații trimise</div>
-        <TableEvaluations evaluations={report?.evaluations} />
+        <TableEvaluations report={report} />
       </div>
     </div>
   );

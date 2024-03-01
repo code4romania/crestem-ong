@@ -9,6 +9,7 @@ const Confirm = ({
   open,
   setOpen,
   handleComplete,
+  destructive = false,
 }) => {
   const cancelButtonRef = useRef(null);
 
@@ -64,7 +65,11 @@ const Confirm = ({
                     <>
                       <button
                         type="button"
-                        className="inline-flex w-full justify-center rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 sm:col-start-2"
+                        className={`${
+                          destructive
+                            ? "bg-red-600 hover:bg-red-500 focus-visible:outline-red-500"
+                            : "bg-teal-600 hover:bg-teal-500 focus-visible:outline-teal-500"
+                        } inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:col-start-2`}
                         onClick={() => {
                           handleComplete();
                           setOpen(false);

@@ -184,7 +184,7 @@ const ReportInProgress = ({ report }) => {
         <div className="my-10 md:max-w-xl">
           <CreateEvaluation reportId={reportId} />
         </div>
-        <TableEvaluations evaluations={report.evaluations} />
+        <TableEvaluations report={report} />
       </div>
       {canFinish && (
         <div className={"md:hidden mt-4"}>

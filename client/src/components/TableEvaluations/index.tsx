@@ -1,12 +1,54 @@
-import React from "react";
+import { useCallback, useState } from "react";
 import envelope from "@/assets/envelope.svg";
-import { Evaluation } from "@/redux/api/types";
+import { Report } from "@/redux/api/types";
 import { useAppSelector } from "@/redux/store";
 import { Link } from "react-router-dom";
+import { TrashIcon } from "@heroicons/react/20/solid";
+import Confirm from "@/components/Confirm";
+import { useDeleteEvaluationMutation } from "@/redux/api/userApi";
 
-const TableEvaluations = ({ evaluations }: { evaluations: Evaluation[] }) => {
+const DeleteEvaluation = ({ id }: { id: number }) => {
+  const [deleteEvaluation] = useDeleteEvaluationMutation();
+  const [open, setOpen] = useState(false);
+
+  const handleComplete = useCallback(() => {
+    deleteEvaluation({ id: id });
+  }, [id]);
+
+  return (
+    <>
+      <Confirm
+        header="Șterge adresa de email"
+        body="Ești sigur că vrei să ștergi adresa de email introdusă? Utilizatorul nu va mai avea acces la evaluare și va
+trebui să trimiți invitația din nou pentru ca progresul să fie salvat."
+        buttonText="Șterge"
+        open={open}
+        setOpen={setOpen}
+        handleComplete={handleComplete}
+        destructive={true}
+      />
+      <button
+          onClick={() => setOpen(true)}
+          className="text-red-600 hover:text-red-900"
+          title="Șterge invitația"
+        >
+          <TrashIcon
+            className="h-5 w-5"
+            aria-hidden="true"
+          />
+        </button>
+    </>
+  );
+};
+
+
+const TableEvaluations = ({ report }: { report: Report }) => {
   const user = useAppSelector((state) => state.userState.user);
   const isFDSC = user?.role?.type === "fdsc";
+
+  const evaluations = report?.evaluations || [];
+
+  console.log(report);
 
   return evaluations.length ? (
     <table className="w-full table-auto divide-y divide-gray-300">
@@ -25,10 +67,10 @@ const TableEvaluations = ({ evaluations }: { evaluations: Evaluation[] }) => {
             STATUS
           </th>
           {isFDSC && (
-            <th
-              scope="col"
-              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-            ></th>
+            <th scope="col"></th>
+          )}
+          {!report.finished && (
+            <th scope="col"></th>
           )}
         </tr>
       </thead>
@@ -51,6 +93,11 @@ const TableEvaluations = ({ evaluations }: { evaluations: Evaluation[] }) => {
                 <Link to={`/evaluation/${id}?email=${email}`}>
                   Vezi raspunsurile
                 </Link>
+              </td>
+            )}
+            {!report.finished && (
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-right text-gray-500">
+                <DeleteEvaluation id={id} />
               </td>
             )}
           </tr>

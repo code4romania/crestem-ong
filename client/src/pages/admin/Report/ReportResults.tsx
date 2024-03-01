@@ -14,7 +14,7 @@ const ReportResults = ({ report, scoreByEvaluation }) => {
       <ResultsByDimension scoreByEvaluation={scoreByEvaluation} />
       <div className="mt-10">
         <div className="font-medium text-lg mb-4">Completări evaluare</div>
-        <TableEvaluations evaluations={report?.evaluations} />
+        <TableEvaluations report={report} />
       </div>
     </div>
   );

@@ -319,6 +319,16 @@ export const userApi = createApi({
           ...evaluation.attributes,
         })),
     }),
+    deleteEvaluation: builder.mutation<Evaluation, Evaluation>({
+      query: ({ id }) => {
+        return {
+          method: "DELETE",
+          url: `evaluations/${id}`,
+          credentials: "include",
+        }
+      },
+      invalidatesTags: ["Report"],
+    }),
     getDomains: builder.query({
       query() {
         return {
@@ -398,6 +408,7 @@ export const {
   useUpdateUserMutation,
   useGetEvaluationQuery,
   useCreateEvaluationMutation,
+  useDeleteEvaluationMutation,
   useCreateReportMutation,
   useFindReportQuery,
   useUpdateReportMutation,

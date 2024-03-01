@@ -220,6 +220,9 @@ const Evaluation = () => {
               <Button type={"submit"}>
                 {evaluationIndex !== 10 ? "Continuă" : "Trimite"}
               </Button>
+              <Button type="{button}" onClick={() => setEvaluationIndex((state) => state - 1)}>
+                Back
+              </Button>
             </div>
           </div>
         </Section>
