@@ -105,7 +105,8 @@ module.exports = createCoreController(
 
       if (data.report.finished || deadlineHasPassed(data.report.deadline)) {
         throw new ForbiddenError(
-          `Perioada de evaluare a luat sfarsit. Evaluarea nu poate fi ștearsă.`
+          `Perioada de evaluare a luat sfarsit. Evaluarea nu poate fi ștearsă.`,
+          { id: data.id }
         );
       }
 

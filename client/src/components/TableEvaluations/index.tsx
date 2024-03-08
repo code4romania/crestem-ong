@@ -1,45 +1,8 @@
-import { useCallback, useState } from "react";
 import envelope from "@/assets/envelope.svg";
 import { Report } from "@/redux/api/types";
 import { useAppSelector } from "@/redux/store";
 import { Link } from "react-router-dom";
-import { TrashIcon } from "@heroicons/react/20/solid";
-import Confirm from "@/components/Confirm";
-import { useDeleteEvaluationMutation } from "@/redux/api/userApi";
-
-const DeleteEvaluation = ({ id }: { id: number }) => {
-  const [deleteEvaluation] = useDeleteEvaluationMutation();
-  const [open, setOpen] = useState(false);
-
-  const handleComplete = useCallback(() => {
-    deleteEvaluation({ id: id });
-  }, [id]);
-
-  return (
-    <>
-      <Confirm
-        header="Șterge adresa de email"
-        body="Ești sigur că vrei să ștergi adresa de email introdusă? Utilizatorul nu va mai avea acces la evaluare și va
-trebui să trimiți invitația din nou pentru ca progresul să fie salvat."
-        buttonText="Șterge"
-        open={open}
-        setOpen={setOpen}
-        handleComplete={handleComplete}
-        destructive={true}
-      />
-      <button
-          onClick={() => setOpen(true)}
-          className="text-red-600 hover:text-red-900"
-          title="Șterge invitația"
-        >
-          <TrashIcon
-            className="h-5 w-5"
-            aria-hidden="true"
-          />
-        </button>
-    </>
-  );
-};
+import DeleteEvaluation from "@/components/DeleteEvaluation";
 
 
 const TableEvaluations = ({ report }: { report: Report }) => {
