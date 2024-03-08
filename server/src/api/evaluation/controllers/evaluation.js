@@ -58,18 +58,15 @@ module.exports = createCoreController(
           (acc, { name, quiz }, dimensionIndex) => {
             return `${acc}\n<h2>${name}</h2>${quiz.reduce(
               (acc, matrixQuiz, quizIndex) =>
-                `${acc}<h3>Intrebare: ${matrixQuiz.question}</h3><p>Raspuns: ${
-                  matrixQuiz[
-                    `option_${
-                      +dimensions[dimensionIndex]?.quiz[quizIndex]?.answer + 1
-                    }`
-                  ]
+                `${acc}<h3>Intrebare: ${matrixQuiz.question}</h3><p>Raspuns: ${matrixQuiz[
+                `option_${+dimensions[dimensionIndex]?.quiz[quizIndex]?.answer + 1
+                }`
+                ]
                 }</p>`,
               ""
-            )}${
-              dimensions[dimensionIndex]?.comment &&
-              `<div style="padding: 1em 0 1em 0"><b>Argumentare:</b> ${dimensions[dimensionIndex]?.comment}</p>`
-            }
+            )}${dimensions[dimensionIndex]?.comment &&
+            `<div style="padding: 1em 0 1em 0"><b>Argumentare:</b> ${dimensions[dimensionIndex]?.comment}</p>`
+              }
             <hr>
             `;
           },
@@ -96,5 +93,24 @@ module.exports = createCoreController(
       }
       return response;
     },
+    async delete(ctx) {
+      const { id } = ctx.params;
+      const data = await strapi.entityService.findOne(
+        "api::evaluation.evaluation",
+        id,
+        {
+          populate: ["report"],
+        }
+      );
+
+      if (data.report.finished || deadlineHasPassed(data.report.deadline)) {
+        throw new ForbiddenError(
+          `Perioada de evaluare a luat sfarsit. Evaluarea nu poate fi ștearsă.`,
+          { id: data.id }
+        );
+      }
+
+      return await strapi.entityService.delete('api::evaluation.evaluation', data.id);
+    }
   })
 );

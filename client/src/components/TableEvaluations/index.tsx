@@ -1,12 +1,17 @@
-import React from "react";
 import envelope from "@/assets/envelope.svg";
-import { Evaluation } from "@/redux/api/types";
+import { Report } from "@/redux/api/types";
 import { useAppSelector } from "@/redux/store";
 import { Link } from "react-router-dom";
+import DeleteEvaluation from "@/components/DeleteEvaluation";
 
-const TableEvaluations = ({ evaluations }: { evaluations: Evaluation[] }) => {
+
+const TableEvaluations = ({ report }: { report: Report }) => {
   const user = useAppSelector((state) => state.userState.user);
   const isFDSC = user?.role?.type === "fdsc";
+
+  const evaluations = report?.evaluations || [];
+
+  console.log(report);
 
   return evaluations.length ? (
     <table className="w-full table-auto divide-y divide-gray-300">
@@ -25,10 +30,10 @@ const TableEvaluations = ({ evaluations }: { evaluations: Evaluation[] }) => {
             STATUS
           </th>
           {isFDSC && (
-            <th
-              scope="col"
-              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-            ></th>
+            <th scope="col"></th>
+          )}
+          {!report.finished && (
+            <th scope="col"></th>
           )}
         </tr>
       </thead>
@@ -51,6 +56,11 @@ const TableEvaluations = ({ evaluations }: { evaluations: Evaluation[] }) => {
                 <Link to={`/evaluation/${id}?email=${email}`}>
                   Vezi raspunsurile
                 </Link>
+              </td>
+            )}
+            {!report.finished && (
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-right text-gray-500">
+                <DeleteEvaluation id={id} />
               </td>
             )}
           </tr>
