@@ -9,7 +9,7 @@ import {
 import { Link } from "react-router-dom";
 import { downloadExcel } from "react-export-table-to-excel";
 import Input from "@/components/Input";
-import { useGetDomainsQuery, useGetUsersQuery } from "@/redux/api/userApi";
+import { useGetDomainsQuery, useGetProgramsQuery, useGetUsersQuery } from "@/redux/api/userApi";
 import Button from "@/components/Button";
 import { object, string, TypeOf } from "zod";
 import citiesByCounty from "@/lib/orase-dupa-judet.json";
@@ -39,8 +39,10 @@ const UsersTable = () => {
   const [county, setCounty] = useState("");
   const [locality, setLocality] = useState("");
   const [domain, setDomain] = useState(-1);
+  const [program, setProgram] = useState(-1);
 
   const { data: domains } = useGetDomainsQuery(null);
+  const { data: programs } = useGetProgramsQuery();
 
   const localities = useMemo(
     () =>
@@ -104,6 +106,9 @@ const UsersTable = () => {
   const handleChangeDomain = (event: ChangeEvent<HTMLSelectElement>) => {
     setDomain(+event.target.value);
   };
+  const handleChangeProgram = (event: ChangeEvent<HTMLSelectElement>) => {
+    setProgram(+event.target.value);
+  };
   const handleChangeCounty = (event: ChangeEvent<HTMLSelectElement>) => {
     setCounty(event.target.value);
   };
@@ -116,6 +121,7 @@ const UsersTable = () => {
     setStartDate("");
     setEndDate("");
     setDomain(-1);
+    setProgram(-1);
     setCounty("");
     setLocality("");
   };
@@ -141,12 +147,13 @@ const UsersTable = () => {
           : true) &&
         (!county || res.county === county) &&
         (!locality || res.city === locality) &&
-        (domain === -1 || res.domains?.some(d => d.id === domain))
+        (domain === -1 || res.domains?.some(d => d.id === domain)) &&
+        (program === -1 || res.program?.id === program)
     );
     if (results) {
       setFilterd(results);
     }
-  }, [data, searchTerm, startDate, endDate, county, locality, domain]);
+  }, [data, searchTerm, startDate, endDate, county, locality, domain, program]);
 
   if (!data) {
     return <></>;
@@ -183,6 +190,26 @@ const UsersTable = () => {
               onChange={handleChangeEndDate}
               value={endDate} />
           </div>
+          {programs?.length && <div>
+            <label>Programe</label>
+            <div>
+              <select
+                id={"programs"}
+                name={"programs"}
+                title={"Programe"}
+                className="relative mt-2 rounded-md shadow-sm block border-gray-300 focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                value={program}
+                onChange={handleChangeProgram}
+              >
+                <option key={-1} value={-1}></option>
+                {programs.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>}
           {domains?.length && <div>
             <label>Domenii activitate</label>
             <div>
