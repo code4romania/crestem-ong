@@ -26,6 +26,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.2",
     "react-toastify": "^9.1.2",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.1/xlsx-0.20.1.tgz",
     "zod": "^3.20.6"
   },
   "devDependencies": {

@@ -66,7 +66,7 @@ export const userApi = createApi({
     getUsers: builder.query<User[], void>({
       query() {
         return {
-          url: `users?filters[role][type][$eq]=authenticated&populate[0]=role&populate[1]=domains&populate[2]=reports&populate[3]=program&sort=createdAt%3Adesc`,
+          url: `users?filters[role][type][$eq]=authenticated&populate[0]=role&populate[1]=domains&populate[2]=reports&populate[3]=program&populate[4]=domains&sort=createdAt%3Adesc`,
         };
       },
       transformResponse: (result: User[]) =>
@@ -148,7 +148,7 @@ export const userApi = createApi({
     findProgram: builder.query<Program, { programId: string }>({
       query({ programId }) {
         return {
-          url: `programs/${programId}?populate[0]=mentors.dimensions&populate[1]=mentors.mentorActivities&populate[2]=users.reports`,
+          url: `programs/${programId}?populate[0]=mentors.dimensions&populate[1]=mentors.mentorActivities&populate[2]=users.reports.evaluations.dimensions`,
         };
       },
       transformResponse: (result) => ({
@@ -170,7 +170,16 @@ export const userApi = createApi({
             ...attributes,
             id,
             reports: attributes.reports.data.map(
-              ({ attributes }) => attributes
+              ({ id, attributes }) => ({
+                ...attributes,
+                id,
+                evaluations: attributes.evaluations.data.map(
+                  ({ id, attributes }) => ({
+                    ...attributes,
+                    id,
+                  })
+                )
+              })
             ),
           })
         ),

@@ -14,6 +14,8 @@ import Button from "@/components/Button";
 import AddUserInProgram from "@/components/AddUserInProgram";
 import AddMentorInProgram from "@/components/AddMentorInProgram";
 import EmptyScreen from "@/components/EmptyScreen";
+import ExportProgram from "./ExportProgram";
+import formatDate from "@/lib/formatDate";
 
 const Program = () => {
   const { programId = "" } = useParams();
@@ -69,7 +71,13 @@ const Program = () => {
   return (
     <>
       <Section>
-        <Heading level={"h2"}>{data.name}</Heading>
+        <div className="sm:flex sm:items-center w-full">
+          <div className="sm:flex-auto">
+            <Heading level={"h2"}>{data.name}</Heading>
+          </div>
+
+          <ExportProgram data={data}/>
+        </div>
       </Section>
       <Section>
         <Table
@@ -78,19 +86,11 @@ const Program = () => {
             ["Denumire program", data.name],
             [
               "Perioadă de desfășurare: Data de început",
-              new Date(data.startDate).toLocaleString("ro-RO", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              }),
+              formatDate(data.startDate),
             ],
             [
               "Perioadă de desfășurare: Data de final",
-              new Date(data.endDate).toLocaleString("ro-RO", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              }),
+              formatDate(data.endDate),
             ],
             ["Nume finanțator", data.sponsorName || "-"],
           ]}
@@ -122,7 +122,6 @@ const Program = () => {
                   "Nume reprezentant",
                   "Data intrare program",
                   "Ultima evaluare",
-                  "",
                 ]
               : []
           }
@@ -130,18 +129,16 @@ const Program = () => {
             user.ongName,
             `${user.contactFirstName} ${user.contactLastName}`,
             "-",
-            `${
-              user.reports?.[0]
-                ? new Date(user.reports?.[0].createdAt).toLocaleString(
-                    "ro-RO",
-                    {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    }
-                  )
-                : "-"
-            }`,
+            user.reports?.length
+              ? new Date(user.reports[user.reports.length - 1].createdAt).toLocaleString(
+                  "ro-RO",
+                  {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  }
+                )
+              : "-",
             <NavLink to={`/users/${user.id}`}>Vezi</NavLink>,
           ])}
         />
