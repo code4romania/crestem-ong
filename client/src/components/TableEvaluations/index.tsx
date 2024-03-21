@@ -11,8 +11,6 @@ const TableEvaluations = ({ report }: { report: Report }) => {
 
   const evaluations = report?.evaluations || [];
 
-  console.log(report);
-
   return evaluations.length ? (
     <table className="w-full table-auto divide-y divide-gray-300">
       <thead className="bg-gray-50">

@@ -7,7 +7,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
 
 const Matrix = () => {
   const { data: matrix } = useGetMatrixQuery();
-  console.log("matrix", matrix);
+
   return (
     <div>
       <Section>

@@ -36,8 +36,6 @@ const UsersTable = () => {
     "PERSOANE RESURSĂ ÎN PROGRAM",
   ];
 
-  console.log({ data });
-
   const body = data?.map(({ name, mentors, users }) => ({
     name,
     status: new Date() < new Date(endDate) ? "In desfasurare" : "Incheiat",

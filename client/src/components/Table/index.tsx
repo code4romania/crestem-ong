@@ -33,9 +33,9 @@ const Table = ({ title, description, button, head, body }: TableProps) => {
               {head && (
                 <thead>
                   <tr>
-                    {head.map((th) => (
+                    {head.map((th, index) => (
                       <th
-                        key={th}
+                        key={index}
                         scope="col"
                         className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
                       >
@@ -54,12 +54,12 @@ const Table = ({ title, description, button, head, body }: TableProps) => {
               <tbody className="bg-white">
                 {body.map((row, index) => (
                   <tr
-                    key={typeof row[0] === "string" ? row[0] : index}
+                    key={index}
                     className="even:bg-gray-50"
                   >
                     {row.map((cell, index) => (
                       <td
-                        key={typeof cell === "string" ? cell : `${index}`}
+                        key={index}
                         className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3"
                       >
                         {cell}

@@ -23,8 +23,6 @@ const DeleteEvaluation = ({ id }: { id: number }) => {
       return;
     }
 
-    console.log(id, error?.data?.error?.details?.id);
-
     if (error?.data?.error?.details?.id !== id) {
       return;
     }

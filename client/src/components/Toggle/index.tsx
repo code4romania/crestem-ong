@@ -2,7 +2,6 @@ import React, { useCallback } from "react";
 import { Switch } from "@headlessui/react";
 
 const Toggle = (props) => {
-  console.log({ props });
   const handleChange = useCallback((value) => {
     props.onChange(props.name, value, { shouldValidate: true });
   }, []);
