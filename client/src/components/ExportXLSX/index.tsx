@@ -4,6 +4,7 @@ import { utils, writeFile } from "xlsx";
 export interface Sheet {
   name: string;
   rows: any[];
+  cols?: any[];
 }
 
 interface ExportProps {
@@ -16,9 +17,16 @@ interface ExportProps {
 const downloadExport = (fileName: string, sheets: Sheet[]) => {
   const workbook = utils.book_new();
 
-  sheets.forEach(
-    (sheet) => utils.book_append_sheet(workbook, utils.json_to_sheet(sheet.rows), sheet.name)
-  );
+
+  sheets.forEach((sheet) => {
+    const ws = utils.json_to_sheet(sheet.rows);
+
+    if (sheet.cols) {
+      ws['!cols'] = sheet.cols;
+    }
+
+    utils.book_append_sheet(workbook, ws, sheet.name);
+  });
 
   writeFile(workbook, fileName, { compression: true });
 }

@@ -5,6 +5,7 @@ import { RootState } from "@/redux/store";
 import { setUser } from "../features/userSlice";
 import { User, Report, Evaluation, Matrix, Program, Dimension } from "./types";
 import { ActivityInput } from "@/pages/mentor/NewActivity";
+import qs from "qs";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
@@ -147,8 +148,33 @@ export const userApi = createApi({
     }),
     findProgram: builder.query<Program, { programId: string }>({
       query({ programId }) {
+        const query = qs.stringify({
+          populate: {
+            mentors: {
+              populate: ['dimensions', 'mentorActivities']
+            },
+            users: {
+              populate: {
+                reports: {
+                  populate: {
+                    evaluations: {
+                      populate: {
+                        dimensions: {
+                          populate: {
+                            'quiz': true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        });
+
         return {
-          url: `programs/${programId}?populate[0]=mentors.dimensions&populate[1]=mentors.mentorActivities&populate[2]=users.reports.evaluations.dimensions`,
+          url: `programs/${programId}?${query}`,
         };
       },
       transformResponse: (result) => ({
