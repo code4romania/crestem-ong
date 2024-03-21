@@ -13,11 +13,14 @@ import { useGetDomainsQuery, useGetProgramsQuery, useGetUsersQuery } from "@/red
 import Button from "@/components/Button";
 import { object, string, TypeOf } from "zod";
 import citiesByCounty from "@/lib/orase-dupa-judet.json";
+import formatDate from "@/lib/formatDate";
 
 const filtersSchema = object({
   search: string(),
-  startDate: string(),
-  endDate: string(),
+  createdAtDateFrom: string(),
+  createdAtDateUntil: string(),
+  latestEvaluationDateFrom: string(),
+  latestEvaluationDateUntil: string(),
 });
 export type FiltersInput = TypeOf<typeof filtersSchema>;
 
@@ -34,8 +37,10 @@ const UsersTable = () => {
   const [filtered, setFilterd] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [createdAtDateFrom, setCreatedAtDateFrom] = useState("");
+  const [createdAtDateUntil, setCreatedAtDateUntil] = useState("");
+  const [latestEvaluationDateFrom, setLatestEvaluationDateFrom] = useState("");
+  const [latestEvaluationDateUntil, setLatestEvaluationDateUntil] = useState("");
   const [county, setCounty] = useState("");
   const [locality, setLocality] = useState("");
   const [domain, setDomain] = useState(-1);
@@ -73,36 +78,32 @@ const UsersTable = () => {
 
   const body = filtered.map(({ ongName, createdAt, reports, program, county, city, domains }) => ({
     ongName,
-    createdAt: new Date(createdAt).toLocaleString("ro-RO", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    }),
+    createdAt: formatDate(createdAt),
     program: program || "-",
     county,
     city,
     domains: domains?.length ? domains.map(d => d.name).join(",") : "-",
     lastEvaluationDate: reports?.length
-      ? new Date(reports[reports?.length - 1].createdAt).toLocaleString(
-        "ro-RO",
-        {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        }
-      )
+      ? formatDate(reports[reports?.length - 1].createdAt)
       : "-",
   }));
 
   const handleChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
-  const handleChangeStartDate = (event: ChangeEvent<HTMLInputElement>) => {
-    setStartDate(event.target.value);
+  const handleChangeCreatedAtDateFrom = (event: ChangeEvent<HTMLInputElement>) => {
+    setCreatedAtDateFrom(event.target.value);
   };
-  const handleChangeEndDate = (event: ChangeEvent<HTMLInputElement>) => {
-    setEndDate(event.target.value);
+  const HandleChangeCreatedAtDateUntil = (event: ChangeEvent<HTMLInputElement>) => {
+    setCreatedAtDateUntil(event.target.value);
   };
+  const handleChangeLatestEvaluationDateFrom = (event: ChangeEvent<HTMLInputElement>) => {
+    setLatestEvaluationDateFrom(event.target.value);
+  };
+  const handleChangeLatestEvaluationDateUntil = (event: ChangeEvent<HTMLInputElement>) => {
+    setLatestEvaluationDateUntil(event.target.value);
+  };
+
   const handleChangeDomain = (event: ChangeEvent<HTMLSelectElement>) => {
     setDomain(+event.target.value);
   };
@@ -118,8 +119,10 @@ const UsersTable = () => {
 
   const handleClearFilters = () => {
     setSearchTerm("");
-    setStartDate("");
-    setEndDate("");
+    setCreatedAtDateFrom("");
+    setCreatedAtDateUntil("");
+    setLatestEvaluationDateFrom("");
+    setLatestEvaluationDateUntil("");
     setDomain(-1);
     setProgram(-1);
     setCounty("");
@@ -137,23 +140,28 @@ const UsersTable = () => {
   }, [header, body]);
 
   useEffect(() => {
-    const results = data?.filter(
-      (res) =>
-        res.ongName?.toLowerCase().includes(searchTerm) &&
-        (startDate ? new Date(res.createdAt) > new Date(startDate) : true) &&
-        (endDate && res.reports?.length > 0
-          ? new Date(res.reports[res.reports?.length - 1].createdAt) >
-          new Date(endDate)
-          : true) &&
-        (!county || res.county === county) &&
-        (!locality || res.city === locality) &&
-        (domain === -1 || res.domains?.some(d => d.id === domain)) &&
-        (program === -1 || res.program?.id === program)
-    );
+    const results = data?.filter((res) => {
+        const registeredDate = new Date(res.createdAt).setHours(0, 0, 0, 0);
+        const lastEvaluationDate = res.reports?.length
+          ? new Date(res.reports[res.reports?.length - 1].createdAt).setHours(0, 0, 0, 0)
+          : null;
+
+        return res.ongName?.toLowerCase().includes(searchTerm) &&
+          (createdAtDateFrom ? registeredDate >= new Date(createdAtDateFrom).setHours(0, 0, 0, 0) : true) &&
+          (createdAtDateUntil ? registeredDate <= new Date(createdAtDateUntil).setHours(0, 0, 0, 0) : true) &&
+
+          (lastEvaluationDate && latestEvaluationDateFrom ? lastEvaluationDate >= new Date(latestEvaluationDateFrom).setHours(0, 0, 0, 0) : true) &&
+          (lastEvaluationDate && latestEvaluationDateUntil ? lastEvaluationDate <= new Date(latestEvaluationDateUntil).setHours(0, 0, 0, 0) : true) &&
+
+          (!county || res.county === county) &&
+          (!locality || res.city === locality) &&
+          (domain === -1 || res.domains?.some(d => d.id === domain)) &&
+          (program === -1 || res.program?.id === program)
+      });
     if (results) {
       setFilterd(results);
     }
-  }, [data, searchTerm, startDate, endDate, county, locality, domain, program]);
+  }, [data, searchTerm, createdAtDateFrom, createdAtDateUntil, latestEvaluationDateFrom, latestEvaluationDateUntil, county, locality, domain, program]);
 
   if (!data) {
     return <></>;
@@ -161,9 +169,9 @@ const UsersTable = () => {
 
   return (
     <>
-      <form className="flex items-end justify-between mb-10">
-        <div className="flex items-center justify-between space-x-2.5">
-          <div className="w-2/3">
+      <form className="flex flex-col gap-8 mb-10">
+        <div className="flex">
+          <div className="max-w-xl flex-1">
             <label>Caută</label>
             <Input
               type="search"
@@ -173,22 +181,44 @@ const UsersTable = () => {
               value={searchTerm}
             />
           </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
           <div>
             <label>Dată înregistrare</label>
-            <Input
-              name="startDate"
-              type="date"
-              onChange={handleChangeStartDate}
-              value={startDate}
-            />
+            <div className="flex">
+              <Input
+                name="createdAtDateFrom"
+                type="date"
+                onChange={handleChangeCreatedAtDateFrom}
+                value={createdAtDateFrom}
+              />
+
+              <Input
+                name="createdAtDateUntil"
+                type="date"
+                onChange={HandleChangeCreatedAtDateUntil}
+                value={createdAtDateUntil}
+              />
+            </div>
           </div>
           <div>
             <label>Ultima evaluare</label>
-            <Input
-              name="endDate"
-              type="date"
-              onChange={handleChangeEndDate}
-              value={endDate} />
+            <div className="flex">
+              <Input
+                name="latestEvaluationDateFrom"
+                type="date"
+                onChange={handleChangeLatestEvaluationDateFrom}
+                value={latestEvaluationDateFrom}
+              />
+
+              <Input
+                name="latestEvaluationDateUntil"
+                type="date"
+                onChange={handleChangeLatestEvaluationDateUntil}
+                value={latestEvaluationDateUntil}
+              />
+
+            </div>
           </div>
           {programs?.length && <div>
             <label>Programe</label>
@@ -270,13 +300,12 @@ const UsersTable = () => {
               </select>
             </div>
           </div>
-          <div className="self-end">
-            <Button type="button" color="white" onClick={handleClearFilters}>
-              Resetează
-            </Button>
-          </div>
         </div>
-        <div className="flex space-x-4">
+        <div className="flex justify-end gap-4">
+          <Button type="button" color="white" onClick={handleClearFilters}>
+            Resetează
+          </Button>
+
           <Button color="white" type="button" onClick={handleDownloadExcel}>
             Descarcă tabel
           </Button>
