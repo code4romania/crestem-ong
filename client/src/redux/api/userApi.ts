@@ -5,6 +5,7 @@ import { RootState } from "@/redux/store";
 import { setUser } from "../features/userSlice";
 import { User, Report, Evaluation, Matrix, Program, Dimension } from "./types";
 import { ActivityInput } from "@/pages/mentor/NewActivity";
+import qs from "qs";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
@@ -66,7 +67,7 @@ export const userApi = createApi({
     getUsers: builder.query<User[], void>({
       query() {
         return {
-          url: `users?filters[role][type][$eq]=authenticated&populate[0]=role&populate[1]=domains&populate[2]=reports&populate[3]=program&sort=createdAt%3Adesc`,
+          url: `users?filters[role][type][$eq]=authenticated&populate[0]=role&populate[1]=domains&populate[2]=reports&populate[3]=program&populate[4]=domains&sort=createdAt%3Adesc`,
         };
       },
       transformResponse: (result: User[]) =>
@@ -147,8 +148,33 @@ export const userApi = createApi({
     }),
     findProgram: builder.query<Program, { programId: string }>({
       query({ programId }) {
+        const query = qs.stringify({
+          populate: {
+            mentors: {
+              populate: ['dimensions', 'mentorActivities']
+            },
+            users: {
+              populate: {
+                reports: {
+                  populate: {
+                    evaluations: {
+                      populate: {
+                        dimensions: {
+                          populate: {
+                            'quiz': true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        });
+
         return {
-          url: `programs/${programId}?populate[0]=mentors.dimensions&populate[1]=mentors.mentorActivities&populate[2]=users.reports`,
+          url: `programs/${programId}?${query}`,
         };
       },
       transformResponse: (result) => ({
@@ -170,7 +196,16 @@ export const userApi = createApi({
             ...attributes,
             id,
             reports: attributes.reports.data.map(
-              ({ attributes }) => attributes
+              ({ id, attributes }) => ({
+                ...attributes,
+                id,
+                evaluations: attributes.evaluations.data.map(
+                  ({ id, attributes }) => ({
+                    ...attributes,
+                    id,
+                  })
+                )
+              })
             ),
           })
         ),

@@ -31,7 +31,7 @@ const addQuizToQuiz = (
     {}
   );
 
-export const calcScore = (evaluations) => {
+export const calcScore = (evaluations): number => {
   const score =
     evaluations.reduce(
       (acc, curr) =>
@@ -44,15 +44,17 @@ export const calcScore = (evaluations) => {
       0
     ) /
     (2 * evaluations.length);
-  return Math.round(score);
+  return Math.round(score) || 0;
 };
 
 export const calcScoreByDimension = ({
   matrix,
   evaluationsCompleted,
+  sort = true,
 }: {
   evaluationsCompleted: Evaluation[];
   matrix: Matrix;
+  sort?: boolean;
 }) => {
   if (!matrix) {
     return undefined;
@@ -82,18 +84,12 @@ export const calcScoreByDimension = ({
   );
 
   return Object.keys(object)
-    .sort((a, b) =>
-      object[a].score === object[b].score
-        ? 0
-        : object[a].score > object[b].score
-        ? -1
-        : 1
-    )
+    .sort( (a, b) => sort ? object[b].score - object[a].score : 0 )
     .map((index) => {
       const score = Math.floor(
         (object[index].score * 25) / evaluationsCompleted.length
       );
- 
+
       const tags = [
         {
           quiz: matrix[index].quiz[0].tag,
