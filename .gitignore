@@ -3,6 +3,7 @@
 
 # User-specific stuff
 .idea/**
+*.iml
 
 # CMake
 cmake-build-*/
