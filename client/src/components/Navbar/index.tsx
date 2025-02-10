@@ -4,7 +4,6 @@ import NavbarEvaluation from "@/components/NavbarEvaluation";
 import Button from "@/components/Button";
 import UserMenu from "@/components/UserMenu";
 import { useAppSelector } from "@/redux/store";
-import logo from "@/assets/platforma_FDSC_Kaufland.svg";
 import getUserType from "@/lib/userType";
 import { Bars3Icon } from "@heroicons/react/20/solid";
 import { Menu as MenuHeadless, Transition } from "@headlessui/react";
@@ -234,19 +233,6 @@ const Navbar = () => {
           )}
         </div>
       </NavbarEvaluation>
-      <aside className="border-b">
-        <div className="container mx-auto flex items-center gap-4 sm:justify-end md:gap-x-8">
-          <div className="flex flex-wrap items-center justify-end flex-1 gap-4 lg:gap-x-6 sm:flex-initial px-2.5">
-            <span className="inline-flex shrink-0">
-              <img
-                className="object-contain h-28 max-w-full"
-                src={logo}
-                alt="partners"
-              />
-            </span>
-          </div>
-        </div>
-      </aside>
     </>
   );
 };
