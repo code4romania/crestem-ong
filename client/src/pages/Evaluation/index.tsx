@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Navigate, useParams, useSearchParams } from "react-router-dom";
 import { object, string, TypeOf } from "zod";
@@ -56,7 +56,7 @@ const createEvaluation = (data: EvaluationInput) => ({
 });
 
 const Evaluation = () => {
-  const [evaluationIndex, setEvaluationIndex] = useState(null);
+  const [evaluationIndex, setEvaluationIndex] = useState<number | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
   const [evaluations, setEvaluations] = useState([]);
   const { evaluationId } = useParams();
@@ -82,6 +82,7 @@ const Evaluation = () => {
     isError: isEvaluationError,
     error: evaluationError,
   } = useGetEvaluationQuery({ evaluationId, email: emailParam });
+
   const [
     submitEvaluation,
     {
@@ -93,44 +94,46 @@ const Evaluation = () => {
   ] = useSubmitEvaluationMutation();
 
   useEffect(() => {
-    if (evaluationData?.dimensions) {
-      setEvaluationIndex(evaluationData.dimensions.length + 1);
-    }
-  }, [evaluationData?.dimensions]);
-
-  useEffect(() => {
-    if (isEvaluationSuccess) {
-      setEvaluations(evaluationData?.dimensions);
+    if (isEvaluationSuccess && evaluationData?.dimensions) {
+      setEvaluations(evaluationData.dimensions);
+      setEvaluationIndex(evaluationData.dimensions.length);
     }
   }, [isEvaluationSuccess, evaluationData?.dimensions]);
 
   useEffect(() => {
     if (isSubmitSuccess) {
-      setEvaluationIndex((state) => state + 1);
+      setEvaluationIndex((prev) => (prev !== null ? prev + 1 : null));
     }
   }, [isSubmitSuccess]);
 
-  const onSubmitHandler = (data: EvaluationInput) => {
-    submitEvaluation({
-      dimensions: [...evaluations, createEvaluation(data)],
-      evaluationId,
-      dimensionIndex,
-    });
-    setEvaluations((state) => [...state, createEvaluation(data)]);
-    reset();
-    window.scrollTo(0, 0);
-  };
+  const onSubmitHandler = useCallback(
+    (data: EvaluationInput) => {
+      const newEvaluation = createEvaluation(data);
+      submitEvaluation({
+        dimensions: [...evaluations, newEvaluation],
+        evaluationId,
+        dimensionIndex: evaluationIndex,
+      });
+
+      setEvaluations((prev) => [...prev, newEvaluation]);
+      reset();
+      window.scrollTo(0, 0);
+    },
+    [evaluations, evaluationId, evaluationIndex, reset, submitEvaluation]
+  );
 
   const handleClickStart = useCallback(() => {
     setHasStarted(true);
     window.scrollTo(0, 0);
-  }, [setHasStarted]);
+  }, []);
 
-  const dimensionIndex = evaluationData?.dimensions?.length + 1;
-  const dimension = matrixData && matrixData[+evaluationIndex - 1];
+  const dimension = useMemo(
+    () => matrixData && evaluationIndex !== null && matrixData[evaluationIndex],
+    [matrixData, evaluationIndex]
+  );
 
   if (
-    !(dimension && evaluationIndex && evaluationData) &&
+    !(dimension && evaluationIndex !== null && evaluationData) &&
     (isMatrixLoading || isEvaluationLoading)
   ) {
     return <FullScreenLoader />;
@@ -139,6 +142,7 @@ const Evaluation = () => {
   if (evaluationError?.status === 403) {
     return <Navigate to="/" />;
   }
+
   if (isFDSC && evaluationData?.dimensions?.length === 10) {
     return <EvaluationResults evaluationData={evaluationData} />;
   }
@@ -147,12 +151,16 @@ const Evaluation = () => {
     return <ExpiredEvaluation error={evaluationError} />;
   }
 
-  if (evaluations?.length === 0 && !hasStarted) {
+  if (!hasStarted && evaluations.length === 0) {
     return <StartEvaluation onClick={handleClickStart} />;
   }
 
-  if (evaluations?.length === matrixData?.length) {
+  if (evaluations.length === matrixData?.length) {
     return <EvaluationFinished />;
+  }
+
+  if (isSubmitLoading) {
+    return <FullScreenLoader />;
   }
 
   return (
@@ -199,7 +207,7 @@ const Evaluation = () => {
           ))}
         </div>
         <Section>
-          <p className={"text-base font-semibold leading-6 text-gray-900 mb-2"}>
+          <p className="text-base font-semibold leading-6 text-gray-900 mb-2">
             Te rugăm să argumentezi selecțiile făcute pentru indicatorul{" "}
             {dimension.name}
           </p>
@@ -212,18 +220,22 @@ const Evaluation = () => {
           </div>
         </Section>
         <Section>
-          <div className="flex">
-            {evaluationIndex !== 10 && evaluationIndex && (
-              <Pagination step={evaluationIndex} />
-            )}
-            <div className="ml-auto">
-              <Button type={"submit"}>
-                {evaluationIndex !== 10 ? "Continuă" : "Trimite"}
-              </Button>
-              <Button type="{button}" onClick={() => setEvaluationIndex((state) => state - 1)}>
-                Back
-              </Button>
-            </div>
+          {evaluationIndex !== 10 && <Pagination step={evaluationIndex} />}
+        </Section>
+        <Section>
+          <div className="flex place-content-end gap-3">
+            <Button
+              type="button"
+              color="white"
+              onClick={() =>
+                setEvaluationIndex((prev) => (prev === 0 ? prev : prev - 1))
+              }
+            >
+              Back
+            </Button>
+            <Button type="submit" color="teal">
+              {evaluationIndex !== 10 ? "Continuă" : "Trimite"}
+            </Button>
           </div>
         </Section>
       </form>
