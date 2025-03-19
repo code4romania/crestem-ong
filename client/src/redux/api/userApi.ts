@@ -1,11 +1,19 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { EvaluationInput } from "@/pages/Evaluation";
+import { ActivityInput } from "@/pages/mentor/NewActivity";
 import { ReportInput } from "@/pages/NewReport";
 import { RootState } from "@/redux/store";
-import { setUser } from "../features/userSlice";
-import { User, Report, Evaluation, Matrix, Program, Dimension } from "./types";
-import { ActivityInput } from "@/pages/mentor/NewActivity";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import qs from "qs";
+import { setUser } from "../features/userSlice";
+import {
+  Dimension,
+  Evaluation,
+  EvaluationMatrix,
+  Matrix,
+  Program,
+  Report,
+  UpsertEvaluationDimensionRequest,
+  User,
+} from "./types";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
@@ -151,7 +159,7 @@ export const userApi = createApi({
         const query = qs.stringify({
           populate: {
             mentors: {
-              populate: ['dimensions', 'mentorActivities']
+              populate: ["dimensions", "mentorActivities"],
             },
             users: {
               populate: {
@@ -161,16 +169,16 @@ export const userApi = createApi({
                       populate: {
                         dimensions: {
                           populate: {
-                            'quiz': true
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
+                            quiz: true,
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         });
 
         return {
@@ -195,18 +203,16 @@ export const userApi = createApi({
           ({ id, attributes }) => ({
             ...attributes,
             id,
-            reports: attributes.reports.data.map(
-              ({ id, attributes }) => ({
-                ...attributes,
-                id,
-                evaluations: attributes.evaluations.data.map(
-                  ({ id, attributes }) => ({
-                    ...attributes,
-                    id,
-                  })
-                )
-              })
-            ),
+            reports: attributes.reports.data.map(({ id, attributes }) => ({
+              ...attributes,
+              id,
+              evaluations: attributes.evaluations.data.map(
+                ({ id, attributes }) => ({
+                  ...attributes,
+                  id,
+                })
+              ),
+            })),
           })
         ),
       }),
@@ -321,20 +327,20 @@ export const userApi = createApi({
       },
       invalidatesTags: ["Report"],
     }),
-    getMatrix: builder.query<Matrix, void>({
+    getMatrix: builder.query<Matrix[], void>({
       query() {
         return {
           url: "matrix?populate=dimensions.quiz",
           credentials: "include",
         };
       },
-      transformResponse: (result: { data: any }) =>
+      transformResponse: (result: EvaluationMatrix) =>
         result?.data?.attributes?.dimensions?.data?.map(
-          ({ attributes }: { attributes: Dimension }) => attributes
+          ({ attributes }) => attributes
         ),
     }),
     getEvaluation: builder.query<
-      EvaluationInput,
+      Evaluation,
       { evaluationId: string; email: string }
     >({
       query({ evaluationId, email }: { evaluationId: string; email: string }) {
@@ -360,7 +366,7 @@ export const userApi = createApi({
           method: "DELETE",
           url: `evaluations/${id}`,
           credentials: "include",
-        }
+        };
       },
       invalidatesTags: ["Report"],
     }),
@@ -413,8 +419,8 @@ export const userApi = createApi({
       invalidatesTags: ["Evaluation"],
     }),
     submitEvaluation: builder.mutation<
-      any,
-      { evaluationId: string; dimensions: EvaluationInput[] }
+      Evaluation,
+      { evaluationId: string; dimensions: UpsertEvaluationDimensionRequest[] }
     >({
       query({ evaluationId, dimensions }) {
         return {
