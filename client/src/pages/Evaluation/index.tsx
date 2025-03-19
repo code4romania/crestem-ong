@@ -1,26 +1,58 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import Button from "@/components/Button";
+import EvaluationFinished from "@/components/EvaluationFinished";
+import EvaluationResults from "@/components/EvaluationResults";
+import FullScreenLoader from "@/components/FullScreenLoader";
+import Pagination from "@/components/Pagination";
+import Section from "@/components/Section";
+import StartEvaluation from "@/components/StartEvaluation";
+import {
+  EvaluationDimension,
+  Question,
+  UpsertEvaluationDimensionRequest,
+} from "@/redux/api/types";
+import {
+  useGetEvaluationQuery,
+  userApi,
+  useSubmitEvaluationMutation,
+} from "@/redux/api/userApi";
+import { useAppSelector } from "@/redux/store";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Navigate, useParams, useSearchParams } from "react-router-dom";
-import { object, string, TypeOf } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Pagination from "@/components/Pagination";
-import Button from "@/components/Button";
-import { useGetEvaluationQuery, userApi } from "@/redux/api/userApi";
-import FullScreenLoader from "@/components/FullScreenLoader";
-import { useSubmitEvaluationMutation } from "@/redux/api/userApi";
-import ExpiredEvaluation from "@/pages/Evaluation/ExpiredEvaluation";
-import StartEvaluation from "@/components/StartEvaluation";
-import EvaluationFinished from "@/components/EvaluationFinished";
-import Heading from "@/components/Heading";
-import Section from "@/components/Section";
-import { ErrorMessage } from "@hookform/error-message";
-import { useAppSelector } from "@/redux/store";
-import EvaluationResults from "@/components/EvaluationResults";
+import { array, enum as enum_, object, string, TypeOf } from "zod";
+import { EvaluationStep } from "./EvaluationStep";
+import ExpiredEvaluation from "./ExpiredEvaluation";
 
 const invalid_type_error = "Vă rugăm alegeți o opțiune";
 const min_message = "Acest câmp este obligatoriu";
 
+const answerSchema = enum_(["0", "1", "2", "3", "4"], {
+  required_error: invalid_type_error,
+  invalid_type_error: invalid_type_error,
+});
+
+const dimensionSchema = object({
+  question_1: answerSchema,
+  question_2: answerSchema,
+  question_3: answerSchema,
+  question_4: answerSchema,
+  question_5: answerSchema,
+  comment: string({
+    required_error: min_message,
+    invalid_type_error: min_message,
+  })
+    .min(1, { message: min_message })
+    .max(1000),
+});
+
+export type DimensionType = TypeOf<typeof dimensionSchema>;
+
 const evaluationSchema = object({
+  dimensions: array(dimensionSchema),
+});
+
+const evaluationSchema_old = object({
   question_1: string({ invalid_type_error }),
   question_2: string({ invalid_type_error }),
   question_3: string({ invalid_type_error }),
@@ -29,12 +61,16 @@ const evaluationSchema = object({
   comment: string().min(1, { message: min_message }).max(1000),
 });
 
-export type EvaluationInput = TypeOf<typeof evaluationSchema> & {
+export type EvaluationForm = TypeOf<typeof evaluationSchema>;
+
+export type EvaluationInput = TypeOf<typeof evaluationSchema_old> & {
   evaluationId: string;
   dimensionIndex: string;
 };
 
-const createEvaluation = (data: EvaluationInput) => ({
+const mapToEvaluationDimension = (
+  data: DimensionType
+): UpsertEvaluationDimensionRequest => ({
   quiz: [
     {
       answer: +data.question_1,
@@ -55,91 +91,166 @@ const createEvaluation = (data: EvaluationInput) => ({
   comment: data.comment,
 });
 
+const mergeEvaluations = (
+  serverEvaluation: EvaluationDimension[],
+  localEvaluation: UpsertEvaluationDimensionRequest[]
+): UpsertEvaluationDimensionRequest[] => {
+  const mergedList: UpsertEvaluationDimensionRequest[] = [...serverEvaluation]; // Start with original data
+
+  localEvaluation.forEach((userItem, index) => {
+    if (index < mergedList.length) {
+      // If index exists, merge the data
+      mergedList[index] = {
+        ...mergedList[index],
+        ...userItem,
+      };
+    } else {
+      // If index is beyond original list, append new element
+      mergedList.push(userItem);
+    }
+  });
+
+  return mergedList;
+};
+
 const Evaluation = () => {
-  const [evaluationIndex, setEvaluationIndex] = useState<number | null>(null);
-  const [hasStarted, setHasStarted] = useState(false);
-  const [evaluations, setEvaluations] = useState([]);
+  const user = useAppSelector((state) => state.userState.user);
+
   const { evaluationId } = useParams();
   const [searchParams] = useSearchParams();
   const emailParam = searchParams.get("email");
-  const methods = useForm<EvaluationInput>({
+
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
+  const formRef = useRef<HTMLFormElement | null>(null);
+
+  const methods = useForm<EvaluationForm>({
     resolver: zodResolver(evaluationSchema),
+    shouldFocusError: true,
+    defaultValues: {
+      dimensions: [
+        {
+          comment: "",
+        },
+      ],
+    },
   });
-  const { handleSubmit, register, reset } = methods;
-  const user = useAppSelector((state) => state.userState.user);
-  const isFDSC = user?.role?.type === "fdsc";
 
   const { data: matrixData, isLoading: isMatrixLoading } =
-    userApi.endpoints.getMatrix.useQuery(null, {
+    userApi.endpoints.getMatrix.useQuery(undefined, {
       skip: false,
       refetchOnMountOrArgChange: true,
     });
 
   const {
     isLoading: isEvaluationLoading,
-    isSuccess: isEvaluationSuccess,
     data: evaluationData,
-    isError: isEvaluationError,
     error: evaluationError,
-  } = useGetEvaluationQuery({ evaluationId, email: emailParam });
+  } = useGetEvaluationQuery({
+    evaluationId: evaluationId ?? "",
+    email: emailParam ?? "",
+  });
 
   const [
     submitEvaluation,
-    {
-      isLoading: isSubmitLoading,
-      isError: isSubmitError,
-      error: errorSubmit,
-      isSuccess: isSubmitSuccess,
-    },
+    { isLoading: isSubmitLoading, isSuccess: isSubmitSuccess },
   ] = useSubmitEvaluationMutation();
 
-  useEffect(() => {
-    if (isEvaluationSuccess && evaluationData?.dimensions) {
-      setEvaluations(evaluationData.dimensions);
-      setEvaluationIndex(evaluationData.dimensions.length);
-    }
-  }, [isEvaluationSuccess, evaluationData?.dimensions]);
+  const {
+    formState: { errors },
+    handleSubmit,
+    trigger,
+  } = methods;
+
+  const isFDSC = user?.role?.type === "fdsc";
 
   useEffect(() => {
-    if (isSubmitSuccess) {
-      setEvaluationIndex((prev) => (prev !== null ? prev + 1 : null));
+    const userAnswers = evaluationData?.dimensions?.map((dimension) => {
+      const mappedQuestionAnswers = dimension.quiz.reduce(
+        (acc, curr, index) => {
+          (acc[`question_${index + 1}` as keyof DimensionType] =
+            curr.answer.toString() as "0"),
+            "1",
+            "2",
+            "3",
+            "4";
+
+          return acc;
+        },
+        {} as DimensionType
+      );
+
+      return {
+        ...mappedQuestionAnswers,
+        comment: dimension.comment,
+      };
+    });
+
+    methods.setValue("dimensions", userAnswers ?? []);
+    setCurrentStepIndex(evaluationData?.dimensions?.length ?? 0);
+  }, [evaluationData]);
+
+  const handleNext = async () => {
+    // Trigger validation for the current step
+    const isStepValid = await trigger(`dimensions.${currentStepIndex}`);
+    console.log(isStepValid);
+
+    // If step is invalid, find the first error and scroll to it
+    if (!isStepValid) {
+      const firstErrorField = Object.keys(
+        errors.dimensions?.[currentStepIndex] || {}
+      )[0];
+
+      if (firstErrorField) {
+        const errorElement = formRef.current?.querySelector(
+          `[name="dimensions.${currentStepIndex}.${firstErrorField}"]`
+        );
+
+        if (errorElement) {
+          errorElement.scrollIntoView({ behavior: "smooth", block: "center" });
+          // @ts-ignore
+          errorElement.focus();
+        }
+      }
+      return; // Stop execution if validation fails
     }
-  }, [isSubmitSuccess]);
 
-  const onSubmitHandler = useCallback(
-    (data: EvaluationInput) => {
-      const newEvaluation = createEvaluation(data);
-      submitEvaluation({
-        dimensions: [...evaluations, newEvaluation],
-        evaluationId,
-        dimensionIndex: evaluationIndex,
-      });
+    await handleSubmit(onSubmit)();
+  };
 
-      setEvaluations((prev) => [...prev, newEvaluation]);
-      reset();
+  const handleBack = () => {
+    if (currentStepIndex > 0) {
+      setCurrentStepIndex((prev) => prev - 1);
+    }
+  };
+
+  const onSubmit = async (data: EvaluationForm) => {
+    const evaluation = mergeEvaluations(
+      evaluationData?.dimensions ?? [],
+      data.dimensions.map(mapToEvaluationDimension)
+    );
+
+    submitEvaluation({
+      evaluationId: evaluationId ?? "",
+      dimensions: evaluation,
+    });
+
+    // Move to the next step if validation passes
+    if (currentStepIndex < matrixData?.length - 1) {
+      setCurrentStepIndex((prev) => prev + 1);
       window.scrollTo(0, 0);
-    },
-    [evaluations, evaluationId, evaluationIndex, reset, submitEvaluation]
-  );
+    }
+  };
 
   const handleClickStart = useCallback(() => {
     setHasStarted(true);
     window.scrollTo(0, 0);
   }, []);
 
-  const dimension = useMemo(
-    () => matrixData && evaluationIndex !== null && matrixData[evaluationIndex],
-    [matrixData, evaluationIndex]
-  );
-
-  if (
-    !(dimension && evaluationIndex !== null && evaluationData) &&
-    (isMatrixLoading || isEvaluationLoading)
-  ) {
+  if (isMatrixLoading || isEvaluationLoading) {
     return <FullScreenLoader />;
   }
-
-  if (evaluationError?.status === 403) {
+  if ((evaluationError as any)?.status === 403) {
     return <Navigate to="/" />;
   }
 
@@ -147,16 +258,28 @@ const Evaluation = () => {
     return <EvaluationResults evaluationData={evaluationData} />;
   }
 
-  if (evaluationError?.status === 401) {
+  if ((evaluationError as any)?.status === 401) {
     return <ExpiredEvaluation error={evaluationError} />;
   }
 
-  if (!hasStarted && evaluations.length === 0) {
+  if (!hasStarted && evaluationData?.dimensions?.length) {
     return <StartEvaluation onClick={handleClickStart} />;
   }
 
-  if (evaluations.length === matrixData?.length) {
+  if (
+    evaluationData?.dimensions?.length &&
+    matrixData?.length &&
+    evaluationData?.dimensions?.length === matrixData?.length
+  ) {
     return <EvaluationFinished />;
+  }
+
+  if (!matrixData) {
+    return <Navigate to="/" />;
+  }
+
+  if (methods.formState.isSubmitting) {
+    return <FullScreenLoader />;
   }
 
   if (isSubmitLoading) {
@@ -166,78 +289,47 @@ const Evaluation = () => {
   return (
     <FormProvider {...methods}>
       <form
-        className="w-full flex flex-col mt-12"
-        onSubmit={handleSubmit(onSubmitHandler)}
+        ref={formRef}
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-6 bg-card rounded-lg p-6 shadow-md"
       >
-        <div>
-          <Heading level="h2">{dimension.name}</Heading>
-          <p className="mt-4">{dimension.description}</p>
-        </div>
-        <div className="mt-4">
-          {dimension.quiz.map(({ id, question, ...quiz }, questionIndex) => (
-            <div key={id} className="mt-4">
-              <label className="text-base font-semibold leading-6 text-gray-900">
-                {question}
-              </label>
-              <fieldset className="mt-4">
-                <div className="space-y-4">
-                  {[...Array(5).keys()].map((index) => (
-                    <div className="flex items-center" key={index}>
-                      <input
-                        id={`${id}-option_${index + 1}`}
-                        type="radio"
-                        className="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500"
-                        value={index}
-                        {...register(`question_${questionIndex + 1}`)}
-                      />
-                      <label
-                        htmlFor={`${id}-option_${index + 1}`}
-                        className="ml-3 block text-sm font-medium text-gray-700"
-                      >
-                        {quiz[`option_${index + 1}`]}
-                      </label>
-                    </div>
-                  ))}
-                  <div className="text-red-600 text-sm">
-                    <ErrorMessage name={`question_${questionIndex + 1}`} />
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-          ))}
-        </div>
-        <Section>
-          <p className="text-base font-semibold leading-6 text-gray-900 mb-2">
-            Te rugăm să argumentezi selecțiile făcute pentru indicatorul{" "}
-            {dimension.name}
-          </p>
-          <textarea
-            className="rounded-md border-gray-300 w-full"
-            {...register("comment")}
-          />
-          <div className="text-red-600 text-sm mt-2">
-            <ErrorMessage name={"comment"} />
+        {matrixData?.length ? (
+          <Section>
+            <EvaluationStep
+              dimension={matrixData[currentStepIndex]}
+              stepIndex={currentStepIndex}
+            />
+
+            <Section>
+              <Pagination step={currentStepIndex} />
+            </Section>
+            <Section>
+              <div className="flex place-content-end gap-3">
+                <Button
+                  type="button"
+                  color="white"
+                  onClick={handleBack}
+                  disabled={
+                    currentStepIndex === 0 || methods.formState.isSubmitting
+                  }
+                >
+                  Back
+                </Button>
+                <Button type="button" onClick={handleNext} color="teal">
+                  {currentStepIndex !== 9
+                    ? methods.formState.isSubmitting
+                      ? "Se trimite..."
+                      : "Continuă"
+                    : "Trimite"}
+                </Button>
+              </div>
+            </Section>
+          </Section>
+        ) : (
+          <div className="text-center py-8">
+            <p>No form data available. Please try again later.</p>
           </div>
-        </Section>
-        <Section>
-          {evaluationIndex !== 10 && <Pagination step={evaluationIndex} />}
-        </Section>
-        <Section>
-          <div className="flex place-content-end gap-3">
-            <Button
-              type="button"
-              color="white"
-              onClick={() =>
-                setEvaluationIndex((prev) => (prev === 0 ? prev : prev - 1))
-              }
-            >
-              Back
-            </Button>
-            <Button type="submit" color="teal">
-              {evaluationIndex !== 10 ? "Continuă" : "Trimite"}
-            </Button>
-          </div>
-        </Section>
+        )}
       </form>
     </FormProvider>
   );
