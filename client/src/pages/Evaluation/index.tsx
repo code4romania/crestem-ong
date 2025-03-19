@@ -7,7 +7,6 @@ import Section from "@/components/Section";
 import StartEvaluation from "@/components/StartEvaluation";
 import {
   EvaluationDimension,
-  Question,
   UpsertEvaluationDimensionRequest,
 } from "@/redux/api/types";
 import {
@@ -136,6 +135,18 @@ const Evaluation = () => {
     },
   });
 
+  const {
+    control,
+    formState: { errors, isSubmitSuccessful },
+    handleSubmit,
+    trigger,
+    setValue,
+    getValues,
+    watch,
+  } = methods;
+
+  const userFilledInDimensions = watch("dimensions", []);
+
   const { data: matrixData, isLoading: isMatrixLoading } =
     userApi.endpoints.getMatrix.useQuery(undefined, {
       skip: false,
@@ -156,24 +167,14 @@ const Evaluation = () => {
     { isLoading: isSubmitLoading, isSuccess: isSubmitSuccess },
   ] = useSubmitEvaluationMutation();
 
-  const {
-    formState: { errors },
-    handleSubmit,
-    trigger,
-  } = methods;
-
   const isFDSC = user?.role?.type === "fdsc";
 
   useEffect(() => {
     const userAnswers = evaluationData?.dimensions?.map((dimension) => {
       const mappedQuestionAnswers = dimension.quiz.reduce(
         (acc, curr, index) => {
-          (acc[`question_${index + 1}` as keyof DimensionType] =
-            curr.answer.toString() as "0"),
-            "1",
-            "2",
-            "3",
-            "4";
+          acc[`question_${index + 1}` as keyof DimensionType] =
+            curr.answer.toString() as "0" | "1" | "2" | "3" | "4";
 
           return acc;
         },
@@ -186,14 +187,13 @@ const Evaluation = () => {
       };
     });
 
-    methods.setValue("dimensions", userAnswers ?? []);
+    setValue("dimensions", userAnswers ?? []);
     setCurrentStepIndex(evaluationData?.dimensions?.length ?? 0);
-  }, [evaluationData]);
+  }, [evaluationData, setValue]);
 
   const handleNext = async () => {
     // Trigger validation for the current step
     const isStepValid = await trigger(`dimensions.${currentStepIndex}`);
-    console.log(isStepValid);
 
     // If step is invalid, find the first error and scroll to it
     if (!isStepValid) {
@@ -215,7 +215,7 @@ const Evaluation = () => {
       return; // Stop execution if validation fails
     }
 
-    await handleSubmit(onSubmit)();
+    await onSubmit(getValues());
   };
 
   const handleBack = () => {
@@ -267,9 +267,9 @@ const Evaluation = () => {
   }
 
   if (
-    evaluationData?.dimensions?.length &&
+    userFilledInDimensions.length &&
     matrixData?.length &&
-    evaluationData?.dimensions?.length === matrixData?.length
+    userFilledInDimensions.length === matrixData?.length
   ) {
     return <EvaluationFinished />;
   }
