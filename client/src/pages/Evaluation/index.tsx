@@ -16,7 +16,7 @@ import {
 } from "@/redux/api/userApi";
 import { useAppSelector } from "@/redux/store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Navigate, useParams, useSearchParams } from "react-router-dom";
 import { array, enum as enum_, object, string, TypeOf } from "zod";
@@ -126,18 +126,10 @@ const Evaluation = () => {
   const methods = useForm<EvaluationForm>({
     resolver: zodResolver(evaluationSchema),
     shouldFocusError: true,
-    defaultValues: {
-      dimensions: [
-        {
-          comment: "",
-        },
-      ],
-    },
   });
 
   const {
-    control,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
     handleSubmit,
     trigger,
     setValue,
@@ -183,13 +175,19 @@ const Evaluation = () => {
 
       return {
         ...mappedQuestionAnswers,
-        comment: dimension.comment,
+        comment: dimension.comment ?? "",
       };
     });
 
     setValue("dimensions", userAnswers ?? []);
-    setCurrentStepIndex(evaluationData?.dimensions?.length ?? 0);
   }, [evaluationData, setValue]);
+
+  function incrementStep() {
+    if (currentStepIndex < matrixData?.length - 1) {
+      setCurrentStepIndex((prev) => prev + 1);
+      window.scrollTo(0, 0);
+    }
+  }
 
   const handleNext = async () => {
     // Trigger validation for the current step
@@ -215,7 +213,13 @@ const Evaluation = () => {
       return; // Stop execution if validation fails
     }
 
-    await onSubmit(getValues());
+    const isFormValid = await trigger(`dimensions`);
+    // submit to server only if whole form is valid
+    if (isFormValid) {
+      await onSubmit(getValues());
+    } else {
+      incrementStep();
+    }
   };
 
   const handleBack = () => {
@@ -235,17 +239,21 @@ const Evaluation = () => {
       dimensions: evaluation,
     });
 
-    // Move to the next step if validation passes
-    if (currentStepIndex < matrixData?.length - 1) {
-      setCurrentStepIndex((prev) => prev + 1);
-      window.scrollTo(0, 0);
-    }
+    incrementStep();
   };
 
   const handleClickStart = useCallback(() => {
     setHasStarted(true);
     window.scrollTo(0, 0);
   }, []);
+
+  const validFilledInDimensions = useMemo(() => {
+    const validCount = userFilledInDimensions.filter(
+      (dimension) => dimensionSchema.safeParse(dimension).success
+    ).length;
+
+    return validCount;
+  }, [userFilledInDimensions]);
 
   if (isMatrixLoading || isEvaluationLoading) {
     return <FullScreenLoader />;
@@ -262,14 +270,14 @@ const Evaluation = () => {
     return <ExpiredEvaluation error={evaluationError} />;
   }
 
-  if (!hasStarted && evaluationData?.dimensions?.length) {
+  if (!hasStarted && evaluationData?.dimensions?.length === 0) {
     return <StartEvaluation onClick={handleClickStart} />;
   }
 
   if (
-    userFilledInDimensions.length &&
+    evaluationData?.dimensions?.length &&
     matrixData?.length &&
-    userFilledInDimensions.length === matrixData?.length
+    evaluationData?.dimensions?.length === matrixData?.length
   ) {
     return <EvaluationFinished />;
   }
@@ -298,10 +306,11 @@ const Evaluation = () => {
             <EvaluationStep
               dimension={matrixData[currentStepIndex]}
               stepIndex={currentStepIndex}
+              totalSteps={matrixData.length}
             />
 
             <Section>
-              <Pagination step={currentStepIndex} />
+              <Pagination step={validFilledInDimensions} />
             </Section>
             <Section>
               <div className="flex place-content-end gap-3">

@@ -349,6 +349,12 @@ export const userApi = createApi({
           credentials: "include",
         };
       },
+      providesTags: (result, err, arg) => [
+        {
+          type: "Evaluation",
+          evaluationId: arg.evaluationId,
+        },
+      ],
     }),
     getEvaluationsCount: builder.query<Report[], void>({
       query: () => ({
@@ -430,6 +436,9 @@ export const userApi = createApi({
           credentials: "include",
         };
       },
+      invalidatesTags: (res, err, arg) => [
+        { type: "Evaluation", evaluationId: arg.evaluationId },
+      ],
     }),
     upload: builder.mutation<any, any>({
       query(data) {

@@ -9,14 +9,23 @@ import { ErrorMessage } from "@hookform/error-message";
 interface FormStepProps {
   dimension: Matrix;
   stepIndex: number;
+  totalSteps: number;
 }
 
-export function EvaluationStep({ dimension, stepIndex }: FormStepProps) {
+export function EvaluationStep({
+  dimension,
+  stepIndex,
+  totalSteps,
+}: FormStepProps) {
   const { control } = useFormContext<EvaluationForm>();
+
+  const stepDisplay = `(${stepIndex + 1} / ${totalSteps})`;
 
   return (
     <div className="space-y-6" key={`step-${stepIndex}`}>
-      <h2 className="text-2xl font-semibold">{dimension.name}</h2>
+      <h2 className="text-2xl font-semibold">
+        {dimension.name} {stepDisplay}
+      </h2>
 
       {dimension.quiz.map((question, index) => (
         <RadioQuestion
