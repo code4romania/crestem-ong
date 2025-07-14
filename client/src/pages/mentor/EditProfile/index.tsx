@@ -160,8 +160,8 @@ const EditProfile = () => {
                       Descriere (bio)
                     </label>
                     <div className="mt-1">
-                      <input
-                        type="text"
+                      <textarea
+                        rows={3}
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("bio")}
                       />
@@ -181,8 +181,8 @@ const EditProfile = () => {
                       Arii de expertiză
                     </label>
                     <div className="mt-1">
-                      <input
-                        type="text"
+                      <textarea
+                        rows={3}
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         {...methods.register("expertise")}
                       />

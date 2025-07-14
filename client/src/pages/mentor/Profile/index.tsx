@@ -30,7 +30,7 @@ const Profile = () => {
               "Specializare pe dimensiuni",
               user.dimensions?.map(({ name }) => name).join(", "),
             ],
-            ["Program asociat", user.program.name],
+            ["Program asociat", user.program?.name || ""],
             ["Disponibilitate", user.available ? "Disponibil" : "Indisponibil"],
           ]}
         />
