@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import MultiSelect from "@/components/MultiSelect";
 import { ErrorMessage } from "@hookform/error-message";
+import Avatar from "@/components/Avatar";
 
 const registerSchema = object({
   ongName: string().min(1, "Numele organizatiei este obligatoriu"),
@@ -317,15 +318,7 @@ const CreateUser = () => {
                             style={{ width: "100px", height: "100px" }}
                           />
                         ) : (
-                          <span className="h-12 w-12 overflow-hidden rounded-full bg-gray-100">
-                            <svg
-                              className="h-full w-full text-gray-300"
-                              fill="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                          </span>
+                          <Avatar size={24} src={""} alt={"logo"} />
                         )}
                         <div className={"pointer-events-none"}>
                           <Button color={"white"} type="button">

@@ -6,14 +6,16 @@ import {
   useCreateMentorMutation,
   useGetDimensionsQuery,
   useGetProgramsQuery,
+  useUploadMutation,
 } from "@/redux/api/userApi";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
-import { array, number, object, string, TypeOf } from "zod";
+import { array, custom, number, object, string, TypeOf } from "zod";
 import { ErrorMessage } from "@hookform/error-message";
 import MultiSelect from "@/components/MultiSelect";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Avatar from "@/components/Avatar";
 
 const mentorSchema = object({
   lastName: string(),
@@ -23,6 +25,7 @@ const mentorSchema = object({
   expertise: string(),
   dimensions: array(number()),
   programs: array(number()),
+  avatar: custom<File[]>(),
 });
 
 export type MentorInput = TypeOf<typeof mentorSchema>;
@@ -66,9 +69,13 @@ const CreateMentor = () => {
     register,
     formState: { errors },
     handleSubmit,
+    watch,
   } = useForm<MentorInput>({
     resolver: zodResolver(mentorSchema),
   });
+
+  const avatar = watch("avatar");
+  const hasAvatar = !!avatar;
 
   useEffect(() => {
     if (isSuccess) {
@@ -87,13 +94,35 @@ const CreateMentor = () => {
     }
   }, [isError, submitError]);
 
+  const [
+    uploadAvatar,
+    { isError: isUploadAvatarError, error: uploadAvatarError },
+  ] = useUploadMutation();
+
+  useEffect(() => {
+    const message = uploadAvatarError?.data?.error?.message;
+    if (isUploadAvatarError && message) {
+      toast.error(message);
+    }
+  }, [isUploadAvatarError, uploadAvatarError?.data?.error?.message]);
+
   const onSubmitHandler: SubmitHandler<MentorInput> = (values) => {
-    createMentor({
+    const res = createMentor({
       ...values,
       role: 4,
       username: values.email,
       password: "temporary-password",
     });
+
+    if (values.avatar?.length && values.avatar[0]?.name) {
+      const formData = new FormData();
+
+      formData.append(`files`, values.avatar[0], values.avatar[0].name);
+      formData.append(`ref`, "plugin::users-permissions.user");
+      formData.append(`refId`, res.data.user.id);
+      formData.append(`field`, "avatar");
+      uploadAvatar(formData);
+    }
   };
 
   const programsOptions = useMemo(
@@ -176,7 +205,7 @@ const CreateMentor = () => {
               <ErrorMessage name="expertise" errors={errors} />
             </div>
           </InputField>
-          {!isLoadingDimensions && dimensionsOptions?.length > 0 && (
+          {!isLoadingDimensions && dimensionsOptions?.length && (
             <InputField label="Specializare pe dimensiuni">
               <MultiSelect
                 options={dimensionsOptions}
@@ -187,7 +216,7 @@ const CreateMentor = () => {
               </div>
             </InputField>
           )}
-          {!isLoadingPrograms && programsOptions?.length > 0 && (
+          {!isLoadingPrograms && programsOptions?.length && (
             <InputField label="Program asociat">
               <MultiSelect
                 options={programsOptions}
@@ -198,6 +227,32 @@ const CreateMentor = () => {
               </div>
             </InputField>
           )}
+          <InputField label="Avatar">
+            <label htmlFor="avatar" className="flex items-center space-x-4">
+              {!!avatar?.length ? (
+                <img
+                  className="h-12 w-12 overflow-hidden rounded-full bg-gray-100"
+                  src={URL.createObjectURL(avatar[0])}
+                  alt={avatar[0].name}
+                  style={{ width: "100px", height: "100px" }}
+                />
+              ) : (
+                <Avatar size={24} src={""} alt={"avatar"} />
+              )}
+              <div className={"pointer-events-none"}>
+                <Button color={"white"} type="button">
+                  {!hasAvatar ? "Încarcă avatar" : "Schimbă avatar"}
+                </Button>
+              </div>
+              <input
+                type="file"
+                className="hidden"
+                id={"avatar"}
+                {...register("avatar")}
+              />
+            </label>
+          </InputField>
+
           <div className="flex justify-end space-x-2.5 mt-10">
             <Button color="white" to="/mentors">
               Renunță

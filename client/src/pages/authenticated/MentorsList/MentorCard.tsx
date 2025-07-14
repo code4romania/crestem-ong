@@ -11,6 +11,7 @@ import { selectHasFinishedReports } from "@/redux/features/userSlice";
 import Button from "@/components/Button";
 import { toast } from "react-toastify";
 import { Dimension } from "@/redux/api/types";
+import Avatar from "@/components/Avatar";
 
 const MentorCard = ({
   id,
@@ -19,6 +20,7 @@ const MentorCard = ({
   lastName,
   dimensions,
   available,
+  avatarUrl,
 }: {
   id: string;
   userId: string;
@@ -26,6 +28,7 @@ const MentorCard = ({
   lastName: string;
   dimensions: Dimension[];
   available: boolean;
+  avatarUrl?: string;
 }) => {
   const [openConfirm, setOpenConfirm] = useState(false);
   const [createMentorshipRequest, { isSuccess, isError }] =
@@ -78,8 +81,12 @@ const MentorCard = ({
           </>
         }
       />
-      <div className="text-center">
-        <UserIcon className="h-24 w-24 inline mr-2" />
+      <div className="flex flex-col items-center">
+        <Avatar
+          src={avatarUrl || ""}
+          alt={`${firstName} ${lastName}`}
+          size={24}
+        />
         <h3 className="mt-6 text-xl font-semibold leading-8 tracking-tight text-gray-900">
           {firstName} {lastName}
         </h3>

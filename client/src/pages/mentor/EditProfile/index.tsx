@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { array, boolean, number, object, string, TypeOf } from "zod";
+import { array, boolean, custom, number, object, string, TypeOf } from "zod";
 import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import Heading from "@/components/Heading";
@@ -11,12 +11,14 @@ import {
   useGetDimensionsQuery,
   useGetProgramsQuery,
   useUpdateUserMutation,
+  useUploadMutation,
 } from "@/redux/api/userApi";
 import { useNavigate } from "react-router-dom";
 import MultiSelect from "@/components/MultiSelect";
 import { ErrorMessage } from "@hookform/error-message";
 import Toggle from "@/components/Toggle";
 import Select from "@/components/Select";
+import Avatar from "@/components/Avatar";
 
 const mentorProfileSchema = object({
   firstName: string(),
@@ -25,10 +27,11 @@ const mentorProfileSchema = object({
     .min(1, "Adresa de email este obligatorie")
     .email("Adresa de email este invalidă"),
   bio: string().min(1, "Adaugati o scurta descriere"),
-  expertise: string(),
+  expertise: string().nullish(),
   dimensions: array(number()),
   program: string(),
   available: boolean(),
+  avatar: custom<File[]>(),
 });
 
 export type MentorProfileInput = TypeOf<typeof mentorProfileSchema>;
@@ -42,6 +45,11 @@ const EditProfile = () => {
   const { data: dimensions, isLoading: isLoadingDimensions } =
     useGetDimensionsQuery(null);
 
+  const [
+    uploadAvatar,
+    { isError: isUploadAvatarError, error: uploadAvatarError },
+  ] = useUploadMutation();
+
   const methods = useForm<MentorProfileInput>({
     resolver: zodResolver(mentorProfileSchema),
     defaultValues: {
@@ -49,8 +57,12 @@ const EditProfile = () => {
       available: user.available || false,
       program: user.program.id.toString(),
       dimensions: user.dimensions.map(({ id }) => id),
+      bio: user?.bio || "",
     },
   });
+
+  const avatar = methods.watch("avatar");
+  const hasAvatar = !!avatar;
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -67,11 +79,28 @@ const EditProfile = () => {
     }
   }, [isSuccess, dispatch]);
 
+  useEffect(() => {
+    const message = uploadAvatarError?.data?.error?.message;
+    if (isUploadAvatarError && message) {
+      toast.error(message);
+    }
+  }, [isUploadAvatarError, uploadAvatarError?.data?.error?.message]);
+
   const onSubmitHandler: SubmitHandler<MentorProfileInput> = async (data) => {
     updateMentorProfile({
       id: user?.id,
       ...data,
     });
+
+    if (data.avatar?.length && data.avatar[0]?.name) {
+      const formData = new FormData();
+
+      formData.append(`files`, data.avatar[0], data.avatar[0].name);
+      formData.append(`ref`, "plugin::users-permissions.user");
+      formData.append(`refId`, user?.id?.toString() || "");
+      formData.append(`field`, "avatar");
+      uploadAvatar(formData);
+    }
   };
 
   return (
@@ -153,46 +182,6 @@ const EditProfile = () => {
                   </div>
 
                   <div className="sm:col-span-3">
-                    <label
-                      htmlFor="country"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Descriere (bio)
-                    </label>
-                    <div className="mt-1">
-                      <textarea
-                        rows={3}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("bio")}
-                      />
-                      <div className="text-red-400 text-sm py-2">
-                        <ErrorMessage name={"bio"} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="first-name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Arii de expertiză
-                    </label>
-                    <div className="mt-1">
-                      <textarea
-                        rows={3}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("expertise")}
-                      />
-                      <div className="text-red-400 text-sm py-2">
-                        <ErrorMessage name={"expertise"} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-3">
                     <MultiSelect
                       defaultValues={user.dimensions.map(({ name, id }) => ({
                         id: id,
@@ -250,6 +239,83 @@ const EditProfile = () => {
                     <div className="text-red-400 text-sm py-2">
                       <ErrorMessage name={"available"} />
                     </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 grid grid-cols-2 gap-y-6 gap-x-4 sm:grid-cols-6">
+                  <div className="col-span-full">
+                    <label
+                      htmlFor="first-name"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Arii de expertiză
+                    </label>
+                    <div className="mt-1">
+                      <textarea
+                        rows={3}
+                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                        {...methods.register("expertise")}
+                      />
+                      <div className="text-red-400 text-sm py-2">
+                        <ErrorMessage name={"expertise"} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-span-full">
+                    <label
+                      htmlFor="country"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Descriere (bio)
+                    </label>
+                    <div className="mt-1">
+                      <textarea
+                        rows={3}
+                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                        {...methods.register("bio")}
+                      />
+                      <div className="text-red-400 text-sm py-2">
+                        <ErrorMessage name={"bio"} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 grid grid-cols-2 gap-y-6 gap-x-4 sm:grid-cols-6">
+                  <div className="sm:col-span-6">
+                    <label htmlFor="avatar" className="">
+                      <div className="text-sm font-medium text-gray-700 mb-2.5">
+                        Avatar
+                      </div>
+                      <div className="flex items-center gap-10 cursor-pointer">
+                        {!!avatar?.length ? (
+                          <img
+                            className="h-12 w-12 overflow-hidden rounded-full bg-gray-100"
+                            src={URL.createObjectURL(avatar[0])}
+                            alt={avatar[0].name}
+                            style={{ width: "100px", height: "100px" }}
+                          />
+                        ) : (
+                          <Avatar
+                            src={user?.avatar?.url}
+                            alt={user?.firstName || "FDSC"}
+                            size={12}
+                          />
+                        )}
+                        <div className={"pointer-events-none"}>
+                          <Button color={"white"} type="button">
+                            {!hasAvatar ? "Încarcă avatar" : "Schimbă avatar"}
+                          </Button>
+                        </div>
+                        <input
+                          type="file"
+                          className="hidden"
+                          id={"avatar"}
+                          {...methods.register("avatar")}
+                        />
+                      </div>
+                    </label>
                   </div>
                 </div>
               </div>

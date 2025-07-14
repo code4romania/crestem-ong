@@ -4,6 +4,7 @@ import Section from "@/components/Section";
 import Heading from "@/components/Heading";
 import Table from "@/components/Table";
 import Button from "@/components/Button";
+import Avatar from "@/components/Avatar";
 
 const Profile = () => {
   const user = useAppSelector((state) => state.userState.user);
@@ -32,7 +33,11 @@ const Profile = () => {
             ],
             ["Program asociat", user.program?.name || ""],
             ["Disponibilitate", user.available ? "Disponibil" : "Indisponibil"],
-          ]}
+            user.avatar?.url && [
+              "Logo organizație",
+              <Avatar src={user.avatar?.url} alt={user.ongName} />,
+            ],
+          ].filter(Boolean)}
         />
       </Section>
     </>

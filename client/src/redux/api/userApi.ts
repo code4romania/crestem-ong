@@ -98,7 +98,7 @@ export const userApi = createApi({
     getMentors: builder.query<User[], void>({
       query() {
         return {
-          url: `users?filters[role][type][$eq]=mentor&populate[0]=role&populate[1]=domains&populate[2]=programs&populate[3]=dimensions&populate[4]=mentorActivities&sort=createdAt%3Adesc`,
+          url: `users?filters[role][type][$eq]=mentor&populate[0]=role&populate[1]=domains&populate[2]=programs&populate[3]=dimensions&populate[4]=mentorActivities&populate[5]=avatar&sort=createdAt%3Adesc`,
         };
       },
       providesTags: ["Mentor"],
