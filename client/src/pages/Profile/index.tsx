@@ -51,7 +51,7 @@ const Profile = () => {
             ],
             user.avatar?.url && [
               "Logo organizație",
-              <Avatar src={user.avatar?.url} alt={user.ongName} />,
+              <Avatar size={12} src={user.avatar?.url} alt={user.ongName} />,
             ],
             user.contactLastName && [
               "Nume reprezentant organizație",

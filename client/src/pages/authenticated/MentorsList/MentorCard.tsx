@@ -81,12 +81,14 @@ const MentorCard = ({
           </>
         }
       />
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center py-2">
         <Avatar
           src={avatarUrl || ""}
           alt={`${firstName} ${lastName}`}
-          size={24}
+          width={100}
+          height={100}
         />
+
         <h3 className="mt-6 text-xl font-semibold leading-8 tracking-tight text-gray-900">
           {firstName} {lastName}
         </h3>

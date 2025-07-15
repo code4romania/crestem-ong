@@ -33,10 +33,6 @@ const Profile = () => {
             ],
             ["Program asociat", user.program?.name || ""],
             ["Disponibilitate", user.available ? "Disponibil" : "Indisponibil"],
-            user.avatar?.url && [
-              "Logo organizație",
-              <Avatar src={user.avatar?.url} alt={user.ongName} />,
-            ],
           ].filter(Boolean)}
         />
       </Section>

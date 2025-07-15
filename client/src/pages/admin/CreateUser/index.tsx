@@ -318,7 +318,12 @@ const CreateUser = () => {
                             style={{ width: "100px", height: "100px" }}
                           />
                         ) : (
-                          <Avatar size={24} src={""} alt={"logo"} />
+                          <Avatar
+                            src={""}
+                            alt={"Logo"}
+                            width={100}
+                            height={100}
+                          />
                         )}
                         <div className={"pointer-events-none"}>
                           <Button color={"white"} type="button">

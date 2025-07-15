@@ -21,14 +21,14 @@ import Select from "@/components/Select";
 import Avatar from "@/components/Avatar";
 
 const mentorProfileSchema = object({
-  firstName: string(),
-  lastName: string(),
+  firstName: string().min(1, "Nume este obligatoriu"),
+  lastName: string().min(1, "Prenume este obligatoriu"),
   email: string()
     .min(1, "Adresa de email este obligatorie")
     .email("Adresa de email este invalidă"),
   bio: string().min(1, "Adaugati o scurta descriere"),
   expertise: string().nullish(),
-  dimensions: array(number()),
+  dimensions: array(number()).min(1, "Selectează cel puțin o specializare"),
   program: string(),
   available: boolean(),
   avatar: custom<File[]>(),
@@ -130,6 +130,7 @@ const EditProfile = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Nume persoană resursă
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
@@ -149,6 +150,7 @@ const EditProfile = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Prenume persoană resursă
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
@@ -168,6 +170,7 @@ const EditProfile = () => {
                       className="block text-sm font-medium text-gray-700"
                     >
                       Email persoană resursă
+                      <span className="text-red-700 ml-1.5">*</span>
                     </label>
                     <div className="mt-1">
                       <input
@@ -196,6 +199,7 @@ const EditProfile = () => {
                           : []
                       }
                       label={"Specializare pe dimensiuni"}
+                      isMandatory={true}
                       {...methods.register("dimensions")}
                     />
                     <div className="text-red-400 text-sm py-2">
@@ -245,6 +249,26 @@ const EditProfile = () => {
                 <div className="mt-6 grid grid-cols-2 gap-y-6 gap-x-4 sm:grid-cols-6">
                   <div className="col-span-full">
                     <label
+                      htmlFor="country"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Descriere (bio)
+                      <span className="text-red-700 ml-1.5">*</span>
+                    </label>
+                    <div className="mt-1">
+                      <textarea
+                        rows={3}
+                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                        {...methods.register("bio")}
+                      />
+                      <div className="text-red-400 text-sm py-2">
+                        <ErrorMessage name={"bio"} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-span-full">
+                    <label
                       htmlFor="first-name"
                       className="block text-sm font-medium text-gray-700"
                     >
@@ -261,32 +285,13 @@ const EditProfile = () => {
                       </div>
                     </div>
                   </div>
-
-                  <div className="col-span-full">
-                    <label
-                      htmlFor="country"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Descriere (bio)
-                    </label>
-                    <div className="mt-1">
-                      <textarea
-                        rows={3}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("bio")}
-                      />
-                      <div className="text-red-400 text-sm py-2">
-                        <ErrorMessage name={"bio"} />
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 <div className="mt-6 grid grid-cols-2 gap-y-6 gap-x-4 sm:grid-cols-6">
                   <div className="sm:col-span-6">
                     <label htmlFor="avatar" className="">
                       <div className="text-sm font-medium text-gray-700 mb-2.5">
-                        Avatar
+                        Poză de profil
                       </div>
                       <div className="flex items-center gap-10 cursor-pointer">
                         {!!avatar?.length ? (
@@ -299,13 +304,14 @@ const EditProfile = () => {
                         ) : (
                           <Avatar
                             src={user?.avatar?.url}
-                            alt={user?.firstName || "FDSC"}
-                            size={12}
+                            alt={"Poză de profil"}
+                            width={100}
+                            height={100}
                           />
                         )}
                         <div className={"pointer-events-none"}>
                           <Button color={"white"} type="button">
-                            {!hasAvatar ? "Încarcă avatar" : "Schimbă avatar"}
+                            {!hasAvatar ? "Încarcă poză" : "Schimbă poză"}
                           </Button>
                         </div>
                         <input

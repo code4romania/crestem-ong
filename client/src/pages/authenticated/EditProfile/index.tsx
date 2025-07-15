@@ -356,9 +356,10 @@ const OngEditProfile = () => {
                           />
                         ) : (
                           <Avatar
-                            size={24}
                             src={user?.avatar.url}
-                            alt={"logo"}
+                            alt={"Logo"}
+                            width={100}
+                            height={100}
                           />
                         )}
                         <div className={"pointer-events-none"}>
