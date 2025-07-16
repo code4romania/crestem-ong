@@ -19,7 +19,7 @@ const Mentors = () => {
     <div>
       <Section>
         <Heading level={"h2"}>Persoane resursă</Heading>
-        {mentors.length > 0 ? (
+        {mentors?.length ? (
           <Table
             head={[
               "Nume",
@@ -35,7 +35,7 @@ const Mentors = () => {
               `${mentor?.programs.map((program) => program.name).join(",")}`,
 
               `${
-                mentor.mentorActivities.length > 0
+                mentor.mentorActivities?.length
                   ? new Date(
                       mentor.mentorActivities &&
                         mentor.mentorActivities[

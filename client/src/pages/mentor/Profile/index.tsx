@@ -4,6 +4,7 @@ import Section from "@/components/Section";
 import Heading from "@/components/Heading";
 import Table from "@/components/Table";
 import Button from "@/components/Button";
+import Avatar from "@/components/Avatar";
 
 const Profile = () => {
   const user = useAppSelector((state) => state.userState.user);
@@ -30,9 +31,9 @@ const Profile = () => {
               "Specializare pe dimensiuni",
               user.dimensions?.map(({ name }) => name).join(", "),
             ],
-            ["Program asociat", user.program.name],
+            ["Program asociat", user.program?.name || ""],
             ["Disponibilitate", user.available ? "Disponibil" : "Indisponibil"],
-          ]}
+          ].filter(Boolean)}
         />
       </Section>
     </>

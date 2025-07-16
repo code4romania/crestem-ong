@@ -19,7 +19,7 @@ const Mentors = () => {
     <div>
       <Section>
         <Heading level={"h2"}>Persoane resursă</Heading>
-        {mentors?.length > 0 ? (
+        {mentors?.length ? (
           <ul
             role="list"
             className="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3"
@@ -27,12 +27,13 @@ const Mentors = () => {
             {mentors?.map((mentor) => (
               <MentorCard
                 key={mentor.id}
-                id={mentor.id}
+                id={mentor.id.toString()}
                 userId={user.id}
                 available={mentor.available}
                 firstName={mentor.firstName}
                 lastName={mentor.lastName}
                 dimensions={mentor.dimensions}
+                avatarUrl={mentor.avatar?.url}
               />
             ))}
           </ul>

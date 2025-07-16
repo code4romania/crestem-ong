@@ -13,12 +13,14 @@ export default function MultiSelect({
   defaultValues = [],
   options,
   onChange,
+  required = false,
 }: {
   name: string;
   label: string;
   defaultValues: { label: string; name: string }[];
   options: { label: string; name: string }[];
   onChange: ChangeEventHandler;
+  required?: boolean;
 }) {
   const [selectedItems, setSelectedItems] = useState(defaultValues);
   const [query, setQuery] = useState("");
@@ -49,6 +51,7 @@ export default function MultiSelect({
           className="block text-sm font-medium text-gray-900"
         >
           {label}
+          {required && <span className="text-red-700 ml-1.5">*</span>}
         </label>
         <Combobox value={selectedItems} onChange={setSelectedItems} multiple>
           <div className="relative mt-1">

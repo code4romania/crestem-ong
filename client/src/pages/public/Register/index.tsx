@@ -18,6 +18,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import citiesByCounty from "@/lib/orase-dupa-judet.json";
 import Select from "@/components/Select";
 import Form from "@/components/Form";
+import Avatar from "@/components/Avatar";
 
 const registerSchema = object({
   ongName: string().min(1, "Numele organizatiei este obligatoriu"),
@@ -112,9 +113,9 @@ const Register = () => {
   }, [isSuccess, data?.jwt, dispatch]);
 
   const onSubmitHandler: SubmitHandler<RegisterInput> = async (values) => {
-    const formData = new FormData();
     const res = await submitRegister({ ...values, username: values.email });
     if (values.avatar?.length && values.avatar[0].name) {
+      const formData = new FormData();
       formData.append(`files`, values.avatar[0], values.avatar[0].name);
       formData.append(`ref`, "plugin::users-permissions.user");
       formData.append(`refId`, res.data.user.id);
@@ -379,15 +380,12 @@ const Register = () => {
                             style={{ width: "100px", height: "100px" }}
                           />
                         ) : (
-                          <span className="h-12 w-12 overflow-hidden rounded-full bg-gray-100">
-                            <svg
-                              className="h-full w-full text-gray-300"
-                              fill="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                          </span>
+                          <Avatar
+                            src={""}
+                            alt={"Logo"}
+                            width={100}
+                            height={100}
+                          />
                         )}
                         <div className={"pointer-events-none"}>
                           <Button color={"white"} type="button">

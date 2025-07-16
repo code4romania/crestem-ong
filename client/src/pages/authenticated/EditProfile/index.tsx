@@ -9,7 +9,8 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { toast } from "react-toastify";
 import {
   useGetDomainsQuery,
-  useUpdateUserMutation, useUploadMutation,
+  useUpdateUserMutation,
+  useUploadMutation,
 } from "@/redux/api/userApi";
 import { useNavigate } from "react-router-dom";
 import MultiSelect from "@/components/MultiSelect";
@@ -17,6 +18,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import Select from "@/components/Select";
 import citiesByCounty from "@/lib/orase-dupa-judet.json";
 import SocialNetworkLinks from "@/components/SocialNetworkLinks";
+import Avatar from "@/components/Avatar";
 
 const ongProfileSchema = object({
   id: number(),
@@ -57,11 +59,12 @@ const OngEditProfile = () => {
 
   const ongDomains = useMemo(() => {
     return user?.domains
-      ? user?.domains?.map(d=>({id: d.id, name: d.name, label: d.name}))
+      ? user?.domains?.map((d) => ({ id: d.id, name: d.name, label: d.name }))
       : [];
   }, [user]);
 
-  const [updateOngProfile, { isSuccess, isError, error, data }] = useUpdateUserMutation();
+  const [updateOngProfile, { isSuccess, isError, error, data }] =
+    useUpdateUserMutation();
 
   const [
     uploadAvatar,
@@ -73,12 +76,12 @@ const OngEditProfile = () => {
     resolver: zodResolver(ongProfileSchema),
     defaultValues: {
       ...user,
-      domains: user?.domains?.map(d => d.id),
-      accountFacebook: user?.accountFacebook || '',
-      accountTwitter: user?.accountTwitter || '',
-      accountTiktok: user?.accountTiktok || '',
-      accountInstagram: user?.accountInstagram || '',
-      accountLinkedin: user?.accountLinkedin || '',
+      domains: user?.domains?.map((d) => d.id),
+      accountFacebook: user?.accountFacebook || "",
+      accountTwitter: user?.accountTwitter || "",
+      accountTiktok: user?.accountTiktok || "",
+      accountInstagram: user?.accountInstagram || "",
+      accountLinkedin: user?.accountLinkedin || "",
     },
   });
 
@@ -120,24 +123,25 @@ const OngEditProfile = () => {
     console.log(data);
   };
 
-  const counties = Object.keys(citiesByCounty).sort().map((county: string) => ({
-    label: county,
-    name: county,
-  }));
+  const counties = Object.keys(citiesByCounty)
+    .sort()
+    .map((county: string) => ({
+      label: county,
+      name: county,
+    }));
 
   const cities = useMemo(
     () =>
       county
-        ? [...new Set(citiesByCounty[county].map((city) => city.nume))].sort().map(
-          (city) => ({
-            name: city,
-            label: city,
-          })
-        )
+        ? [...new Set(citiesByCounty[county].map((city) => city.nume))]
+            .sort()
+            .map((city) => ({
+              name: city,
+              label: city,
+            }))
         : [],
     [citiesByCounty, county]
   );
-
 
   return (
     <div>
@@ -283,7 +287,6 @@ const OngEditProfile = () => {
                     </div>
                   </div>
                 </div>
-
               </div>
 
               <div className="pt-8">
@@ -352,15 +355,12 @@ const OngEditProfile = () => {
                             style={{ width: "100px", height: "100px" }}
                           />
                         ) : (
-                          <span className="h-12 w-12 overflow-hidden rounded-full bg-gray-100">
-                            <svg
-                              className="h-full w-full text-gray-300"
-                              fill="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                          </span>
+                          <Avatar
+                            src={user?.avatar.url}
+                            alt={"Logo"}
+                            width={100}
+                            height={100}
+                          />
                         )}
                         <div className={"pointer-events-none"}>
                           <Button color={"white"} type="button">

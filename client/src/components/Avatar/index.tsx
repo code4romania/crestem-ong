@@ -3,17 +3,27 @@ import React from "react";
 const Avatar = ({
   src,
   alt,
+  width,
+  height,
   size = "8",
 }: {
   src: string;
   alt: string;
   size?: string | number;
+  width?: number;
+  height?: number;
 }) => {
   return src ? (
-    <img className={`h-${size} w-${size} rounded-full`} src={src} alt={alt} />
+    <img
+      className={`h-${size} w-${size} rounded-full`}
+      src={src}
+      alt={alt}
+      style={{ height, width }}
+    />
   ) : (
     <div
       className={`h-${size} w-${size} overflow-hidden rounded-full bg-gray-100`}
+      style={{ height, width }}
     >
       <svg
         className="h-full w-full text-gray-300"
