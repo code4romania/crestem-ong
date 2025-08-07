@@ -1,0 +1,212 @@
+{
+  "kind": "collectionType",
+  "collectionName": "up_users",
+  "info": {
+    "name": "user",
+    "description": "",
+    "singularName": "user",
+    "pluralName": "users",
+    "displayName": "User"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "username": {
+      "type": "string",
+      "minLength": 3,
+      "unique": true,
+      "configurable": false,
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "minLength": 6,
+      "configurable": false,
+      "required": true
+    },
+    "provider": {
+      "type": "string",
+      "configurable": false
+    },
+    "password": {
+      "type": "password",
+      "minLength": 6,
+      "configurable": false,
+      "private": true
+    },
+    "resetPasswordToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true
+    },
+    "confirmationToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true
+    },
+    "registrationToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": false,
+      "configurable": false
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false,
+      "configurable": false
+    },
+    "role": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.role",
+      "inversedBy": "users",
+      "configurable": false
+    },
+    "avatar": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "ongName": {
+      "type": "string",
+      "required": false
+    },
+    "ongIdentificationNumber": {
+      "type": "string",
+      "required": false,
+      "unique": true
+    },
+    "county": {
+      "type": "string",
+      "required": false
+    },
+    "city": {
+      "type": "string",
+      "required": false
+    },
+    "phone": {
+      "type": "string",
+      "required": false
+    },
+    "website": {
+      "type": "string"
+    },
+    "keywords": {
+      "type": "string"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images", "files", "videos", "audios"]
+    },
+    "description": {
+      "type": "text"
+    },
+    "reports": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::report.report",
+      "mappedBy": "user"
+    },
+    "contactFirstName": {
+      "type": "string"
+    },
+    "contactLastName": {
+      "type": "string"
+    },
+    "contactEmail": {
+      "type": "string"
+    },
+    "contactPhone": {
+      "type": "string"
+    },
+    "accountFacebook": {
+      "type": "string"
+    },
+    "accountTwitter": {
+      "type": "string"
+    },
+    "accountTiktok": {
+      "type": "string"
+    },
+    "accountInstagram": {
+      "type": "string"
+    },
+    "accountLinkedin": {
+      "type": "string"
+    },
+    "domains": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::domain.domain",
+      "mappedBy": "mentors"
+    },
+    "programs": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::program.program",
+      "mappedBy": "mentors"
+    },
+    "dimensions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::dimension.dimension",
+      "inversedBy": "mentors"
+    },
+    "bio": {
+      "type": "text"
+    },
+    "expertise": {
+      "type": "text"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "program": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::program.program",
+      "inversedBy": "users"
+    },
+    "available": {
+      "type": "boolean",
+      "required": false,
+      "default": false
+    },
+    "mentorActivities": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::activity.activity",
+      "mappedBy": "mentor"
+    },
+    "userActivities": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::activity.activity",
+      "mappedBy": "user"
+    },
+    "mentorSessions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::mentorship-request.mentorship-request",
+      "mappedBy": "mentor"
+    },
+    "userSessions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::mentorship-request.mentorship-request",
+      "mappedBy": "user"
+    }
+  }
+}

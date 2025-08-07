@@ -1,0 +1,46 @@
+{
+  "name": "Mentor",
+  "description": "Persoana program",
+  "type": "mentor",
+  "permissions": [
+    {
+      "action": "api::activity-type.activity-type.find"
+    },
+    {
+      "action": "api::activity.activity.create"
+    },
+    {
+      "action": "api::activity.activity.find"
+    },
+    {
+      "action": "api::dimension.dimension.find"
+    },
+    {
+      "action": "api::domain.domain.find"
+    },
+    {
+      "action": "api::evaluation.evaluation.find"
+    },
+    {
+      "action": "api::matrix.matrix.find"
+    },
+    {
+      "action": "api::program.program.find"
+    },
+    {
+      "action": "api::report.report.find"
+    },
+    {
+      "action": "plugin::users-permissions.role.find"
+    },
+    {
+      "action": "plugin::users-permissions.user.find"
+    },
+    {
+      "action": "plugin::users-permissions.user.me"
+    },
+    {
+      "action": "plugin::users-permissions.user.update"
+    }
+  ]
+}

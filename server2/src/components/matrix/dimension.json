@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_matrix_dimensions",
+  "info": {
+    "displayName": "dimension",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "link": {
+      "type": "string"
+    }
+  }
+}
