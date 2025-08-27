@@ -16,26 +16,26 @@
   },
   "dependencies": {
     "@strapi/plugin-cloud": "5.21.0",
-    "@strapi/plugin-sentry": "^5.21.0",
-    "@strapi/plugin-users-permissions": "^5.21.0",
-    "@strapi/provider-email-amazon-ses": "^5.21.0",
+    "@strapi/plugin-sentry": "^5.23.0",
+    "@strapi/plugin-users-permissions": "^5.23.0",
+    "@strapi/provider-email-amazon-ses": "^5.23.0",
     "@strapi/strapi": "5.21.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "8.8.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "^6.0.0",
-    "remeda": "^2.29.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.1",
+    "remeda": "^2.30.0",
     "strapi-plugin-config-sync": "^3.1.2",
     "strapi-plugin-email-designer-5": "^0.0.7",
     "strapi-provider-upload-aws-s3-advanced": "^5.0.1",
-    "styled-components": "^6.0.0"
+    "styled-components": "^6.1.19"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "typescript": "^5"
+    "@types/node": "^20.19.11",
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.3.7",
+    "typescript": "^5.9.2"
   },
   "engines": {
     "node": ">=18.0.0 <=22.x.x",
