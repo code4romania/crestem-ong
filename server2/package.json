@@ -15,11 +15,11 @@
     "upgrade:dry": "npx @strapi/upgrade latest --dry"
   },
   "dependencies": {
-    "@strapi/plugin-cloud": "5.21.0",
+    "@strapi/plugin-cloud": "5.23.4",
     "@strapi/plugin-sentry": "^5.23.0",
     "@strapi/plugin-users-permissions": "^5.23.0",
     "@strapi/provider-email-amazon-ses": "^5.23.0",
-    "@strapi/strapi": "5.21.0",
+    "@strapi/strapi": "5.23.4",
     "jsonwebtoken": "^9.0.2",
     "pg": "8.8.0",
     "react": "^18.3.1",
