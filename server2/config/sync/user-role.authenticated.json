@@ -1,70 +1,114 @@
 {
+  "documentId": "g190x4tpt81zbl01jrm5djab",
   "name": "Admin ONG",
   "description": "Default role given to authenticated user.",
   "type": "authenticated",
+  "locale": null,
   "permissions": [
     {
-      "action": "api::dimension.dimension.find"
+      "documentId": "v1dgccdwqphwe8qfriybae6z",
+      "action": "api::dimension.dimension.find",
+      "locale": null
     },
     {
-      "action": "api::domain.domain.find"
+      "documentId": "vecr3cbny0u8hxvs2d9zgiyb",
+      "action": "api::domain.domain.find",
+      "locale": null
     },
     {
-      "action": "api::evaluation.evaluation.create"
+      "documentId": "v3yxz08lzzvo4ix7jrafwxjc",
+      "action": "api::evaluation.evaluation.create",
+      "locale": null
     },
     {
-      "action": "api::evaluation.evaluation.delete"
+      "documentId": "mem1kug6ukh6l8ynfltwndjz",
+      "action": "api::evaluation.evaluation.delete",
+      "locale": null
     },
     {
-      "action": "api::evaluation.evaluation.find"
+      "documentId": "nd2p5y1su2n63z71jxu3ni8v",
+      "action": "api::evaluation.evaluation.find",
+      "locale": null
     },
     {
-      "action": "api::evaluation.evaluation.findOne"
+      "documentId": "ygfvfmyekxv3qbl4218r6vs6",
+      "action": "api::evaluation.evaluation.findOne",
+      "locale": null
     },
     {
-      "action": "api::evaluation.evaluation.update"
+      "documentId": "o2f6zuze6rsdqd93aej6l82q",
+      "action": "api::evaluation.evaluation.update",
+      "locale": null
     },
     {
-      "action": "api::matrix.matrix.find"
+      "documentId": "oixt5045sc3mzosjhtte5aqh",
+      "action": "api::matrix.matrix.find",
+      "locale": null
     },
     {
-      "action": "api::mentorship-request.mentorship-request.create"
+      "documentId": "n8nw0v1uf97iia7daydz8lk7",
+      "action": "api::mentorship-request.mentorship-request.create",
+      "locale": null
     },
     {
-      "action": "api::program.program.find"
+      "documentId": "k92st9pw1n52sftsd4yn0jo2",
+      "action": "api::program.program.find",
+      "locale": null
     },
     {
-      "action": "api::report.report.create"
+      "documentId": "vm9bttqkkdb8taq1p60o2o5h",
+      "action": "api::report.report.create",
+      "locale": null
     },
     {
-      "action": "api::report.report.find"
+      "documentId": "lrigfx92ag87hf6by8nehu9j",
+      "action": "api::report.report.find",
+      "locale": null
     },
     {
-      "action": "api::report.report.findOne"
+      "documentId": "hxe234i3uvoniq3cf3edx9y5",
+      "action": "api::report.report.findOne",
+      "locale": null
     },
     {
-      "action": "api::report.report.update"
+      "documentId": "oh18dujlesca8cbij12cv82e",
+      "action": "api::report.report.update",
+      "locale": null
     },
     {
-      "action": "plugin::upload.content-api.upload"
+      "documentId": "vu1hfs1vlt5yr19ay8oq1o1i",
+      "action": "plugin::upload.content-api.upload",
+      "locale": null
     },
     {
-      "action": "plugin::users-permissions.auth.changePassword"
+      "documentId": "brlxnmka8u3k9s3tnr0op2dr",
+      "action": "plugin::users-permissions.auth.changePassword",
+      "locale": null
     },
     {
-      "action": "plugin::users-permissions.role.find"
+      "documentId": "efrdin4tlr78023lxda935hu",
+      "action": "plugin::users-permissions.role.find",
+      "locale": null
     },
     {
-      "action": "plugin::users-permissions.user.find"
+      "documentId": "j0qaf7ifed48n67alldikbjo",
+      "action": "plugin::users-permissions.user.find",
+      "locale": null
     },
     {
-      "action": "plugin::users-permissions.user.findOne"
+      "documentId": "unyxmp32qlfa6cnce9chg7qa",
+      "action": "plugin::users-permissions.user.findOne",
+      "locale": null
     },
     {
-      "action": "plugin::users-permissions.user.me"
+      "documentId": "rwdbo3pixw7je19mwf7xa2ia",
+      "action": "plugin::users-permissions.user.me",
+      "locale": null
     },
     {
-      "action": "plugin::users-permissions.user.update"
+      "documentId": "ma0j2lltfn5xum63biq09t0k",
+      "action": "plugin::users-permissions.user.update",
+      "locale": null
     }
   ]
 }

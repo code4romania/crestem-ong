@@ -1,10 +1,14 @@
 {
+  "documentId": "cxcs4jz0l3cra48mdq7js2am",
   "name": "Editor",
   "code": "strapi-editor",
   "description": "Editors can manage and publish contents including those of other users.",
+  "locale": null,
   "permissions": [
     {
+      "documentId": "wlpa7ajua6cr6k34ura6go0j",
       "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
       "subject": "api::evaluation.evaluation",
       "properties": {
         "fields": [
@@ -14,29 +18,22 @@
           "report"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "zvappzi5vk85gm3bvdwsqsvk",
       "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
       "subject": "api::evaluation.evaluation",
       "properties": {},
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "kq61cld6cjn1qo9zw59zxlbj",
       "action": "plugin::content-manager.explorer.read",
-      "subject": "api::evaluation.evaluation",
-      "properties": {
-        "fields": [
-          "dimensions.quiz.answer",
-          "dimensions.comment",
-          "email",
-          "report"
-        ]
-      },
-      "conditions": []
-    },
-    {
-      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
       "subject": "api::evaluation.evaluation",
       "properties": {
         "fields": [
@@ -46,103 +43,162 @@
           "report"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "svbrbxkfyv9e8lecp2p8femp",
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::evaluation.evaluation",
+      "properties": {
+        "fields": [
+          "dimensions.quiz.answer",
+          "dimensions.comment",
+          "email",
+          "report"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "p2o7yaq6x7eudcwq5n5tzibr",
       "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
       "subject": "api::matrix.matrix",
       "properties": {
         "fields": []
       },
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "grz7oew04y5fjf16h4d4wxqr",
       "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
       "subject": "api::matrix.matrix",
       "properties": {},
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "ppwgl8fz154zncthk8wtx03e",
       "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
       "subject": "api::matrix.matrix",
       "properties": {
         "fields": []
       },
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "e8pbp9allgvo0kpn6laje3o2",
       "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
       "subject": "api::matrix.matrix",
       "properties": {
         "fields": []
       },
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "rx1108bpgtt9hr656w708dy0",
       "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
       "subject": "api::report.report",
       "properties": {
         "fields": ["evaluations", "deadline", "finished", "user"]
       },
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "d9gbiwjjgtgiff0pj78pzgrt",
       "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
       "subject": "api::report.report",
       "properties": {},
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "y2opmfxculd8r2ycea6kvnju",
       "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
       "subject": "api::report.report",
       "properties": {
         "fields": ["evaluations", "deadline", "finished", "user"]
       },
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "b2qeb1jtort06fnxh3rjafne",
       "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
       "subject": "api::report.report",
       "properties": {
         "fields": ["evaluations", "deadline", "finished", "user"]
       },
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "y3havuis2kkyvt489t17mmmc",
       "action": "plugin::upload.assets.copy-link",
+      "actionParameters": {},
       "subject": null,
       "properties": {},
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "z8x3oiznfpnw4d7v2j0exi3p",
       "action": "plugin::upload.assets.create",
+      "actionParameters": {},
       "subject": null,
       "properties": {},
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "ut3gmsmobj2sq17qfxge9q6f",
       "action": "plugin::upload.assets.download",
+      "actionParameters": {},
       "subject": null,
       "properties": {},
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "nvpciz74wgqz9s0jjxjy3ce0",
       "action": "plugin::upload.assets.update",
+      "actionParameters": {},
       "subject": null,
       "properties": {},
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "oywhdmepcmhgh4bfkfetwesn",
       "action": "plugin::upload.configure-view",
+      "actionParameters": {},
       "subject": null,
       "properties": {},
-      "conditions": []
+      "conditions": [],
+      "locale": null
     },
     {
+      "documentId": "dclkahy03vfp70i2lm6zisxg",
       "action": "plugin::upload.read",
+      "actionParameters": {},
       "subject": null,
       "properties": {},
-      "conditions": []
+      "conditions": [],
+      "locale": null
     }
   ]
 }

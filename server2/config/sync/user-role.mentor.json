@@ -1,52 +1,84 @@
 {
+  "documentId": "to7b7325jizyijxxq0ilidke",
   "name": "Persoană resursă",
   "description": "Mentor",
   "type": "mentor",
+  "locale": null,
   "permissions": [
     {
-      "action": "api::activity-type.activity-type.find"
+      "documentId": "vbrujrb42gw9kil85fmyxvhp",
+      "action": "api::activity-type.activity-type.find",
+      "locale": null
     },
     {
-      "action": "api::activity.activity.create"
+      "documentId": "gqwvgc1ajyhfdb84s9dg89am",
+      "action": "api::activity.activity.create",
+      "locale": null
     },
     {
-      "action": "api::activity.activity.find"
+      "documentId": "wyj2tfm39q46cskpzlyyzg3d",
+      "action": "api::activity.activity.find",
+      "locale": null
     },
     {
-      "action": "api::dimension.dimension.find"
+      "documentId": "slkgr0lz2h0v13vtc9m7s0hv",
+      "action": "api::dimension.dimension.find",
+      "locale": null
     },
     {
-      "action": "api::domain.domain.find"
+      "documentId": "t7khokgxm4pxqgyr4js21m0w",
+      "action": "api::domain.domain.find",
+      "locale": null
     },
     {
-      "action": "api::evaluation.evaluation.find"
+      "documentId": "dtlijjm3tyibxlqc93ep3wq6",
+      "action": "api::evaluation.evaluation.find",
+      "locale": null
     },
     {
-      "action": "api::matrix.matrix.find"
+      "documentId": "k0omwhlz008nbuclzocdga9i",
+      "action": "api::matrix.matrix.find",
+      "locale": null
     },
     {
-      "action": "api::program.program.find"
+      "documentId": "r12cro3nmiblvi2plvmj011a",
+      "action": "api::program.program.find",
+      "locale": null
     },
     {
-      "action": "api::report.report.find"
+      "documentId": "is07hama9ilrniqc342f8ekg",
+      "action": "api::report.report.find",
+      "locale": null
     },
     {
-      "action": "api::report.report.findOne"
+      "documentId": "m6hy5uzm5zfjqdmtmybqcwyz",
+      "action": "api::report.report.findOne",
+      "locale": null
     },
     {
-      "action": "plugin::upload.content-api.upload"
+      "documentId": "ajfz00adkgurmy4aabp91say",
+      "action": "plugin::upload.content-api.upload",
+      "locale": null
     },
     {
-      "action": "plugin::users-permissions.role.find"
+      "documentId": "dufi11tpwgzo30tgcyq1r2h5",
+      "action": "plugin::users-permissions.role.find",
+      "locale": null
     },
     {
-      "action": "plugin::users-permissions.user.find"
+      "documentId": "b6g5bz8igykp6ppjamnz6cvi",
+      "action": "plugin::users-permissions.user.find",
+      "locale": null
     },
     {
-      "action": "plugin::users-permissions.user.me"
+      "documentId": "kahbbvsq66apfsdhvosacqoc",
+      "action": "plugin::users-permissions.user.me",
+      "locale": null
     },
     {
-      "action": "plugin::users-permissions.user.update"
+      "documentId": "g8txwqb8xci1bn8r9e6mtbme",
+      "action": "plugin::users-permissions.user.update",
+      "locale": null
     }
   ]
 }

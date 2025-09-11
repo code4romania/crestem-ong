@@ -21,17 +21,13 @@
           "u_column": 3
         },
         "body": {
-          "id": "4RZGD5rLYN",
           "rows": [
             {
-              "id": "mqnVZHhude",
               "cells": [1],
               "columns": [
                 {
-                  "id": "OgOYivgaau",
                   "contents": [
                     {
-                      "id": "bGMFPWmaBb",
                       "type": "image",
                       "values": {
                         "containerPadding": "10px",
@@ -63,7 +59,6 @@
                       }
                     },
                     {
-                      "id": "CLKrlfbQfj",
                       "type": "text",
                       "values": {
                         "containerPadding": "10px",
