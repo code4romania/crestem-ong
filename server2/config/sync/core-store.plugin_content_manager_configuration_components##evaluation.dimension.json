@@ -7,11 +7,19 @@
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "id",
+      "mainField": "documentId",
       "defaultSortBy": "id",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
+      "id": {
+        "edit": {},
+        "list": {
+          "label": "id",
+          "searchable": false,
+          "sortable": false
+        }
+      },
       "quiz": {
         "edit": {
           "label": "quiz",
@@ -39,10 +47,22 @@
           "searchable": true,
           "sortable": true
         }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
       }
     },
     "layouts": {
-      "list": ["id", "quiz", "comment"],
+      "list": [
+        "id",
+        "quiz",
+        "comment"
+      ],
       "edit": [
         [
           {
