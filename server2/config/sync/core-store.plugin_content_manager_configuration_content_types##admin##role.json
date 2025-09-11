@@ -1,6 +1,7 @@
 {
   "key": "plugin_content_manager_configuration_content_types::admin::role",
   "value": {
+    "uid": "admin::role",
     "settings": {
       "bulkable": true,
       "filterable": true,
@@ -11,12 +12,34 @@
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
-      "id": {
-        "edit": {},
+      "permissions": {
+        "edit": {
+          "label": "permissions",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "action"
+        },
         "list": {
-          "label": "id",
-          "searchable": true,
-          "sortable": true
+          "label": "permissions",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "users": {
+        "edit": {
+          "label": "users",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "firstname"
+        },
+        "list": {
+          "label": "users",
+          "searchable": false,
+          "sortable": false
         }
       },
       "name": {
@@ -47,64 +70,6 @@
           "sortable": true
         }
       },
-      "description": {
-        "edit": {
-          "label": "description",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "description",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "users": {
-        "edit": {
-          "label": "users",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "firstname"
-        },
-        "list": {
-          "label": "users",
-          "searchable": false,
-          "sortable": false
-        }
-      },
-      "permissions": {
-        "edit": {
-          "label": "permissions",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "action"
-        },
-        "list": {
-          "label": "permissions",
-          "searchable": false,
-          "sortable": false
-        }
-      },
-      "createdAt": {
-        "edit": {
-          "label": "createdAt",
-          "description": "",
-          "placeholder": "",
-          "visible": false,
-          "editable": true
-        },
-        "list": {
-          "label": "createdAt",
-          "searchable": true,
-          "sortable": true
-        }
-      },
       "updatedAt": {
         "edit": {
           "label": "updatedAt",
@@ -115,21 +80,6 @@
         },
         "list": {
           "label": "updatedAt",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "createdBy": {
-        "edit": {
-          "label": "createdBy",
-          "description": "",
-          "placeholder": "",
-          "visible": false,
-          "editable": true,
-          "mainField": "firstname"
-        },
-        "list": {
-          "label": "createdBy",
           "searchable": true,
           "sortable": true
         }
@@ -149,22 +99,60 @@
           "sortable": true
         }
       },
-      "documentId": {
+      "id": {
         "edit": {},
         "list": {
-          "label": "documentId",
+          "label": "id",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "createdAt": {
+        "edit": {
+          "label": "createdAt",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "createdAt",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "description": {
+        "edit": {
+          "label": "description",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "description",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "createdBy",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true,
+          "mainField": "firstname"
+        },
+        "list": {
+          "label": "createdBy",
           "searchable": true,
           "sortable": true
         }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "name",
-        "code",
-        "description"
-      ],
+      "list": ["id", "name", "code", "description"],
       "edit": [
         [
           {
@@ -193,8 +181,7 @@
           }
         ]
       ]
-    },
-    "uid": "admin::role"
+    }
   },
   "type": "object",
   "environment": null,
