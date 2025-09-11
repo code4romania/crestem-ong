@@ -1,6 +1,7 @@
 {
   "key": "plugin_content_manager_configuration_content_types::admin::user",
   "value": {
+    "uid": "admin::user",
     "settings": {
       "bulkable": true,
       "filterable": true,
@@ -11,24 +12,16 @@
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
-      "id": {
-        "edit": {},
-        "list": {
-          "label": "id",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "firstname": {
+      "registrationToken": {
         "edit": {
-          "label": "firstname",
+          "label": "registrationToken",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "firstname",
+          "label": "registrationToken",
           "searchable": true,
           "sortable": true
         }
@@ -47,119 +40,6 @@
           "sortable": true
         }
       },
-      "username": {
-        "edit": {
-          "label": "username",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "username",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "email": {
-        "edit": {
-          "label": "email",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "email",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "password": {
-        "edit": {
-          "label": "password",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "password",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "resetPasswordToken": {
-        "edit": {
-          "label": "resetPasswordToken",
-          "description": "",
-          "placeholder": "",
-          "visible": false,
-          "editable": true
-        },
-        "list": {
-          "label": "resetPasswordToken",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "registrationToken": {
-        "edit": {
-          "label": "registrationToken",
-          "description": "",
-          "placeholder": "",
-          "visible": false,
-          "editable": true
-        },
-        "list": {
-          "label": "registrationToken",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "isActive": {
-        "edit": {
-          "label": "isActive",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "isActive",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "roles": {
-        "edit": {
-          "label": "roles",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "name"
-        },
-        "list": {
-          "label": "roles",
-          "searchable": false,
-          "sortable": false
-        }
-      },
-      "blocked": {
-        "edit": {
-          "label": "blocked",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "blocked",
-          "searchable": true,
-          "sortable": true
-        }
-      },
       "preferedLanguage": {
         "edit": {
           "label": "preferedLanguage",
@@ -174,16 +54,16 @@
           "sortable": true
         }
       },
-      "createdAt": {
+      "blocked": {
         "edit": {
-          "label": "createdAt",
+          "label": "blocked",
           "description": "",
           "placeholder": "",
-          "visible": false,
+          "visible": true,
           "editable": true
         },
         "list": {
-          "label": "createdAt",
+          "label": "blocked",
           "searchable": true,
           "sortable": true
         }
@@ -202,17 +82,30 @@
           "sortable": true
         }
       },
-      "createdBy": {
+      "resetPasswordToken": {
         "edit": {
-          "label": "createdBy",
+          "label": "resetPasswordToken",
           "description": "",
           "placeholder": "",
-          "visible": false,
-          "editable": true,
-          "mainField": "firstname"
+          "visible": true,
+          "editable": true
         },
         "list": {
-          "label": "createdBy",
+          "label": "resetPasswordToken",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "isActive": {
+        "edit": {
+          "label": "isActive",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "isActive",
           "searchable": true,
           "sortable": true
         }
@@ -232,22 +125,117 @@
           "sortable": true
         }
       },
-      "documentId": {
+      "username": {
+        "edit": {
+          "label": "username",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "username",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "id": {
         "edit": {},
         "list": {
-          "label": "documentId",
+          "label": "id",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "createdAt": {
+        "edit": {
+          "label": "createdAt",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "createdAt",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "firstname": {
+        "edit": {
+          "label": "firstname",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "firstname",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "password": {
+        "edit": {
+          "label": "password",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "password",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "email": {
+        "edit": {
+          "label": "email",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "email",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "roles": {
+        "edit": {
+          "label": "roles",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "roles",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "createdBy",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true,
+          "mainField": "firstname"
+        },
+        "list": {
+          "label": "createdBy",
           "searchable": true,
           "sortable": true
         }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "firstname",
-        "lastname",
-        "username"
-      ],
+      "list": ["id", "firstname", "lastname", "username"],
       "edit": [
         [
           {
@@ -273,7 +261,9 @@
           {
             "name": "password",
             "size": 6
-          },
+          }
+        ],
+        [
           {
             "name": "isActive",
             "size": 4
@@ -296,8 +286,7 @@
           }
         ]
       ]
-    },
-    "uid": "admin::user"
+    }
   },
   "type": "object",
   "environment": null,
