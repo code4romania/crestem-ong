@@ -1,84 +1,52 @@
 {
-  "documentId": "h547bqf4fztkenxfc4n6dwd4",
   "name": "Persoană resursă",
   "description": "Mentor",
   "type": "mentor",
-  "locale": null,
   "permissions": [
     {
-      "documentId": "kvitjeaw5vkmldz2ckbfv464",
-      "action": "api::activity-type.activity-type.find",
-      "locale": null
+      "action": "api::activity-type.activity-type.find"
     },
     {
-      "documentId": "s5rxr71ut5pzwzq9t1klewm0",
-      "action": "api::activity.activity.create",
-      "locale": null
+      "action": "api::activity.activity.create"
     },
     {
-      "documentId": "vmw3bvkqucgbzktqyzb00zyi",
-      "action": "api::activity.activity.find",
-      "locale": null
+      "action": "api::activity.activity.find"
     },
     {
-      "documentId": "r7015924ec8hws2w6f5syfxg",
-      "action": "api::dimension.dimension.find",
-      "locale": null
+      "action": "api::dimension.dimension.find"
     },
     {
-      "documentId": "gmq2ngi8w9cwlnwto8sfnlyt",
-      "action": "api::domain.domain.find",
-      "locale": null
+      "action": "api::domain.domain.find"
     },
     {
-      "documentId": "ccdrteejgjggaas683rook76",
-      "action": "api::evaluation.evaluation.find",
-      "locale": null
+      "action": "api::evaluation.evaluation.find"
     },
     {
-      "documentId": "g2s4xup4lioimcdnlppui833",
-      "action": "api::matrix.matrix.find",
-      "locale": null
+      "action": "api::matrix.matrix.find"
     },
     {
-      "documentId": "mq9u3086yrl16bcsj2k5tiun",
-      "action": "api::program.program.find",
-      "locale": null
+      "action": "api::program.program.find"
     },
     {
-      "documentId": "umvtbcycoh2qe3ewoldujlnh",
-      "action": "api::report.report.find",
-      "locale": null
+      "action": "api::report.report.find"
     },
     {
-      "documentId": "wj2jpsqsgp1c0mz7pyh7tyz3",
-      "action": "api::report.report.findOne",
-      "locale": null
+      "action": "api::report.report.findOne"
     },
     {
-      "documentId": "nydhwk6a0h3q3zb6jdmy7pkv",
-      "action": "plugin::upload.content-api.upload",
-      "locale": null
+      "action": "plugin::upload.content-api.upload"
     },
     {
-      "documentId": "pdbut67ni2f3rmb9qbwg4t7n",
-      "action": "plugin::users-permissions.role.find",
-      "locale": null
+      "action": "plugin::users-permissions.role.find"
     },
     {
-      "documentId": "lqv1ke4ejs8kjpi3grbmvjbm",
-      "action": "plugin::users-permissions.user.find",
-      "locale": null
+      "action": "plugin::users-permissions.user.find"
     },
     {
-      "documentId": "znlp0lagtzvbhh0tavcoyji1",
-      "action": "plugin::users-permissions.user.me",
-      "locale": null
+      "action": "plugin::users-permissions.user.me"
     },
     {
-      "documentId": "wzaae0kw1fckw4a5zmzhp0tw",
-      "action": "plugin::users-permissions.user.update",
-      "locale": null
+      "action": "plugin::users-permissions.user.update"
     }
   ]
 }

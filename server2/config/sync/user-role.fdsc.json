@@ -1,114 +1,70 @@
 {
-  "documentId": "c9mcgr3uw47i06jeis6qd2ce",
   "name": "Admin FDSC",
   "description": "Utilizator de tipul Admin FDSC",
   "type": "fdsc",
-  "locale": null,
   "permissions": [
     {
-      "documentId": "xo49gfcvni83l59h7d924hqv",
-      "action": "api::activity.activity.find",
-      "locale": null
+      "action": "api::activity.activity.find"
     },
     {
-      "documentId": "a17lczxux7viu7wqls5sc94w",
-      "action": "api::dimension.dimension.find",
-      "locale": null
+      "action": "api::dimension.dimension.find"
     },
     {
-      "documentId": "o8ufcr3le8shp2b0z6ogtc65",
-      "action": "api::domain.domain.find",
-      "locale": null
+      "action": "api::domain.domain.find"
     },
     {
-      "documentId": "uj0t0322a4y5mtlzjnof7j7m",
-      "action": "api::evaluation.evaluation.find",
-      "locale": null
+      "action": "api::evaluation.evaluation.find"
     },
     {
-      "documentId": "ewh4xdu1vjz5ddg53ypx08ou",
-      "action": "api::evaluation.evaluation.findOne",
-      "locale": null
+      "action": "api::evaluation.evaluation.findOne"
     },
     {
-      "documentId": "zbnmkipwzxv43ezaz2rq1p06",
-      "action": "api::evaluation.evaluation.update",
-      "locale": null
+      "action": "api::evaluation.evaluation.update"
     },
     {
-      "documentId": "h83mbzyrqs7ldg2p8iqktu5u",
-      "action": "api::matrix.matrix.find",
-      "locale": null
+      "action": "api::matrix.matrix.find"
     },
     {
-      "documentId": "hkhr04sgykutrv5wo3hcja0p",
-      "action": "api::program.program.create",
-      "locale": null
+      "action": "api::program.program.create"
     },
     {
-      "documentId": "czml2b6s7znyttgbrh6yo3u2",
-      "action": "api::program.program.find",
-      "locale": null
+      "action": "api::program.program.find"
     },
     {
-      "documentId": "oaxmvigq949ejwfe8emf0cce",
-      "action": "api::program.program.findOne",
-      "locale": null
+      "action": "api::program.program.findOne"
     },
     {
-      "documentId": "a170w3el9ejb8xkp8k5a3fm7",
-      "action": "api::program.program.update",
-      "locale": null
+      "action": "api::program.program.update"
     },
     {
-      "documentId": "uykht05frzf8xshdhjhxqxcf",
-      "action": "api::report.report.find",
-      "locale": null
+      "action": "api::report.report.find"
     },
     {
-      "documentId": "u7hh5rnagvyzu25tib0afnkb",
-      "action": "api::report.report.findOne",
-      "locale": null
+      "action": "api::report.report.findOne"
     },
     {
-      "documentId": "ga6vnztk8nxstm29m8kyd823",
-      "action": "api::report.report.update",
-      "locale": null
+      "action": "api::report.report.update"
     },
     {
-      "documentId": "r5d3ohrwni910ippunxgkv0g",
-      "action": "plugin::upload.content-api.upload",
-      "locale": null
+      "action": "plugin::upload.content-api.upload"
     },
     {
-      "documentId": "hf7ry3zy256h5p000w5bnw31",
-      "action": "plugin::users-permissions.role.find",
-      "locale": null
+      "action": "plugin::users-permissions.role.find"
     },
     {
-      "documentId": "pninxi0btmcuzezya9h1t2rr",
-      "action": "plugin::users-permissions.user.create",
-      "locale": null
+      "action": "plugin::users-permissions.user.create"
     },
     {
-      "documentId": "cjgba650il00a2u8z69zol23",
-      "action": "plugin::users-permissions.user.find",
-      "locale": null
+      "action": "plugin::users-permissions.user.find"
     },
     {
-      "documentId": "r4h7vg5t9wc42dvthyy7epvj",
-      "action": "plugin::users-permissions.user.findOne",
-      "locale": null
+      "action": "plugin::users-permissions.user.findOne"
     },
     {
-      "documentId": "cw3b3gfe0dfvaae8a0w7pox3",
-      "action": "plugin::users-permissions.user.me",
-      "locale": null
+      "action": "plugin::users-permissions.user.me"
     },
     {
-      "documentId": "gtgpgqkn5v7fhm26yf2mqi7f",
-      "action": "plugin::users-permissions.user.update",
-      "locale": null
+      "action": "plugin::users-permissions.user.update"
     }
   ]
 }

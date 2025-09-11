@@ -1,14 +1,10 @@
 {
-  "documentId": "pb0ur98qbvgttrujkg7io61r",
   "name": "Author",
   "code": "strapi-author",
   "description": "Authors can manage the content they have created.",
-  "locale": null,
   "permissions": [
     {
-      "documentId": "rd3fnpf813kb5gbp0i72nuqq",
       "action": "plugin::content-manager.explorer.create",
-      "actionParameters": {},
       "subject": "api::evaluation.evaluation",
       "properties": {
         "fields": [
@@ -18,22 +14,16 @@
           "report"
         ]
       },
-      "conditions": ["admin::is-creator"],
-      "locale": null
+      "conditions": ["admin::is-creator"]
     },
     {
-      "documentId": "iwfzbm6cucgdn9lv5ezv44hb",
       "action": "plugin::content-manager.explorer.delete",
-      "actionParameters": {},
       "subject": "api::evaluation.evaluation",
       "properties": {},
-      "conditions": ["admin::is-creator"],
-      "locale": null
+      "conditions": ["admin::is-creator"]
     },
     {
-      "documentId": "mi45v2typxk0nkj3a5nl9a7j",
       "action": "plugin::content-manager.explorer.read",
-      "actionParameters": {},
       "subject": "api::evaluation.evaluation",
       "properties": {
         "fields": [
@@ -43,13 +33,10 @@
           "report"
         ]
       },
-      "conditions": ["admin::is-creator"],
-      "locale": null
+      "conditions": ["admin::is-creator"]
     },
     {
-      "documentId": "r6vk31n0k8datsdkozvxcigz",
       "action": "plugin::content-manager.explorer.update",
-      "actionParameters": {},
       "subject": "api::evaluation.evaluation",
       "properties": {
         "fields": [
@@ -59,146 +46,103 @@
           "report"
         ]
       },
-      "conditions": ["admin::is-creator"],
-      "locale": null
+      "conditions": ["admin::is-creator"]
     },
     {
-      "documentId": "beshdlsqogj0vp7c4cxxyj3s",
       "action": "plugin::content-manager.explorer.create",
-      "actionParameters": {},
       "subject": "api::matrix.matrix",
       "properties": {
         "fields": []
       },
-      "conditions": ["admin::is-creator"],
-      "locale": null
+      "conditions": ["admin::is-creator"]
     },
     {
-      "documentId": "vnrdnsk2v0nwxqxb5evl3u28",
       "action": "plugin::content-manager.explorer.delete",
-      "actionParameters": {},
       "subject": "api::matrix.matrix",
       "properties": {},
-      "conditions": ["admin::is-creator"],
-      "locale": null
+      "conditions": ["admin::is-creator"]
     },
     {
-      "documentId": "rxaofytc5iw78vp0odsem984",
       "action": "plugin::content-manager.explorer.read",
-      "actionParameters": {},
       "subject": "api::matrix.matrix",
       "properties": {
         "fields": []
       },
-      "conditions": ["admin::is-creator"],
-      "locale": null
+      "conditions": ["admin::is-creator"]
     },
     {
-      "documentId": "wey2a9gpb254xwvqoptbkfk7",
       "action": "plugin::content-manager.explorer.update",
-      "actionParameters": {},
       "subject": "api::matrix.matrix",
       "properties": {
         "fields": []
       },
-      "conditions": ["admin::is-creator"],
-      "locale": null
+      "conditions": ["admin::is-creator"]
     },
     {
-      "documentId": "xbimte4dfztjj5jiv5cum463",
       "action": "plugin::content-manager.explorer.create",
-      "actionParameters": {},
       "subject": "api::report.report",
       "properties": {
         "fields": ["evaluations", "deadline", "finished", "user"]
       },
-      "conditions": ["admin::is-creator"],
-      "locale": null
+      "conditions": ["admin::is-creator"]
     },
     {
-      "documentId": "ag22o70h3xxhyl5gypuje04g",
       "action": "plugin::content-manager.explorer.delete",
-      "actionParameters": {},
       "subject": "api::report.report",
       "properties": {},
-      "conditions": ["admin::is-creator"],
-      "locale": null
+      "conditions": ["admin::is-creator"]
     },
     {
-      "documentId": "f5i83v06296awmxfu5xe65a9",
       "action": "plugin::content-manager.explorer.read",
-      "actionParameters": {},
       "subject": "api::report.report",
       "properties": {
         "fields": ["evaluations", "deadline", "finished", "user"]
       },
-      "conditions": ["admin::is-creator"],
-      "locale": null
+      "conditions": ["admin::is-creator"]
     },
     {
-      "documentId": "s8uf46bbfviqk8ppwe6s2pnr",
       "action": "plugin::content-manager.explorer.update",
-      "actionParameters": {},
       "subject": "api::report.report",
       "properties": {
         "fields": ["evaluations", "deadline", "finished", "user"]
       },
-      "conditions": ["admin::is-creator"],
-      "locale": null
+      "conditions": ["admin::is-creator"]
     },
     {
-      "documentId": "i98ci45bzx5d3uydtggu35w9",
       "action": "plugin::upload.assets.copy-link",
-      "actionParameters": {},
       "subject": null,
       "properties": {},
-      "conditions": [],
-      "locale": null
+      "conditions": []
     },
     {
-      "documentId": "urcz8c6wcax9galyisn1neqm",
       "action": "plugin::upload.assets.create",
-      "actionParameters": {},
       "subject": null,
       "properties": {},
-      "conditions": [],
-      "locale": null
+      "conditions": []
     },
     {
-      "documentId": "oiodt17t90ubxcyd0oa4jcpy",
       "action": "plugin::upload.assets.download",
-      "actionParameters": {},
       "subject": null,
       "properties": {},
-      "conditions": [],
-      "locale": null
+      "conditions": []
     },
     {
-      "documentId": "sxicjxdn4nj1ps3r7kc8gmzm",
       "action": "plugin::upload.assets.update",
-      "actionParameters": {},
       "subject": null,
       "properties": {},
-      "conditions": ["admin::is-creator"],
-      "locale": null
+      "conditions": ["admin::is-creator"]
     },
     {
-      "documentId": "ye2qd0pbkv7ad660ea4onkfj",
       "action": "plugin::upload.configure-view",
-      "actionParameters": {},
       "subject": null,
       "properties": {},
-      "conditions": [],
-      "locale": null
+      "conditions": []
     },
     {
-      "documentId": "pjtwt9i60wrybz2tz9wauy3u",
       "action": "plugin::upload.read",
-      "actionParameters": {},
       "subject": null,
       "properties": {},
-      "conditions": ["admin::is-creator"],
-      "locale": null
+      "conditions": ["admin::is-creator"]
     }
   ]
 }
