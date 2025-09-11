@@ -12,6 +12,42 @@
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
+      "id": {
+        "edit": {},
+        "list": {
+          "label": "id",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "action": {
+        "edit": {
+          "label": "action",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "action",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "actionParameters": {
+        "edit": {
+          "label": "actionParameters",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "actionParameters",
+          "searchable": false,
+          "sortable": false
+        }
+      },
       "subject": {
         "edit": {
           "label": "subject",
@@ -26,35 +62,6 @@
           "sortable": true
         }
       },
-      "updatedAt": {
-        "edit": {
-          "label": "updatedAt",
-          "description": "",
-          "placeholder": "",
-          "visible": false,
-          "editable": true
-        },
-        "list": {
-          "label": "updatedAt",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "updatedBy": {
-        "edit": {
-          "label": "updatedBy",
-          "description": "",
-          "placeholder": "",
-          "visible": false,
-          "editable": true,
-          "mainField": "firstname"
-        },
-        "list": {
-          "label": "updatedBy",
-          "searchable": true,
-          "sortable": true
-        }
-      },
       "properties": {
         "edit": {
           "label": "properties",
@@ -65,6 +72,20 @@
         },
         "list": {
           "label": "properties",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "conditions": {
+        "edit": {
+          "label": "conditions",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "conditions",
           "searchable": false,
           "sortable": false
         }
@@ -84,52 +105,6 @@
           "sortable": true
         }
       },
-      "action": {
-        "edit": {
-          "label": "action",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "action",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-
-          "searchable": true,
-
-          "sortable": true
-        }
-      },
-      "conditions": {
-        "edit": {
-          "label": "conditions",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "conditions",
-          "searchable": false,
-          "sortable": false
-        }
-      },
-      "id": {
-        "edit": {},
-        "list": {
-          "label": "id",
-          "searchable": true,
-          "sortable": true
-        }
-      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -140,6 +115,20 @@
         },
         "list": {
           "label": "createdAt",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "updatedAt",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "updatedAt",
           "searchable": true,
           "sortable": true
         }
@@ -158,10 +147,38 @@
           "searchable": true,
           "sortable": true
         }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "updatedBy",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true,
+          "mainField": "firstname"
+        },
+        "list": {
+          "label": "updatedBy",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
       }
     },
     "layouts": {
-      "list": ["id", "action", "subject", "role"],
+      "list": [
+        "id",
+        "action",
+        "subject",
+        "role"
+      ],
       "edit": [
         [
           {
@@ -189,6 +206,12 @@
           {
             "name": "role",
             "size": 6
+          }
+        ],
+        [
+          {
+            "name": "actionParameters",
+            "size": 12
           }
         ]
       ]
