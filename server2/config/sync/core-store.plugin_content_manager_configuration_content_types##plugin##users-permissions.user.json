@@ -1,0 +1,916 @@
+{
+  "key": "plugin_content_manager_configuration_content_types::plugin::users-permissions.user",
+  "value": {
+    "settings": {
+      "bulkable": true,
+      "filterable": true,
+      "searchable": true,
+      "pageSize": 10,
+      "mainField": "username",
+      "defaultSortBy": "username",
+      "defaultSortOrder": "ASC"
+    },
+    "metadatas": {
+      "id": {
+        "edit": {},
+        "list": {
+          "label": "id",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "username": {
+        "edit": {
+          "label": "username",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "username",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "email": {
+        "edit": {
+          "label": "email",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "email",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "provider": {
+        "edit": {
+          "label": "provider",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "provider",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "password": {
+        "edit": {
+          "label": "password",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "password",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "resetPasswordToken": {
+        "edit": {
+          "label": "resetPasswordToken",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "resetPasswordToken",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "confirmationToken": {
+        "edit": {
+          "label": "confirmationToken",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "confirmationToken",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "registrationToken": {
+        "edit": {
+          "label": "registrationToken",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "registrationToken",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "confirmed": {
+        "edit": {
+          "label": "confirmed",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "confirmed",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "blocked": {
+        "edit": {
+          "label": "blocked",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "blocked",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "role": {
+        "edit": {
+          "label": "role",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "role",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "avatar": {
+        "edit": {
+          "label": "avatar",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "avatar",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "ongName": {
+        "edit": {
+          "label": "ongName",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "ongName",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "ongIdentificationNumber": {
+        "edit": {
+          "label": "ongIdentificationNumber",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "ongIdentificationNumber",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "county": {
+        "edit": {
+          "label": "county",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "county",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "city": {
+        "edit": {
+          "label": "city",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "city",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "phone": {
+        "edit": {
+          "label": "phone",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "phone",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "website": {
+        "edit": {
+          "label": "website",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "website",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "keywords": {
+        "edit": {
+          "label": "keywords",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "keywords",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "logo": {
+        "edit": {
+          "label": "logo",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "logo",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "description": {
+        "edit": {
+          "label": "description",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "description",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "reports": {
+        "edit": {
+          "label": "reports",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "documentId"
+        },
+        "list": {
+          "label": "reports",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "contactFirstName": {
+        "edit": {
+          "label": "contactFirstName",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "contactFirstName",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "contactLastName": {
+        "edit": {
+          "label": "contactLastName",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "contactLastName",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "contactEmail": {
+        "edit": {
+          "label": "contactEmail",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "contactEmail",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "contactPhone": {
+        "edit": {
+          "label": "contactPhone",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "contactPhone",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "accountFacebook": {
+        "edit": {
+          "label": "accountFacebook",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "accountFacebook",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "accountTwitter": {
+        "edit": {
+          "label": "accountTwitter",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "accountTwitter",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "accountTiktok": {
+        "edit": {
+          "label": "accountTiktok",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "accountTiktok",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "accountInstagram": {
+        "edit": {
+          "label": "accountInstagram",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "accountInstagram",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "accountLinkedin": {
+        "edit": {
+          "label": "accountLinkedin",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "accountLinkedin",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "domains": {
+        "edit": {
+          "label": "domains",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "domains",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "programs": {
+        "edit": {
+          "label": "programs",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "programs",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "dimensions": {
+        "edit": {
+          "label": "dimensions",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "dimensions",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "bio": {
+        "edit": {
+          "label": "bio",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "bio",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "expertise": {
+        "edit": {
+          "label": "expertise",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "expertise",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "firstName": {
+        "edit": {
+          "label": "firstName",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "firstName",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "lastName": {
+        "edit": {
+          "label": "lastName",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "lastName",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "program": {
+        "edit": {
+          "label": "program",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "program",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "available": {
+        "edit": {
+          "label": "available",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "available",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "mentorActivities": {
+        "edit": {
+          "label": "mentorActivities",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "documentId"
+        },
+        "list": {
+          "label": "mentorActivities",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "userActivities": {
+        "edit": {
+          "label": "userActivities",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "documentId"
+        },
+        "list": {
+          "label": "userActivities",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "mentorSessions": {
+        "edit": {
+          "label": "mentorSessions",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "documentId"
+        },
+        "list": {
+          "label": "mentorSessions",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "userSessions": {
+        "edit": {
+          "label": "userSessions",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "documentId"
+        },
+        "list": {
+          "label": "userSessions",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "createdAt": {
+        "edit": {
+          "label": "createdAt",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "createdAt",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "updatedAt",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "updatedAt",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "createdBy",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true,
+          "mainField": "firstname"
+        },
+        "list": {
+          "label": "createdBy",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "updatedBy",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true,
+          "mainField": "firstname"
+        },
+        "list": {
+          "label": "updatedBy",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
+      }
+    },
+    "layouts": {
+      "list": [
+        "id",
+        "username",
+        "email",
+        "registrationToken"
+      ],
+      "edit": [
+        [
+          {
+            "name": "username",
+            "size": 6
+          },
+          {
+            "name": "email",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "password",
+            "size": 6
+          },
+          {
+            "name": "registrationToken",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "confirmed",
+            "size": 4
+          },
+          {
+            "name": "blocked",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "role",
+            "size": 6
+          },
+          {
+            "name": "avatar",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "ongName",
+            "size": 6
+          },
+          {
+            "name": "ongIdentificationNumber",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "county",
+            "size": 6
+          },
+          {
+            "name": "city",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "phone",
+            "size": 6
+          },
+          {
+            "name": "website",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "keywords",
+            "size": 6
+          },
+          {
+            "name": "logo",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "description",
+            "size": 6
+          },
+          {
+            "name": "reports",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "contactFirstName",
+            "size": 6
+          },
+          {
+            "name": "contactLastName",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "contactEmail",
+            "size": 6
+          },
+          {
+            "name": "contactPhone",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "accountFacebook",
+            "size": 6
+          },
+          {
+            "name": "accountTwitter",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "accountTiktok",
+            "size": 6
+          },
+          {
+            "name": "accountInstagram",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "accountLinkedin",
+            "size": 6
+          },
+          {
+            "name": "domains",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "programs",
+            "size": 6
+          },
+          {
+            "name": "dimensions",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "bio",
+            "size": 6
+          },
+          {
+            "name": "expertise",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "firstName",
+            "size": 6
+          },
+          {
+            "name": "lastName",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "program",
+            "size": 6
+          },
+          {
+            "name": "available",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "mentorActivities",
+            "size": 6
+          },
+          {
+            "name": "userActivities",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "mentorSessions",
+            "size": 6
+          },
+          {
+            "name": "userSessions",
+            "size": 6
+          }
+        ]
+      ]
+    },
+    "uid": "plugin::users-permissions.user"
+  },
+  "type": "object",
+  "environment": null,
+  "tag": null
+}

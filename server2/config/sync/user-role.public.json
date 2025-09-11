@@ -1,55 +1,44 @@
 {
+  "documentId": "sklh7vsft5th7qsy2f72f9u2",
   "name": "Public",
   "description": "Default role given to unauthenticated user.",
   "type": "public",
+  "locale": null,
   "permissions": [
     {
-      "action": "api::dimension.dimension.find"
+      "documentId": "lf4423150nh4ws7az0vb76oh",
+      "action": "plugin::users-permissions.auth.callback",
+      "locale": null
     },
     {
-      "action": "api::domain.domain.find"
+      "documentId": "wu67gp1lrk8dy5fidwbu0wp8",
+      "action": "plugin::users-permissions.auth.connect",
+      "locale": null
     },
     {
-      "action": "api::evaluation.evaluation.find"
+      "documentId": "n1ljfa0qisk69de3grfxuzdr",
+      "action": "plugin::users-permissions.auth.emailConfirmation",
+      "locale": null
     },
     {
-      "action": "api::evaluation.evaluation.findOne"
+      "documentId": "ky7qzuf2bwox3mzyfc11fnn5",
+      "action": "plugin::users-permissions.auth.forgotPassword",
+      "locale": null
     },
     {
-      "action": "api::evaluation.evaluation.update"
+      "documentId": "t3uv0d0ddtwbyeivx9q720is",
+      "action": "plugin::users-permissions.auth.register",
+      "locale": null
     },
     {
-      "action": "api::matrix.matrix.find"
+      "documentId": "jdaetgq4t1e5s86ipfd2xrhm",
+      "action": "plugin::users-permissions.auth.resetPassword",
+      "locale": null
     },
     {
-      "action": "plugin::users-permissions.auth.callback"
-    },
-    {
-      "action": "plugin::users-permissions.auth.changePassword"
-    },
-    {
-      "action": "plugin::users-permissions.auth.connect"
-    },
-    {
-      "action": "plugin::users-permissions.auth.emailConfirmation"
-    },
-    {
-      "action": "plugin::users-permissions.auth.findRegistrationInfo"
-    },
-    {
-      "action": "plugin::users-permissions.auth.forgotPassword"
-    },
-    {
-      "action": "plugin::users-permissions.auth.register"
-    },
-    {
-      "action": "plugin::users-permissions.auth.registerWithConfirmation"
-    },
-    {
-      "action": "plugin::users-permissions.auth.resetPassword"
-    },
-    {
-      "action": "plugin::users-permissions.auth.sendEmailConfirmation"
+      "documentId": "aqgvp7pxvy7yqp0vzlna5psn",
+      "action": "plugin::users-permissions.auth.sendEmailConfirmation",
+      "locale": null
     }
   ]
 }

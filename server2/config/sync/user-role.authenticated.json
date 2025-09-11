@@ -1,61 +1,19 @@
 {
+  "documentId": "bjkg5hlm71yh9o7g21nbtly2",
   "name": "Authenticated",
   "description": "Default role given to authenticated user.",
   "type": "authenticated",
+  "locale": null,
   "permissions": [
     {
-      "action": "api::dimension.dimension.find"
+      "documentId": "dbzy771juljvgqe2u2cnqa2z",
+      "action": "plugin::users-permissions.auth.changePassword",
+      "locale": null
     },
     {
-      "action": "api::evaluation.evaluation.create"
-    },
-    {
-      "action": "api::evaluation.evaluation.find"
-    },
-    {
-      "action": "api::evaluation.evaluation.findOne"
-    },
-    {
-      "action": "api::evaluation.evaluation.update"
-    },
-    {
-      "action": "api::matrix.matrix.find"
-    },
-    {
-      "action": "api::mentorship-request.mentorship-request.create"
-    },
-    {
-      "action": "api::program.program.find"
-    },
-    {
-      "action": "api::report.report.create"
-    },
-    {
-      "action": "api::report.report.find"
-    },
-    {
-      "action": "api::report.report.findOne"
-    },
-    {
-      "action": "api::report.report.update"
-    },
-    {
-      "action": "plugin::upload.content-api.upload"
-    },
-    {
-      "action": "plugin::users-permissions.auth.changePassword"
-    },
-    {
-      "action": "plugin::users-permissions.role.find"
-    },
-    {
-      "action": "plugin::users-permissions.user.find"
-    },
-    {
-      "action": "plugin::users-permissions.user.findOne"
-    },
-    {
-      "action": "plugin::users-permissions.user.me"
+      "documentId": "juov72di8bo23lembyjhh4oz",
+      "action": "plugin::users-permissions.user.me",
+      "locale": null
     }
   ]
 }
