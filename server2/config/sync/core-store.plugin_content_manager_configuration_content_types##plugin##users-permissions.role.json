@@ -1,6 +1,7 @@
 {
   "key": "plugin_content_manager_configuration_content_types::plugin::users-permissions.role",
   "value": {
+    "uid": "plugin::users-permissions.role",
     "settings": {
       "bulkable": true,
       "filterable": true,
@@ -148,23 +149,10 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "name",
-        "description",
-        "type"
-      ],
+      "list": ["id", "name", "description", "type"],
       "edit": [
         [
           {
@@ -193,8 +181,7 @@
           }
         ]
       ]
-    },
-    "uid": "plugin::users-permissions.role"
+    }
   },
   "type": "object",
   "environment": null,

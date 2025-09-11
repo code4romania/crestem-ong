@@ -1,6 +1,7 @@
 {
   "key": "plugin_content_manager_configuration_content_types::admin::api-token",
   "value": {
+    "uid": "admin::api-token",
     "settings": {
       "bulkable": true,
       "filterable": true,
@@ -71,20 +72,6 @@
         },
         "list": {
           "label": "accessKey",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "encryptedKey": {
-        "edit": {
-          "label": "encryptedKey",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "encryptedKey",
           "searchable": true,
           "sortable": true
         }
@@ -203,23 +190,10 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "name",
-        "description",
-        "type"
-      ],
+      "list": ["id", "name", "description", "type"],
       "edit": [
         [
           {
@@ -243,33 +217,26 @@
         ],
         [
           {
-            "name": "encryptedKey",
-            "size": 6
-          },
-          {
             "name": "lastUsedAt",
             "size": 6
-          }
-        ],
-        [
+          },
           {
             "name": "permissions",
             "size": 6
-          },
-          {
-            "name": "expiresAt",
-            "size": 6
           }
         ],
         [
+          {
+            "name": "expiresAt",
+            "size": 6
+          },
           {
             "name": "lifespan",
             "size": 4
           }
         ]
       ]
-    },
-    "uid": "admin::api-token"
+    }
   },
   "type": "object",
   "environment": null,

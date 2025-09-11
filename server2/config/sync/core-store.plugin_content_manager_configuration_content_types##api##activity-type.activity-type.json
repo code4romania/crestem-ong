@@ -1,13 +1,14 @@
 {
   "key": "plugin_content_manager_configuration_content_types::api::activity-type.activity-type",
   "value": {
+    "uid": "api::activity-type.activity-type",
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "documentId",
-      "defaultSortBy": "documentId",
+      "mainField": "name",
+      "defaultSortBy": "name",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -90,23 +91,9 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "name",
-        "createdAt",
-        "updatedAt"
-      ],
       "edit": [
         [
           {
@@ -114,9 +101,9 @@
             "size": 6
           }
         ]
-      ]
-    },
-    "uid": "api::activity-type.activity-type"
+      ],
+      "list": ["name"]
+    }
   },
   "type": "object",
   "environment": null,

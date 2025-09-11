@@ -1,13 +1,14 @@
 {
   "key": "plugin_content_manager_configuration_content_types::api::matrix.matrix",
   "value": {
+    "uid": "api::matrix.matrix",
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "documentId",
-      "defaultSortBy": "documentId",
+      "mainField": "id",
+      "defaultSortBy": "id",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -91,23 +92,10 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "dimensions",
-        "createdAt",
-        "updatedAt"
-      ],
+      "list": ["id", "dimensions", "createdAt", "updatedAt"],
       "edit": [
         [
           {
@@ -116,8 +104,7 @@
           }
         ]
       ]
-    },
-    "uid": "api::matrix.matrix"
+    }
   },
   "type": "object",
   "environment": null,

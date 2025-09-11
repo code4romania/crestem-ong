@@ -1,6 +1,7 @@
 {
   "key": "plugin_content_manager_configuration_components::matrix.question",
   "value": {
+    "uid": "matrix.question",
     "settings": {
       "bulkable": true,
       "filterable": true,
@@ -116,23 +117,10 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "question",
-        "option_1",
-        "option_2"
-      ],
+      "list": ["id", "question", "option_1", "option_2"],
       "edit": [
         [
           {
@@ -172,7 +160,6 @@
         ]
       ]
     },
-    "uid": "matrix.question",
     "isComponent": true
   },
   "type": "object",

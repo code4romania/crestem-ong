@@ -1,14 +1,15 @@
 {
   "key": "plugin_content_manager_configuration_content_types::api::evaluation.evaluation",
   "value": {
+    "uid": "api::evaluation.evaluation",
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
-      "pageSize": 10,
-      "mainField": "documentId",
-      "defaultSortBy": "documentId",
-      "defaultSortOrder": "ASC"
+      "pageSize": 100,
+      "mainField": "id",
+      "defaultSortBy": "createdAt",
+      "defaultSortOrder": "DESC"
     },
     "metadatas": {
       "id": {
@@ -54,7 +55,7 @@
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "documentId"
+          "mainField": "id"
         },
         "list": {
           "label": "report",
@@ -119,23 +120,9 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "dimensions",
-        "email",
-        "report"
-      ],
       "edit": [
         [
           {
@@ -153,9 +140,9 @@
             "size": 6
           }
         ]
-      ]
-    },
-    "uid": "api::evaluation.evaluation"
+      ],
+      "list": ["id", "dimensions", "email", "report", "createdAt"]
+    }
   },
   "type": "object",
   "environment": null,

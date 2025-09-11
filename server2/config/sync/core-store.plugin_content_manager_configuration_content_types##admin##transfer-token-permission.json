@@ -1,6 +1,7 @@
 {
   "key": "plugin_content_manager_configuration_content_types::admin::transfer-token-permission",
   "value": {
+    "uid": "admin::transfer-token-permission",
     "settings": {
       "bulkable": true,
       "filterable": true,
@@ -105,23 +106,10 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "action",
-        "token",
-        "createdAt"
-      ],
+      "list": ["id", "action", "token", "createdAt"],
       "edit": [
         [
           {
@@ -134,8 +122,7 @@
           }
         ]
       ]
-    },
-    "uid": "admin::transfer-token-permission"
+    }
   },
   "type": "object",
   "environment": null,

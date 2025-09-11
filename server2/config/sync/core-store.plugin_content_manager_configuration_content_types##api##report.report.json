@@ -1,14 +1,15 @@
 {
   "key": "plugin_content_manager_configuration_content_types::api::report.report",
   "value": {
+    "uid": "api::report.report",
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "documentId",
-      "defaultSortBy": "documentId",
-      "defaultSortOrder": "ASC"
+      "mainField": "id",
+      "defaultSortBy": "id",
+      "defaultSortOrder": "DESC"
     },
     "metadatas": {
       "id": {
@@ -26,10 +27,10 @@
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "documentId"
+          "mainField": "id"
         },
         "list": {
-          "label": "evaluations",
+          "label": "EVALUARE",
           "searchable": false,
           "sortable": false
         }
@@ -43,7 +44,7 @@
           "editable": true
         },
         "list": {
-          "label": "deadline",
+          "label": "DEADLINE",
           "searchable": true,
           "sortable": true
         }
@@ -57,22 +58,22 @@
           "editable": true
         },
         "list": {
-          "label": "finished",
+          "label": "FINALIZATĂ",
           "searchable": true,
           "sortable": true
         }
       },
       "user": {
         "edit": {
-          "label": "user",
+          "label": "ORGANIZAȚIE",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "username"
+          "mainField": "ongName"
         },
         "list": {
-          "label": "user",
+          "label": "ORGANIZAȚIE",
           "searchable": true,
           "sortable": true
         }
@@ -86,7 +87,7 @@
           "editable": true
         },
         "list": {
-          "label": "createdAt",
+          "label": "CREATĂ LA DATA",
           "searchable": true,
           "sortable": true
         }
@@ -134,23 +135,9 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "evaluations",
-        "deadline",
-        "finished"
-      ],
       "edit": [
         [
           {
@@ -172,9 +159,9 @@
             "size": 6
           }
         ]
-      ]
-    },
-    "uid": "api::report.report"
+      ],
+      "list": ["id", "evaluations", "createdAt", "user", "deadline", "finished"]
+    }
   },
   "type": "object",
   "environment": null,

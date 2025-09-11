@@ -1,6 +1,7 @@
 {
   "key": "plugin_content_manager_configuration_content_types::admin::transfer-token",
   "value": {
+    "uid": "admin::transfer-token",
     "settings": {
       "bulkable": true,
       "filterable": true,
@@ -175,23 +176,10 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "name",
-        "description",
-        "accessKey"
-      ],
+      "list": ["id", "name", "description", "accessKey"],
       "edit": [
         [
           {
@@ -230,8 +218,7 @@
           }
         ]
       ]
-    },
-    "uid": "admin::transfer-token"
+    }
   },
   "type": "object",
   "environment": null,

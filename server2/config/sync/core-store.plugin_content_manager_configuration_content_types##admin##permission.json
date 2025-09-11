@@ -34,20 +34,6 @@
           "sortable": true
         }
       },
-      "actionParameters": {
-        "edit": {
-          "label": "actionParameters",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "actionParameters",
-          "searchable": false,
-          "sortable": false
-        }
-      },
       "subject": {
         "edit": {
           "label": "subject",
@@ -162,23 +148,10 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "action",
-        "subject",
-        "role"
-      ],
+      "list": ["id", "action", "subject", "role"],
       "edit": [
         [
           {
@@ -206,12 +179,6 @@
           {
             "name": "role",
             "size": 6
-          }
-        ],
-        [
-          {
-            "name": "actionParameters",
-            "size": 12
           }
         ]
       ]

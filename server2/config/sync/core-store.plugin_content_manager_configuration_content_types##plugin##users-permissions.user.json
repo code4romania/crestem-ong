@@ -1,14 +1,15 @@
 {
   "key": "plugin_content_manager_configuration_content_types::plugin::users-permissions.user",
   "value": {
+    "uid": "plugin::users-permissions.user",
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
-      "pageSize": 10,
+      "pageSize": 100,
       "mainField": "username",
-      "defaultSortBy": "username",
-      "defaultSortOrder": "ASC"
+      "defaultSortBy": "createdAt",
+      "defaultSortOrder": "DESC"
     },
     "metadatas": {
       "id": {
@@ -21,7 +22,7 @@
       },
       "username": {
         "edit": {
-          "label": "username",
+          "label": "Username",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -35,14 +36,14 @@
       },
       "email": {
         "edit": {
-          "label": "email",
+          "label": "Adresa de email",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "email",
+          "label": "Adresa de email",
           "searchable": true,
           "sortable": true
         }
@@ -52,7 +53,7 @@
           "label": "provider",
           "description": "",
           "placeholder": "",
-          "visible": false,
+          "visible": true,
           "editable": true
         },
         "list": {
@@ -80,7 +81,7 @@
           "label": "resetPasswordToken",
           "description": "",
           "placeholder": "",
-          "visible": false,
+          "visible": true,
           "editable": true
         },
         "list": {
@@ -94,7 +95,7 @@
           "label": "confirmationToken",
           "description": "",
           "placeholder": "",
-          "visible": false,
+          "visible": true,
           "editable": true
         },
         "list": {
@@ -147,7 +148,7 @@
       },
       "role": {
         "edit": {
-          "label": "role",
+          "label": "Rol",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -155,7 +156,7 @@
           "mainField": "name"
         },
         "list": {
-          "label": "role",
+          "label": "Rol",
           "searchable": true,
           "sortable": true
         }
@@ -176,21 +177,21 @@
       },
       "ongName": {
         "edit": {
-          "label": "ongName",
+          "label": "Denumire organizație",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "ongName",
+          "label": "Organizatie",
           "searchable": true,
           "sortable": true
         }
       },
       "ongIdentificationNumber": {
         "edit": {
-          "label": "ongIdentificationNumber",
+          "label": "CUI Organizație",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -204,7 +205,7 @@
       },
       "county": {
         "edit": {
-          "label": "county",
+          "label": "Județ",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -218,7 +219,7 @@
       },
       "city": {
         "edit": {
-          "label": "city",
+          "label": "Oraș",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -232,7 +233,7 @@
       },
       "phone": {
         "edit": {
-          "label": "phone",
+          "label": "Telefon",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -246,7 +247,7 @@
       },
       "website": {
         "edit": {
-          "label": "website",
+          "label": "Website",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -274,7 +275,7 @@
       },
       "logo": {
         "edit": {
-          "label": "logo",
+          "label": "Logo",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -288,7 +289,7 @@
       },
       "description": {
         "edit": {
-          "label": "description",
+          "label": "Descriere",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -307,7 +308,7 @@
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "documentId"
+          "mainField": "id"
         },
         "list": {
           "label": "reports",
@@ -317,7 +318,7 @@
       },
       "contactFirstName": {
         "edit": {
-          "label": "contactFirstName",
+          "label": "Prenume persoană de contact",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -331,7 +332,7 @@
       },
       "contactLastName": {
         "edit": {
-          "label": "contactLastName",
+          "label": "Nume persoană de contact",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -345,7 +346,7 @@
       },
       "contactEmail": {
         "edit": {
-          "label": "contactEmail",
+          "label": "Email persoană de contact",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -359,7 +360,7 @@
       },
       "contactPhone": {
         "edit": {
-          "label": "contactPhone",
+          "label": "Telefon persoană de contact",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -373,7 +374,7 @@
       },
       "accountFacebook": {
         "edit": {
-          "label": "accountFacebook",
+          "label": "Pagină Facebook",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -387,7 +388,7 @@
       },
       "accountTwitter": {
         "edit": {
-          "label": "accountTwitter",
+          "label": "Pagină Twitter",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -401,7 +402,7 @@
       },
       "accountTiktok": {
         "edit": {
-          "label": "accountTiktok",
+          "label": "Pagină Tiktok",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -415,7 +416,7 @@
       },
       "accountInstagram": {
         "edit": {
-          "label": "accountInstagram",
+          "label": "Pagină Instagram",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -429,7 +430,7 @@
       },
       "accountLinkedin": {
         "edit": {
-          "label": "accountLinkedin",
+          "label": "Pagină Linkedin",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -443,7 +444,7 @@
       },
       "domains": {
         "edit": {
-          "label": "domains",
+          "label": "Domenii de activitate",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -473,7 +474,7 @@
       },
       "dimensions": {
         "edit": {
-          "label": "dimensions",
+          "label": "Dimensiuni",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -578,7 +579,7 @@
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "documentId"
+          "mainField": "id"
         },
         "list": {
           "label": "mentorActivities",
@@ -593,7 +594,7 @@
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "documentId"
+          "mainField": "id"
         },
         "list": {
           "label": "userActivities",
@@ -608,7 +609,7 @@
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "documentId"
+          "mainField": "id"
         },
         "list": {
           "label": "mentorSessions",
@@ -623,7 +624,7 @@
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "documentId"
+          "mainField": "id"
         },
         "list": {
           "label": "userSessions",
@@ -688,61 +689,17 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "username",
-        "email",
-        "registrationToken"
-      ],
       "edit": [
-        [
-          {
-            "name": "username",
-            "size": 6
-          },
-          {
-            "name": "email",
-            "size": 6
-          }
-        ],
-        [
-          {
-            "name": "password",
-            "size": 6
-          },
-          {
-            "name": "registrationToken",
-            "size": 6
-          }
-        ],
-        [
-          {
-            "name": "confirmed",
-            "size": 4
-          },
-          {
-            "name": "blocked",
-            "size": 4
-          }
-        ],
         [
           {
             "name": "role",
             "size": 6
           },
           {
-            "name": "avatar",
+            "name": "domains",
             "size": 6
           }
         ],
@@ -753,6 +710,16 @@
           },
           {
             "name": "ongIdentificationNumber",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "email",
+            "size": 6
+          },
+          {
+            "name": "username",
             "size": 6
           }
         ],
@@ -778,31 +745,61 @@
         ],
         [
           {
+            "name": "avatar",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "provider",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "password",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "confirmationToken",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "confirmed",
+            "size": 4
+          },
+          {
+            "name": "blocked",
+            "size": 4
+          }
+        ],
+        [
+          {
             "name": "keywords",
             "size": 6
-          },
+          }
+        ],
+        [
           {
             "name": "logo",
             "size": 6
-          }
-        ],
-        [
+          },
           {
             "name": "description",
             "size": 6
-          },
-          {
-            "name": "reports",
-            "size": 6
           }
         ],
         [
           {
-            "name": "contactFirstName",
+            "name": "contactLastName",
             "size": 6
           },
           {
-            "name": "contactLastName",
+            "name": "contactFirstName",
             "size": 6
           }
         ],
@@ -818,39 +815,47 @@
         ],
         [
           {
+            "name": "reports",
+            "size": 6
+          }
+        ],
+        [
+          {
             "name": "accountFacebook",
             "size": 6
-          },
+          }
+        ],
+        [
           {
             "name": "accountTwitter",
             "size": 6
-          }
-        ],
-        [
+          },
           {
             "name": "accountTiktok",
             "size": 6
-          },
+          }
+        ],
+        [
           {
             "name": "accountInstagram",
             "size": 6
-          }
-        ],
-        [
+          },
           {
             "name": "accountLinkedin",
             "size": 6
-          },
-          {
-            "name": "domains",
-            "size": 6
           }
         ],
         [
           {
-            "name": "programs",
+            "name": "registrationToken",
             "size": 6
           },
+          {
+            "name": "programs",
+            "size": 6
+          }
+        ],
+        [
           {
             "name": "dimensions",
             "size": 6
@@ -906,9 +911,9 @@
             "size": 6
           }
         ]
-      ]
-    },
-    "uid": "plugin::users-permissions.user"
+      ],
+      "list": ["id", "ongName", "avatar", "username", "email", "role"]
+    }
   },
   "type": "object",
   "environment": null,

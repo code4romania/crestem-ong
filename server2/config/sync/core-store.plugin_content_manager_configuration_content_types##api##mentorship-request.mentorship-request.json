@@ -1,13 +1,14 @@
 {
   "key": "plugin_content_manager_configuration_content_types::api::mentorship-request.mentorship-request",
   "value": {
+    "uid": "api::mentorship-request.mentorship-request",
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "documentId",
-      "defaultSortBy": "documentId",
+      "mainField": "id",
+      "defaultSortBy": "id",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -21,30 +22,30 @@
       },
       "mentor": {
         "edit": {
-          "label": "mentor",
+          "label": "Persoană resursă",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "username"
+          "mainField": "lastName"
         },
         "list": {
-          "label": "mentor",
+          "label": "Persoană resursă",
           "searchable": true,
           "sortable": true
         }
       },
       "user": {
         "edit": {
-          "label": "user",
+          "label": "ONG",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "username"
+          "mainField": "ongName"
         },
         "list": {
-          "label": "user",
+          "label": "Organizație",
           "searchable": true,
           "sortable": true
         }
@@ -58,7 +59,7 @@
           "editable": true
         },
         "list": {
-          "label": "createdAt",
+          "label": "Data creării",
           "searchable": true,
           "sortable": true
         }
@@ -106,23 +107,9 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "mentor",
-        "user",
-        "createdAt"
-      ],
       "edit": [
         [
           {
@@ -134,9 +121,9 @@
             "size": 6
           }
         ]
-      ]
-    },
-    "uid": "api::mentorship-request.mentorship-request"
+      ],
+      "list": ["id", "mentor", "user", "createdAt"]
+    }
   },
   "type": "object",
   "environment": null,

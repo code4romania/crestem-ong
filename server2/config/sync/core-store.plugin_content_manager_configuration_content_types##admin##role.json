@@ -1,6 +1,7 @@
 {
   "key": "plugin_content_manager_configuration_content_types::admin::role",
   "value": {
+    "uid": "admin::role",
     "settings": {
       "bulkable": true,
       "filterable": true,
@@ -148,23 +149,10 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "name",
-        "code",
-        "description"
-      ],
+      "list": ["id", "name", "code", "description"],
       "edit": [
         [
           {
@@ -193,8 +181,7 @@
           }
         ]
       ]
-    },
-    "uid": "admin::role"
+    }
   },
   "type": "object",
   "environment": null,

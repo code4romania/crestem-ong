@@ -1,6 +1,7 @@
 {
   "key": "plugin_content_manager_configuration_content_types::plugin::upload.folder",
   "value": {
+    "uid": "plugin::upload.folder",
     "settings": {
       "bulkable": true,
       "filterable": true,
@@ -163,23 +164,10 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "name",
-        "pathId",
-        "parent"
-      ],
+      "list": ["id", "name", "pathId", "parent"],
       "edit": [
         [
           {
@@ -212,8 +200,7 @@
           }
         ]
       ]
-    },
-    "uid": "plugin::upload.folder"
+    }
   },
   "type": "object",
   "environment": null,

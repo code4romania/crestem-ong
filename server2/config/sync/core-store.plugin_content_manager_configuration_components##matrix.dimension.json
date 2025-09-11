@@ -1,6 +1,7 @@
 {
   "key": "plugin_content_manager_configuration_components::matrix.dimension",
   "value": {
+    "uid": "matrix.dimension",
     "settings": {
       "bulkable": true,
       "filterable": true,
@@ -46,22 +47,10 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "name",
-        "link"
-      ],
+      "list": ["id", "name", "link"],
       "edit": [
         [
           {
@@ -75,7 +64,6 @@
         ]
       ]
     },
-    "uid": "matrix.dimension",
     "isComponent": true
   },
   "type": "object",

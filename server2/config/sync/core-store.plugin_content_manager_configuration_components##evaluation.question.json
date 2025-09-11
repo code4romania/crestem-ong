@@ -1,13 +1,14 @@
 {
   "key": "plugin_content_manager_configuration_components::evaluation.question",
   "value": {
+    "uid": "evaluation.question",
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "documentId",
-      "defaultSortBy": "documentId",
+      "mainField": "id",
+      "defaultSortBy": "id",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -32,21 +33,10 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "answer"
-      ],
+      "list": ["id", "answer"],
       "edit": [
         [
           {
@@ -56,7 +46,6 @@
         ]
       ]
     },
-    "uid": "evaluation.question",
     "isComponent": true
   },
   "type": "object",

@@ -6,6 +6,36 @@
   "locale": null,
   "permissions": [
     {
+      "documentId": "wrzvltpf3amm90zt3vlhcdny",
+      "action": "api::dimension.dimension.find",
+      "locale": null
+    },
+    {
+      "documentId": "t3htxiy90iq6xrblzh0778qg",
+      "action": "api::domain.domain.find",
+      "locale": null
+    },
+    {
+      "documentId": "e24lhnybbh9037hwx598pnc5",
+      "action": "api::evaluation.evaluation.find",
+      "locale": null
+    },
+    {
+      "documentId": "wscruu7rz4joo1r2ejbllu4i",
+      "action": "api::evaluation.evaluation.findOne",
+      "locale": null
+    },
+    {
+      "documentId": "alj0ive1q69wh8oyq3knixxj",
+      "action": "api::evaluation.evaluation.update",
+      "locale": null
+    },
+    {
+      "documentId": "uo32ypxnbte1ms2n7cx3j819",
+      "action": "api::matrix.matrix.find",
+      "locale": null
+    },
+    {
       "documentId": "lf4423150nh4ws7az0vb76oh",
       "action": "plugin::users-permissions.auth.callback",
       "locale": null
@@ -21,6 +51,11 @@
       "locale": null
     },
     {
+      "documentId": "i2cvgcrq6lvhpfnc569ckuza",
+      "action": "plugin::users-permissions.auth.findRegistrationInfo",
+      "locale": null
+    },
+    {
       "documentId": "ky7qzuf2bwox3mzyfc11fnn5",
       "action": "plugin::users-permissions.auth.forgotPassword",
       "locale": null
@@ -28,6 +63,11 @@
     {
       "documentId": "t3uv0d0ddtwbyeivx9q720is",
       "action": "plugin::users-permissions.auth.register",
+      "locale": null
+    },
+    {
+      "documentId": "hqk98prol9sqq33b9lnxdtdt",
+      "action": "plugin::users-permissions.auth.registerWithConfirmation",
       "locale": null
     },
     {

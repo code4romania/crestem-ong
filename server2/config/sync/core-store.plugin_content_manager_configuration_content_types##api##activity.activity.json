@@ -1,13 +1,14 @@
 {
   "key": "plugin_content_manager_configuration_content_types::api::activity.activity",
   "value": {
+    "uid": "api::activity.activity",
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
       "mainField": "id",
-      "defaultSortBy": "documentId",
+      "defaultSortBy": "id",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -21,22 +22,7 @@
       },
       "type": {
         "edit": {
-          "label": "type",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "documentId"
-        },
-        "list": {
-          "label": "type",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "dimension": {
-        "edit": {
-          "label": "dimension",
+          "label": "Tip activitate",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -44,14 +30,29 @@
           "mainField": "name"
         },
         "list": {
-          "label": "dimension",
+          "label": "Tip activitate",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "dimension": {
+        "edit": {
+          "label": "Dimensiune",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "Dimensiune",
           "searchable": true,
           "sortable": true
         }
       },
       "startDate": {
         "edit": {
-          "label": "startDate",
+          "label": "Data inceput",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -65,7 +66,7 @@
       },
       "notes": {
         "edit": {
-          "label": "notes",
+          "label": "Notițe",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -79,7 +80,7 @@
       },
       "duration": {
         "edit": {
-          "label": "duration",
+          "label": "Durată activitate (ore)",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -93,30 +94,30 @@
       },
       "mentor": {
         "edit": {
-          "label": "mentor",
+          "label": "Persoană resursă",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "username"
+          "mainField": "firstName"
         },
         "list": {
-          "label": "mentor",
+          "label": "Persoană resursă",
           "searchable": true,
           "sortable": true
         }
       },
       "user": {
         "edit": {
-          "label": "user",
+          "label": "Organizație",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "username"
+          "mainField": "ongName"
         },
         "list": {
-          "label": "user",
+          "label": "Organizație",
           "searchable": true,
           "sortable": true
         }
@@ -178,14 +179,6 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
@@ -194,16 +187,18 @@
           {
             "name": "type",
             "size": 6
-          },
+          }
+        ],
+        [
           {
-            "name": "dimension",
-            "size": 6
+            "name": "duration",
+            "size": 4
           }
         ],
         [
           {
             "name": "startDate",
-            "size": 4
+            "size": 6
           }
         ],
         [
@@ -214,8 +209,8 @@
         ],
         [
           {
-            "name": "duration",
-            "size": 4
+            "name": "dimension",
+            "size": 6
           },
           {
             "name": "mentor",
@@ -229,14 +224,8 @@
           }
         ]
       ],
-      "list": [
-        "id",
-        "type",
-        "dimension",
-        "startDate"
-      ]
-    },
-    "uid": "api::activity.activity"
+      "list": ["id", "type", "dimension", "mentor", "user"]
+    }
   },
   "type": "object",
   "environment": null,

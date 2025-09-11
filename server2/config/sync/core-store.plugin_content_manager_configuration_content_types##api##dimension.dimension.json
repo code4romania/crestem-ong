@@ -1,6 +1,7 @@
 {
   "key": "plugin_content_manager_configuration_content_types::api::dimension.dimension",
   "value": {
+    "uid": "api::dimension.dimension",
     "settings": {
       "bulkable": true,
       "filterable": true,
@@ -83,7 +84,7 @@
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "documentId"
+          "mainField": "id"
         },
         "list": {
           "label": "activities",
@@ -148,23 +149,10 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "name",
-        "link",
-        "quiz"
-      ],
+      "list": ["id", "name", "link", "quiz"],
       "edit": [
         [
           {
@@ -193,8 +181,7 @@
           }
         ]
       ]
-    },
-    "uid": "api::dimension.dimension"
+    }
   },
   "type": "object",
   "environment": null,

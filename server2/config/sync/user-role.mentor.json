@@ -1,0 +1,84 @@
+{
+  "documentId": "vsxoycu64l3leyrq9tluwe14",
+  "name": "Persoană resursă",
+  "description": "Mentor",
+  "type": "mentor",
+  "locale": null,
+  "permissions": [
+    {
+      "documentId": "yjk6b1w3uha0elac41l8cxwg",
+      "action": "api::activity-type.activity-type.find",
+      "locale": null
+    },
+    {
+      "documentId": "jrzrlt5bsjhk6szg7jymwfqt",
+      "action": "api::activity.activity.create",
+      "locale": null
+    },
+    {
+      "documentId": "a3lcxp8kl3qr685riov71k94",
+      "action": "api::activity.activity.find",
+      "locale": null
+    },
+    {
+      "documentId": "j4d9fiaitshiji5hw9cnqdnq",
+      "action": "api::dimension.dimension.find",
+      "locale": null
+    },
+    {
+      "documentId": "l300vfwovzhmx6usdg2de7kc",
+      "action": "api::domain.domain.find",
+      "locale": null
+    },
+    {
+      "documentId": "egzvqkz7a4079zl1wgyko5pp",
+      "action": "api::evaluation.evaluation.find",
+      "locale": null
+    },
+    {
+      "documentId": "tbe8t786ehprg3owvqk7o1he",
+      "action": "api::matrix.matrix.find",
+      "locale": null
+    },
+    {
+      "documentId": "yelmvstr4jdz8e3rctcfu0nk",
+      "action": "api::program.program.find",
+      "locale": null
+    },
+    {
+      "documentId": "u78luqjojxqi2j7r6y2nrpc4",
+      "action": "api::report.report.find",
+      "locale": null
+    },
+    {
+      "documentId": "jdao7danosjm4qhnfws5g7oh",
+      "action": "api::report.report.findOne",
+      "locale": null
+    },
+    {
+      "documentId": "r4tqn089bvbidvxom6joxk81",
+      "action": "plugin::upload.content-api.upload",
+      "locale": null
+    },
+    {
+      "documentId": "ylkxqrs1o4lj77op9vgoet32",
+      "action": "plugin::users-permissions.role.find",
+      "locale": null
+    },
+    {
+      "documentId": "ziwzwg9wvqnqlpdo8zqejmok",
+      "action": "plugin::users-permissions.user.find",
+      "locale": null
+    },
+    {
+      "documentId": "n237pvcbkiugnuvk3mnnyykw",
+      "action": "plugin::users-permissions.user.me",
+      "locale": null
+    },
+    {
+      "documentId": "j39v9jp5mlj2c5mtd85lk0il",
+      "action": "plugin::users-permissions.user.update",
+      "locale": null
+    }
+  ]
+}

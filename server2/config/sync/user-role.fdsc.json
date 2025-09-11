@@ -1,0 +1,114 @@
+{
+  "documentId": "qiwfgljixjvtkb6f2tbbli1u",
+  "name": "Admin FDSC",
+  "description": "Utilizator de tipul Admin FDSC",
+  "type": "fdsc",
+  "locale": null,
+  "permissions": [
+    {
+      "documentId": "m36ekeb41xvmg2nmwdts0wor",
+      "action": "api::activity.activity.find",
+      "locale": null
+    },
+    {
+      "documentId": "pva1m5454s7bbunuzi5hamnd",
+      "action": "api::dimension.dimension.find",
+      "locale": null
+    },
+    {
+      "documentId": "zxbovtgbyczd2qfaisaehrgx",
+      "action": "api::domain.domain.find",
+      "locale": null
+    },
+    {
+      "documentId": "smk9juvsnjuh8aoqwfzakbmc",
+      "action": "api::evaluation.evaluation.find",
+      "locale": null
+    },
+    {
+      "documentId": "xy52xbv89vg41r52k3ot5hpw",
+      "action": "api::evaluation.evaluation.findOne",
+      "locale": null
+    },
+    {
+      "documentId": "ilmc77niqfhlvh0dhepmb1vw",
+      "action": "api::evaluation.evaluation.update",
+      "locale": null
+    },
+    {
+      "documentId": "y88g6fiok3aobp68t9gse3x7",
+      "action": "api::matrix.matrix.find",
+      "locale": null
+    },
+    {
+      "documentId": "zjvv6czodc2zcpfopioyladc",
+      "action": "api::program.program.create",
+      "locale": null
+    },
+    {
+      "documentId": "pm5vw91zo6blkmzz5pwszyff",
+      "action": "api::program.program.find",
+      "locale": null
+    },
+    {
+      "documentId": "q7gtlklluj9i49ezwppvbtx6",
+      "action": "api::program.program.findOne",
+      "locale": null
+    },
+    {
+      "documentId": "bqtefavfsidjc3axpjx2997d",
+      "action": "api::program.program.update",
+      "locale": null
+    },
+    {
+      "documentId": "cxnsmnw6yhb6pxnrzgg9z7zt",
+      "action": "api::report.report.find",
+      "locale": null
+    },
+    {
+      "documentId": "ywndnhjfix9ka9bj9bvxobp2",
+      "action": "api::report.report.findOne",
+      "locale": null
+    },
+    {
+      "documentId": "lntc9hs6r2et5ny75l1j3cos",
+      "action": "api::report.report.update",
+      "locale": null
+    },
+    {
+      "documentId": "vumgf4f4npglyw28g46gogpl",
+      "action": "plugin::upload.content-api.upload",
+      "locale": null
+    },
+    {
+      "documentId": "ugncgbjfxqa93ucclksd65o4",
+      "action": "plugin::users-permissions.role.find",
+      "locale": null
+    },
+    {
+      "documentId": "f7akqqjkzxyix2ruy7f11taj",
+      "action": "plugin::users-permissions.user.create",
+      "locale": null
+    },
+    {
+      "documentId": "harbmk986nqixd07mjcvsyme",
+      "action": "plugin::users-permissions.user.find",
+      "locale": null
+    },
+    {
+      "documentId": "dtao5bep5nbi1m8l12wk2obq",
+      "action": "plugin::users-permissions.user.findOne",
+      "locale": null
+    },
+    {
+      "documentId": "xkgrjt5xyk62kh6kg5u11fo0",
+      "action": "plugin::users-permissions.user.me",
+      "locale": null
+    },
+    {
+      "documentId": "ticqihywafpodrxgkb8llk5i",
+      "action": "plugin::users-permissions.user.update",
+      "locale": null
+    }
+  ]
+}
