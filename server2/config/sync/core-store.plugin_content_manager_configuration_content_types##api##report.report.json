@@ -135,9 +135,25 @@
           "searchable": true,
           "sortable": true
         }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
       }
     },
     "layouts": {
+      "list": [
+        "id",
+        "evaluations",
+        "createdAt",
+        "user",
+        "deadline",
+        "finished"
+      ],
       "edit": [
         [
           {
@@ -159,8 +175,7 @@
             "size": 6
           }
         ]
-      ],
-      "list": ["id", "evaluations", "createdAt", "user", "deadline", "finished"]
+      ]
     }
   },
   "type": "object",

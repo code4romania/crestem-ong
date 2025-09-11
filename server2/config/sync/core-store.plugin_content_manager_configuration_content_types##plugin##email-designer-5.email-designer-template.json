@@ -1,14 +1,13 @@
 {
-  "key": "plugin_content_manager_configuration_content_types::admin::user",
+  "key": "plugin_content_manager_configuration_content_types::plugin::email-designer-5.email-designer-template",
   "value": {
-    "uid": "admin::user",
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "firstname",
-      "defaultSortBy": "firstname",
+      "mainField": "name",
+      "defaultSortBy": "name",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -20,159 +19,102 @@
           "sortable": true
         }
       },
-      "firstname": {
+      "templateReferenceId": {
         "edit": {
-          "label": "firstname",
+          "label": "templateReferenceId",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "firstname",
+          "label": "templateReferenceId",
           "searchable": true,
           "sortable": true
         }
       },
-      "lastname": {
+      "design": {
         "edit": {
-          "label": "lastname",
+          "label": "design",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "lastname",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "username": {
-        "edit": {
-          "label": "username",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "username",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "email": {
-        "edit": {
-          "label": "email",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "email",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "password": {
-        "edit": {
-          "label": "password",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "password",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "resetPasswordToken": {
-        "edit": {
-          "label": "resetPasswordToken",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "resetPasswordToken",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "registrationToken": {
-        "edit": {
-          "label": "registrationToken",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "registrationToken",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "isActive": {
-        "edit": {
-          "label": "isActive",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "isActive",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "roles": {
-        "edit": {
-          "label": "roles",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "name"
-        },
-        "list": {
-          "label": "roles",
+          "label": "design",
           "searchable": false,
           "sortable": false
         }
       },
-      "blocked": {
+      "name": {
         "edit": {
-          "label": "blocked",
+          "label": "name",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "blocked",
+          "label": "name",
           "searchable": true,
           "sortable": true
         }
       },
-      "preferedLanguage": {
+      "subject": {
         "edit": {
-          "label": "preferedLanguage",
+          "label": "subject",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "preferedLanguage",
+          "label": "subject",
           "searchable": true,
           "sortable": true
+        }
+      },
+      "bodyHtml": {
+        "edit": {
+          "label": "bodyHtml",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "bodyHtml",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "bodyText": {
+        "edit": {
+          "label": "bodyText",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "bodyText",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "tags": {
+        "edit": {
+          "label": "tags",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "tags",
+          "searchable": false,
+          "sortable": false
         }
       },
       "createdAt": {
@@ -243,58 +185,49 @@
       }
     },
     "layouts": {
-      "list": ["id", "firstname", "lastname", "username"],
+      "list": ["id", "templateReferenceId", "name", "subject"],
       "edit": [
         [
           {
-            "name": "firstname",
-            "size": 6
-          },
-          {
-            "name": "lastname",
-            "size": 6
-          }
-        ],
-        [
-          {
-            "name": "username",
-            "size": 6
-          },
-          {
-            "name": "email",
-            "size": 6
-          }
-        ],
-        [
-          {
-            "name": "password",
-            "size": 6
-          }
-        ],
-        [
-          {
-            "name": "isActive",
+            "name": "templateReferenceId",
             "size": 4
           }
         ],
         [
           {
-            "name": "roles",
-            "size": 6
-          },
-          {
-            "name": "blocked",
-            "size": 4
+            "name": "design",
+            "size": 12
           }
         ],
         [
           {
-            "name": "preferedLanguage",
+            "name": "name",
             "size": 6
+          },
+          {
+            "name": "subject",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "bodyHtml",
+            "size": 6
+          },
+          {
+            "name": "bodyText",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "tags",
+            "size": 12
           }
         ]
       ]
-    }
+    },
+    "uid": "plugin::email-designer-5.email-designer-template"
   },
   "type": "object",
   "environment": null,

@@ -163,9 +163,18 @@
           "searchable": true,
           "sortable": true
         }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
       }
     },
     "layouts": {
+      "list": ["id", "name", "startDate", "endDate"],
       "edit": [
         [
           {
@@ -199,8 +208,7 @@
             "size": 6
           }
         ]
-      ],
-      "list": ["id", "name", "startDate", "endDate"]
+      ]
     }
   },
   "type": "object",

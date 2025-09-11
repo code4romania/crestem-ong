@@ -179,9 +179,18 @@
           "searchable": true,
           "sortable": true
         }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
       }
     },
     "layouts": {
+      "list": ["id", "type", "dimension", "mentor", "user"],
       "edit": [
         [
           {
@@ -223,8 +232,7 @@
             "size": 6
           }
         ]
-      ],
-      "list": ["id", "type", "dimension", "mentor", "user"]
+      ]
     }
   },
   "type": "object",

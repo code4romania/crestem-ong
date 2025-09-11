@@ -1,14 +1,13 @@
 {
-  "key": "plugin_content_manager_configuration_content_types::api::mentorship-request.mentorship-request",
+  "key": "plugin_content_manager_configuration_content_types::plugin::review-workflows.workflow",
   "value": {
-    "uid": "api::mentorship-request.mentorship-request",
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "id",
-      "defaultSortBy": "id",
+      "mainField": "name",
+      "defaultSortBy": "name",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -20,34 +19,62 @@
           "sortable": true
         }
       },
-      "mentor": {
+      "name": {
         "edit": {
-          "label": "Persoană resursă",
+          "label": "name",
           "description": "",
           "placeholder": "",
           "visible": true,
-          "editable": true,
-          "mainField": "lastName"
+          "editable": true
         },
         "list": {
-          "label": "Persoană resursă",
+          "label": "name",
           "searchable": true,
           "sortable": true
         }
       },
-      "user": {
+      "stages": {
         "edit": {
-          "label": "ONG",
+          "label": "stages",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "ongName"
+          "mainField": "name"
         },
         "list": {
-          "label": "Organizație",
+          "label": "stages",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "stageRequiredToPublish": {
+        "edit": {
+          "label": "stageRequiredToPublish",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "stageRequiredToPublish",
           "searchable": true,
           "sortable": true
+        }
+      },
+      "contentTypes": {
+        "edit": {
+          "label": "contentTypes",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "contentTypes",
+          "searchable": false,
+          "sortable": false
         }
       },
       "createdAt": {
@@ -59,7 +86,7 @@
           "editable": true
         },
         "list": {
-          "label": "Data creării",
+          "label": "createdAt",
           "searchable": true,
           "sortable": true
         }
@@ -118,20 +145,33 @@
       }
     },
     "layouts": {
-      "list": ["id", "mentor", "user", "createdAt"],
+      "list": ["id", "name", "stages", "stageRequiredToPublish"],
       "edit": [
         [
           {
-            "name": "mentor",
+            "name": "name",
             "size": 6
           },
           {
-            "name": "user",
+            "name": "stages",
             "size": 6
+          }
+        ],
+        [
+          {
+            "name": "stageRequiredToPublish",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "contentTypes",
+            "size": 12
           }
         ]
       ]
-    }
+    },
+    "uid": "plugin::review-workflows.workflow"
   },
   "type": "object",
   "environment": null,
