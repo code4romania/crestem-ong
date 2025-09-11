@@ -1,82 +1,82 @@
 {
-  "documentId": "vsxoycu64l3leyrq9tluwe14",
+  "documentId": "h547bqf4fztkenxfc4n6dwd4",
   "name": "Persoană resursă",
   "description": "Mentor",
   "type": "mentor",
   "locale": null,
   "permissions": [
     {
-      "documentId": "yjk6b1w3uha0elac41l8cxwg",
+      "documentId": "kvitjeaw5vkmldz2ckbfv464",
       "action": "api::activity-type.activity-type.find",
       "locale": null
     },
     {
-      "documentId": "jrzrlt5bsjhk6szg7jymwfqt",
+      "documentId": "s5rxr71ut5pzwzq9t1klewm0",
       "action": "api::activity.activity.create",
       "locale": null
     },
     {
-      "documentId": "a3lcxp8kl3qr685riov71k94",
+      "documentId": "vmw3bvkqucgbzktqyzb00zyi",
       "action": "api::activity.activity.find",
       "locale": null
     },
     {
-      "documentId": "j4d9fiaitshiji5hw9cnqdnq",
+      "documentId": "r7015924ec8hws2w6f5syfxg",
       "action": "api::dimension.dimension.find",
       "locale": null
     },
     {
-      "documentId": "l300vfwovzhmx6usdg2de7kc",
+      "documentId": "gmq2ngi8w9cwlnwto8sfnlyt",
       "action": "api::domain.domain.find",
       "locale": null
     },
     {
-      "documentId": "egzvqkz7a4079zl1wgyko5pp",
+      "documentId": "ccdrteejgjggaas683rook76",
       "action": "api::evaluation.evaluation.find",
       "locale": null
     },
     {
-      "documentId": "tbe8t786ehprg3owvqk7o1he",
+      "documentId": "g2s4xup4lioimcdnlppui833",
       "action": "api::matrix.matrix.find",
       "locale": null
     },
     {
-      "documentId": "yelmvstr4jdz8e3rctcfu0nk",
+      "documentId": "mq9u3086yrl16bcsj2k5tiun",
       "action": "api::program.program.find",
       "locale": null
     },
     {
-      "documentId": "u78luqjojxqi2j7r6y2nrpc4",
+      "documentId": "umvtbcycoh2qe3ewoldujlnh",
       "action": "api::report.report.find",
       "locale": null
     },
     {
-      "documentId": "jdao7danosjm4qhnfws5g7oh",
+      "documentId": "wj2jpsqsgp1c0mz7pyh7tyz3",
       "action": "api::report.report.findOne",
       "locale": null
     },
     {
-      "documentId": "r4tqn089bvbidvxom6joxk81",
+      "documentId": "nydhwk6a0h3q3zb6jdmy7pkv",
       "action": "plugin::upload.content-api.upload",
       "locale": null
     },
     {
-      "documentId": "ylkxqrs1o4lj77op9vgoet32",
+      "documentId": "pdbut67ni2f3rmb9qbwg4t7n",
       "action": "plugin::users-permissions.role.find",
       "locale": null
     },
     {
-      "documentId": "ziwzwg9wvqnqlpdo8zqejmok",
+      "documentId": "lqv1ke4ejs8kjpi3grbmvjbm",
       "action": "plugin::users-permissions.user.find",
       "locale": null
     },
     {
-      "documentId": "n237pvcbkiugnuvk3mnnyykw",
+      "documentId": "znlp0lagtzvbhh0tavcoyji1",
       "action": "plugin::users-permissions.user.me",
       "locale": null
     },
     {
-      "documentId": "j39v9jp5mlj2c5mtd85lk0il",
+      "documentId": "wzaae0kw1fckw4a5zmzhp0tw",
       "action": "plugin::users-permissions.user.update",
       "locale": null
     }

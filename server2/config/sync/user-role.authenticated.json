@@ -1,112 +1,112 @@
 {
-  "documentId": "bjkg5hlm71yh9o7g21nbtly2",
+  "documentId": "aie5pr1e57iffmtm6n78c3ae",
   "name": "Admin ONG",
   "description": "Default role given to authenticated user.",
   "type": "authenticated",
   "locale": null,
   "permissions": [
     {
-      "documentId": "y94t4ge67ssn6z8avbgdfqpk",
+      "documentId": "p3za5ox5sdqq5674mshnxcpi",
       "action": "api::dimension.dimension.find",
       "locale": null
     },
     {
-      "documentId": "v1f6qpsvg1qazd8ympvzbivu",
+      "documentId": "vo1wm1hhg9vc9if5gsypirp4",
       "action": "api::domain.domain.find",
       "locale": null
     },
     {
-      "documentId": "u9izmttz5nrg84pathx2aicq",
+      "documentId": "xihurpwkqsi2p8gin3ghqffm",
       "action": "api::evaluation.evaluation.create",
       "locale": null
     },
     {
-      "documentId": "dqme1mvnuzubodnfsnpulbvz",
+      "documentId": "rfxbwu5w8wv3dac6eyeyrz64",
       "action": "api::evaluation.evaluation.delete",
       "locale": null
     },
     {
-      "documentId": "byhs8rgkykdejvonoj7ftg9c",
+      "documentId": "dld84a8h3mxx0a0g34pft4j6",
       "action": "api::evaluation.evaluation.find",
       "locale": null
     },
     {
-      "documentId": "cvyu97a21exd2u4tqln4uhoa",
+      "documentId": "ysrukaz2cje8upjulsuoy11w",
       "action": "api::evaluation.evaluation.findOne",
       "locale": null
     },
     {
-      "documentId": "bbfm7mnqc3rkphkg2adrusq9",
+      "documentId": "xfche4t44u1azjxy8aq5oy0s",
       "action": "api::evaluation.evaluation.update",
       "locale": null
     },
     {
-      "documentId": "oeh774v3pav9qz98dvbdsmn0",
+      "documentId": "hxkxe29ailnqgawe2vv146it",
       "action": "api::matrix.matrix.find",
       "locale": null
     },
     {
-      "documentId": "ubwpvcqbuqa2fe0ky82prx6m",
+      "documentId": "vvnl9g7fngaqvzs1r9gjljzh",
       "action": "api::mentorship-request.mentorship-request.create",
       "locale": null
     },
     {
-      "documentId": "kp19i5f82ebybab2de5txafk",
+      "documentId": "biewjc8rw7bywa86a4ureh0n",
       "action": "api::program.program.find",
       "locale": null
     },
     {
-      "documentId": "df1spu0vboic48mwyz2z26qj",
+      "documentId": "xhre65l71wqd5qctzp08l8mk",
       "action": "api::report.report.create",
       "locale": null
     },
     {
-      "documentId": "les53sp20s9yw611gki6d2gp",
+      "documentId": "ha14qulv3kz4n2e0qxb9r4r3",
       "action": "api::report.report.find",
       "locale": null
     },
     {
-      "documentId": "m6jw20jnrb931bonvs13f8in",
+      "documentId": "elfaxq6bikrmjf66oh5v5bq0",
       "action": "api::report.report.findOne",
       "locale": null
     },
     {
-      "documentId": "x8d91l75yk32k10kayhkt09n",
+      "documentId": "ihc7q1royzvq11vp8adqrw1w",
       "action": "api::report.report.update",
       "locale": null
     },
     {
-      "documentId": "psjnrh711vr4n5je1fix6vn8",
+      "documentId": "zfjtr3sdcu6qviukdsnpjfxu",
       "action": "plugin::upload.content-api.upload",
       "locale": null
     },
     {
-      "documentId": "dbzy771juljvgqe2u2cnqa2z",
+      "documentId": "wfsw2cpwa4ghhy95hj8175az",
       "action": "plugin::users-permissions.auth.changePassword",
       "locale": null
     },
     {
-      "documentId": "kja6gf7yvuhix8e7z6x5xkyb",
+      "documentId": "f4iithpgnkzznjla7h7w7ju5",
       "action": "plugin::users-permissions.role.find",
       "locale": null
     },
     {
-      "documentId": "c09b7taqphy402z1wnhujajt",
+      "documentId": "wbnem3yz4u5as2pi0kcsmu3x",
       "action": "plugin::users-permissions.user.find",
       "locale": null
     },
     {
-      "documentId": "q2hxjuaqitoikiw88i3r3zy8",
+      "documentId": "r3xs3d3v0tdefczimrcfadzz",
       "action": "plugin::users-permissions.user.findOne",
       "locale": null
     },
     {
-      "documentId": "juov72di8bo23lembyjhh4oz",
+      "documentId": "zwghd3rwrssjd8jrk78v2135",
       "action": "plugin::users-permissions.user.me",
       "locale": null
     },
     {
-      "documentId": "s2aqbe64am0pkov13i0vcs4p",
+      "documentId": "d8qhmdydrooivs57thdctmpz",
       "action": "plugin::users-permissions.user.update",
       "locale": null
     }

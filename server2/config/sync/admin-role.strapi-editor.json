@@ -1,12 +1,12 @@
 {
-  "documentId": "fe17g19yq1osozjzqesp2ic3",
+  "documentId": "elk23ij3j2mhzi3mlr5emccc",
   "name": "Editor",
   "code": "strapi-editor",
   "description": "Editors can manage and publish contents including those of other users.",
   "locale": null,
   "permissions": [
     {
-      "documentId": "dru3ztr00j2tij0w2qfhz2va",
+      "documentId": "x2gtfhc92zbakawrjpi7egnp",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::evaluation.evaluation",
@@ -22,7 +22,7 @@
       "locale": null
     },
     {
-      "documentId": "v04dxre0zq23butxzmr2gi4j",
+      "documentId": "iqtivgmxcaay08w6g2eha9wb",
       "action": "plugin::content-manager.explorer.delete",
       "actionParameters": {},
       "subject": "api::evaluation.evaluation",
@@ -31,7 +31,7 @@
       "locale": null
     },
     {
-      "documentId": "aoqohsbo6hiu2vs69bvei884",
+      "documentId": "lpfz5flrlt0ubw5z3msgyxe6",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::evaluation.evaluation",
@@ -47,7 +47,7 @@
       "locale": null
     },
     {
-      "documentId": "jjo48oqn30sdxu53mgxphktb",
+      "documentId": "vweau6g5c628h2otb4fd8yn0",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::evaluation.evaluation",
@@ -63,7 +63,7 @@
       "locale": null
     },
     {
-      "documentId": "xpf5hiuw7pwapcsnuqkrjikb",
+      "documentId": "jmuek80auf8vbd66w11p6k7x",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::matrix.matrix",
@@ -74,7 +74,7 @@
       "locale": null
     },
     {
-      "documentId": "m209rskwrlmrr48lqgh874uf",
+      "documentId": "ywnvcezn4fikcutox9twydmq",
       "action": "plugin::content-manager.explorer.delete",
       "actionParameters": {},
       "subject": "api::matrix.matrix",
@@ -83,7 +83,7 @@
       "locale": null
     },
     {
-      "documentId": "ifeh15xsssx0fvoak33w675p",
+      "documentId": "n715skfhrlodg5awqp2nkl7b",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::matrix.matrix",
@@ -94,7 +94,7 @@
       "locale": null
     },
     {
-      "documentId": "xl7l98lw55z8ljnv7y4lp9em",
+      "documentId": "e05m2rpywfh3nr8ha4sqk8xk",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::matrix.matrix",
@@ -105,23 +105,18 @@
       "locale": null
     },
     {
-      "documentId": "skjc4arjw5ophwc63orye7qg",
+      "documentId": "s66xrbhkh3m9yy6f0dhz4f1n",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::report.report",
       "properties": {
-        "fields": [
-          "evaluations",
-          "deadline",
-          "finished",
-          "user"
-        ]
+        "fields": ["evaluations", "deadline", "finished", "user"]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "gvggsa0258c6ylra9jlmbg6z",
+      "documentId": "ff3bq71gskg83aroqheq1ux2",
       "action": "plugin::content-manager.explorer.delete",
       "actionParameters": {},
       "subject": "api::report.report",
@@ -130,39 +125,29 @@
       "locale": null
     },
     {
-      "documentId": "r2culwma73bpwq6jdtkwsc1o",
+      "documentId": "qrwo6nrcsm8uet6fqgxb48yd",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::report.report",
       "properties": {
-        "fields": [
-          "evaluations",
-          "deadline",
-          "finished",
-          "user"
-        ]
+        "fields": ["evaluations", "deadline", "finished", "user"]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "slzcu309458shnhscccfi11j",
+      "documentId": "e855dlvj3sgfw0jzcvvqtptd",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::report.report",
       "properties": {
-        "fields": [
-          "evaluations",
-          "deadline",
-          "finished",
-          "user"
-        ]
+        "fields": ["evaluations", "deadline", "finished", "user"]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "y83ggixvpu582vcsbmpsgm4c",
+      "documentId": "axkq0och3rc83q9jbml94fww",
       "action": "plugin::upload.assets.copy-link",
       "actionParameters": {},
       "subject": null,
@@ -171,7 +156,7 @@
       "locale": null
     },
     {
-      "documentId": "oa7ccsak4k0b2yiy8vtu3zd4",
+      "documentId": "vi5vmxvl8juao5nrdm2adtdi",
       "action": "plugin::upload.assets.create",
       "actionParameters": {},
       "subject": null,
@@ -180,7 +165,7 @@
       "locale": null
     },
     {
-      "documentId": "rxr39j5x54v0xlrp6436oz2i",
+      "documentId": "t5rreqwwuh2urzwe5yet2bnk",
       "action": "plugin::upload.assets.download",
       "actionParameters": {},
       "subject": null,
@@ -189,7 +174,7 @@
       "locale": null
     },
     {
-      "documentId": "ur4wq6k0ii4gwxne6gxf0q1j",
+      "documentId": "uotyml9kvpbb98vdjy1wzlvo",
       "action": "plugin::upload.assets.update",
       "actionParameters": {},
       "subject": null,
@@ -198,7 +183,7 @@
       "locale": null
     },
     {
-      "documentId": "v328731zz4vfe4onsn57i65d",
+      "documentId": "owcjijutw01rbvfmq5ix9djl",
       "action": "plugin::upload.configure-view",
       "actionParameters": {},
       "subject": null,
@@ -207,7 +192,7 @@
       "locale": null
     },
     {
-      "documentId": "auw0skdyi6spff5u0c75llab",
+      "documentId": "slwpmc0uwztqryx4wtjttkf7",
       "action": "plugin::upload.read",
       "actionParameters": {},
       "subject": null,

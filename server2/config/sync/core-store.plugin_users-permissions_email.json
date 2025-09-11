@@ -23,9 +23,7 @@
         "body": {
           "rows": [
             {
-              "cells": [
-                1
-              ],
+              "cells": [1],
               "columns": [
                 {
                   "contents": [
@@ -113,10 +111,7 @@
                   "repeat": "no-repeat",
                   "size": "custom",
                   "position": "top-center",
-                  "customPosition": [
-                    "50%",
-                    "0%"
-                  ]
+                  "customPosition": ["50%", "0%"]
                 },
                 "padding": "0px",
                 "anchor": "",
@@ -173,10 +168,7 @@
               "repeat": "no-repeat",
               "size": "custom",
               "position": "top-center",
-              "customPosition": [
-                "50%",
-                "0%"
-              ]
+              "customPosition": ["50%", "0%"]
             },
             "preheaderText": "",
             "linkStyle": {
