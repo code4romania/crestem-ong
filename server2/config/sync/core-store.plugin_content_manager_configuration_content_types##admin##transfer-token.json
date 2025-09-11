@@ -1,6 +1,7 @@
 {
   "key": "plugin_content_manager_configuration_content_types::admin::transfer-token",
   "value": {
+    "uid": "admin::transfer-token",
     "settings": {
       "bulkable": true,
       "filterable": true,
@@ -11,52 +12,31 @@
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
-      "id": {
-        "edit": {},
+      "permissions": {
+        "edit": {
+          "label": "permissions",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "action"
+        },
         "list": {
-          "label": "id",
-          "searchable": true,
-          "sortable": true
+          "label": "permissions",
+          "searchable": false,
+          "sortable": false
         }
       },
-      "name": {
+      "lifespan": {
         "edit": {
-          "label": "name",
+          "label": "lifespan",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "name",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "description": {
-        "edit": {
-          "label": "description",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "description",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "accessKey": {
-        "edit": {
-          "label": "accessKey",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "accessKey",
+          "label": "lifespan",
           "searchable": true,
           "sortable": true
         }
@@ -75,21 +55,6 @@
           "sortable": true
         }
       },
-      "permissions": {
-        "edit": {
-          "label": "permissions",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "action"
-        },
-        "list": {
-          "label": "permissions",
-          "searchable": false,
-          "sortable": false
-        }
-      },
       "expiresAt": {
         "edit": {
           "label": "expiresAt",
@@ -104,30 +69,16 @@
           "sortable": true
         }
       },
-      "lifespan": {
+      "name": {
         "edit": {
-          "label": "lifespan",
+          "label": "name",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "lifespan",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "createdAt": {
-        "edit": {
-          "label": "createdAt",
-          "description": "",
-          "placeholder": "",
-          "visible": false,
-          "editable": true
-        },
-        "list": {
-          "label": "createdAt",
+          "label": "name",
           "searchable": true,
           "sortable": true
         }
@@ -142,21 +93,6 @@
         },
         "list": {
           "label": "updatedAt",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "createdBy": {
-        "edit": {
-          "label": "createdBy",
-          "description": "",
-          "placeholder": "",
-          "visible": false,
-          "editable": true,
-          "mainField": "firstname"
-        },
-        "list": {
-          "label": "createdBy",
           "searchable": true,
           "sortable": true
         }
@@ -176,22 +112,74 @@
           "sortable": true
         }
       },
-      "documentId": {
+      "id": {
         "edit": {},
         "list": {
-          "label": "documentId",
+          "label": "id",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "createdAt": {
+        "edit": {
+          "label": "createdAt",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "createdAt",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "accessKey": {
+        "edit": {
+          "label": "accessKey",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "accessKey",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "description": {
+        "edit": {
+          "label": "description",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "description",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "createdBy",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true,
+          "mainField": "firstname"
+        },
+        "list": {
+          "label": "createdBy",
           "searchable": true,
           "sortable": true
         }
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "name",
-        "description",
-        "accessKey"
-      ],
+      "list": ["id", "name", "description", "accessKey"],
       "edit": [
         [
           {
@@ -230,8 +218,7 @@
           }
         ]
       ]
-    },
-    "uid": "admin::transfer-token"
+    }
   },
   "type": "object",
   "environment": null,
