@@ -1,11 +1,10 @@
 import Button from "@/components/Button";
 import EvaluationFinished from "@/components/EvaluationFinished";
-import EvaluationResults from "@/components/EvaluationResults";
 import FullScreenLoader from "@/components/FullScreenLoader";
 import Pagination from "@/components/Pagination";
 import Section from "@/components/Section";
 import StartEvaluation from "@/components/StartEvaluation";
-import {
+import type {
   EvaluationDimension,
   UpsertEvaluationDimensionRequest,
 } from "@/redux/api/types";
@@ -18,51 +17,43 @@ import { useAppSelector } from "@/redux/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Navigate, useParams, useSearchParams } from "react-router-dom";
-import { array, enum as enum_, object, string, TypeOf } from "zod";
+import { Navigate, useParams, useSearchParams } from "@tanstack/react-router";
+import { z } from "zod";
 import { EvaluationStep } from "./EvaluationStep";
 import ExpiredEvaluation from "./ExpiredEvaluation";
 
 const invalid_type_error = "Vă rugăm alegeți o opțiune";
 const min_message = "Acest câmp este obligatoriu";
 
-const answerSchema = enum_(["0", "1", "2", "3", "4"], {
-  required_error: invalid_type_error,
-  invalid_type_error: invalid_type_error,
-});
+const answerSchema = z.enum(["0", "1", "2", "3", "4"]);
 
-const dimensionSchema = object({
+const dimensionSchema = z.object({
   question_1: answerSchema,
   question_2: answerSchema,
   question_3: answerSchema,
   question_4: answerSchema,
   question_5: answerSchema,
-  comment: string({
-    required_error: min_message,
-    invalid_type_error: min_message,
-  })
-    .min(1, { message: min_message })
-    .max(1000),
+  comment: z.string().min(1, { message: min_message }).max(1000),
 });
 
-export type DimensionType = TypeOf<typeof dimensionSchema>;
+export type DimensionType = z.infer<typeof dimensionSchema>;
 
-const evaluationSchema = object({
-  dimensions: array(dimensionSchema),
+const evaluationSchema = z.object({
+  dimensions: z.array(dimensionSchema),
 });
 
-const evaluationSchema_old = object({
-  question_1: string({ invalid_type_error }),
-  question_2: string({ invalid_type_error }),
-  question_3: string({ invalid_type_error }),
-  question_4: string({ invalid_type_error }),
-  question_5: string({ invalid_type_error }),
-  comment: string().min(1, { message: min_message }).max(1000),
+const evaluationSchema_old = z.object({
+  question_1: z.string().min(1, { error: invalid_type_error }),
+  question_2: z.string().min(1, { error: invalid_type_error }),
+  question_3: z.string().min(1, { error: invalid_type_error }),
+  question_4: z.string().min(1, { error: invalid_type_error }),
+  question_5: z.string().min(1, { error: invalid_type_error }),
+  comment: z.string().min(1, { message: min_message }).max(1000),
 });
 
-export type EvaluationForm = TypeOf<typeof evaluationSchema>;
+export type EvaluationForm = z.infer<typeof evaluationSchema>;
 
-export type EvaluationInput = TypeOf<typeof evaluationSchema_old> & {
+export type EvaluationInput = z.infer<typeof evaluationSchema_old> & {
   evaluationId: string;
   dimensionIndex: string;
 };

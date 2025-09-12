@@ -1,7 +1,7 @@
 import envelope from "@/assets/envelope.svg";
 import type { Report } from "@/redux/api/types";
 import { useAppSelector } from "@/redux/store";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import DeleteEvaluation from "@/components/DeleteEvaluation";
 
 const TableEvaluations = ({ report }: { report: Report }) => {

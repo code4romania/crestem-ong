@@ -1,5 +1,5 @@
 import { ChevronRightIcon, HomeIcon } from "@heroicons/react/20/solid";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 export default function Example({
   pages,

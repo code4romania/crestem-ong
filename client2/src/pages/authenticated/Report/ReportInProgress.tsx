@@ -6,7 +6,7 @@ import TableEvaluations from "@/components/TableEvaluations";
 import Confirm from "@/components/Confirm";
 import { useUpdateReportMutation } from "@/redux/api/userApi";
 import { ErrorMessage } from "@hookform/error-message";
-import { object, string, date, preprocess, array, TypeOf } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -55,13 +55,13 @@ const ReportInProgress = ({ report }) => {
     }
   }, [isSuccess]);
 
-  const reportSchema = object({
-    deadline: preprocess((arg) => {
+  const reportSchema = z.object({
+    deadline: z.preprocess((arg) => {
       if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
-    }, date().min(new Date(), { message: "Alegeti o data in viitor" })),
+    }, z.date().min(new Date(), { message: "Alegeti o data in viitor" })),
   });
 
-  type ReportInput = TypeOf<typeof reportSchema>;
+  type ReportInput = z.infer<typeof reportSchema>;
 
   const { register, handleSubmit, formState } = useForm<ReportInput>({
     resolver: zodResolver(reportSchema),

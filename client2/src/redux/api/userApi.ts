@@ -4,7 +4,7 @@ import type { RootState } from "@/redux/store";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import qs from "qs";
 import { setUser } from "../features/userSlice";
-import {
+import type {
   Dimension,
   Evaluation,
   EvaluationMatrix,

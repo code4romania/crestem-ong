@@ -10,27 +10,27 @@ import {
 } from "@/redux/api/userApi";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { array, custom, number, object, string, TypeOf } from "zod";
+import { z } from "zod";
 import { ErrorMessage } from "@hookform/error-message";
 import MultiSelect from "@/components/MultiSelect";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { toast } from "react-toastify";
 import Avatar from "@/components/Avatar";
 
-const mentorSchema = object({
-  firstName: string().min(1, "Nume este obligatoriu"),
-  lastName: string().min(1, "Prenume este obligatoriu"),
-  email: string()
-    .min(1, "Adresa de email este obligatorie")
-    .email("Adresa de email este invalidă"),
-  bio: string().min(1, "Adaugati o scurta descriere"),
-  expertise: string().nullish(),
-  dimensions: array(number()).min(1, "Selectează cel puțin o specializare"),
-  programs: array(number()).min(1, "Selectează cel puțin un program"),
-  avatar: custom<File[]>(),
+const mentorSchema = z.object({
+  firstName: z.string().min(1, "Nume este obligatoriu"),
+  lastName: z.string().min(1, "Prenume este obligatoriu"),
+  email: z
+    .email("Adresa de email este invalidă")
+    .min(1, "Adresa de email este obligatorie"),
+  bio: z.string().min(1, "Adaugati o scurta descriere"),
+  expertise: z.string().nullish(),
+  dimensions: z.array(z.number()).min(1, "Selectează cel puțin o specializare"),
+  programs: z.array(z.number()).min(1, "Selectează cel puțin un program"),
+  avatar: z.custom<File[]>(),
 });
 
-export type MentorInput = TypeOf<typeof mentorSchema>;
+export type MentorInput = z.infer<typeof mentorSchema>;
 
 const InputField = ({
   label,

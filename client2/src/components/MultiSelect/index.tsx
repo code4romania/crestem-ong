@@ -1,4 +1,11 @@
-import { Combobox, Transition } from "@headlessui/react";
+import {
+  Combobox,
+  ComboboxButton,
+  ComboboxInput,
+  ComboboxOption,
+  ComboboxOptions,
+  Transition,
+} from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { type ChangeEventHandler, Fragment, useEffect, useState } from "react";
 
@@ -12,9 +19,9 @@ export default function MultiSelect({
 }: {
   name: string;
   label: string;
-  defaultValues: { label: string; name: string }[];
-  options: { label: string; name: string }[];
-  onChange: ChangeEventHandler;
+  defaultValues: { id: string; label: string; name: string }[];
+  options: { id: string | number; label: string; name: string }[];
+  onChange: (event: { target: any; type?: any }) => Promise<void | boolean>;
   required?: boolean;
 }) {
   const [selectedItems, setSelectedItems] = useState(defaultValues);
@@ -51,19 +58,19 @@ export default function MultiSelect({
         <Combobox value={selectedItems} onChange={setSelectedItems} multiple>
           <div className="relative mt-1">
             <div className="">
-              <Combobox.Input
+              <ComboboxInput<{ label: string; name: string }[]>
                 className="mt-1 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-teal-500 sm:text-sm sm:leading-6"
                 onChange={(event) => setQuery(event.target.value)}
                 displayValue={(options) =>
                   options.map((option) => option.name).join(", ")
                 }
               />
-              <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+              <ComboboxButton className="absolute inset-y-0 right-0 flex items-center pr-2">
                 <ChevronUpDownIcon
                   className="h-5 w-5 text-gray-400"
                   aria-hidden="true"
                 />
-              </Combobox.Button>
+              </ComboboxButton>
             </div>
             <Transition
               as={Fragment}
@@ -72,27 +79,27 @@ export default function MultiSelect({
               leaveTo="opacity-0"
               afterLeave={() => setQuery("")}
             >
-              <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-20">
+              <ComboboxOptions className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-20">
                 {filteredPeople.length === 0 && query !== "" ? (
                   <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                     Nu am găsit niciun domeniu similar.
                   </div>
                 ) : (
                   filteredPeople.map((option) => (
-                    <Combobox.Option
+                    <ComboboxOption
                       key={option.id}
-                      className={({ active }) =>
+                      className={({ selected }) =>
                         `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                          active ? "bg-teal-600 text-white" : "text-gray-900"
+                          selected ? "bg-teal-600 text-white" : "text-gray-900"
                         }`
                       }
                       value={option}
                     >
-                      {({ selected, active }) => (
+                      {({ focus, selected }) => (
                         <>
                           <span
                             className={`block truncate ${
-                              selected ? "font-medium" : "font-normal"
+                              focus ? "font-medium" : "font-normal"
                             }`}
                           >
                             {option.name}
@@ -100,7 +107,7 @@ export default function MultiSelect({
                           {selected ? (
                             <span
                               className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                active ? "text-white" : "text-teal-600"
+                                selected ? "text-white" : "text-teal-600"
                               }`}
                             >
                               <CheckIcon
@@ -111,10 +118,10 @@ export default function MultiSelect({
                           ) : null}
                         </>
                       )}
-                    </Combobox.Option>
+                    </ComboboxOption>
                   ))
                 )}
-              </Combobox.Options>
+              </ComboboxOptions>
             </Transition>
           </div>
         </Combobox>

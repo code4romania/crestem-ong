@@ -42,7 +42,7 @@ const getSheets = (data: Program, matrix: Matrix): Sheet[] => {
         ? user.ongName.slice(0, 23) + "..."
         : user.ongName;
 
-    const rows = [];
+    const rows: any[] = [];
 
     user.reports.forEach((report: any) => {
       const evaluationsCompleted = evaluationsCompletedFilter(
@@ -78,7 +78,7 @@ const getSheets = (data: Program, matrix: Matrix): Sheet[] => {
         "Scor total obținut": totalScore,
       };
 
-      scoreByEvaluation.forEach(({ name, score }, index) => {
+      scoreByEvaluation?.forEach(({ name, score }, index) => {
         row[`Scor ${name}`] = score;
         row[`Comentariu ${name}`] = evaluationsCompleted
           .map((evaluation: any) => evaluation.dimensions[index].comment)

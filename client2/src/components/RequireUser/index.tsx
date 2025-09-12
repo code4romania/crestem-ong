@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/redux/store";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "@tanstack/react-router";
 
 const RequireUser = () => {
   const location = useLocation();

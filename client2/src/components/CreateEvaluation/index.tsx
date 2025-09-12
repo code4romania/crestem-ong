@@ -1,18 +1,18 @@
 import React, { useCallback, useEffect } from "react";
 import Button from "@/components/Button";
 import { useCreateEvaluationMutation } from "@/redux/api/userApi";
-import { object, string, TypeOf } from "zod";
+import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import { ErrorMessage } from "@hookform/error-message";
 
-const evaluationSchema = object({
-  email: string()
-    .min(1, "Vă rugăm introduceți adresa de email")
-    .email("Adresa de email este invalidă"),
+const evaluationSchema = z.object({
+  email: z
+    .email("Adresa de email este invalidă")
+    .min(1, "Vă rugăm introduceți adresa de email"),
 });
-export type EvaluationInput = TypeOf<typeof evaluationSchema>;
+export type EvaluationInput = z.infer<typeof evaluationSchema>;
 
 const CreateEvaluation = ({ reportId }: { reportId: string }) => {
   const [createEvaluation, { isSuccess, isError }] =

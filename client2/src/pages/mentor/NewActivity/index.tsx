@@ -10,12 +10,12 @@ import {
 import Select from "@/components/Select";
 import Form from "@/components/Form";
 import { useAppSelector } from "@/redux/store";
-import { User } from "@/redux/api/types";
+import type { User } from "@/redux/api/types";
 import { ErrorMessage } from "@hookform/error-message";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { object, string, TypeOf } from "zod";
-import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { useNavigate } from "@tanstack/react-router";
 
 const ButtonGroup = ({ className }: { className?: string }) => (
   <div className={`${className} flex space-x-4 justify-end`}>
@@ -26,16 +26,16 @@ const ButtonGroup = ({ className }: { className?: string }) => (
   </div>
 );
 
-const activitySchema = object({
-  user: string(),
-  dimension: string(),
-  startDate: string().min(1, "Introduceti data activitatii"),
-  type: string(),
-  duration: string().min(1, "Introduceti durata activitatii"),
-  notes: string().optional(),
+const activitySchema = z.object({
+  user: z.string(),
+  dimension: z.string(),
+  startDate: z.string().min(1, "Introduceti data activitatii"),
+  type: z.string(),
+  duration: z.string().min(1, "Introduceti durata activitatii"),
+  notes: z.string().optional(),
 });
 
-export type ActivityInput = TypeOf<typeof activitySchema>;
+export type ActivityInput = z.infer<typeof activitySchema>;
 
 const NewActivity = () => {
   const user = useAppSelector((state) => state.userState.user);

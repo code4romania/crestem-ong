@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { array, boolean, custom, number, object, string, TypeOf } from "zod";
-import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
+import { z } from "zod";
+import { type SubmitHandler, useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
@@ -13,28 +13,28 @@ import {
   useUpdateUserMutation,
   useUploadMutation,
 } from "@/redux/api/userApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import MultiSelect from "@/components/MultiSelect";
 import { ErrorMessage } from "@hookform/error-message";
 import Toggle from "@/components/Toggle";
 import Select from "@/components/Select";
 import Avatar from "@/components/Avatar";
 
-const mentorProfileSchema = object({
-  firstName: string().min(1, "Nume este obligatoriu"),
-  lastName: string().min(1, "Prenume este obligatoriu"),
-  email: string()
-    .min(1, "Adresa de email este obligatorie")
-    .email("Adresa de email este invalidă"),
-  bio: string().min(1, "Adaugati o scurta descriere"),
-  expertise: string().nullish(),
-  dimensions: array(number()).min(1, "Selectează cel puțin o specializare"),
-  program: string(),
-  available: boolean(),
-  avatar: custom<File[]>(),
+const mentorProfileSchema = z.object({
+  firstName: z.string().min(1, "Nume este obligatoriu"),
+  lastName: z.string().min(1, "Prenume este obligatoriu"),
+  email: z
+    .email("Adresa de email este invalidă")
+    .min(1, "Adresa de email este obligatorie"),
+  bio: z.string().min(1, "Adaugati o scurta descriere"),
+  expertise: z.string().nullish(),
+  dimensions: z.array(z.number()).min(1, "Selectează cel puțin o specializare"),
+  program: z.string(),
+  available: z.boolean(),
+  avatar: z.custom<File[]>(),
 });
 
-export type MentorProfileInput = TypeOf<typeof mentorProfileSchema>;
+export type MentorProfileInput = z.infer<typeof mentorProfileSchema>;
 
 const EditProfile = () => {
   const user = useAppSelector((state) => state.userState.user);
@@ -55,7 +55,7 @@ const EditProfile = () => {
     defaultValues: {
       ...user,
       available: user.available || false,
-      program: user.program.id.toString(),
+      program: user.program.id.toz.String(),
       dimensions: user.dimensions.map(({ id }) => id),
       bio: user?.bio || "",
     },
@@ -97,7 +97,7 @@ const EditProfile = () => {
 
       formData.append(`files`, data.avatar[0], data.avatar[0].name);
       formData.append(`ref`, "plugin::users-permissions.user");
-      formData.append(`refId`, user?.id?.toString() || "");
+      formData.append(`refId`, user?.id?.toz.String() || "");
       formData.append(`field`, "avatar");
       uploadAvatar(formData);
     }

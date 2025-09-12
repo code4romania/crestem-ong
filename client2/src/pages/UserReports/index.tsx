@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "@tanstack/react-router";
 import { useGetUserReportsQuery } from "@/redux/api/userApi";
 import TableHeadReports from "@/components/index/TableHeadReports";
 import Section from "@/components/Section";

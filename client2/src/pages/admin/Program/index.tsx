@@ -7,7 +7,7 @@ import {
   useGetUsersQuery,
   useUpdateProgramMutation,
 } from "@/redux/api/userApi";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useParams } from "@tanstack/react-router";
 import FullScreenLoader from "@/components/FullScreenLoader";
 import Table from "@/components/Table";
 import Button from "@/components/Button";
@@ -76,7 +76,7 @@ const Program = () => {
             <Heading level={"h2"}>{data.name}</Heading>
           </div>
 
-          <ExportProgram data={data}/>
+          <ExportProgram data={data} />
         </div>
       </Section>
       <Section>
@@ -130,14 +130,13 @@ const Program = () => {
             `${user.contactFirstName} ${user.contactLastName}`,
             "-",
             user.reports?.length
-              ? new Date(user.reports[user.reports.length - 1].createdAt).toLocaleString(
-                  "ro-RO",
-                  {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  }
-                )
+              ? new Date(
+                  user.reports[user.reports.length - 1].createdAt
+                ).toLocaleString("ro-RO", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })
               : "-",
             <NavLink to={`/users/${user.id}`}>Vezi</NavLink>,
           ])}

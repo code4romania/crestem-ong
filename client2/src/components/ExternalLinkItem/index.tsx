@@ -3,10 +3,6 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 const ExternalLinkItem = ({ options, defaultValue }) => {
-  const optionsLabels = useMemo(
-    () => options.map(({ label }) => label),
-    [options]
-  );
   const [name, setName] = useState(defaultValue);
   const { register } = useFormContext();
   const handleChangeLinkType = useCallback(

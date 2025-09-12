@@ -9,15 +9,15 @@ import {
   useState,
 } from "react";
 import { downloadExcel } from "react-export-table-to-excel";
-import { Link } from "react-router-dom";
-import { object, string, TypeOf } from "zod";
+import { Link } from "@tanstack/react-router";
+import { z } from "zod";
 
-const filtersSchema = object({
-  search: string(),
-  startDate: string(),
-  endDate: string(),
+const filtersSchema = z.object({
+  search: z.string(),
+  startDate: z.string(),
+  endDate: z.string(),
 });
-export type FiltersInput = TypeOf<typeof filtersSchema>;
+export type FiltersInput = z.infer<typeof filtersSchema>;
 
 const UsersTable = () => {
   const tableRef = useRef(null);

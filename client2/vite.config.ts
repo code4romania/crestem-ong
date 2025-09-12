@@ -1,11 +1,13 @@
 /* SPDX-FileCopyrightText: 2014-present Kriasoft */
 /* SPDX-License-Identifier: MIT */
-
+import path from "path";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-swc";
 import { URL, fileURLToPath } from "node:url";
 import { loadEnv } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { defineProject } from "vitest/config";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 
 const publicEnvVars = ["VITE_SERVER_ENDPOINT", "NODE_ENV"];
 
@@ -23,44 +25,34 @@ export default defineProject(({ mode }) => {
   });
 
   return {
-    cacheDir: fileURLToPath(new URL("../../.cache/vite-app", import.meta.url)),
-
-    build: {
-      rollupOptions: {
-        output: {
-          assetFileNames: "_app/assets/[name]-[hash][extname]",
-          chunkFileNames: "_app/assets/[name]-[hash].js",
-          entryFileNames: "_app/assets/[name]-[hash].js",
-          manualChunks: {
-            react: ["react", "react-dom"],
-            ui: [
-              "@radix-ui/react-slot",
-              "class-variance-authority",
-              "clsx",
-              "tailwind-merge",
-            ],
-          },
-        },
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
       },
     },
 
-    resolve: {
-      conditions: ["module", "browser", "development|production"],
-    },
-
     css: {
-      postcss: "./postcss.config.js",
+      postcss: "./src/postcss.config.js",
     },
 
     plugins: [
       tsconfigPaths(),
+      tanstackRouter({
+        autoCodeSplitting: true,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      }) as any,
       // https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react-swc
       react(),
+      tailwindcss(),
     ],
 
-    test: {
-      ...{ cache: { dir: "../../.cache/vitest" } },
-      environment: "happy-dom",
+    server: {
+      host: true, // allows access via LAN/Docker
+      strictPort: false,
+      hmr: {
+        protocol: "ws", // or "wss" if using HTTPS
+        host: "localhost", // change to your machine IP if accessed remotely
+      },
     },
   };
 });

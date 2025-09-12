@@ -1,19 +1,19 @@
-import React, { useCallback } from "react";
 import screenshot from "@/assets/illustration.svg";
 import Button from "@/components/Button";
-import { useForm } from "react-hook-form";
-import { object, string, TypeOf } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ErrorMessage } from "@hookform/error-message";
 import Section from "@/components/Section";
 import { useForgotPasswordMutation } from "@/redux/api/authApi";
+import { ErrorMessage } from "@hookform/error-message";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-const forgotPasswordSchema = object({
-  email: string()
-    .min(1, "Adresa de email este obligatorie")
-    .email("Adresa de email este invalidă"),
+const forgotPasswordSchema = z.object({
+  email: z
+    .email("Adresa de email este invalidă")
+    .min(1, "Adresa de email este obligatorie"),
 });
-export type ForgotPasswordInput = TypeOf<typeof forgotPasswordSchema>;
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPassword = () => {
   const [sendForgotPasswordRequest] = useForgotPasswordMutation();

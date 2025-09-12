@@ -1,18 +1,34 @@
-import { Fragment, useCallback, useRef } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import Select from "@/components/Select";
-import { FormProvider, useForm } from "react-hook-form";
 import Button from "@/components/Button";
-import { object, string, TypeOf } from "zod";
+import Select from "@/components/Select";
+import {
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Transition,
+  TransitionChild,
+} from "@headlessui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Fragment, useCallback, useRef } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { z } from "zod";
 
-const userIdSchema = object({
-  mentor: string(),
+const userIdSchema = z.object({
+  mentor: z.string(),
 });
 
-export type UserIdSchema = TypeOf<typeof userIdSchema>;
-
-const AddMentorInProgram = ({ open, setOpen, onSave, mentors }) => {
+export type UserIdSchema = z.infer<typeof userIdSchema>;
+export interface AddMentorInProgramProps {
+  open: boolean;
+  mentors: { id: string; firstName: string; lastName: string }[];
+  setOpen: (value: boolean) => void;
+  onSave: (data: UserIdSchema, setOpen: (value: boolean) => void) => void;
+}
+const AddMentorInProgram = ({
+  open,
+  setOpen,
+  onSave,
+  mentors,
+}: AddMentorInProgramProps) => {
   const cancelButtonRef = useRef(null);
   const methods = useForm<UserIdSchema>({
     resolver: zodResolver(userIdSchema),
@@ -22,14 +38,14 @@ const AddMentorInProgram = ({ open, setOpen, onSave, mentors }) => {
   }, []);
 
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition show={open} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
         onClose={setOpen}
       >
-        <Transition.Child
+        <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
           enterFrom="opacity-0"
@@ -39,12 +55,12 @@ const AddMentorInProgram = ({ open, setOpen, onSave, mentors }) => {
           leaveTo="opacity-0"
         >
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-        </Transition.Child>
+        </TransitionChild>
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
             <div className="fixed inset-0 z-10 overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
-                <Transition.Child
+                <TransitionChild
                   as={Fragment}
                   enter="ease-out duration-300"
                   enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -53,15 +69,15 @@ const AddMentorInProgram = ({ open, setOpen, onSave, mentors }) => {
                   leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                   leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 >
-                  <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-lg sm:p-6">
+                  <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-lg sm:p-6">
                     <div>
                       <div className="mt-3 text-center sm:mt-5">
-                        <Dialog.Title
+                        <DialogTitle
                           as="h3"
                           className="text-base font-semibold leading-6 text-gray-900"
                         >
                           Adaugă persoană resursă în program
-                        </Dialog.Title>
+                        </DialogTitle>
                       </div>
                       <div className="mt-10">
                         <Select
@@ -83,14 +99,14 @@ const AddMentorInProgram = ({ open, setOpen, onSave, mentors }) => {
                       </Button>
                       <Button type="submit">Salvează</Button>
                     </div>
-                  </Dialog.Panel>
-                </Transition.Child>
+                  </DialogPanel>
+                </TransitionChild>
               </div>
             </div>
           </form>
         </FormProvider>
       </Dialog>
-    </Transition.Root>
+    </Transition>
   );
 };
 

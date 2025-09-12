@@ -5,7 +5,7 @@ import Heading from "@/components/Heading";
 import Table from "@/components/Table";
 import Button from "@/components/Button";
 import Avatar from "@/components/Avatar";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 const Profile = () => {
   const user = useAppSelector((state) => state.userState.user);

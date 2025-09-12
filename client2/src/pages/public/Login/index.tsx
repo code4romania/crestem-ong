@@ -1,31 +1,51 @@
-import React, { memo, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
-import { object, string, TypeOf } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useLoginUserMutation } from "@/redux/api/authApi";
-import Section from "@/components/Section";
-import { useAppDispatch } from "@/redux/store";
-import { setToken } from "@/redux/features/userSlice";
-import { toast } from "react-toastify";
-import Heading from "@/components/Heading";
 import screenshot from "@/assets/illustration.svg";
 import Button from "@/components/Button";
-import Form from "@/components/Form";
+import Heading from "@/components/Heading";
+import Section from "@/components/Section";
+import { useLoginUserMutation } from "@/redux/api/authApi";
+import { setToken } from "@/redux/features/userSlice";
+import { useAppDispatch } from "@/redux/store";
+import { ErrorMessage } from "@hookform/error-message";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
+import { memo, useEffect } from "react";
+import {
+  type FieldValues,
+  FormProvider,
+  type SubmitHandler,
+  useForm,
+  type Path,
+  type FieldErrors,
+  type UseFormRegister,
+} from "react-hook-form";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { toast } from "react-toastify";
+import { z } from "zod";
 
-const loginSchema = object({
-  identifier: string()
-    .min(1, "Adresa de email este obligatorie")
-    .email("Adresa de email este invalidă"),
-  password: string()
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
+
+const loginSchema = z.object({
+  identifier: z
+    .email("Adresa de email este invalidă")
+    .min(1, "Adresa de email este obligatorie"),
+  password: z
+    .string()
     .min(1, "Parola este obligatorie")
     .min(8, "Parola trebuie sa contina cel putin 8 caractere")
     .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
 });
 
-export type LoginInput = TypeOf<typeof loginSchema>;
+export type LoginInput = z.infer<typeof loginSchema>;
 
 const FormHeader = memo(() => (
   <>
@@ -60,29 +80,10 @@ const FormFooter = memo(() => (
   </div>
 ));
 
-const Input = ({ register, name, label, errors, ...rest }) => (
-  <div className="container mt-0 mr-auto mb-0 ml-auto pt-2 pr-4 pb-2">
-    <label className="block text-sm font-medium text-gray-700">{label}</label>
-    <div className="mt-1 mr-0 mb-0 ml-0 rounded-md shadow-sm relative">
-      <input
-        className="border focus:ring-teal-500 focus:border-teal-500
-            w-full h-10 block border-gray-300 shadow-sm pt-0 pr-0 pb-0 pl-4 rounded-md sm:text-sm"
-        {...register(name)}
-        {...rest}
-      />
-      {errors && (
-        <div className="text-red-400 text-sm py-2">
-          <ErrorMessage errors={errors} name={name} />
-        </div>
-      )}
-    </div>
-  </div>
-);
-
 const Login = memo(() => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const methods = useForm<LoginInput>({
+  const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
   });
 
@@ -90,7 +91,7 @@ const Login = memo(() => {
     register,
     formState: { errors },
     handleSubmit,
-  } = methods;
+  } = form;
 
   const [loginUser, { isLoading, isError, error, isSuccess, data }] =
     useLoginUserMutation();
@@ -125,28 +126,48 @@ const Login = memo(() => {
   return (
     <Section>
       <div className="grid md:grid-cols-2 items-center justify-center mt-0 mr-auto mb-0 ml-auto gap-8">
-        <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onSubmitHandler)}>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmitHandler)}
+            className="space-y-8"
+          >
             <FormHeader />
-            <Input
-              label="Email"
-              placeholder="Introdu email"
+
+            <FormField
+              control={form.control}
               name="identifier"
-              type="email"
-              register={register}
-              errors={errors}
-              required
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Introdu email"
+                      type="email"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            <Form.Password
-              register={register}
-              name={"password"}
-              label="Parola"
-              placeholder="Introdu parola"
+
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Parola</FormLabel>
+                  <FormControl>
+                    <PasswordInput placeholder="Introdu parola" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
             <FormFooter />
-            <Button>Intra in cont</Button>
+            <Button type="submit">Intra in cont</Button>
           </form>
-        </FormProvider>
+        </Form>
         <div>
           <img src={screenshot} alt={"screenshot"} />
         </div>

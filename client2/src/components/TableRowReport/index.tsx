@@ -1,8 +1,15 @@
 import React, { memo } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { calcScore } from "@/lib/score";
 
-const TableRowReport = ({ id, createdAt, deadline, evaluations, finished, actionLabel = "Vezi"}) => {
+const TableRowReport = ({
+  id,
+  createdAt,
+  deadline,
+  evaluations,
+  finished,
+  actionLabel = "Vezi",
+}) => {
   const evaluationsCompleted = evaluations
     ? evaluations.filter(({ dimensions }) => dimensions.length === 10)
     : [];

@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { custom, literal, number, object, string, TypeOf } from "zod";
+import { z } from "zod";
 import { type SubmitHandler, useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Heading from "@/components/Heading";
@@ -12,7 +12,7 @@ import {
   useUpdateUserMutation,
   useUploadMutation,
 } from "@/redux/api/userApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import MultiSelect from "@/components/MultiSelect";
 import { ErrorMessage } from "@hookform/error-message";
 import Select from "@/components/Select";
@@ -20,39 +20,38 @@ import citiesByCounty from "@/lib/orase-dupa-judet.json";
 import SocialNetworkLinks from "@/components/SocialNetworkLinks";
 import Avatar from "@/components/Avatar";
 
-const ongProfileSchema = object({
-  id: number(),
-  ongName: string().min(1, "Numele organizatiei este obligatoriu"),
-  ongIdentificationNumber: string().min(
-    1,
-    "Numarul de identifiare este obligatoriu"
-  ),
-  county: string().min(1, "Judetul este obligatoriu"),
-  city: string().min(1, "Orasul este obligatoriu"),
-  email: string()
-    .min(1, "Adresa de email este obligatorie")
-    .email("Adresa de email este invalidă"),
-  phone: string().min(1, "Telefonul este obligatoriu"),
-  avatar: custom<File[]>(),
-  domains: number().array().optional(),
-  website: string(),
-  keywords: string(),
-  description: string(),
-  contactFirstName: string(),
-  contactLastName: string(),
-  contactEmail: string()
+const ongProfileSchema = z.object({
+  id: z.number(),
+  ongName: z.string().min(1, "Numele organizatiei este obligatoriu"),
+  ongIdentificationNumber: z
+    .string()
+    .min(1, "Numarul de identifiare este obligatoriu"),
+  county: z.string().min(1, "Judetul este obligatoriu"),
+  city: z.string().min(1, "Orasul este obligatoriu"),
+  email: z
+    .email("Adresa de email este invalidă")
+    .min(1, "Adresa de email este obligatorie"),
+  phone: z.string().min(1, "Telefonul este obligatoriu"),
+  avatar: z.custom<File[]>(),
+  domains: z.array(z.number()).optional(),
+  website: z.string(),
+  keywords: z.string(),
+  description: z.string(),
+  contactFirstName: z.string(),
+  contactLastName: z.string(),
+  contactEmail: z
     .email("Adresa de email este invalida")
     .optional()
-    .or(literal("")),
-  contactPhone: string(),
-  accountFacebook: string().optional(),
-  accountTwitter: string().optional(),
-  accountTiktok: string().optional(),
-  accountInstagram: string().optional(),
-  accountLinkedin: string().optional(),
+    .or(z.literal("")),
+  contactPhone: z.string(),
+  accountFacebook: z.string().optional(),
+  accountTwitter: z.string().optional(),
+  accountTiktok: z.string().optional(),
+  accountInstagram: z.string().optional(),
+  accountLinkedin: z.string().optional(),
 });
 
-export type OngProfileInput = TypeOf<typeof ongProfileSchema>;
+export type OngProfileInput = z.infer<typeof ongProfileSchema>;
 
 const OngEditProfile = () => {
   const user = useAppSelector((state) => state.userState.user);

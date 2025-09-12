@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect } from "react";
 import Section from "@/components/Section";
 import { useCreateReportMutation } from "@/redux/api/userApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import Button from "@/components/Button";
 import { useForm } from "react-hook-form";
-import { object, string, date, preprocess, array, TypeOf } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorMessage } from "@hookform/error-message";
 import { toast } from "react-toastify";
 
-const emailListSchema = array(
-  string().email("Adresa de email este invalidă")
-).nonempty();
+const emailListSchema = z
+  .array(z.email("Adresa de email este invalidă"))
+  .nonempty();
 const validateEmails = (input: string) => {
   const emails = input.trim().split(/\r?\n/); // split input by new line
   const emailList = emailListSchema.safeParse(emails);
@@ -19,17 +19,17 @@ const validateEmails = (input: string) => {
   return emailList.success;
 };
 
-const reportSchema = object({
-  deadline: preprocess((arg) => {
+const reportSchema = z.object({
+  deadline: z.preprocess((arg) => {
     if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
-  }, date().min(new Date(), { message: "Alegeti o data in viitor" })),
-  evaluations: string().refine(validateEmails, {
+  }, z.date().min(new Date(), { message: "Alegeti o data in viitor" })),
+  evaluations: z.string().refine(validateEmails, {
     message:
       "Ne pare rău, nu am putut procesa informațiile introduse. Vă rugăm să verificați informațiile și să încercați din nou.",
   }),
 });
 
-export type ReportInput = TypeOf<typeof reportSchema>;
+export type ReportInput = z.infer<typeof reportSchema>;
 
 const ButtonGroup = ({ className }: { className?: string }) => (
   <div className={`${className} flex space-x-4`}>

@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { calcScore } from "@/lib/score";
 import { evaluationsCompletedFilter } from "@/lib/filters";
 

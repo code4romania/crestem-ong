@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "@tanstack/react-router";
 import { useFindReportQuery, userApi } from "@/redux/api/userApi";
 import Section from "@/components/Section";
 import Heading from "@/components/Heading";

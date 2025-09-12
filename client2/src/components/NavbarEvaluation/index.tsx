@@ -1,6 +1,6 @@
 import logo from "@/assets/logo.png";
 import type { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 const NavbarEvaluation = ({
   children,

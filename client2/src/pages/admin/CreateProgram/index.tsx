@@ -4,24 +4,45 @@ import Section from "@/components/Section";
 import Heading from "@/components/Heading";
 import Button from "@/components/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { date, object, preprocess, string, TypeOf } from "zod";
+import { z } from "zod";
 import { ErrorMessage } from "@hookform/error-message";
 import { useCreateProgramMutation } from "@/redux/api/userApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 
-const programSchema = object({
-  name: string().min(1, "Denumirea programului este obligatorie"),
-  startDate: preprocess((arg) => {
-    if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
-  }, date({ invalid_type_error: "Alegeti o data" }).min(new Date(), { message: "Alegeti o data in viitor" })),
-  endDate: preprocess((arg) => {
-    if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
-  }, date({ invalid_type_error: "Alegeti o data" }).min(new Date(), { message: "Alegeti o data in viitor" })),
-  description: string(),
-  sponsorName: string().optional(),
-});
+const programSchema = z
+  .object({
+    name: z.string().min(1, "Denumirea programului este obligatorie"),
+    startDate: z.preprocess(
+      (arg) =>
+        typeof arg === "string" || arg instanceof Date
+          ? new Date(arg)
+          : undefined,
+      z.date({ error: "Alegeți o dată validă" })
+    ),
+    endDate: z.preprocess(
+      (arg) =>
+        typeof arg === "string" || arg instanceof Date
+          ? new Date(arg)
+          : undefined,
+      z.date({ error: "Alegeți o dată validă" })
+    ),
+    description: z.string().min(1, "Descrierea este obligatorie"),
+    sponsorName: z.string().optional(),
+  })
+  .refine((data) => data.startDate >= new Date(), {
+    message: "Data de început trebuie să fie în viitor",
+    path: ["startDate"],
+  })
+  .refine((data) => data.endDate >= new Date(), {
+    message: "Data de sfârșit trebuie să fie în viitor",
+    path: ["endDate"],
+  })
+  .refine((data) => data.endDate >= data.startDate, {
+    message: "Data de sfârșit trebuie să fie după data de început",
+    path: ["endDate"],
+  });
 
-export type ProgramInput = TypeOf<typeof programSchema>;
+export type ProgramInput = z.infer<typeof programSchema>;
 
 const Input = ({ register, name, label, errors, ...rest }) => (
   <div className="container mt-0 mr-auto mb-0 ml-auto pt-2 pb-2">

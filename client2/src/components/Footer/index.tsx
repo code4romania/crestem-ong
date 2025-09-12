@@ -1,6 +1,6 @@
 import MadeBy from "@/components/MadeBy";
 import Section from "@/components/Section";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 const Footer = () => (
   <>

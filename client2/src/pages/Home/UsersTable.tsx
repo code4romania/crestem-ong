@@ -6,31 +6,37 @@ import {
   useRef,
   useState,
 } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { downloadExcel } from "react-export-table-to-excel";
 import Input from "@/components/Input";
-import { useGetDomainsQuery, useGetProgramsQuery, useGetUsersQuery } from "@/redux/api/userApi";
+import {
+  useGetDomainsQuery,
+  useGetProgramsQuery,
+  useGetUsersQuery,
+} from "@/redux/api/userApi";
 import Button from "@/components/Button";
-import { object, string, TypeOf } from "zod";
+import { z } from "zod";
 import citiesByCounty from "@/lib/orase-dupa-judet.json";
 import formatDate from "@/lib/formatDate";
 
-const filtersSchema = object({
-  search: string(),
-  createdAtDateFrom: string(),
-  createdAtDateUntil: string(),
-  latestEvaluationDateFrom: string(),
-  latestEvaluationDateUntil: string(),
+const filtersSchema = z.object({
+  search: z.string(),
+  createdAtDateFrom: z.string(),
+  createdAtDateUntil: z.string(),
+  latestEvaluationDateFrom: z.string(),
+  latestEvaluationDateUntil: z.string(),
 });
-export type FiltersInput = TypeOf<typeof filtersSchema>;
+export type FiltersInput = z.infer<typeof filtersSchema>;
 
 const UsersTable = () => {
-  const counties = [...Object.keys(citiesByCounty)
-    .sort()
-    .map((county: string) => ({
-      label: county,
-      name: county,
-    }))];
+  const counties = [
+    ...Object.keys(citiesByCounty)
+      .sort()
+      .map((county: string) => ({
+        label: county,
+        name: county,
+      })),
+  ];
 
   const tableRef = useRef(null);
   const { data } = useGetUsersQuery(null);
@@ -40,7 +46,8 @@ const UsersTable = () => {
   const [createdAtDateFrom, setCreatedAtDateFrom] = useState("");
   const [createdAtDateUntil, setCreatedAtDateUntil] = useState("");
   const [latestEvaluationDateFrom, setLatestEvaluationDateFrom] = useState("");
-  const [latestEvaluationDateUntil, setLatestEvaluationDateUntil] = useState("");
+  const [latestEvaluationDateUntil, setLatestEvaluationDateUntil] =
+    useState("");
   const [county, setCounty] = useState("");
   const [locality, setLocality] = useState("");
   const [domain, setDomain] = useState(-1);
@@ -53,18 +60,18 @@ const UsersTable = () => {
     () =>
       county
         ? [
-          ...citiesByCounty[county].map((city) => city.nume)
-            .filter((value, index, array) => array.indexOf(value) === index)
-            .sort()
-            .map((city) => ({
-              name: city,
-              label: city,
-            }))
-        ]
+            ...citiesByCounty[county]
+              .map((city) => city.nume)
+              .filter((value, index, array) => array.indexOf(value) === index)
+              .sort()
+              .map((city) => ({
+                name: city,
+                label: city,
+              })),
+          ]
         : [],
     [citiesByCounty, county]
   );
-
 
   const header = [
     "NUME ONG",
@@ -76,31 +83,41 @@ const UsersTable = () => {
     "ULTIMA EVALUARE",
   ];
 
-  const body = filtered.map(({ ongName, createdAt, reports, program, county, city, domains }) => ({
-    ongName,
-    createdAt: formatDate(createdAt),
-    program: program || "-",
-    county,
-    city,
-    domains: domains?.length ? domains.map(d => d.name).join(",") : "-",
-    lastEvaluationDate: reports?.length
-      ? formatDate(reports[reports?.length - 1].createdAt)
-      : "-",
-  }));
+  const body = filtered.map(
+    ({ ongName, createdAt, reports, program, county, city, domains }) => ({
+      ongName,
+      createdAt: formatDate(createdAt),
+      program: program || "-",
+      county,
+      city,
+      domains: domains?.length ? domains.map((d) => d.name).join(",") : "-",
+      lastEvaluationDate: reports?.length
+        ? formatDate(reports[reports?.length - 1].createdAt)
+        : "-",
+    })
+  );
 
   const handleChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
-  const handleChangeCreatedAtDateFrom = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeCreatedAtDateFrom = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     setCreatedAtDateFrom(event.target.value);
   };
-  const HandleChangeCreatedAtDateUntil = (event: ChangeEvent<HTMLInputElement>) => {
+  const HandleChangeCreatedAtDateUntil = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     setCreatedAtDateUntil(event.target.value);
   };
-  const handleChangeLatestEvaluationDateFrom = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeLatestEvaluationDateFrom = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     setLatestEvaluationDateFrom(event.target.value);
   };
-  const handleChangeLatestEvaluationDateUntil = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeLatestEvaluationDateUntil = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     setLatestEvaluationDateUntil(event.target.value);
   };
 
@@ -141,27 +158,53 @@ const UsersTable = () => {
 
   useEffect(() => {
     const results = data?.filter((res) => {
-        const registeredDate = new Date(res.createdAt).setHours(0, 0, 0, 0);
-        const lastEvaluationDate = res.reports?.length
-          ? new Date(res.reports[res.reports?.length - 1].createdAt).setHours(0, 0, 0, 0)
-          : null;
+      const registeredDate = new Date(res.createdAt).setHours(0, 0, 0, 0);
+      const lastEvaluationDate = res.reports?.length
+        ? new Date(res.reports[res.reports?.length - 1].createdAt).setHours(
+            0,
+            0,
+            0,
+            0
+          )
+        : null;
 
-        return res.ongName?.toLowerCase().includes(searchTerm) &&
-          (createdAtDateFrom ? registeredDate >= new Date(createdAtDateFrom).setHours(0, 0, 0, 0) : true) &&
-          (createdAtDateUntil ? registeredDate <= new Date(createdAtDateUntil).setHours(0, 0, 0, 0) : true) &&
-
-          (lastEvaluationDate && latestEvaluationDateFrom ? lastEvaluationDate >= new Date(latestEvaluationDateFrom).setHours(0, 0, 0, 0) : true) &&
-          (lastEvaluationDate && latestEvaluationDateUntil ? lastEvaluationDate <= new Date(latestEvaluationDateUntil).setHours(0, 0, 0, 0) : true) &&
-
-          (!county || res.county === county) &&
-          (!locality || res.city === locality) &&
-          (domain === -1 || res.domains?.some(d => d.id === domain)) &&
-          (program === -1 || res.program?.id === program)
-      });
+      return (
+        res.ongName?.toLowerCase().includes(searchTerm) &&
+        (createdAtDateFrom
+          ? registeredDate >= new Date(createdAtDateFrom).setHours(0, 0, 0, 0)
+          : true) &&
+        (createdAtDateUntil
+          ? registeredDate <= new Date(createdAtDateUntil).setHours(0, 0, 0, 0)
+          : true) &&
+        (lastEvaluationDate && latestEvaluationDateFrom
+          ? lastEvaluationDate >=
+            new Date(latestEvaluationDateFrom).setHours(0, 0, 0, 0)
+          : true) &&
+        (lastEvaluationDate && latestEvaluationDateUntil
+          ? lastEvaluationDate <=
+            new Date(latestEvaluationDateUntil).setHours(0, 0, 0, 0)
+          : true) &&
+        (!county || res.county === county) &&
+        (!locality || res.city === locality) &&
+        (domain === -1 || res.domains?.some((d) => d.id === domain)) &&
+        (program === -1 || res.program?.id === program)
+      );
+    });
     if (results) {
       setFilterd(results);
     }
-  }, [data, searchTerm, createdAtDateFrom, createdAtDateUntil, latestEvaluationDateFrom, latestEvaluationDateUntil, county, locality, domain, program]);
+  }, [
+    data,
+    searchTerm,
+    createdAtDateFrom,
+    createdAtDateUntil,
+    latestEvaluationDateFrom,
+    latestEvaluationDateUntil,
+    county,
+    locality,
+    domain,
+    program,
+  ]);
 
   if (!data) {
     return <></>;
@@ -217,49 +260,52 @@ const UsersTable = () => {
                 onChange={handleChangeLatestEvaluationDateUntil}
                 value={latestEvaluationDateUntil}
               />
-
             </div>
           </div>
-          {programs?.length && <div>
-            <label>Programe</label>
+          {programs?.length && (
             <div>
-              <select
-                id={"programs"}
-                name={"programs"}
-                title={"Programe"}
-                className="relative mt-2 rounded-md shadow-sm block border-gray-300 focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                value={program}
-                onChange={handleChangeProgram}
-              >
-                <option key={-1} value={-1}></option>
-                {programs.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.name}
-                  </option>
-                ))}
-              </select>
+              <label>Programe</label>
+              <div>
+                <select
+                  id={"programs"}
+                  name={"programs"}
+                  title={"Programe"}
+                  className="relative mt-2 rounded-md shadow-sm block border-gray-300 focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                  value={program}
+                  onChange={handleChangeProgram}
+                >
+                  <option key={-1} value={-1}></option>
+                  {programs.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>}
-          {domains?.length && <div>
-            <label>Domenii activitate</label>
+          )}
+          {domains?.length && (
             <div>
-              <select
-                id={"domains"}
-                name={"domains"}
-                title={"Domenii activitate"}
-                className="relative mt-2 rounded-md shadow-sm block border-gray-300 focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                value={domain}
-                onChange={handleChangeDomain}
-              >
-                <option key={-1} value={-1}></option>
-                {domains.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.name}
-                  </option>
-                ))}
-              </select>
+              <label>Domenii activitate</label>
+              <div>
+                <select
+                  id={"domains"}
+                  name={"domains"}
+                  title={"Domenii activitate"}
+                  className="relative mt-2 rounded-md shadow-sm block border-gray-300 focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                  value={domain}
+                  onChange={handleChangeDomain}
+                >
+                  <option key={-1} value={-1}></option>
+                  {domains.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>}
+          )}
           <div>
             <label>Județ</label>
             <div>
@@ -335,7 +381,18 @@ const UsersTable = () => {
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
           {body.map(
-            ({ ongName, createdAt, program, county, city, domains, lastEvaluationDate }, index) => (
+            (
+              {
+                ongName,
+                createdAt,
+                program,
+                county,
+                city,
+                domains,
+                lastEvaluationDate,
+              },
+              index
+            ) => (
               <tr key={filtered[index]?.id}>
                 <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                   {ongName}

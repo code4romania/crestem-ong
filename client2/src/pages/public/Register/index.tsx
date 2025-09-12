@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { useRegisterUserMutation } from "@/redux/api/authApi";
-import { array, custom, literal, number, object, string, TypeOf } from "zod";
-import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
+import { z } from "zod";
+import { type SubmitHandler, useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
@@ -11,7 +11,7 @@ import { useAppDispatch } from "@/redux/store";
 import { toast } from "react-toastify";
 import SocialNetworkLinks from "@/components/SocialNetworkLinks";
 import { useGetDomainsQuery, useUploadMutation } from "@/redux/api/userApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import Cookies from "js-cookie";
 import MultiSelect from "@/components/MultiSelect";
 import { ErrorMessage } from "@hookform/error-message";
@@ -20,49 +20,53 @@ import Select from "@/components/Select";
 import Form from "@/components/Form";
 import Avatar from "@/components/Avatar";
 
-const registerSchema = object({
-  ongName: string().min(1, "Numele organizatiei este obligatoriu"),
-  ongIdentificationNumber: string().min(
-    1,
-    "Numarul de identifiare este obligatoriu"
-  ),
-  county: string().min(1, "Judetul este obligatoriu"),
-  city: string().min(1, "Orasul este obligatoriu"),
-  email: string()
-    .min(1, "Adresa de email este obligatorie")
-    .email("Adresa de email este invalidă"),
-  phone: string().min(1, "Telefonul este obligatoriu"),
-  password: string()
-    .min(1, "Parola este obligatorie")
-    .min(8, "Parola trebuie sa contina cel putin 8 caractere")
-    .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
-  confirmPassword: string()
-    .min(1, "Parola este obligatorie")
-    .min(8, "Parola trebuie sa contina cel putin 8 caractere")
-    .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
-  avatar: custom<File[]>(),
-  domains: array(number()).optional(),
-  website: string(),
-  keywords: string(),
-  description: string(),
-  contactFirstName: string(),
-  contactLastName: string(),
-  contactEmail: string()
-    .email("Adresa de email este invalida")
-    .optional()
-    .or(literal("")),
-  contactPhone: string(),
-  accountFacebook: string().optional(),
-  accountTwitter: string().optional(),
-  accountTiktok: string().optional(),
-  accountInstagram: string().optional(),
-  accountLinkedin: string().optional(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Ne pare rau, parola nu coincide",
-  path: ["confirmPassword"],
-});
+const registerSchema = z
+  .object({
+    ongName: z.string().min(1, "Numele organizatiei este obligatoriu"),
+    ongIdentificationNumber: z
+      .string()
+      .min(1, "Numarul de identifiare este obligatoriu"),
+    county: z.string().min(1, "Judetul este obligatoriu"),
+    city: z.string().min(1, "Orasul este obligatoriu"),
+    email: z
+      .string()
+      .min(1, "Adresa de email este obligatorie")
+      .email("Adresa de email este invalidă"),
+    phone: z.string().min(1, "Telefonul este obligatoriu"),
+    password: z
+      .string()
+      .min(1, "Parola este obligatorie")
+      .min(8, "Parola trebuie sa contina cel putin 8 caractere")
+      .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
+    confirmPassword: z
+      .string()
+      .min(1, "Parola este obligatorie")
+      .min(8, "Parola trebuie sa contina cel putin 8 caractere")
+      .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
+    avatar: z.custom<File[]>(),
+    domains: z.array(z.number()).optional(),
+    website: z.string(),
+    keywords: z.string(),
+    description: z.string(),
+    contactFirstName: z.string(),
+    contactLastName: z.string(),
+    contactEmail: z
+      .email("Adresa de email este invalida")
+      .optional()
+      .or(z.literal("")),
+    contactPhone: z.string(),
+    accountFacebook: z.string().optional(),
+    accountTwitter: z.string().optional(),
+    accountTiktok: z.string().optional(),
+    accountInstagram: z.string().optional(),
+    accountLinkedin: z.string().optional(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Ne pare rau, parola nu coincide",
+    path: ["confirmPassword"],
+  });
 
-export type RegisterInput = TypeOf<typeof registerSchema>;
+export type RegisterInput = z.infer<typeof registerSchema>;
 
 const Register = () => {
   const [submitRegister, { isSuccess, isError, error, data }] =

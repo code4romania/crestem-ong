@@ -2,13 +2,13 @@ import React, { useCallback, useEffect } from "react";
 import screenshot from "@/assets/illustration.svg";
 import Button from "@/components/Button";
 import { useForm } from "react-hook-form";
-import { object, string, TypeOf } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorMessage } from "@hookform/error-message";
 import Section from "@/components/Section";
 import { useLoginUserMutation } from "@/redux/api/authApi";
-import { useSearchParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { toast } from "react-toastify";
 import {
   useGetRegistrationInfoQuery,
@@ -18,17 +18,20 @@ import { setToken } from "@/redux/features/userSlice";
 import Cookies from "js-cookie";
 import { useAppDispatch } from "@/redux/store";
 
-const resetPasswordSchema = object({
-  password: string()
-    .min(1, "Parola este obligatorie")
-    .min(8, "Parola trebuie sa contina cel putin 8 caractere")
-    .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
-  passwordConfirmation: string(),
-}).refine((data) => data.password === data.passwordConfirmation, {
-  message: "Parola nu coincide",
-  path: ["passwordConfirmation"],
-});
-export type ResetPasswordInput = TypeOf<typeof resetPasswordSchema> & {
+const resetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(1, "Parola este obligatorie")
+      .min(8, "Parola trebuie sa contina cel putin 8 caractere")
+      .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
+    passwordConfirmation: z.string(),
+  })
+  .refine((data) => data.password === data.passwordConfirmation, {
+    message: "Parola nu coincide",
+    path: ["passwordConfirmation"],
+  });
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema> & {
   code: string;
 };
 

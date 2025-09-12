@@ -50,10 +50,7 @@
     }
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.json",
-    "./global.d.ts"
+    "src"
   ],
   "exclude": [
     "**/dist/**/*",

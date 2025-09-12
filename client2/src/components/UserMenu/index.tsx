@@ -5,11 +5,12 @@ import {
   MenuItem as HUMenuItem,
   Menu,
   MenuButton,
+  MenuItems,
   Transition,
 } from "@headlessui/react";
 import Cookies from "js-cookie";
 import { Fragment, type ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(" ");
@@ -50,7 +51,7 @@ const MenuItem = ({
 };
 
 const UserMenu = () => {
-  const user = useAppSelector((state) => state.userState.user);
+  const user = useAppSelector((state) => state.userState.user)!;
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
@@ -79,11 +80,11 @@ const UserMenu = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <MenuItems className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <MenuItem to="/">Acasă</MenuItem>
           <MenuItem to="/profile">Profilul meu</MenuItem>
           <MenuItem onClick={handleLogout}> Log out</MenuItem>
-        </Menu.Items>
+        </MenuItems>
       </Transition>
     </Menu>
   );
