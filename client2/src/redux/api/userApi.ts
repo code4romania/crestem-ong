@@ -1,6 +1,6 @@
-import { ActivityInput } from "@/pages/mentor/NewActivity";
-import { ReportInput } from "@/pages/NewReport";
-import { RootState } from "@/redux/store";
+import type { ActivityInput } from "@/pages/mentor/NewActivity";
+import type { ReportInput } from "@/pages/NewReport";
+import type { RootState } from "@/redux/store";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import qs from "qs";
 import { setUser } from "../features/userSlice";

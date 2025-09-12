@@ -59,3 +59,9 @@ Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/
 ---
 
 <sub>🤫 Psst! [Strapi is hiring](https://strapi.io/careers).</sub>
+
+## Generating client
+
+```bash
+npx swagger-typescript-api generate --path ./public/swagger-spec.json --axios --name="client.ts" --output="./public" --extract-enums
+```

@@ -1,0 +1,1 @@
+- change react-circle-chart
