@@ -2,7 +2,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import type { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createRootRouteWithContext<{
   // auth: typeof auth;
@@ -16,7 +16,7 @@ export function Root() {
     <>
       <Outlet />
       {import.meta.env.DEV && <TanStackRouterDevtools />}
-      <ToastContainer position="top-center" />
+      <Toaster />
       <ScrollToTop />
     </>
   );

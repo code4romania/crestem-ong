@@ -29,9 +29,8 @@ const registerSchema = z
     county: z.string().min(1, "Judetul este obligatoriu"),
     city: z.string().min(1, "Orasul este obligatoriu"),
     email: z
-      .string()
-      .min(1, "Adresa de email este obligatorie")
-      .email("Adresa de email este invalidă"),
+      .email("Adresa de email este invalidă")
+      .min(1, "Adresa de email este obligatorie"),
     phone: z.string().min(1, "Telefonul este obligatoriu"),
     password: z
       .string()
@@ -50,10 +49,7 @@ const registerSchema = z
     description: z.string(),
     contactFirstName: z.string(),
     contactLastName: z.string(),
-    contactEmail: z
-      .email("Adresa de email este invalida")
-      .optional()
-      .or(z.literal("")),
+    contactEmail: z.email("Adresa de email este invalida").optional().catch(""),
     contactPhone: z.string(),
     accountFacebook: z.string().optional(),
     accountTwitter: z.string().optional(),
