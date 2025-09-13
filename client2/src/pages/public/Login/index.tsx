@@ -2,30 +2,16 @@ import screenshot from "@/assets/illustration.svg";
 import Button from "@/components/Button";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
-import { useLoginUserMutation } from "@/redux/api/authApi";
-import { setToken } from "@/redux/features/userSlice";
-import { useAppDispatch } from "@/redux/store";
-import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Cookies from "js-cookie";
-import { memo, useEffect } from "react";
-import {
-  type FieldValues,
-  FormProvider,
-  type SubmitHandler,
-  useForm,
-  type Path,
-  type FieldErrors,
-  type UseFormRegister,
-} from "react-hook-form";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { toast } from "react-toastify";
+import { memo } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -33,6 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
+import { useLoginUserMutation } from "@/services/user.mutations";
 
 const loginSchema = z.object({
   identifier: z
@@ -81,46 +68,35 @@ const FormFooter = memo(() => (
 ));
 
 const Login = memo(() => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
   });
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = form;
-
-  const [loginUser, { isLoading, isError, error, isSuccess, data }] =
-    useLoginUserMutation();
-
-  useEffect(() => {
-    if (isSuccess && data?.jwt) {
-      dispatch(setToken(data.jwt));
-      Cookies.set("jwt", data.jwt);
-      navigate("/");
-    }
-  }, [isSuccess, data, dispatch]);
-
-  useEffect(() => {
-    const message = error?.data?.error?.message;
-    if (isError) {
-      if (message) {
-        toast.error(
-          "Credențialele introduse nu sunt corecte. Vă rugăm să verificați și să încercați din nou."
-        );
-      } else {
-        toast.error(
-          "Ne pare rău, dar serverul este momentan indisponibil. Vă rugăm să încercați din nou mai târziu."
-        );
-      }
-    }
-  }, [isError, error?.data?.error?.message]);
+  const { mutate: login, isPending } = useLoginUserMutation();
 
   const onSubmitHandler: SubmitHandler<LoginInput> = (values) => {
-    loginUser(values);
+    login(values, {
+      onSuccess: () => {
+        navigate({ to: "/" });
+      },
+      onError: (error) => {
+        const message = (error as any)?.response?.data?.error?.message;
+        if (message) {
+          toast.error(
+            "Credențialele introduse nu sunt corecte. Vă rugăm să verificați și să încercați din nou."
+          );
+          form.setError("password", {
+            message:
+              "Credențialele introduse nu sunt corecte. Vă rugăm să verificați și să încercați din nou.",
+          });
+        } else {
+          toast.error(
+            "Ne pare rău, dar serverul este momentan indisponibil. Vă rugăm să încercați din nou mai târziu."
+          );
+        }
+      },
+    });
   };
 
   return (
@@ -165,7 +141,9 @@ const Login = memo(() => {
               )}
             />
             <FormFooter />
-            <Button type="submit">Intra in cont</Button>
+            <Button type="submit" disabled={isPending}>
+              Intra in cont
+            </Button>
           </form>
         </Form>
         <div>

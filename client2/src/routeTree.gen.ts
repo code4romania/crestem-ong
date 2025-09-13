@@ -15,6 +15,7 @@ import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-pas
 import { Route as authRegisterRouteImport } from './routes/(auth)/register'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
+import { Route as authEmailSentRouteImport } from './routes/(auth)/email-sent'
 import { Route as authConfirmEmailRouteImport } from './routes/(auth)/confirm-email'
 import { Route as appMentorsRouteImport } from './routes/(app)/mentors'
 import { Route as appMatrixRouteImport } from './routes/(app)/matrix'
@@ -67,6 +68,11 @@ const authLoginRoute = authLoginRouteImport.update({
 const authForgotPasswordRoute = authForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
+  getParentRoute: () => authRouteRoute,
+} as any)
+const authEmailSentRoute = authEmailSentRouteImport.update({
+  id: '/email-sent',
+  path: '/email-sent',
   getParentRoute: () => authRouteRoute,
 } as any)
 const authConfirmEmailRoute = authConfirmEmailRouteImport.update({
@@ -203,6 +209,7 @@ export interface FileRoutesByFullPath {
   '/matrix': typeof appMatrixRoute
   '/mentors': typeof appMentorsRoute
   '/confirm-email': typeof authConfirmEmailRoute
+  '/email-sent': typeof authEmailSentRoute
   '/forgot-password': typeof authForgotPasswordRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
@@ -230,6 +237,7 @@ export interface FileRoutesByTo {
   '/matrix': typeof appMatrixRoute
   '/mentors': typeof appMentorsRoute
   '/confirm-email': typeof authConfirmEmailRoute
+  '/email-sent': typeof authEmailSentRoute
   '/forgot-password': typeof authForgotPasswordRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
@@ -263,6 +271,7 @@ export interface FileRoutesById {
   '/(app)/matrix': typeof appMatrixRoute
   '/(app)/mentors': typeof appMentorsRoute
   '/(auth)/confirm-email': typeof authConfirmEmailRoute
+  '/(auth)/email-sent': typeof authEmailSentRoute
   '/(auth)/forgot-password': typeof authForgotPasswordRoute
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
@@ -296,6 +305,7 @@ export interface FileRouteTypes {
     | '/matrix'
     | '/mentors'
     | '/confirm-email'
+    | '/email-sent'
     | '/forgot-password'
     | '/login'
     | '/register'
@@ -323,6 +333,7 @@ export interface FileRouteTypes {
     | '/matrix'
     | '/mentors'
     | '/confirm-email'
+    | '/email-sent'
     | '/forgot-password'
     | '/login'
     | '/register'
@@ -355,6 +366,7 @@ export interface FileRouteTypes {
     | '/(app)/matrix'
     | '/(app)/mentors'
     | '/(auth)/confirm-email'
+    | '/(auth)/email-sent'
     | '/(auth)/forgot-password'
     | '/(auth)/login'
     | '/(auth)/register'
@@ -431,6 +443,13 @@ declare module '@tanstack/react-router' {
       path: '/forgot-password'
       fullPath: '/forgot-password'
       preLoaderRoute: typeof authForgotPasswordRouteImport
+      parentRoute: typeof authRouteRoute
+    }
+    '/(auth)/email-sent': {
+      id: '/(auth)/email-sent'
+      path: '/email-sent'
+      fullPath: '/email-sent'
+      preLoaderRoute: typeof authEmailSentRouteImport
       parentRoute: typeof authRouteRoute
     }
     '/(auth)/confirm-email': {
@@ -606,6 +625,7 @@ declare module '@tanstack/react-router' {
 
 interface authRouteRouteChildren {
   authConfirmEmailRoute: typeof authConfirmEmailRoute
+  authEmailSentRoute: typeof authEmailSentRoute
   authForgotPasswordRoute: typeof authForgotPasswordRoute
   authLoginRoute: typeof authLoginRoute
   authRegisterRoute: typeof authRegisterRoute
@@ -614,6 +634,7 @@ interface authRouteRouteChildren {
 
 const authRouteRouteChildren: authRouteRouteChildren = {
   authConfirmEmailRoute: authConfirmEmailRoute,
+  authEmailSentRoute: authEmailSentRoute,
   authForgotPasswordRoute: authForgotPasswordRoute,
   authLoginRoute: authLoginRoute,
   authRegisterRoute: authRegisterRoute,

@@ -2,7 +2,7 @@ import Confirm from "@/components/Confirm";
 import { useDeleteEvaluationMutation } from "@/redux/api/userApi";
 import { TrashIcon } from "@heroicons/react/20/solid";
 import { useCallback, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const DeleteEvaluation = ({ id }: { id: number }) => {
   const [deleteEvaluation, { isSuccess, isError, error }] =

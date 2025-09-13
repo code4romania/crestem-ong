@@ -7,7 +7,7 @@ import Section from "@/components/Section";
 import Button from "@/components/Button";
 import { setToken } from "@/redux/features/userSlice";
 import { useAppDispatch } from "@/redux/store";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import SocialNetworkLinks from "@/components/SocialNetworkLinks";
 import {
   useCreateUserMutation,

@@ -3,8 +3,6 @@ import { LoginInput } from "src/pages/public/Login";
 import { RegisterInput } from "src/pages/public/Register";
 import { RegisterResponse } from "./types";
 import { userApi } from "./userApi";
-import { ForgotPasswordInput } from "src/pages/public/ForgotPassword";
-import { ResetPasswordInput } from "src/pages/public/ResetPassword";
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
@@ -23,24 +21,24 @@ export const authApi = createApi({
         };
       },
     }),
-    forgotPassword: builder.mutation<RegisterResponse, ForgotPasswordInput>({
-      query(data) {
-        return {
-          url: "forgot-password",
-          method: "POST",
-          body: data,
-        };
-      },
-    }),
-    resetPassword: builder.mutation<RegisterResponse, ResetPasswordInput>({
-      query(data) {
-        return {
-          url: "reset-password",
-          method: "POST",
-          body: data,
-        };
-      },
-    }),
+    // forgotPassword: builder.mutation<RegisterResponse, ForgotPasswordInput>({
+    //   query(data) {
+    //     return {
+    //       url: "forgot-password",
+    //       method: "POST",
+    //       body: data,
+    //     };
+    //   },
+    // }),
+    // resetPassword: builder.mutation<RegisterResponse, ResetPasswordInput>({
+    //   query(data) {
+    //     return {
+    //       url: "reset-password",
+    //       method: "POST",
+    //       body: data,
+    //     };
+    //   },
+    // }),
     loginUser: builder.mutation<
       { jwt: string; user: { username: string } },
       LoginInput
@@ -63,9 +61,4 @@ export const authApi = createApi({
   }),
 });
 
-export const {
-  useLoginUserMutation,
-  useRegisterUserMutation,
-  useForgotPasswordMutation,
-  useResetPasswordMutation,
-} = authApi;
+export const { useRegisterUserMutation } = authApi;

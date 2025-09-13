@@ -16,7 +16,7 @@ export function Root() {
     <>
       <Outlet />
       {import.meta.env.DEV && <TanStackRouterDevtools />}
-      <Toaster />
+      <Toaster richColors />
       <ScrollToTop />
     </>
   );

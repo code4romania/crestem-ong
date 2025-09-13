@@ -14,7 +14,7 @@ import { z } from "zod";
 import { ErrorMessage } from "@hookform/error-message";
 import MultiSelect from "@/components/MultiSelect";
 import { useNavigate } from "@tanstack/react-router";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import Avatar from "@/components/Avatar";
 
 const mentorSchema = z.object({

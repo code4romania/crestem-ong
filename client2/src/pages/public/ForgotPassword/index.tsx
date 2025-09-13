@@ -1,11 +1,13 @@
 import screenshot from "@/assets/illustration.svg";
 import Button from "@/components/Button";
 import Section from "@/components/Section";
-import { useForgotPasswordMutation } from "@/redux/api/authApi";
+import { useForgotPasswordMutation } from "@/services/user.mutations";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "@tanstack/react-router";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const forgotPasswordSchema = z.object({
@@ -13,22 +15,29 @@ const forgotPasswordSchema = z.object({
     .email("Adresa de email este invalidă")
     .min(1, "Adresa de email este obligatorie"),
 });
-export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
+export type ForgotPasswordForm = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPassword = () => {
-  const [sendForgotPasswordRequest] = useForgotPasswordMutation();
+  const navigate = useNavigate();
+  const { mutate: requestForgotPasswordEmail, isPending } =
+    useForgotPasswordMutation();
   const { register, handleSubmit, reset, formState } =
-    useForm<ForgotPasswordInput>({
+    useForm<ForgotPasswordForm>({
       resolver: zodResolver(forgotPasswordSchema),
     });
 
   const onSubmitHandler = useCallback(
-    ({ email }: ForgotPasswordInput) => {
-      console.log("send password");
-      sendForgotPasswordRequest({ email });
-      reset();
+    ({ email }: ForgotPasswordForm) => {
+      requestForgotPasswordEmail(email, {
+        onSuccess: () => {
+          navigate({ to: "/email-sent" });
+        },
+        onError: () => {
+          toast.error("A aparut o problema");
+        },
+      });
     },
-    [reset]
+    [requestForgotPasswordEmail]
   );
 
   return (

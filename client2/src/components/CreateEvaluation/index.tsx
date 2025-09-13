@@ -4,7 +4,7 @@ import { useCreateEvaluationMutation } from "@/redux/api/userApi";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { ErrorMessage } from "@hookform/error-message";
 
 const evaluationSchema = z.object({

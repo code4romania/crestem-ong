@@ -1,7 +1,7 @@
 import API from "../api";
 
-export const forgotPassword = ({}: {}): Promise<Guide[]> => {
-  return API.get(`election-rounds/${electionRoundId}/observer-guide`).then(
-    (res) => res.data.guides
+export const forgotPassword = (email: string): Promise<void> => {
+  return API.post(`api/auth/forgot-password`, { email }).then(
+    (res) => res.data
   );
 };

@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorMessage } from "@hookform/error-message";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const emailListSchema = z
   .array(z.email("Adresa de email este invalidă"))

@@ -9,7 +9,7 @@ import Section from "@/components/Section";
 import { useLoginUserMutation } from "@/redux/api/authApi";
 import { useSearchParams } from "@tanstack/react-router";
 import { useNavigate } from "@tanstack/react-router";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import {
   useGetRegistrationInfoQuery,
   useRegisterWithConfirmationTokenMutation,

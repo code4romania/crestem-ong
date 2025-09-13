@@ -6,7 +6,7 @@ import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import Button from "@/components/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import {
   useGetDimensionsQuery,
   useGetProgramsQuery,

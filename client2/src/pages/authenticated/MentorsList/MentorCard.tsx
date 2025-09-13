@@ -11,7 +11,7 @@ import {
   UserIcon,
 } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const MentorCard = ({
   id,

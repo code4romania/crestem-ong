@@ -42,10 +42,8 @@ const resetPasswordSchema = z
 export type ResetPasswordForm = z.infer<typeof resetPasswordSchema>;
 
 const ResetPassword = () => {
-  const navigate = useNavigate();
+  const navigate = Route.useNavigate();
   const { code } = Route.useSearch();
-  // const [sendResetPasswordRequest, { isSuccess, isError }] =
-  //   useResetPasswordMutation();
 
   const { mutate: resetPassword, isPending } = useResetPasswordMutation();
   const form = useForm<ResetPasswordForm>({
