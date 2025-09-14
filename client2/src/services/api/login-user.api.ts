@@ -8,5 +8,7 @@ export interface LoginResponse {
   user: { username: string };
 }
 export const loginUser = (request: LoginRequest): Promise<LoginResponse> => {
-  return API.post(`api/auth/local`, request).then((res) => res.data);
+  return API.post<LoginResponse>(`api/auth/local`, request).then(
+    (res) => res.data
+  );
 };

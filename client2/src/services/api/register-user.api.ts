@@ -23,8 +23,12 @@ export interface RegisterUserRequest {
   accountInstagram?: string | undefined;
   accountLinkedin?: string | undefined;
 }
-
-export interface RegisterUserResponse {}
+export interface RegisterUserResponse {
+  jwt: string;
+  user: {
+    id: number;
+  };
+}
 
 export const registerUser = (
   request: RegisterUserRequest

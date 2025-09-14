@@ -1,6 +1,4 @@
 import { citiesByCounty } from "@/lib/orase-dupa-judet";
-import { useUploadMutation } from "@/redux/api/userApi";
-import { useAppDispatch } from "@/redux/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
@@ -44,9 +42,12 @@ import {
 } from "@/components/ui/multi-select";
 import { PasswordInput } from "@/components/ui/password-input";
 import { useSuspenseDomains } from "@/services/domains.queries";
-import { useRegisterUserMutation } from "@/services/user.mutations";
-import { LogoUpload } from "./LogoUpload";
+import {
+  useRegisterUserMutation,
+  useUploadPictureMutation,
+} from "@/services/user.mutations";
 import { toast } from "sonner";
+import { LogoUpload } from "./LogoUpload";
 
 const registerSchema = z
   .object({
@@ -101,11 +102,9 @@ export type RegisterInput = z.infer<typeof registerSchema>;
 
 const Register = () => {
   const { mutateAsync: registerNgo, isPending } = useRegisterUserMutation();
-  const [
-    uploadAvatar,
-    { isError: isUploadAvatarError, error: uploadAvatarError },
-  ] = useUploadMutation();
+  const { mutate: uploadPicture } = useUploadPictureMutation();
   const { data: domains } = useSuspenseDomains();
+
   const form = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -133,54 +132,9 @@ const Register = () => {
       accountLinkedin: "",
     },
   });
-  const avatar = form.watch("avatar");
   const county = form.watch("county");
 
-  const hasAvatar = !!avatar;
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (error?.data?.error?.message) {
-  //     if (
-  //       error?.data?.error?.details?.errors?.length > 0 &&
-  //       error?.data.error.details.errors.find(({ path }) =>
-  //         path.includes("ongIdentificationNumber")
-  //       )
-  //     ) {
-  //       toast.error("Organizație deja înregistrată în platformă");
-  //     } else {
-  //       toast.error(error.data.error.message);
-  //     }
-  //   }
-  // }, [error?.data?.error?.message, error?.data?.error?.details?.errors]);
-
-  // useEffect(() => {
-  //   const message = uploadAvatarError?.data?.error?.message;
-  //   if (isUploadAvatarError && message) {
-  //     toast.error(message);
-  //   }
-  // }, [isUploadAvatarError, uploadAvatarError?.data?.error?.message]);
-
-  // useEffect(() => {
-  //   if (isSuccess && data?.jwt) {
-  //     dispatch(setToken(data.jwt));
-  //     Cookies.set("jwt", data.jwt);
-  //     navigate("/");
-  //   }
-  // }, [isSuccess, data?.jwt, dispatch]);
-
-  // const onSubmitHandler: SubmitHandler<RegisterInput> = async (values) => {
-  //   const res = await submitRegister({ ...values, username: values.email });
-  //   if (values.avatar?.length && values.avatar[0].name) {
-  //     const formData = new FormData();
-  //     formData.append(`files`, values.avatar[0], values.avatar[0].name);
-  //     formData.append(`ref`, "plugin::users-permissions.user");
-  //     formData.append(`refId`, res.data.user.id);
-  //     formData.append(`field`, "avatar");
-  //     uploadAvatar(formData);
-  //   }
-  // };
 
   const counties = Object.keys(citiesByCounty)
     .sort()
@@ -203,19 +157,47 @@ const Register = () => {
   );
 
   const onSubmit = async (values: RegisterInput) => {
-    await registerNgo(
+    const data = await registerNgo(
       {
         ...values,
         domains: values.domains?.map((d) => +d.value),
         email: values.username,
       },
       {
-        onSuccess: (data) => console.log(data),
         onError: (error) => {
-          toast.error("A aparut o problema");
+          const errorResponse = (error as any)?.response?.data?.error;
+          const message = errorResponse?.message;
+
+          if (message) {
+            if (
+              errorResponse.details?.errors?.length > 0 &&
+              errorResponse.details?.errors?.find(
+                ({ path }: { path: string }) =>
+                  path.includes("ongIdentificationNumber")
+              )
+            ) {
+              form.setError("ongIdentificationNumber", {
+                message: "Organizație deja înregistrată în platformă",
+              });
+              toast.error("Organizație deja înregistrată în platformă");
+            } else if (message == "Email or Username are already taken") {
+              form.setError("username", {
+                message: "Acest email este deja folosit",
+              });
+              toast.error("Acest email este deja folosit");
+            }
+          } else {
+            toast.error("A aparut o problema");
+          }
         },
       }
     );
+
+    if (values.avatar) {
+      uploadPicture({ userId: data.user.id, file: values.avatar });
+    }
+
+    navigate({ to: "/" });
   };
 
   return (
