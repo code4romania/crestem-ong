@@ -342,6 +342,7 @@ const Register = () => {
                             <Input
                               className="pl-10"
                               placeholder="organizatie@example.com"
+                              type="email"
                               {...field}
                             />
                           </div>
@@ -593,6 +594,7 @@ const Register = () => {
                             <Input
                               className="pl-10"
                               placeholder="contact@example.com"
+                              type="email"
                               {...field}
                             />
                           </div>

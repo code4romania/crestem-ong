@@ -1,10 +1,8 @@
-import React from "react";
-import { useAppSelector } from "@/redux/store";
-import Section from "@/components/Section";
-import Heading from "@/components/Heading";
-import Table from "@/components/Table";
 import Button from "@/components/Button";
-import Avatar from "@/components/Avatar";
+import Heading from "@/components/Heading";
+import Section from "@/components/Section";
+import Table from "@/components/Table";
+import { useAppSelector } from "@/redux/store";
 
 const Profile = () => {
   const user = useAppSelector((state) => state.userState.user);

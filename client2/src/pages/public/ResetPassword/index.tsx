@@ -78,35 +78,6 @@ const ResetPassword = () => {
     [resetPassword, form, code]
   );
 
-  // const onSubmitHandler = useCallback(
-  //   ({ password, passwordConfirmation }: ResetPasswordInput) => {
-  //     if (code) {
-  //       sendResetPasswordRequest({ password, passwordConfirmation, code });
-  //       reset();
-  //     }
-  //   },
-  //   [sendResetPasswordRequest, reset]
-  // );
-
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     toast.success("Parola a fost schimbata cu succes");
-  //     navigate("/login");
-  //   }
-  // }, [isSuccess, navigate]);
-
-  // useEffect(() => {
-  //   if (isError) {
-  //     toast.error("A aparut o problema");
-  //   }
-  // }, [isError]);
-
-  // useEffect(() => {
-  //   if (!code) {
-  //     navigate("/");
-  //   }
-  // }, [code, navigate]);
-
   return (
     <Section>
       <div className="flex items-center justify-center mt-0 mr-auto mb-0 ml-auto flex-wrap container">
@@ -122,7 +93,11 @@ const ResetPassword = () => {
                 <FormItem>
                   <FormLabel>Parola noua</FormLabel>
                   <FormControl>
-                    <PasswordInput placeholder="Introdu parola" {...field} />
+                    <PasswordInput
+                      placeholder="Introdu parola"
+                      className="max-w-md"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -136,7 +111,11 @@ const ResetPassword = () => {
                 <FormItem>
                   <FormLabel>Repeta parola</FormLabel>
                   <FormControl>
-                    <PasswordInput placeholder="Repeta parola" {...field} />
+                    <PasswordInput
+                      placeholder="Repeta parola"
+                      className="max-w-md"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

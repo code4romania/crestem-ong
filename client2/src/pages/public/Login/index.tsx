@@ -115,6 +115,7 @@ const Login = memo(() => {
                     <Input
                       placeholder="Introdu email"
                       type="email"
+                      className="max-w-md"
                       {...field}
                     />
                   </FormControl>
@@ -130,7 +131,11 @@ const Login = memo(() => {
                 <FormItem>
                   <FormLabel>Parola</FormLabel>
                   <FormControl>
-                    <PasswordInput placeholder="Introdu parola" {...field} />
+                    <PasswordInput
+                      placeholder="Introdu parola"
+                      className="max-w-md"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

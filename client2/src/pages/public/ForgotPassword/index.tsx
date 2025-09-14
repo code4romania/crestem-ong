@@ -71,6 +71,7 @@ const ForgotPassword = () => {
                     <Input
                       placeholder="Introdu email"
                       type="email"
+                      className="max-w-md"
                       {...field}
                     />
                   </FormControl>

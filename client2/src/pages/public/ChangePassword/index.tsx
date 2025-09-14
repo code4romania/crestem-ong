@@ -35,7 +35,7 @@ export type ResetPasswordInput = z.infer<typeof resetPasswordSchema> & {
   code: string;
 };
 
-const ResetPassword = () => {
+const ChangePassword = () => {
   const [searchParams] = useSearchParams();
   const dispatch = useAppDispatch();
   const registrationToken = searchParams.get("registrationToken");
@@ -146,4 +146,4 @@ const ResetPassword = () => {
     </Section>
   );
 };
-export default ResetPassword;
+export default ChangePassword;
