@@ -37,10 +37,6 @@ export type LoginInput = z.infer<typeof loginSchema>;
 const FormHeader = memo(() => (
   <>
     <Heading level="h2">Bine ai venit!</Heading>
-    {/*<p className="my-2 text-lg text-gray-400 leading-relaxed text-">*/}
-    {/*  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea sit eaque*/}
-    {/*  totam aliquid veritatis assumenda temporibus harum unde!*/}
-    {/*</p>*/}
   </>
 ));
 

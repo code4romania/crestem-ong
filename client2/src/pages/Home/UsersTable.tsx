@@ -16,7 +16,7 @@ import {
 } from "@/redux/api/userApi";
 import Button from "@/components/Button";
 import { z } from "zod";
-import citiesByCounty from "@/lib/orase-dupa-judet.json";
+import citiesByCounty from "@/lib/orase-dupa-judet";
 import formatDate from "@/lib/formatDate";
 
 const filtersSchema = z.object({

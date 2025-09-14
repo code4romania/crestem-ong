@@ -16,7 +16,7 @@ import { useNavigate } from "@tanstack/react-router";
 import MultiSelect from "@/components/MultiSelect";
 import { ErrorMessage } from "@hookform/error-message";
 import Select from "@/components/Select";
-import citiesByCounty from "@/lib/orase-dupa-judet.json";
+import citiesByCounty from "@/lib/orase-dupa-judet";
 import SocialNetworkLinks from "@/components/SocialNetworkLinks";
 import Avatar from "@/components/Avatar";
 

@@ -33,6 +33,7 @@ export function useLoginUserMutation() {
   return useMutation({
     mutationFn: loginUser,
     onSuccess: async (data) => {
+      console.log(data.jwt);
       dispatch(setToken(data.jwt));
       Cookies.set("jwt", data.jwt);
       await queryClient.invalidateQueries({ queryKey: ["me"] });
