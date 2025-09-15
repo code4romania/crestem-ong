@@ -3,14 +3,15 @@ import {
   useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { getDomains } from "./api/get-domains.api";
+import { listDomains } from "./api/list-domains.api";
 
-export const domainsQueryOptions = queryOptions({
+export const listDomainsQueryOptions = queryOptions({
   queryKey: ["domains"],
-  queryFn: getDomains,
+  queryFn: listDomains,
   staleTime: 0,
   placeholderData: [],
 });
 
-export const useSuspenseDomains = () => useSuspenseQuery(domainsQueryOptions);
-export const useDomains = () => useQuery(domainsQueryOptions);
+export const useSuspenseListDomains = () =>
+  useSuspenseQuery(listDomainsQueryOptions);
+export const useListDomains = () => useQuery(listDomainsQueryOptions);

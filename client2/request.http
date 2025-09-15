@@ -1,0 +1,23 @@
+##
+GET https://crestem-ong-api.staging.heroesof.tech/api/users/me?populate[0]=reports.evaluations.dimensions.quiz&populate[1]=avatar&populate[2]=role&populate[3]=programs.users&populate[4]=userActivities&populate[5]=mentorActivities.user&populate[6]=mentorActivities.type&populate[7]=mentorActivities.dimension&populate[8]=program&populate[9]=dimensions&populate[10]=domains
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzUsImlhdCI6MTc1Nzg4MjI1MSwiZXhwIjoxNzYwNDc0MjUxfQ.5cj_vHiJx2FpxlLDdGFITr9_PyxaOYrX6irVKTIaN88
+###
+
+##
+GET https://crestem-ong-api.staging.heroesof.tech/api/users?filters[role][type][$eq]=mentor&populate[0]=role&populate[1]=domains&populate[2]=programs&populate[3]=dimensions&populate[4]=mentorActivities&populate[5]=avatar&sort=createdAt%3Adesc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzUsImlhdCI6MTc1Nzg4MjI1MSwiZXhwIjoxNzYwNDc0MjUxfQ.5cj_vHiJx2FpxlLDdGFITr9_PyxaOYrX6irVKTIaN88
+###
+
+GET https://crestem-ong-api.staging.heroesof.tech/api/users?filters[role][type][$eq]=mentor&populate[0]=role&populate[1]=domains&populate[2]=programs&populate[3]=dimensions&populate[4]=mentorActivities&populate[5]=avatar&sort=createdAt%3Adesc&pagination[page]=1&pagination[pageSize]=100
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzUsImlhdCI6MTc1Nzg4MjI1MSwiZXhwIjoxNzYwNDc0MjUxfQ.5cj_vHiJx2FpxlLDdGFITr9_PyxaOYrX6irVKTIaN88
+###
+
+GET https://crestem-ong-api.staging.heroesof.tech/api/domains
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzUsImlhdCI6MTc1Nzg4MjI1MSwiZXhwIjoxNzYwNDc0MjUxfQ.5cj_vHiJx2FpxlLDdGFITr9_PyxaOYrX6irVKTIaN88
+###
+
+
+
+GET https://crestem-ong-api.staging.heroesof.tech/api/dimensions
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzUsImlhdCI6MTc1Nzg4MjI1MSwiZXhwIjoxNzYwNDc0MjUxfQ.5cj_vHiJx2FpxlLDdGFITr9_PyxaOYrX6irVKTIaN88
+###

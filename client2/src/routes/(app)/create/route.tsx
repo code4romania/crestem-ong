@@ -1,8 +1,8 @@
 import LayoutApp from "@/components/LayoutApp";
+import LayoutDashboard from "@/components/LayoutDashboard";
 import getUserType from "@/lib/userType";
 import { useAppSelector } from "@/redux/store";
-import { createFileRoute, Navigate } from "@tanstack/react-router";
-import { LayoutDashboard } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(app)/create")({
   component: RouteComponent,

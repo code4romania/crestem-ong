@@ -1,15 +1,16 @@
-import React from "react";
+import Button from "@/components/Button";
+import EmptyScreen from "@/components/EmptyScreen";
+import FullScreenLoader from "@/components/FullScreenLoader";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import Table from "@/components/Table";
-import Button from "@/components/Button";
-import { useGetMentorsQuery } from "@/redux/api/userApi";
-import FullScreenLoader from "@/components/FullScreenLoader";
-import empty from "@/assets/empty.svg";
-import EmptyScreen from "@/components/EmptyScreen";
+import { Badge } from "@/components/ui/badge";
+import { Route } from "@/routes/(app)/mentors";
+import { useMentors } from "@/services/mentors.queries";
 
 const Mentors = () => {
-  const { data: mentors, isLoading } = useGetMentorsQuery();
+  const params = Route.useSearch();
+  const { data: mentors, isLoading } = useMentors(params);
 
   if (isLoading) {
     return <FullScreenLoader></FullScreenLoader>;
@@ -30,17 +31,22 @@ const Mentors = () => {
             ]}
             body={mentors.map((mentor) => [
               `${mentor.firstName} ${mentor.lastName}`,
-              `${mentor.dimensions?.map((dimension) => dimension.name)}`,
+              <div className="flex flex-wrap gap-1 p-1">
+                {mentor?.dimensions.map((program) => (
+                  <Badge>{program.name}</Badge>
+                ))}
+              </div>,
               `${mentor.available ? "Disponibil" : "Indisponibil"}`,
-              `${mentor?.programs.map((program) => program.name).join(",")}`,
+              <div className="flex flex-wrap gap-1 p-1">
+                {mentor?.programs.map((program) => (
+                  <Badge>{program.name}</Badge>
+                ))}
+              </div>,
 
               `${
-                mentor.mentorActivities?.length
+                mentor.mentorActivities && mentor.mentorActivities?.length
                   ? new Date(
-                      mentor.mentorActivities &&
-                        mentor.mentorActivities[
-                          mentor.mentorActivities?.length - 1
-                        ]?.createdAt
+                      mentor.mentorActivities[-1].createdAt!
                     ).toLocaleString("ro-RO", {
                       month: "short",
                       day: "numeric",

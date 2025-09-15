@@ -74,6 +74,7 @@ const Login = memo(() => {
   const onSubmitHandler: SubmitHandler<LoginInput> = (values) => {
     login(values, {
       onSuccess: () => {
+        console.log("fire");
         navigate({ to: "/" });
       },
       onError: (error) => {

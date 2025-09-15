@@ -1,4 +1,3 @@
-// src/hooks/useAuth.ts
 import { useAppDispatch } from "@/redux/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";

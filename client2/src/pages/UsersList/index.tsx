@@ -1,8 +1,6 @@
-import React, { ChangeEvent } from "react";
-import UsersTable from "@/pages/Home/UsersTable";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
-import Input from "@/components/Input";
+import UsersTable from "@/pages/Home/UsersTable";
 
 const UsersList = () => {
   return (

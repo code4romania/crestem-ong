@@ -41,13 +41,13 @@ import {
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
 import { PasswordInput } from "@/components/ui/password-input";
-import { useSuspenseDomains } from "@/services/domains.queries";
+import { useSuspenseListDomains } from "@/services/domains.queries";
 import {
   useRegisterUserMutation,
   useUploadPictureMutation,
 } from "@/services/user.mutations";
 import { toast } from "sonner";
-import { LogoUpload } from "./LogoUpload";
+import { LogoUpload } from "@/components/LogoUpload";
 
 const registerSchema = z
   .object({
@@ -103,7 +103,7 @@ export type RegisterInput = z.infer<typeof registerSchema>;
 const Register = () => {
   const { mutateAsync: registerNgo, isPending } = useRegisterUserMutation();
   const { mutate: uploadPicture } = useUploadPictureMutation();
-  const { data: domains } = useSuspenseDomains();
+  const { data: domains } = useSuspenseListDomains();
 
   const form = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),

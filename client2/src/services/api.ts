@@ -1,4 +1,5 @@
 import axios, { type AxiosRequestHeaders } from "axios";
+import Cookies from "js-cookie";
 
 /*
  * Token Refresh Mechanism:
@@ -66,7 +67,7 @@ const API = axios.create({
 
 API.interceptors.request.use(async (request) => {
   try {
-    const token = await localStorage.getItem("USER_TOKEN");
+    const token = Cookies.get("jwt");
 
     if (!request.headers) {
       request.headers = {} as AxiosRequestHeaders;
