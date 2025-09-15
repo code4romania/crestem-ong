@@ -74,7 +74,6 @@ const Login = memo(() => {
   const onSubmitHandler: SubmitHandler<LoginInput> = (values) => {
     login(values, {
       onSuccess: () => {
-        console.log("fire");
         navigate({ to: "/" });
       },
       onError: (error) => {
@@ -102,7 +101,7 @@ const Login = memo(() => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitHandler)}
-            className="space-y-8"
+            className="space-y-2 max-w-md"
           >
             <FormHeader />
 
@@ -116,7 +115,6 @@ const Login = memo(() => {
                     <Input
                       placeholder="Introdu email"
                       type="email"
-                      className="max-w-md"
                       {...field}
                     />
                   </FormControl>
@@ -132,11 +130,7 @@ const Login = memo(() => {
                 <FormItem>
                   <FormLabel>Parola</FormLabel>
                   <FormControl>
-                    <PasswordInput
-                      placeholder="Introdu parola"
-                      className="max-w-md"
-                      {...field}
-                    />
+                    <PasswordInput placeholder="Introdu parola" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

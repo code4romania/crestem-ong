@@ -47,7 +47,7 @@ import {
   useUploadPictureMutation,
 } from "@/services/user.mutations";
 import { toast } from "sonner";
-import { LogoUpload } from "@/components/LogoUpload";
+import { LogoUpload } from "@/components/PictureSelect";
 
 const registerSchema = z
   .object({

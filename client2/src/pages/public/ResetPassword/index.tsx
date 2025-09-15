@@ -84,7 +84,7 @@ const ResetPassword = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitHandler)}
-            className="space-y-6 w-full h-full items- justify- pt-0 pr-4 pb-0 pl-4 md:w-1/2 md:mb-0"
+            className="space-y-2 w-full h-full items- justify- pt-0 pr-4 pb-0 pl-4 md:w-1/2 md:mb-0 max-w-md"
           >
             <FormField
               control={form.control}
@@ -93,11 +93,7 @@ const ResetPassword = () => {
                 <FormItem>
                   <FormLabel>Parola noua</FormLabel>
                   <FormControl>
-                    <PasswordInput
-                      placeholder="Introdu parola"
-                      className="max-w-md"
-                      {...field}
-                    />
+                    <PasswordInput placeholder="Introdu parola" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -111,11 +107,7 @@ const ResetPassword = () => {
                 <FormItem>
                   <FormLabel>Repeta parola</FormLabel>
                   <FormControl>
-                    <PasswordInput
-                      placeholder="Repeta parola"
-                      className="max-w-md"
-                      {...field}
-                    />
+                    <PasswordInput placeholder="Repeta parola" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

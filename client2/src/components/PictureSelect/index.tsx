@@ -146,8 +146,8 @@ export function LogoUpload({
           {disabled
             ? "Încărcarea este dezactivată"
             : preview
-            ? "Apasă pentru a schimba logo"
-            : "Apasă sau trage fișierul pentru a încărca logo"}
+            ? "Apasă pentru a schimba poza"
+            : "Apasă sau trage fișierul pentru a încărca poza"}
         </p>
         {!disabled && (
           <p className="text-xs text-muted-foreground mt-1">

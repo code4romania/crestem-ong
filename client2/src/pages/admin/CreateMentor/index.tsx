@@ -6,7 +6,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 
-import { LogoUpload } from "@/components/LogoUpload";
+import { LogoUpload } from "@/components/PictureSelect";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {

@@ -1,5 +1,4 @@
 import screenshot from "@/assets/illustration.svg";
-import Button from "@/components/Button";
 import Section from "@/components/Section";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
@@ -19,6 +18,8 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { useForgotPasswordMutation } from "@/services/user.mutations";
 import { useCallback } from "react";
+import Heading from "@/components/Heading";
+import { Button } from "@/components/ui/button";
 
 const forgotPasswordSchema = z.object({
   email: z
@@ -55,11 +56,9 @@ const ForgotPassword = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitHandler)}
-            className="space-y-8"
+            className="space-y-2 max-w-md"
           >
-            <p className="mb-2 leading-tight font-bold text-5xl font-heading text- text-black">
-              Resetare parola
-            </p>
+            <Heading level="h2">Resetare parola</Heading>
 
             <FormField
               control={form.control}
@@ -71,7 +70,6 @@ const ForgotPassword = () => {
                     <Input
                       placeholder="Introdu email"
                       type="email"
-                      className="max-w-md"
                       {...field}
                     />
                   </FormControl>
