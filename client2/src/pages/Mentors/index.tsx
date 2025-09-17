@@ -43,17 +43,15 @@ const Mentors = () => {
                 ))}
               </div>,
 
-              `${
-                mentor.mentorActivities && mentor.mentorActivities?.length
-                  ? new Date(
-                      mentor.mentorActivities[-1].createdAt!
-                    ).toLocaleString("ro-RO", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })
-                  : "-"
-              }`,
+              mentor?.mentorActivities?.at(-1)
+                ? new Date(
+                    mentor?.mentorActivities?.at(-1)?.createdAt!
+                  ).toLocaleString("ro-RO", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })
+                : "-",
             ])}
             button={
               <Button to={"/create/mentor"}>Adaugă persoană resursă</Button>

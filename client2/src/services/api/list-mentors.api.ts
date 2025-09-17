@@ -64,14 +64,7 @@ export const listMentors = (
         },
       },
     },
-    populate: [
-      "role",
-      "domains",
-      "programs",
-      "dimensions",
-      "mentorActivities",
-      "avatar",
-    ],
+    populate: ["domains", "mentorActivities", "avatar"],
     sort: "createdAt:desc",
     pagination,
   };

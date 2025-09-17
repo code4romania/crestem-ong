@@ -1,6 +1,8 @@
 import type { EvaluationModel } from "@/services/api/get-program.api";
 
-export const evaluationsCompletedFilter = (evaluations: EvaluationModel[]) =>
+export const evaluationsCompletedFilter = (
+  evaluations: EvaluationModel[]
+): EvaluationModel[] =>
   evaluations.filter(
     (evaluation) =>
       evaluation.attributes.dimensions.reduce(

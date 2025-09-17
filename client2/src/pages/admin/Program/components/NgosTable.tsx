@@ -91,9 +91,12 @@ export const columns: ColumnDef<UserModel>[] = [
       />
     ),
     cell: ({ row }) => {
-      return row.original.attributes.reports?.data?.length
+      return row.original.attributes.reports?.data?.at(-1)?.attributes
+        ?.createdAt
         ? new Date(
-            row.original.attributes.reports?.data[-1].attributes.createdAt
+            row.original.attributes.reports?.data?.at(
+              -1
+            )?.attributes?.createdAt!
           ).toLocaleString("ro-RO", {
             month: "short",
             day: "numeric",

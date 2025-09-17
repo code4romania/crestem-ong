@@ -187,7 +187,7 @@ export const getProgram = (programId: string): Promise<ProgramModel> => {
                 populate: {
                   dimensions: {
                     populate: {
-                      quiz: "true",
+                      quiz: true,
                     },
                   },
                 },

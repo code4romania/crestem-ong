@@ -1,7 +1,10 @@
 // import { Evaluation, Matrix, Quiz } from "@/redux/api/types";
 
 import type { MatrixModel } from "@/services/api/get-matrix.api";
-import type { QuizModel } from "@/services/api/get-program.api";
+import type {
+  QuizModel,
+  EvaluationModel,
+} from "@/services/api/get-program.api";
 
 const addQuizToQuiz = (
   obj1: Record<string, QuizModel>,
@@ -34,12 +37,12 @@ const addQuizToQuiz = (
     {}
   );
 
-export const calcScore = (evaluations): number => {
+export const calcScore = (evaluations: EvaluationModel[]): number => {
   const score =
     evaluations.reduce(
       (acc, curr) =>
         acc +
-        curr.dimensions.reduce(
+        curr.attributes.dimensions.reduce(
           (acc, curr) =>
             acc + curr.quiz.reduce((acc, curr) => acc + curr.answer, 0),
           0
@@ -55,7 +58,7 @@ export const calcScoreByDimension = ({
   evaluationsCompleted,
   sort = true,
 }: {
-  evaluationsCompleted: Evaluation[];
+  evaluationsCompleted: EvaluationModel[];
   matrix: MatrixModel;
   sort?: boolean;
 }) => {
@@ -76,7 +79,7 @@ export const calcScoreByDimension = ({
     (acc, evaluation) =>
       addQuizToQuiz(
         acc,
-        evaluation.dimensions.reduce(
+        evaluation.attributes.dimensions.reduce(
           (acc, dimension, index) => ({
             ...acc,
             [index]: {
@@ -105,31 +108,36 @@ export const calcScoreByDimension = ({
 
       const tags = [
         {
-          quiz: matrix[index].quiz[0].tag,
+          quiz: matrix.attributes.dimensions.data[+index].attributes.quiz[0]
+            .tag,
           score: object[index].option1,
         },
         {
-          quiz: matrix[index].quiz[1].tag,
+          quiz: matrix.attributes.dimensions.data[+index].attributes.quiz[1]
+            .tag,
           score: object[index].option2,
         },
         {
-          quiz: matrix[index].quiz[2].tag,
+          quiz: matrix.attributes.dimensions.data[+index].attributes.quiz[2]
+            .tag,
           score: object[index].option3,
         },
         {
-          quiz: matrix[index].quiz[3].tag,
+          quiz: matrix.attributes.dimensions.data[+index].attributes.quiz[3]
+            .tag,
           score: object[index].option4,
         },
         {
-          quiz: matrix[index].quiz[4].tag,
+          quiz: matrix.attributes.dimensions.data[+index].attributes.quiz[4]
+            .tag,
           score: object[index].option5,
         },
       ].sort((a, b) => (a.score === b.score ? 0 : a.score > b.score ? -1 : 1));
 
       return {
         id: index,
-        name: matrix[index].name,
-        link: matrix[index].link,
+        name: matrix.attributes.dimensions.data[+index].attributes.name,
+        link: matrix.attributes.dimensions.data[+index].attributes.link,
         score: score,
         tags:
           score >= 50

@@ -20,7 +20,11 @@ const getSheets = (data: ProgramModel, matrix: MatrixModel): Sheet[] => {
     "Număr ONG-uri înscrise în program": data.attributes.users?.data?.length,
   };
 
-  const sheets = [
+  const sheets: {
+    name: string;
+    rows: Record<string, string | number>[];
+    cols: { width: number }[];
+  }[] = [
     {
       name: "Informații despre program",
       rows: [coverRow],
@@ -28,14 +32,13 @@ const getSheets = (data: ProgramModel, matrix: MatrixModel): Sheet[] => {
     },
   ];
 
-  debugger;
   data.attributes.users?.data?.forEach((user: UserModel) => {
     const ongName: string =
       user.attributes.ongName.length > 23
         ? user.attributes.ongName.slice(0, 23) + "..."
         : user.attributes.ongName;
 
-    const rows: any[] = [];
+    const rows: Record<string, string | number>[] = [];
 
     user.attributes.reports?.data.forEach((report: ReportModel) => {
       const evaluationsCompleted = evaluationsCompletedFilter(
@@ -53,7 +56,7 @@ const getSheets = (data: ProgramModel, matrix: MatrixModel): Sheet[] => {
 
       const totalScore = calcScore(evaluationsCompleted);
 
-      const row: Record<string, any> = {
+      const row: Record<string, string | number> = {
         // NGO
         "Nume ONG": user.attributes.ongName,
         "Domeniu de activitate": "–", // TODO: get from relationship
@@ -74,7 +77,7 @@ const getSheets = (data: ProgramModel, matrix: MatrixModel): Sheet[] => {
       scoreByEvaluation?.forEach(({ name, score }, index) => {
         row[`Scor ${name}`] = score;
         row[`Comentariu ${name}`] = evaluationsCompleted
-          .map((evaluation: any) => evaluation.dimensions[index].comment)
+          .map((evaluation) => evaluation.attributes.dimensions[index].comment)
           .join("\n---\n");
       });
 

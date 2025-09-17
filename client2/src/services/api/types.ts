@@ -146,7 +146,7 @@ export interface MentorActivityModel {
    */
   duration?: number;
   /** A datetime field */
-  createdAt?: string;
+  createdAt: string;
   /** A datetime field */
   updatedAt?: string;
   /**
