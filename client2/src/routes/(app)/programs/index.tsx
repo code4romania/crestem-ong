@@ -1,3 +1,4 @@
+import FullScreenLoader from "@/components/FullScreenLoader";
 import getUserType from "@/lib/userType";
 import ProgramsList from "@/pages/admin/ProgramsList";
 import { useAppSelector } from "@/redux/store";
@@ -38,8 +39,8 @@ export const Route = createFileRoute("/(app)/programs/")({
         endDate,
       })
     ),
-
   component: RouteComponent,
+  pendingComponent: FullScreenLoader,
 });
 
 function RouteComponent() {

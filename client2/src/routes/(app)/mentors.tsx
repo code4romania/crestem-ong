@@ -4,17 +4,12 @@ import getUserType from "@/lib/userType";
 import AuthenticatedMentorsList from "@/pages/authenticated/MentorsList";
 import Mentors from "@/pages/Mentors";
 import { useAppSelector } from "@/redux/store";
+import { listMentorsQueryOptions } from "@/services/mentors.queries";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
-import { fallback, zodValidator } from "@tanstack/zod-adapter";
-import z from "zod";
-
-const mentorsSearchSchema = z.object({
-  page: z.number().default(1),
-  pageSize: z.number().default(100),
-});
 
 export const Route = createFileRoute("/(app)/mentors")({
-  validateSearch: zodValidator(mentorsSearchSchema),
+  loader: async ({ context: { queryClient } }) =>
+    queryClient.prefetchQuery(listMentorsQueryOptions()),
   component: RouteComponent,
 });
 

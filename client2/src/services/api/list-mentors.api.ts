@@ -4,7 +4,6 @@ import type {
   MentorActivityModel,
   MentorDimensionModel,
   MentorProgramModel,
-  PaginationRequest,
   RoleModel,
   UploadFileDocumentModel,
 } from "./types";
@@ -53,9 +52,7 @@ export interface MentorModel {
   mentorActivities?: MentorActivityModel[];
 }
 
-export const listMentors = (
-  pagination?: PaginationRequest
-): Promise<MentorModel[]> => {
+export const listMentors = (): Promise<MentorModel[]> => {
   const params = {
     filters: {
       role: {
@@ -66,7 +63,6 @@ export const listMentors = (
     },
     populate: ["domains", "mentorActivities", "avatar"],
     sort: "createdAt:desc",
-    pagination,
   };
 
   return API.get<MentorModel[]>(`api/users`, {
