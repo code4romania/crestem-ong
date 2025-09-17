@@ -3,10 +3,10 @@ import {
   useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { listMentors } from "./api/list-mentors";
+import { listMentors } from "./api/list-mentors.api";
 import type { PaginationRequest } from "./api/types";
 
-export const mentorsQueryOptions = (request: PaginationRequest) =>
+export const listMentorsQueryOptions = (request?: PaginationRequest) =>
   queryOptions({
     queryKey: ["mentors", request],
     queryFn: () => listMentors(request),
@@ -14,8 +14,8 @@ export const mentorsQueryOptions = (request: PaginationRequest) =>
     placeholderData: [],
   });
 
-export const useSuspenseMentors = (request: PaginationRequest) =>
-  useSuspenseQuery(mentorsQueryOptions(request));
+export const useSuspenseListMentors = (request?: PaginationRequest) =>
+  useSuspenseQuery(listMentorsQueryOptions(request));
 
-export const useMentors = (request: PaginationRequest) =>
-  useQuery(mentorsQueryOptions(request));
+export const useListMentors = (request?: PaginationRequest) =>
+  useQuery(listMentorsQueryOptions(request));

@@ -1,16 +1,24 @@
-import React from "react";
-import Section from "@/components/Section";
 import Heading from "@/components/Heading";
-import ProgramsTable from "./ProgramsTable";
+import Section from "@/components/Section";
+import { Suspense } from "react";
+import { ProgramsTable } from "./components/table";
+import { ProgramsPrimaryButtons } from "./components/primary-buttons";
 
 const ProgramsList = () => {
   return (
     <div>
       <Section>
-        <Heading level={"h2"}>Programe</Heading>
+        <div className="flex flex-wrap items-center justify-between space-y-2 gap-x-4">
+          <div>
+            <Heading level={"h2"}>Programe</Heading>
+          </div>
+          <ProgramsPrimaryButtons />
+        </div>
       </Section>
       <Section>
-        <ProgramsTable />
+        <Suspense fallback={<div>Loading...</div>}>
+          <ProgramsTable />
+        </Suspense>
       </Section>
     </div>
   );

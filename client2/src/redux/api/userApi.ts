@@ -138,100 +138,100 @@ export const userApi = createApi({
       },
       invalidatesTags: ["Program"],
     }),
-    getPrograms: builder.query<Program[], void>({
-      query() {
-        return {
-          url: `programs?populate[0]=mentors&populate[1]=users`,
-        };
-      },
-      transformResponse: (result: { data: any }) =>
-        result.data.map((report: any) => ({
-          ...report.attributes,
-          id: report.id,
-          mentors: report.attributes.mentors.data.map(
-            ({ attributes }) => attributes
-          ),
-          users: report.attributes.users.data.map(
-            ({ attributes }) => attributes
-          ),
-        })),
-      providesTags: ["Program"],
-    }),
-    findProgram: builder.query<Program, { programId: string }>({
-      query({ programId }) {
-        const query = qs.stringify({
-          populate: {
-            mentors: {
-              populate: ["dimensions", "mentorActivities"],
-            },
-            users: {
-              populate: {
-                reports: {
-                  populate: {
-                    evaluations: {
-                      populate: {
-                        dimensions: {
-                          populate: {
-                            quiz: true,
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        });
+    // getPrograms: builder.query<Program[], void>({
+    //   query() {
+    //     return {
+    //       url: `programs?populate[0]=mentors&populate[1]=users`,
+    //     };
+    //   },
+    //   transformResponse: (result: { data: any }) =>
+    //     result.data.map((report: any) => ({
+    //       ...report.attributes,
+    //       id: report.id,
+    //       mentors: report.attributes.mentors.data.map(
+    //         ({ attributes }) => attributes
+    //       ),
+    //       users: report.attributes.users.data.map(
+    //         ({ attributes }) => attributes
+    //       ),
+    //     })),
+    //   providesTags: ["Program"],
+    // }),
+    // findProgram: builder.query<Program, { programId: string }>({
+    //   query({ programId }) {
+    //     const query = qs.stringify({
+    //       populate: {
+    //         mentors: {
+    //           populate: ["dimensions", "mentorActivities"],
+    //         },
+    //         users: {
+    //           populate: {
+    //             reports: {
+    //               populate: {
+    //                 evaluations: {
+    //                   populate: {
+    //                     dimensions: {
+    //                       populate: {
+    //                         quiz: true,
+    //                       },
+    //                     },
+    //                   },
+    //                 },
+    //               },
+    //             },
+    //           },
+    //         },
+    //       },
+    //     });
 
-        return {
-          url: `programs/${programId}?${query}`,
-        };
-      },
-      transformResponse: (result) => ({
-        ...result.data.attributes,
-        mentors: result.data.attributes.mentors?.data?.map(
-          ({ id, attributes }) => ({
-            ...attributes,
-            id,
-            mentorActivities: attributes.mentorActivities?.data?.map(
-              ({ attributes }) => attributes
-            ),
-            dimensions: attributes.dimensions?.data?.map(
-              ({ attributes }) => attributes
-            ),
-          })
-        ),
-        users: result.data.attributes.users?.data?.map(
-          ({ id, attributes }) => ({
-            ...attributes,
-            id,
-            reports: attributes.reports.data.map(({ id, attributes }) => ({
-              ...attributes,
-              id,
-              evaluations: attributes.evaluations.data.map(
-                ({ id, attributes }) => ({
-                  ...attributes,
-                  id,
-                })
-              ),
-            })),
-          })
-        ),
-      }),
-      providesTags: ["ProgramUser"],
-    }),
-    updateProgram: builder.mutation<Program, Program>({
-      query: ({ id, ...rest }) => {
-        return {
-          method: "PUT",
-          url: `programs/${id}`,
-          credentials: "include",
-          body: { data: rest },
-        };
-      },
-      invalidatesTags: ["ProgramUser"],
-    }),
+    //     return {
+    //       url: `programs/${programId}?${query}`,
+    //     };
+    //   },
+    //   transformResponse: (result) => ({
+    //     ...result.data.attributes,
+    //     mentors: result.data.attributes.mentors?.data?.map(
+    //       ({ id, attributes }) => ({
+    //         ...attributes,
+    //         id,
+    //         mentorActivities: attributes.mentorActivities?.data?.map(
+    //           ({ attributes }) => attributes
+    //         ),
+    //         dimensions: attributes.dimensions?.data?.map(
+    //           ({ attributes }) => attributes
+    //         ),
+    //       })
+    //     ),
+    //     users: result.data.attributes.users?.data?.map(
+    //       ({ id, attributes }) => ({
+    //         ...attributes,
+    //         id,
+    //         reports: attributes.reports.data.map(({ id, attributes }) => ({
+    //           ...attributes,
+    //           id,
+    //           evaluations: attributes.evaluations.data.map(
+    //             ({ id, attributes }) => ({
+    //               ...attributes,
+    //               id,
+    //             })
+    //           ),
+    //         })),
+    //       })
+    //     ),
+    //   }),
+    //   providesTags: ["ProgramUser"],
+    // }),
+    // updateProgram: builder.mutation<Program, Program>({
+    //   query: ({ id, ...rest }) => {
+    //     return {
+    //       method: "PUT",
+    //       url: `programs/${id}`,
+    //       credentials: "include",
+    //       body: { data: rest },
+    //     };
+    //   },
+    //   invalidatesTags: ["ProgramUser"],
+    // }),
     getDimensions: builder.query<Dimension[], void>({
       query() {
         return {
@@ -475,9 +475,9 @@ export const {
   useGetRegistrationInfoQuery,
   useRegisterWithConfirmationTokenMutation,
   useCreateProgramMutation,
-  useGetProgramsQuery,
-  useFindProgramQuery,
-  useUpdateProgramMutation,
+  // useGetProgramsQuery,
+  // useFindProgramQuery,
+  // useUpdateProgramMutation,
   useGetDimensionsQuery,
   useCreateMentorMutation,
   useCreateUserMutation,

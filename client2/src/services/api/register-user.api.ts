@@ -1,4 +1,4 @@
-import API from "../api";
+import { publicAPI } from "../api";
 export interface RegisterUserRequest {
   ongName: string;
   ongIdentificationNumber: string;
@@ -33,8 +33,7 @@ export interface RegisterUserResponse {
 export const registerUser = (
   request: RegisterUserRequest
 ): Promise<RegisterUserResponse> => {
-  return API.post<RegisterUserResponse>(
-    `api/auth/local/register`,
-    request
-  ).then((res) => res.data);
+  return publicAPI
+    .post<RegisterUserResponse>(`api/auth/local/register`, request)
+    .then((res) => res.data);
 };

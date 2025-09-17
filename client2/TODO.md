@@ -4,3 +4,5 @@
 - check in prod user permissions for role >find
 - rework tables to from shadcn ui + paginations
 - allow auth user to list domains ?
+- check in prod user permissions for program >findOne
+- check program update by fdsc

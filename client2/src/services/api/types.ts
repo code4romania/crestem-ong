@@ -1,6 +1,6 @@
 export interface PaginationRequest {
-  page: number;
-  pageSize: number;
+  page?: number;
+  pageSize?: number;
 }
 
 export interface RoleModel {
@@ -169,6 +169,20 @@ export interface ProgramAttributesModel {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
+  // Temoprary fix until we upgrade to strapi v5
+  // This is used just to get the count of mentors
+  mentors?: {
+    data: any[];
+  };
+  mentorsCount: number | undefined;
+
+  // Temoprary fix until we upgrade to strapi v5
+  // This is used just to get the count of users
+  users?: {
+    data: any[];
+  };
+
+  usersCount: number | undefined;
 }
 
 export interface MetaModel {

@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import Heading from "@/components/Heading";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -15,11 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/ui/password-input";
 import { useForgotPasswordMutation } from "@/services/user.mutations";
 import { useCallback } from "react";
-import Heading from "@/components/Heading";
-import { Button } from "@/components/ui/button";
 
 const forgotPasswordSchema = z.object({
   email: z

@@ -1,5 +1,5 @@
 import qs from "qs";
-import API from "../api";
+import { API } from "../api";
 import type {
   MentorActivityModel,
   MentorDimensionModel,
@@ -53,10 +53,9 @@ export interface MentorModel {
   mentorActivities?: MentorActivityModel[];
 }
 
-export const listMentors = ({
-  page,
-  pageSize,
-}: PaginationRequest): Promise<MentorModel[]> => {
+export const listMentors = (
+  pagination?: PaginationRequest
+): Promise<MentorModel[]> => {
   const params = {
     filters: {
       role: {
@@ -74,10 +73,7 @@ export const listMentors = ({
       "avatar",
     ],
     sort: "createdAt:desc",
-    pagination: {
-      page,
-      pageSize,
-    },
+    pagination,
   };
 
   return API.get<MentorModel[]>(`api/users`, {

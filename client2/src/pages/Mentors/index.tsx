@@ -6,11 +6,11 @@ import Section from "@/components/Section";
 import Table from "@/components/Table";
 import { Badge } from "@/components/ui/badge";
 import { Route } from "@/routes/(app)/mentors";
-import { useMentors } from "@/services/mentors.queries";
+import { useListMentors } from "@/services/mentors.queries";
 
 const Mentors = () => {
   const params = Route.useSearch();
-  const { data: mentors, isLoading } = useMentors(params);
+  const { data: mentors, isLoading } = useListMentors(params);
 
   if (isLoading) {
     return <FullScreenLoader></FullScreenLoader>;

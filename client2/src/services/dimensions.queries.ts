@@ -3,15 +3,25 @@ import {
   useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { listDimensions } from "./api/list-dimensions.api";
+import {
+  listDimensions,
+  type ListDimensionsResponse,
+} from "./api/list-dimensions.api";
 
-export const listDimensionsQueryOptions = queryOptions({
-  queryKey: ["dimensions"],
-  queryFn: listDimensions,
-  staleTime: 0,
-  placeholderData: [],
-});
+export const listDimensionsQueryOptions = <TResult = ListDimensionsResponse>(
+  select?: (data: ListDimensionsResponse) => TResult
+) =>
+  queryOptions({
+    queryKey: ["dimensions"],
+    queryFn: listDimensions,
+    staleTime: 0,
+    select,
+  });
 
-export const useSuspenseListDimensions = () =>
-  useSuspenseQuery(listDimensionsQueryOptions);
-export const useListDimensions = () => useQuery(listDimensionsQueryOptions);
+export const useSuspenseListDimensions = <TResult = ListDimensionsResponse>(
+  select?: (data: ListDimensionsResponse) => TResult
+) => useSuspenseQuery(listDimensionsQueryOptions(select));
+
+export const useListDimensions = <TResult = ListDimensionsResponse>(
+  select?: (data: ListDimensionsResponse) => TResult
+) => useQuery(listDimensionsQueryOptions(select));

@@ -56,8 +56,15 @@ const TIMEOUT = 60 * 1000; // 60 seconds
 // }
 
 // const tokenManager = new TokenRefreshManager();
+export const publicAPI = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: TIMEOUT,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-const API = axios.create({
+export const API = axios.create({
   baseURL: API_BASE_URL,
   timeout: TIMEOUT,
   headers: {
@@ -82,88 +89,3 @@ API.interceptors.request.use(async (request) => {
 
   return request;
 });
-
-// const handleTokenRefresh = async (originalRequest: any) => {
-//   try {
-//     const [token, refreshToken] = await Promise.all([
-//       AsyncStorage.getItem(ASYNC_STORAGE_KEYS.ACCESS_TOKEN),
-//       AsyncStorage.getItem(ASYNC_STORAGE_KEYS.REFRESH_TOKEN),
-//     ]);
-
-//     if (!token || !refreshToken) {
-//       throw new Error("No tokens available");
-//     }
-
-//     const { data } = await axios.post(`${API_BASE_URL}auth/refresh`, {
-//       token,
-//       refreshToken,
-//     });
-
-//     await setAuthTokens(
-//       data.token,
-//       data.refreshToken,
-//       data.refreshTokenExpiryTime
-//     );
-//     tokenManager.onRefreshed(data.token);
-
-//     originalRequest.headers.Authorization = `Bearer ${data.token}`;
-//     return API(originalRequest);
-//   } catch (error) {
-//     await AsyncStorage.multiRemove([
-//       ASYNC_STORAGE_KEYS.ACCESS_TOKEN,
-//       ASYNC_STORAGE_KEYS.REFRESH_TOKEN,
-//     ]);
-//     router.replace("/login");
-//     throw error;
-//   } finally {
-//     tokenManager.setRefreshing(false);
-//   }
-// };
-
-// API.interceptors.response.use(
-//   (response) => response,
-//   async (error: any) => {
-//     const originalRequest = error.config;
-//     const isTokenExpiredError =
-//       error.response?.headers["token-expired"] === "true" ||
-//       error.response?.status === 401;
-
-//     if (
-//       error.response &&
-//       isTokenExpiredError &&
-//       !originalRequest?.url?.includes("auth") &&
-//       !originalRequest._retry
-//     ) {
-//       if (tokenManager.isCurrentlyRefreshing()) {
-//         return new Promise((resolve) => {
-//           tokenManager.addRefreshSubscriber(async (token: string) => {
-//             originalRequest.headers.Authorization = `Bearer ${token}`;
-//             resolve(API(originalRequest));
-//           });
-//         });
-//       }
-
-//       console.log("❌ [API FAILED] URL", originalRequest.url);
-//       console.log("❌ [API FAILED] Status", error.response?.status);
-//       console.log("❌ [API FAILED] isTokenExpiredError", isTokenExpiredError);
-
-//       originalRequest._retry = true;
-//       tokenManager.setRefreshing(true);
-//       return handleTokenRefresh(originalRequest);
-//     }
-
-//     if (error.request) {
-//       console.log("❌ [API FAILED] Request", error.request);
-//       Sentry.captureException(new Error("Network request failed"), {
-//         extra: { request: error.request },
-//       });
-//     } else {
-//       console.log("❌ [API FAILED] Error", error);
-//       Sentry.captureException(error);
-//     }
-
-//     throw error;
-//   }
-// );
-
-export default API;

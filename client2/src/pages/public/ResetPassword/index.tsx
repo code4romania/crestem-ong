@@ -56,7 +56,6 @@ const ResetPassword = () => {
 
   const onSubmitHandler = useCallback(
     (values: ResetPasswordForm) => {
-      console.log("ji");
       resetPassword(
         {
           password: values.password,
@@ -65,8 +64,8 @@ const ResetPassword = () => {
         },
         {
           onSuccess: () => {
-            toast.success("Parola a fost schimbata cu succes");
             navigate({ to: "/login" });
+            toast.success("Parola a fost schimbata cu succes");
           },
           onError: () => {
             toast.error("A aparut o problema");

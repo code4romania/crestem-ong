@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createMentor } from "./api/create-mentor";
+import { createMentor } from "./api/create-mentor.api";
 
 export function useCreateMentorMutation() {
   const queryClient = useQueryClient();

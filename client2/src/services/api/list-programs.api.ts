@@ -1,22 +1,46 @@
 import qs from "qs";
-import API from "../api";
-import type { MetaModel, ProgramModel as ApiProgramModel } from "./types";
-
-export interface ProgramModel {
-  id: number;
-  name: string;
-}
+import { API } from "../api";
+import type {
+  MetaModel,
+  ProgramModel as ApiProgramModel,
+  PaginationRequest,
+} from "./types";
 
 export interface ListProgramsResponse {
   data: ApiProgramModel[];
   meta: MetaModel;
 }
 
-export const listPrograms = (): Promise<ProgramModel[]> => {
+export const listPrograms = (
+  filters?: {
+    search?: string;
+    startDate?: string;
+    endDate?: string;
+  } & PaginationRequest
+): Promise<ListProgramsResponse> => {
   const params = {
+    filters: {
+      name: {
+        $contains: filters?.search,
+      },
+      startDate: {
+        $ge: filters?.startDate,
+      },
+      endDate: {
+        $le: filters?.endDate,
+      },
+    },
+    populate: {
+      mentors: {
+        fields: ["id"],
+      },
+      users: {
+        fields: ["id"],
+      },
+    },
     pagination: {
-      page: 1,
-      pageSize: 100,
+      page: filters?.page ?? 1,
+      pageSize: filters?.pageSize ?? 25,
     },
   };
 
@@ -27,7 +51,18 @@ export const listPrograms = (): Promise<ProgramModel[]> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) =>
-    res.data.data.map((d) => ({ id: d.id, name: d.attributes.name }))
-  );
+  }).then((res) => {
+    const result = res.data;
+    return {
+      meta: result.meta,
+      data: result.data.map((p) => ({
+        ...p,
+        attributes: {
+          ...p.attributes,
+          usersCount: p.attributes.users?.data?.length,
+          mentorsCount: p.attributes.mentors?.data?.length,
+        },
+      })),
+    };
+  });
 };

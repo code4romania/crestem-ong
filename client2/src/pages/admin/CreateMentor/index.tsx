@@ -29,6 +29,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useUploadPictureMutation } from "@/services/user.mutations";
 import { toast } from "sonner";
+import type { ListDimensionsResponse } from "@/services/api/list-dimensions.api";
+import type { ListProgramsResponse } from "@/services/api/list-programs.api";
 
 const mentorSchema = z.object({
   firstName: z.string().min(1, "Nume este obligatoriu"),
@@ -60,13 +62,16 @@ const mentorSchema = z.object({
 });
 
 export type MentorInput = z.infer<typeof mentorSchema>;
+const programsMapper = (programs: ListProgramsResponse) =>
+  programs.data.map((p) => ({ id: p.id, name: p.attributes.name }));
+const dimensionsMapper = (programs: ListDimensionsResponse) =>
+  programs.data.map((d) => ({ id: d.id, name: d.attributes.name }));
 
 const CreateMentor = () => {
   const navigate = useNavigate();
+  const { data: programs } = useSuspenseListPrograms(programsMapper);
+  const { data: dimensions } = useSuspenseListDimensions(dimensionsMapper);
 
-  const { data: programs } = useSuspenseListPrograms();
-
-  const { data: dimensions } = useSuspenseListDimensions();
   const { mutateAsync: createMentor, isPending } = useCreateMentorMutation();
 
   const { mutateAsync: uploadAvatar } = useUploadPictureMutation();

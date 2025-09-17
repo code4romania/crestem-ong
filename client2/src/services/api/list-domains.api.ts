@@ -1,18 +1,13 @@
 import qs from "qs";
-import API from "../api";
+import { API } from "../api";
 import type { DomainModel as ApiDomainModel, MetaModel } from "./types";
 
-export interface DomainModel {
-  id: number;
-  name: string;
-}
-
-interface ListDomainsResponse {
+export interface ListDomainsResponse {
   data: ApiDomainModel[];
   meta: MetaModel;
 }
 
-export const listDomains = (): Promise<DomainModel[]> => {
+export const listDomains = (): Promise<ListDomainsResponse> => {
   const params = {
     pagination: {
       start: 0,
@@ -26,7 +21,5 @@ export const listDomains = (): Promise<DomainModel[]> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) =>
-    res.data.data.map((d) => ({ id: d.id, name: d.attributes.name }))
-  );
+  }).then((res) => res.data);
 };

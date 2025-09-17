@@ -32,7 +32,7 @@ import { Route as appProgramsIndexRouteImport } from './routes/(app)/programs/in
 import { Route as appProfileIndexRouteImport } from './routes/(app)/profile/index'
 import { Route as appUsersUserIdRouteImport } from './routes/(app)/users/$userId'
 import { Route as appReportsReportIdRouteImport } from './routes/(app)/reports/$reportId'
-import { Route as appProgramsProgramIdRouteImport } from './routes/(app)/programs/programId'
+import { Route as appProgramsProgramIdRouteImport } from './routes/(app)/programs/$programId'
 import { Route as appProfileEditRouteImport } from './routes/(app)/profile/edit'
 import { Route as appEvaluationEvaluationIdRouteImport } from './routes/(app)/evaluation/$evaluationId'
 import { Route as appCreateUserRouteImport } from './routes/(app)/create/user'
@@ -156,8 +156,8 @@ const appReportsReportIdRoute = appReportsReportIdRouteImport.update({
   getParentRoute: () => appReportsRouteRoute,
 } as any)
 const appProgramsProgramIdRoute = appProgramsProgramIdRouteImport.update({
-  id: '/programId',
-  path: '/programId',
+  id: '/$programId',
+  path: '/$programId',
   getParentRoute: () => appProgramsRouteRoute,
 } as any)
 const appProfileEditRoute = appProfileEditRouteImport.update({
@@ -221,7 +221,7 @@ export interface FileRoutesByFullPath {
   '/create/user': typeof appCreateUserRoute
   '/evaluation/$evaluationId': typeof appEvaluationEvaluationIdRoute
   '/profile/edit': typeof appProfileEditRoute
-  '/programs/programId': typeof appProgramsProgramIdRoute
+  '/programs/$programId': typeof appProgramsProgramIdRoute
   '/reports/$reportId': typeof appReportsReportIdRoute
   '/users/$userId': typeof appUsersUserIdRoute
   '/profile/': typeof appProfileIndexRoute
@@ -249,7 +249,7 @@ export interface FileRoutesByTo {
   '/create/user': typeof appCreateUserRoute
   '/evaluation/$evaluationId': typeof appEvaluationEvaluationIdRoute
   '/profile/edit': typeof appProfileEditRoute
-  '/programs/programId': typeof appProgramsProgramIdRoute
+  '/programs/$programId': typeof appProgramsProgramIdRoute
   '/reports/$reportId': typeof appReportsReportIdRoute
   '/users/$userId': typeof appUsersUserIdRoute
   '/profile': typeof appProfileIndexRoute
@@ -283,7 +283,7 @@ export interface FileRoutesById {
   '/(app)/create/user': typeof appCreateUserRoute
   '/(app)/evaluation/$evaluationId': typeof appEvaluationEvaluationIdRoute
   '/(app)/profile/edit': typeof appProfileEditRoute
-  '/(app)/programs/programId': typeof appProgramsProgramIdRoute
+  '/(app)/programs/$programId': typeof appProgramsProgramIdRoute
   '/(app)/reports/$reportId': typeof appReportsReportIdRoute
   '/(app)/users/$userId': typeof appUsersUserIdRoute
   '/(app)/profile/': typeof appProfileIndexRoute
@@ -317,7 +317,7 @@ export interface FileRouteTypes {
     | '/create/user'
     | '/evaluation/$evaluationId'
     | '/profile/edit'
-    | '/programs/programId'
+    | '/programs/$programId'
     | '/reports/$reportId'
     | '/users/$userId'
     | '/profile/'
@@ -345,7 +345,7 @@ export interface FileRouteTypes {
     | '/create/user'
     | '/evaluation/$evaluationId'
     | '/profile/edit'
-    | '/programs/programId'
+    | '/programs/$programId'
     | '/reports/$reportId'
     | '/users/$userId'
     | '/profile'
@@ -378,7 +378,7 @@ export interface FileRouteTypes {
     | '/(app)/create/user'
     | '/(app)/evaluation/$evaluationId'
     | '/(app)/profile/edit'
-    | '/(app)/programs/programId'
+    | '/(app)/programs/$programId'
     | '/(app)/reports/$reportId'
     | '/(app)/users/$userId'
     | '/(app)/profile/'
@@ -564,10 +564,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appReportsReportIdRouteImport
       parentRoute: typeof appReportsRouteRoute
     }
-    '/(app)/programs/programId': {
-      id: '/(app)/programs/programId'
-      path: '/programId'
-      fullPath: '/programs/programId'
+    '/(app)/programs/$programId': {
+      id: '/(app)/programs/$programId'
+      path: '/$programId'
+      fullPath: '/programs/$programId'
       preLoaderRoute: typeof appProgramsProgramIdRouteImport
       parentRoute: typeof appProgramsRouteRoute
     }

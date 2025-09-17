@@ -1,8 +1,11 @@
-import { Evaluation, Matrix, Quiz } from "@/redux/api/types";
+// import { Evaluation, Matrix, Quiz } from "@/redux/api/types";
+
+import type { MatrixModel } from "@/services/api/get-matrix.api";
+import type { QuizModel } from "@/services/api/get-program.api";
 
 const addQuizToQuiz = (
-  obj1: Record<string, Quiz>,
-  obj2: Record<string, Quiz>
+  obj1: Record<string, QuizModel>,
+  obj2: Record<string, QuizModel>
 ) =>
   Object.keys(obj1).reduce(
     (acc, key) => ({
@@ -53,13 +56,23 @@ export const calcScoreByDimension = ({
   sort = true,
 }: {
   evaluationsCompleted: Evaluation[];
-  matrix: Matrix;
+  matrix: MatrixModel;
   sort?: boolean;
 }) => {
   if (!matrix) {
-    return undefined;
+    return [];
   }
-  const object = evaluationsCompleted.reduce(
+  const object: Record<
+    string,
+    {
+      score: number;
+      option1: number;
+      option2: number;
+      option3: number;
+      option4: number;
+      option5: number;
+    }
+  > = evaluationsCompleted.reduce(
     (acc, evaluation) =>
       addQuizToQuiz(
         acc,
@@ -84,7 +97,7 @@ export const calcScoreByDimension = ({
   );
 
   return Object.keys(object)
-    .sort( (a, b) => sort ? object[b].score - object[a].score : 0 )
+    .sort((a, b) => (sort ? object[b].score - object[a].score : 0))
     .map((index) => {
       const score = Math.floor(
         (object[index].score * 25) / evaluationsCompleted.length

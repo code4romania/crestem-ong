@@ -1,4 +1,4 @@
-import API from "../api";
+import { publicAPI } from "../api";
 export interface LoginRequest {
   identifier: string;
   password: string;
@@ -8,7 +8,7 @@ export interface LoginResponse {
   user: { username: string };
 }
 export const loginUser = (request: LoginRequest): Promise<LoginResponse> => {
-  return API.post<LoginResponse>(`api/auth/local`, request).then(
-    (res) => res.data
-  );
+  return publicAPI
+    .post<LoginResponse>(`api/auth/local`, request)
+    .then((res) => res.data);
 };

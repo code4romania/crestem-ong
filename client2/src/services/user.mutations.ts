@@ -1,3 +1,4 @@
+import { setToken } from "@/redux/features/userSlice";
 import { useAppDispatch } from "@/redux/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
@@ -5,7 +6,6 @@ import { forgotPassword } from "./api/forgot-password.api";
 import { loginUser } from "./api/login-user.api";
 import { registerUser } from "./api/register-user.api";
 import { resetPassword } from "./api/reset-password.api";
-import { setToken } from "@/redux/features/userSlice";
 import { uploadUserAvatar } from "./api/upload-picture.api";
 
 export function useRegisterUserMutation() {
@@ -40,10 +40,10 @@ export function useLoginUserMutation() {
 
   return useMutation({
     mutationFn: loginUser,
-    onSuccess: async (data) => {
+    onSuccess: (data) => {
       dispatch(setToken(data.jwt));
       Cookies.set("jwt", data.jwt);
-      await queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.invalidateQueries({ queryKey: ["me"] });
     },
   });
 }

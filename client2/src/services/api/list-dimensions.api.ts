@@ -1,18 +1,13 @@
 import qs from "qs";
-import API from "../api";
+import { API } from "../api";
 import type { DimensionModel as ApiDimensionModel, MetaModel } from "./types";
 
-export interface DimensionModel {
-  id: number;
-  name: string;
-}
-
-interface ListDimensionsResponse {
+export interface ListDimensionsResponse {
   data: ApiDimensionModel[];
   meta: MetaModel;
 }
 
-export const listDimensions = (): Promise<DimensionModel[]> => {
+export const listDimensions = (): Promise<ListDimensionsResponse> => {
   const params = {
     pagination: {
       start: 0,
@@ -26,7 +21,5 @@ export const listDimensions = (): Promise<DimensionModel[]> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) =>
-    res.data.data.map((d) => ({ id: d.id, name: d.attributes.name }))
-  );
+  }).then((res) => res.data);
 };

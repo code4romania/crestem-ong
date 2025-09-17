@@ -1,31 +1,23 @@
 import ExportXLSX, { type Sheet } from "@/components/ExportXLSX";
-import formatDate from "@/lib/formatDate";
-import { evaluationsCompletedFilter } from "@/lib/filters";
-import { calcScore, calcScoreByDimension } from "@/lib/score";
-import { useAppSelector } from "@/redux/store";
-import { userApi } from "@/redux/api/userApi";
 import FullScreenLoader from "@/components/FullScreenLoader";
-import type { Matrix } from "@/redux/api/types";
+import { evaluationsCompletedFilter } from "@/lib/filters";
+import formatDate from "@/lib/formatDate";
+import { calcScore, calcScoreByDimension } from "@/lib/score";
+import type { MatrixModel } from "@/services/api/get-matrix.api";
+import type {
+  ProgramModel,
+  ReportModel,
+  UserModel,
+} from "@/services/api/get-program.api";
+import { useGetMatrix } from "@/services/matrix.queries";
 
-export interface Program {
-  name: string;
-  sponsorName: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  startDate: string;
-  endDate: string;
-  users: unknown[];
-  mentors: unknown[];
-}
-
-const getSheets = (data: Program, matrix: Matrix): Sheet[] => {
+const getSheets = (data: ProgramModel, matrix: MatrixModel): Sheet[] => {
   const coverRow = {
-    "Denumire program": data.name,
-    "Data de început": formatDate(data.startDate),
-    "Data de final": formatDate(data.endDate),
-    "Nume finanțator": data.sponsorName || "-",
-    "Număr ONG-uri înscrise în program": data.users?.length,
+    "Denumire program": data.attributes.name,
+    "Data de început": formatDate(data.attributes.startDate),
+    "Data de final": formatDate(data.attributes.endDate),
+    "Nume finanțator": data.attributes.sponsorName || "-",
+    "Număr ONG-uri înscrise în program": data.attributes.users?.data?.length,
   };
 
   const sheets = [
@@ -36,17 +28,18 @@ const getSheets = (data: Program, matrix: Matrix): Sheet[] => {
     },
   ];
 
-  data.users.forEach((user: any) => {
+  debugger;
+  data.attributes.users?.data?.forEach((user: UserModel) => {
     const ongName: string =
-      user.ongName.length > 23
-        ? user.ongName.slice(0, 23) + "..."
-        : user.ongName;
+      user.attributes.ongName.length > 23
+        ? user.attributes.ongName.slice(0, 23) + "..."
+        : user.attributes.ongName;
 
     const rows: any[] = [];
 
-    user.reports.forEach((report: any) => {
+    user.attributes.reports?.data.forEach((report: ReportModel) => {
       const evaluationsCompleted = evaluationsCompletedFilter(
-        report?.evaluations
+        report.attributes.evaluations.data
       );
 
       const scoreByEvaluation =
@@ -60,17 +53,17 @@ const getSheets = (data: Program, matrix: Matrix): Sheet[] => {
 
       const totalScore = calcScore(evaluationsCompleted);
 
-      const row = {
+      const row: Record<string, any> = {
         // NGO
-        "Nume ONG": user.ongName,
+        "Nume ONG": user.attributes.ongName,
         "Domeniu de activitate": "–", // TODO: get from relationship
-        "Nume reprezentant": `${user.contactFirstName} ${user.contactLastName}`,
-        "Email reprezentant": user.contactEmail,
+        "Nume reprezentant": `${user.attributes.contactFirstName} ${user.attributes.contactLastName}`,
+        "Email reprezentant": user.attributes.contactEmail,
 
         // Report
         "Dată intrare program": "-", // TODO: add created_at to up_users_program_links table
-        "Dată început evaluare": formatDate(report.createdAt),
-        "Dată final evaluare": formatDate(report.deadline),
+        "Dată început evaluare": formatDate(report.attributes.createdAt),
+        "Dată final evaluare": formatDate(report.attributes.deadline),
         "Număr de completări": evaluationsCompleted.length,
 
         // Evaluation
@@ -102,12 +95,8 @@ const getSheets = (data: Program, matrix: Matrix): Sheet[] => {
   return sheets;
 };
 
-const ExportProgram = ({ data }: { data: Program }) => {
-  const matrix = useAppSelector((state) => state.userState.matrix);
-  const { isLoading } = userApi.endpoints.getMatrix.useQuery(null, {
-    skip: !!matrix,
-    refetchOnMountOrArgChange: true,
-  });
+const ExportProgram = ({ data }: { data: ProgramModel }) => {
+  const { isLoading, data: matrix } = useGetMatrix();
 
   if (isLoading) {
     return <FullScreenLoader />;
@@ -116,8 +105,8 @@ const ExportProgram = ({ data }: { data: Program }) => {
   return (
     <ExportXLSX
       className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none"
-      fileName={`${data.name}.xlsx`}
-      sheets={getSheets(data, matrix)}
+      fileName={`${data.attributes.name}.xlsx`}
+      getSheets={() => getSheets(data, matrix!)}
     />
   );
 };
