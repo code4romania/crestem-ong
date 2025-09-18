@@ -542,9 +542,6 @@ const Register = () => {
                           {...field}
                         />
                       </FormControl>
-                      <p className="text-sm text-muted-foreground">
-                        Numărul maxim de caractere: 1000
-                      </p>
                       <FormMessage />
                     </FormItem>
                   )}

@@ -34,6 +34,9 @@ export const registerNgo = (
   request: RegisterNgoRequest
 ): Promise<RegisterUserResponse> => {
   return publicAPI
-    .post<RegisterUserResponse>(`api/auth/local/register`, request)
+    .post<RegisterUserResponse>(`api/auth/local/register`, {
+      ...request,
+      role: 1,
+    })
     .then((res) => res.data);
 };
