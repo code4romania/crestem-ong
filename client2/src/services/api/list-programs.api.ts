@@ -1,7 +1,9 @@
 import qs from "qs";
 import { API } from "../api";
 import type { ProgramModel as ApiProgramModel } from "./types";
-
+export interface ListProgramsResponse {
+  data: ApiProgramModel[];
+}
 export const listPrograms = (): Promise<ApiProgramModel[]> => {
   const params = {
     populate: {
@@ -14,7 +16,7 @@ export const listPrograms = (): Promise<ApiProgramModel[]> => {
     },
   };
 
-  return API.get<ApiProgramModel[]>(`api/programs`, {
+  return API.get<ListProgramsResponse>(`api/programs`, {
     params,
     paramsSerializer: {
       serialize: (params) => {
@@ -23,7 +25,7 @@ export const listPrograms = (): Promise<ApiProgramModel[]> => {
     },
   }).then((res) => {
     const result = res.data;
-    return result.map((p) => ({
+    return result.data.map((p) => ({
       ...p,
       attributes: {
         ...p.attributes,
