@@ -27,7 +27,7 @@ export const columns: ColumnDef<UserModel>[] = [
       <DataTableColumnHeader
         column={column}
         title="Nume ONG"
-        className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-bold text-gray-900 sm:pl-3"
+        className="whitespace-nowrap  text-sm font-bold text-gray-900"
       />
     ),
     cell: ({ row }) => {
@@ -47,7 +47,7 @@ export const columns: ColumnDef<UserModel>[] = [
       <DataTableColumnHeader
         column={column}
         title="Nume reprezentant"
-        className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-bold text-gray-900 sm:pl-3"
+        className="whitespace-nowrap  text-sm font-bold text-gray-900"
       />
     ),
     cell: ({ row }) => {
@@ -75,7 +75,7 @@ export const columns: ColumnDef<UserModel>[] = [
       <DataTableColumnHeader
         column={column}
         title="Data intrare program"
-        className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-bold text-gray-900 sm:pl-3"
+        className="whitespace-nowrap  text-sm font-bold text-gray-900"
       />
     ),
     cell: ({ row }) => <span>-</span>,
@@ -87,7 +87,7 @@ export const columns: ColumnDef<UserModel>[] = [
       <DataTableColumnHeader
         column={column}
         title="Ultima evaluare"
-        className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-bold text-gray-900 sm:pl-3"
+        className="whitespace-nowrap  text-sm font-bold text-gray-900"
       />
     ),
     cell: ({ row }) => {
@@ -120,6 +120,7 @@ export const columns: ColumnDef<UserModel>[] = [
     ),
   },
 ];
+
 function NgosTable({ ngos }: { ngos: UserModel[] }) {
   const [openAddNgoInProgramDialog, setOpenAddNgoInProgramDialog] =
     useState(false);

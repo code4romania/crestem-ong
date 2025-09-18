@@ -27,10 +27,11 @@ import {
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
 import { Textarea } from "@/components/ui/textarea";
+import type { DimensionModel as ApiDimensionModel } from "@/services/api/types";
 import { useUploadPictureMutation } from "@/services/user.mutations";
 import { toast } from "sonner";
-import type { ListDimensionsResponse } from "@/services/api/list-dimensions.api";
-import type { ListProgramsResponse } from "@/services/api/list-programs.api";
+
+import type { ProgramModel as ApiProgramModel } from "@/services/api/types";
 
 const mentorSchema = z.object({
   firstName: z.string().min(1, "Nume este obligatoriu"),
@@ -62,10 +63,10 @@ const mentorSchema = z.object({
 });
 
 export type MentorInput = z.infer<typeof mentorSchema>;
-const programsMapper = (programs: ListProgramsResponse) =>
-  programs.data.map((p) => ({ id: p.id, name: p.attributes.name }));
-const dimensionsMapper = (programs: ListDimensionsResponse) =>
-  programs.data.map((d) => ({ id: d.id, name: d.attributes.name }));
+const programsMapper = (programs: ApiProgramModel[]) =>
+  programs.map((p) => ({ id: p.id, name: p.attributes.name }));
+const dimensionsMapper = (programs: ApiDimensionModel[]) =>
+  programs.map((d) => ({ id: d.id, name: d.attributes.name }));
 
 const CreateMentor = () => {
   const navigate = useNavigate();

@@ -6,3 +6,4 @@
 - allow auth user to list domains ?
 - check in prod user permissions for program >findOne
 - check program update by fdsc
+- rework program list

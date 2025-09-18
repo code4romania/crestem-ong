@@ -9,11 +9,7 @@ import {
 import { Link } from "@tanstack/react-router";
 import { downloadExcel } from "react-export-table-to-excel";
 import Input from "@/components/Input";
-import {
-  useGetDomainsQuery,
-  useGetProgramsQuery,
-  useGetUsersQuery,
-} from "@/redux/api/userApi";
+import { useGetDomainsQuery, useGetUsersQuery } from "@/redux/api/userApi";
 import Button from "@/components/Button";
 import { z } from "zod";
 import citiesByCounty from "@/lib/orase-dupa-judet";

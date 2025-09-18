@@ -106,26 +106,26 @@ export const userApi = createApi({
       },
       providesTags: ["Mentor"],
     }),
-    createMentor: builder.mutation<User, User>({
-      query(body) {
-        return {
-          method: "POST",
-          url: "users",
-          body,
-        };
-      },
-      invalidatesTags: ["Mentor"],
-    }),
-    createUser: builder.mutation<User, User>({
-      query(body) {
-        return {
-          method: "POST",
-          url: "users",
-          body,
-        };
-      },
-      invalidatesTags: ["User"],
-    }),
+    // createMentor: builder.mutation<User, User>({
+    //   query(body) {
+    //     return {
+    //       method: "POST",
+    //       url: "users",
+    //       body,
+    //     };
+    //   },
+    //   invalidatesTags: ["Mentor"],
+    // }),
+    // createUser: builder.mutation<User, User>({
+    //   query(body) {
+    //     return {
+    //       method: "POST",
+    //       url: "users",
+    //       body,
+    //     };
+    //   },
+    //   invalidatesTags: ["User"],
+    // }),
     createProgram: builder.mutation<User, Program>({
       query(body) {
         return {
@@ -479,8 +479,8 @@ export const {
   // useFindProgramQuery,
   // useUpdateProgramMutation,
   useGetDimensionsQuery,
-  useCreateMentorMutation,
-  useCreateUserMutation,
+  // useCreateMentorMutation,
+  // useCreateUserMutation,
   useGetMatrixQuery,
   useGetActivityTypesQuery,
   useCreateActivityMutation,

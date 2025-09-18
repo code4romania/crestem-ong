@@ -10,7 +10,7 @@ export const columns: ColumnDef<MentorModel>[] = [
       <DataTableColumnHeader
         column={column}
         title="Nume"
-        className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-bold text-gray-900 sm:pl-3"
+        className="whitespace-nowrap py-4  text-sm font-bold text-gray-900"
       />
     ),
     cell: ({ row }) => {
@@ -37,7 +37,7 @@ export const columns: ColumnDef<MentorModel>[] = [
       <DataTableColumnHeader
         column={column}
         title="Specializare"
-        className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-bold text-gray-900 sm:pl-3"
+        className="whitespace-nowrap py-4  text-sm font-bold text-gray-900"
       />
     ),
     cell: ({ row }) => {
@@ -57,7 +57,7 @@ export const columns: ColumnDef<MentorModel>[] = [
       <DataTableColumnHeader
         column={column}
         title="Disponibilitate"
-        className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-bold text-gray-900 sm:pl-3"
+        className="whitespace-nowrap py-4  text-sm font-bold text-gray-900"
       />
     ),
     cell: ({ row }) =>
@@ -74,7 +74,7 @@ export const columns: ColumnDef<MentorModel>[] = [
       <DataTableColumnHeader
         column={column}
         title="Ultima activitate"
-        className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-bold text-gray-900 sm:pl-3"
+        className="whitespace-nowrap py-4  text-sm font-bold text-gray-900"
       />
     ),
     cell: ({ row }) => {

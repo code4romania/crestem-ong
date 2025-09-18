@@ -3,45 +3,26 @@ import {
   useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import {
-  listPrograms,
-  type ListProgramsResponse,
-} from "./api/list-programs.api";
-import type { PaginationRequest } from "./api/types";
 import { getProgram, type ProgramModel } from "./api/get-program.api";
+import { listPrograms } from "./api/list-programs.api";
+import type { ProgramModel as ApiProgramModel } from "./api/types";
 
-export const listProgramsQueryOptions = <TResult = ListProgramsResponse>(
-  filters?: {
-    search?: string;
-    startDate?: string;
-    endDate?: string;
-  } & PaginationRequest,
-  select?: (data: ListProgramsResponse) => TResult
+export const listProgramsQueryOptions = <TResult = ApiProgramModel[]>(
+  select?: (data: ApiProgramModel[]) => TResult
 ) =>
   queryOptions({
-    queryKey: ["programs", filters],
-    queryFn: () => listPrograms(filters),
-    staleTime: 0,
+    queryKey: ["programs"],
+    queryFn: listPrograms,
     select,
   });
 
-export const useSuspenseListPrograms = <TResult = ListProgramsResponse>(
-  filters?: {
-    search?: string;
-    startDate?: string;
-    endDate?: string;
-  } & PaginationRequest,
-  select?: (data: ListProgramsResponse) => TResult
-) => useSuspenseQuery(listProgramsQueryOptions(filters, select));
+export const useSuspenseListPrograms = <TResult = ApiProgramModel[]>(
+  select?: (data: ApiProgramModel[]) => TResult
+) => useSuspenseQuery(listProgramsQueryOptions(select));
 
-export const useListPrograms = <TResult = ListProgramsResponse>(
-  filters?: {
-    search?: string;
-    startDate?: string;
-    endDate?: string;
-  } & PaginationRequest,
-  select?: (data: ListProgramsResponse) => TResult
-) => useQuery(listProgramsQueryOptions(filters, select));
+export const useListPrograms = <TResult = ApiProgramModel[]>(
+  select?: (data: ApiProgramModel[]) => TResult
+) => useQuery(listProgramsQueryOptions(select));
 
 export const getProgramQueryOptions = <TResult = ProgramModel>(
   programId: string,
@@ -50,7 +31,6 @@ export const getProgramQueryOptions = <TResult = ProgramModel>(
   queryOptions({
     queryKey: ["programs", programId],
     queryFn: () => getProgram(programId),
-    staleTime: 0,
     select,
   });
 

@@ -3,9 +3,9 @@ import { QueryClient } from "@tanstack/react-query";
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Data remains fresh for 2 minutes - prevents redundant API calls during
+      // Data remains fresh for 10 minutes - prevents redundant API calls during
       // typical user sessions while ensuring data updates within reasonable time
-      staleTime: 2 * 60 * 1000,
+      staleTime: 10 * 60 * 1000,
       // Garbage collection after 5 minutes - balances memory usage with instant
       // data availability when navigating back to recently viewed pages
       gcTime: 5 * 60 * 1000,

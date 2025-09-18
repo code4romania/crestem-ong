@@ -3,22 +3,22 @@ import {
   useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { listDomains, type ListDomainsResponse } from "./api/list-domains.api";
+import type { DomainModel } from "./api/types";
+import { listDomains } from "./api/list-domains.api";
 
-export const listDomainsQueryOptions = <TResult = ListDomainsResponse>(
-  select?: (data: ListDomainsResponse) => TResult
+export const listDomainsQueryOptions = <TResult = DomainModel[]>(
+  select?: (data: DomainModel[]) => TResult
 ) =>
   queryOptions({
     queryKey: ["domains"],
     queryFn: listDomains,
-    staleTime: 0,
     select,
   });
 
-export const useSuspenseListDomains = <TResult = ListDomainsResponse>(
-  select?: (data: ListDomainsResponse) => TResult
+export const useSuspenseListDomains = <TResult = DomainModel[]>(
+  select?: (data: DomainModel[]) => TResult
 ) => useSuspenseQuery(listDomainsQueryOptions(select));
 
-export const useListDomains = <TResult = ListDomainsResponse>(
-  select?: (data: ListDomainsResponse) => TResult
+export const useListDomains = <TResult = DomainModel[]>(
+  select?: (data: DomainModel[]) => TResult
 ) => useQuery(listDomainsQueryOptions(select));

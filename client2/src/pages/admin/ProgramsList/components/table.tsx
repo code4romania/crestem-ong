@@ -41,7 +41,7 @@ const mapper = (
 export function ProgramsTable() {
   const search = Route.useSearch();
 
-  const { data } = useSuspenseListPrograms(search, mapper);
+  const { data } = useSuspenseListPrograms(mapper);
 
   // Synced with URL states (updated to match route search schema defaults)
   const { sorting, pagination, ensurePageInRange } = useTableUrlState({
@@ -51,7 +51,7 @@ export function ProgramsTable() {
   });
 
   const table = useReactTable({
-    data: data.data,
+    data,
     columns,
     state: {
       sorting,

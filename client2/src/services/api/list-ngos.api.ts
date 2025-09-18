@@ -1,6 +1,5 @@
 import qs from "qs";
 import { API } from "../api";
-import type { PaginationRequest } from "./types";
 
 export interface NgoModel {
   id: number;
@@ -35,9 +34,7 @@ export interface NgoModel {
   available: boolean;
 }
 
-export const listNgos = (
-  pagination?: PaginationRequest
-): Promise<NgoModel[]> => {
+export const listNgos = (): Promise<NgoModel[]> => {
   const params = {
     filters: {
       role: {
@@ -46,12 +43,65 @@ export const listNgos = (
         },
       },
     },
-    populate: ["role"],
     sort: "createdAt:desc",
-    pagination,
   };
 
   return API.get<NgoModel[]>(`api/users`, {
+    params,
+    paramsSerializer: {
+      serialize: (params) => {
+        return qs.stringify(params, { encodeValuesOnly: true });
+      },
+    },
+  }).then((res) => res.data);
+};
+
+export interface DetailedNgoModel extends NgoModel {
+  domains: DomainModel[];
+  reports: ReportModel[];
+  program?: ProgramModel;
+}
+
+export interface DomainModel {
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ReportModel {
+  id: number;
+  deadline: string;
+  finished: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ProgramModel {
+  id: number;
+  name: string;
+  startDate: string;
+  endDate: string;
+  sponsorName: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+export const listNgosWithDetails = (): Promise<DetailedNgoModel[]> => {
+  const params = {
+    filters: {
+      role: {
+        type: {
+          $eq: "authenticated",
+        },
+      },
+    },
+    populate: ["domains", "reports", "program"],
+    sort: "createdAt:desc",
+  };
+
+  return API.get<DetailedNgoModel[]>(`api/users`, {
     params,
     paramsSerializer: {
       serialize: (params) => {

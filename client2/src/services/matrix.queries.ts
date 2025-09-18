@@ -11,7 +11,6 @@ export const getMatrixQueryOptions = <TResult = MatrixModel>(
   queryOptions({
     queryKey: ["matrix"],
     queryFn: () => getMatrix(),
-    staleTime: 0,
     select,
   });
 

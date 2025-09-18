@@ -7,11 +7,11 @@ export interface ListDomainsResponse {
   meta: MetaModel;
 }
 
-export const listDomains = (): Promise<ListDomainsResponse> => {
+export const listDomains = (): Promise<ApiDomainModel[]> => {
   const params = {
     pagination: {
       start: 0,
-      limit: 100,
+      limit: 1000,
     },
   };
   return API.get<ListDomainsResponse>(`api/domains`, {
@@ -21,5 +21,5 @@ export const listDomains = (): Promise<ListDomainsResponse> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data);
+  }).then((res) => res.data.data);
 };

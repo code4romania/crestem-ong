@@ -3,59 +3,43 @@ import {
   useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { listNgos, type NgoModel } from "./api/list-ngos.api";
-import type { PaginationRequest } from "./api/types";
+import {
+  listNgos,
+  listNgosWithDetails,
+  type DetailedNgoModel,
+  type NgoModel,
+} from "./api/list-ngos.api";
 
 export const listNgosQueryOptions = <TResult = NgoModel[]>(
-  filters?: {
-    search?: string;
-    startDate?: string;
-    endDate?: string;
-  } & PaginationRequest,
   select?: (data: NgoModel[]) => TResult
 ) =>
   queryOptions({
-    queryKey: ["ngos", filters],
-    queryFn: () => listNgos(filters),
-    staleTime: 0,
+    queryKey: ["ngos"],
+    queryFn: () => listNgos(),
     select,
   });
 
 export const useSuspenseListNgos = <TResult = NgoModel[]>(
-  filters?: {
-    search?: string;
-    startDate?: string;
-    endDate?: string;
-  } & PaginationRequest,
   select?: (data: NgoModel[]) => TResult
-) => useSuspenseQuery(listNgosQueryOptions(filters, select));
+) => useSuspenseQuery(listNgosQueryOptions(select));
 
 export const useListNgos = <TResult = NgoModel[]>(
-  filters?: {
-    search?: string;
-    startDate?: string;
-    endDate?: string;
-  } & PaginationRequest,
   select?: (data: NgoModel[]) => TResult
-) => useQuery(listNgosQueryOptions(filters, select));
+) => useQuery(listNgosQueryOptions(select));
 
-// export const getProgramQueryOptions = <TResult = ListNgosResponse>(
-//   ngoId: string,
-//   select?: (data: ProgramModel) => TResult
-// ) =>
-//   queryOptions({
-//     queryKey: ["ngos", ngoId],
-//     queryFn: () => getProgram(ngoId),
-//     staleTime: 0,
-//     select,
-//   });
+export const listNgosWithDetailsQueryOptions = <TResult = DetailedNgoModel[]>(
+  select?: (data: DetailedNgoModel[]) => TResult
+) =>
+  queryOptions({
+    queryKey: ["ngos-detailed"],
+    queryFn: () => listNgosWithDetails(),
+    select,
+  });
 
-// export const useGetProgram = <TResult = ListNgosResponse>(
-//   ngoId: string,
-//   select?: (data: ProgramModel) => TResult
-// ) => useQuery(getProgramQueryOptions(ngoId, select));
+export const useSuspenseListNgosWithDetails = <TResult = DetailedNgoModel[]>(
+  select?: (data: DetailedNgoModel[]) => TResult
+) => useSuspenseQuery(listNgosWithDetailsQueryOptions(select));
 
-// export const useSuspenseGetProgram = <TResult = ListNgosResponse>(
-//   ngoId: string,
-//   select?: (data: ProgramModel) => TResult
-// ) => useSuspenseQuery(getProgramQueryOptions(ngoId, select));
+export const useListNgosWithDetails = <TResult = DetailedNgoModel[]>(
+  select?: (data: DetailedNgoModel[]) => TResult
+) => useQuery(listNgosWithDetailsQueryOptions(select));

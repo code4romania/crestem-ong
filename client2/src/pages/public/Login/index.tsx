@@ -73,7 +73,9 @@ const Login = memo(() => {
 
   const onSubmitHandler: SubmitHandler<LoginInput> = (values) => {
     login(values, {
-      onSuccess: () => navigate({ to: "/" }),
+      onSuccess: async () => {
+        await navigate({ to: "/" });
+      },
       onError: (error) => {
         const message = (error as any)?.response?.data?.error?.message;
         if (message) {

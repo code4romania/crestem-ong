@@ -456,11 +456,11 @@ const Register = () => {
                             <MultiSelectorList>
                               {domains.map((domain) => (
                                 <MultiSelectorItem
-                                  key={domain.name}
+                                  key={domain.attributes.name}
                                   value={domain.id.toString()}
-                                  label={domain.name}
+                                  label={domain.attributes.name}
                                 >
-                                  <span>{domain.name}</span>
+                                  <span>{domain.attributes.name}</span>
                                 </MultiSelectorItem>
                               ))}
                             </MultiSelectorList>
@@ -512,12 +512,22 @@ const Register = () => {
                   />
                 </div>
 
-                <div>
-                  <LogoUpload
-                    onImageChange={(file) => form.setValue("avatar", file)}
-                    disabled={isPending}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="avatar"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Logo ONG</FormLabel>
+                      <FormControl>
+                        <LogoUpload
+                          onImageChange={(file) => field.onChange(file)}
+                          disabled={isPending}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <FormField
                   control={form.control}

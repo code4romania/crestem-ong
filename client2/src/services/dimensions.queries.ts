@@ -3,25 +3,22 @@ import {
   useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import {
-  listDimensions,
-  type ListDimensionsResponse,
-} from "./api/list-dimensions.api";
+import { listDimensions } from "./api/list-dimensions.api";
+import type { DimensionModel as ApiDimensionModel } from "./api/types";
 
-export const listDimensionsQueryOptions = <TResult = ListDimensionsResponse>(
-  select?: (data: ListDimensionsResponse) => TResult
+export const listDimensionsQueryOptions = <TResult = ApiDimensionModel[]>(
+  select?: (data: ApiDimensionModel[]) => TResult
 ) =>
   queryOptions({
     queryKey: ["dimensions"],
     queryFn: listDimensions,
-    staleTime: 0,
     select,
   });
 
-export const useSuspenseListDimensions = <TResult = ListDimensionsResponse>(
-  select?: (data: ListDimensionsResponse) => TResult
+export const useSuspenseListDimensions = <TResult = ApiDimensionModel[]>(
+  select?: (data: ApiDimensionModel[]) => TResult
 ) => useSuspenseQuery(listDimensionsQueryOptions(select));
 
-export const useListDimensions = <TResult = ListDimensionsResponse>(
-  select?: (data: ListDimensionsResponse) => TResult
+export const useListDimensions = <TResult = ApiDimensionModel[]>(
+  select?: (data: ApiDimensionModel[]) => TResult
 ) => useQuery(listDimensionsQueryOptions(select));
