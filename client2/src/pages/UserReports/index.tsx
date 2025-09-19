@@ -1,21 +1,16 @@
-import React from "react";
-import { useParams } from "@tanstack/react-router";
-import { useGetUserReportsQuery } from "@/redux/api/userApi";
+import Heading from "@/components/Heading";
 import TableHeadReports from "@/components/index/TableHeadReports";
 import Section from "@/components/Section";
-import TableRowReport from "@/components/TableRowReport";
-import Heading from "@/components/Heading";
 import Stats from "@/components/Stats";
-import FullScreenLoader from "@/components/FullScreenLoader";
-import { calcScore } from "@/lib/score";
+import TableRowReport from "@/components/TableRowReport";
 import { evaluationsCompletedFilter } from "@/lib/filters";
+import { calcScore } from "@/lib/score";
+import { Route } from "@/routes/(app)/users/$userId";
 
 const UserReports = () => {
-  const { userId } = useParams();
-  const { data: user, isLoading } = useGetUserReportsQuery({ userId });
-  if (isLoading) {
-    return <FullScreenLoader />;
-  }
+  const { userId } = Route.useParams();
+  const { data: user, isLoading } = useSuspenseGetUserReports(userId);
+
   const lastEvaluation = user?.reports?.filter(
     (report) => report.evaluations.length
   );

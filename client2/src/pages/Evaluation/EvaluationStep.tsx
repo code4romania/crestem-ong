@@ -1,13 +1,12 @@
 // import { RadioQuestion } from "@/components/radio-question";
 import Section from "@/components/Section";
-import { Matrix } from "@/redux/api/types";
-import { Controller, useFormContext } from "react-hook-form";
-import { EvaluationForm } from ".";
-import { RadioQuestion } from "./RadioQuestion";
+import type { FinalDimensionModel } from "@/services/api/types";
 import { ErrorMessage } from "@hookform/error-message";
+import { Controller, useFormContext } from "react-hook-form";
+import { RadioQuestion } from "./RadioQuestion";
 
 interface FormStepProps {
-  dimension: Matrix;
+  dimension: FinalDimensionModel;
   stepIndex: number;
   totalSteps: number;
 }

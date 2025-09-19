@@ -1,3 +1,4 @@
+import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import {
   Table,
   TableBody,
@@ -7,8 +8,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useTableUrlState } from "@/hooks/use-table-url-state";
-import type { ProgramModel as ApiProgramModel } from "@/services/api/types";
-import { useSuspenseListPrograms } from "@/services/programs.queries";
+import { evaluationsCompletedFilter } from "@/lib/filters";
+import { calcScore } from "@/lib/score";
+import type { ListReportsResponse } from "@/services/api/list-reports.api";
+import { useSuspenseListReports } from "@/services/reports.queries";
 import { getRouteApi } from "@tanstack/react-router";
 import {
   flexRender,
@@ -19,23 +22,29 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type { ProgramVM } from "../type";
+import type { ReportVM } from "../type";
 import { programColumns as columns } from "./columns";
-import { TableToolbar } from "./toolbar";
 
-const route = getRouteApi("/(app)/programs/");
-const mapper = (result: ApiProgramModel[]): ProgramVM[] =>
-  result.map((p) => ({
-    id: p.id,
-    name: p.attributes.name,
-    status:
-      new Date() < new Date(p.attributes.endDate) ? "ongoing" : "finished",
-    usersCount: p.attributes.usersCount,
-    mentorsCount: p.attributes.mentorsCount,
-  }));
+const route = getRouteApi("/(app)/reports/");
 
-export function ProgramsTable() {
-  const { data } = useSuspenseListPrograms(mapper);
+export const reportsMapper = (reports: ListReportsResponse): ReportVM[] =>
+  reports.data.map((report) => {
+    const completedEvaluations = evaluationsCompletedFilter(report.evaluations);
+    return {
+      id: report.id,
+      finished: report.finished,
+      ngoName: report.user?.ongName,
+      startDate: report.createdAt.split("T")[0],
+      endDate: report.deadline.split("T")[0],
+      score: calcScore(completedEvaluations) || 0,
+      completedEvaluationsCount: completedEvaluations.length,
+      evaluationsCount: report.evaluations.length,
+      evaluations: report.evaluations,
+    };
+  });
+
+export function ReportsTable() {
+  const { data } = useSuspenseListReports(reportsMapper);
 
   // Synced with URL states (updated to match route search schema defaults)
   const {
@@ -50,8 +59,21 @@ export function ProgramsTable() {
     pagination: { defaultPage: 1, defaultPageSize: 10 },
     globalFilter: { enabled: true, key: "search" },
     columnFilters: [
-      // { columnId: "status", searchKey: "status", type: "array" },
-      // { columnId: "priority", searchKey: "priority", type: "array" },
+      {
+        columnId: "startDate",
+        searchKey: "startDate",
+        type: "string",
+      },
+      {
+        columnId: "endDate",
+        searchKey: "endDate",
+        type: "string",
+      },
+      {
+        columnId: "score",
+        searchKey: "score",
+        type: "array",
+      },
     ],
   });
 
@@ -64,7 +86,7 @@ export function ProgramsTable() {
     },
     enableRowSelection: true,
     globalFilterFn: (row, _columnId, filterValue) => {
-      const name = String(row.original.name).toLowerCase();
+      const name = String(row.original.ngoName).toLowerCase();
       const searchValue = String(filterValue).toLowerCase();
 
       return name.toLowerCase().includes(searchValue.toLowerCase());
@@ -82,7 +104,7 @@ export function ProgramsTable() {
 
   return (
     <div className="space-y-4 ">
-      <TableToolbar table={table} />
+      <DataTableToolbar table={table}></DataTableToolbar>
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>

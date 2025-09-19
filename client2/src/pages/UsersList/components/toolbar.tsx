@@ -1,83 +1,132 @@
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getRouteApi } from "@tanstack/react-router";
 import type { Table } from "@tanstack/react-table";
-import { useDebounce } from "@uidotdev/usehooks";
+import React from "react";
+
 import { X } from "lucide-react";
-import { useEffect, useState } from "react";
-import { DataTableFacetedFilter } from "@/components/data-table/faceted-filter-multi-select";
 
-type DataTableToolbarProps<TData> = {
-  table: Table<TData>;
-  searchPlaceholder?: string;
-  searchKey?: string;
-  filters?: {
-    columnId: string;
-    title: string;
-    options: {
-      label: string;
-      value: string;
-      icon?: React.ComponentType<{ className?: string }>;
-    }[];
-  }[];
-};
+import { DataTableDateFilter } from "@/components/data-table/data-table-date-filter";
+import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
+import { Button } from "@/components/ui/button";
+import { citiesByCounty } from "@/lib/orase-dupa-judet";
+import type { DomainModel, ProgramModel } from "@/services/api/types";
+import { useSuspenseListDomains } from "@/services/domains.queries";
+import type { Option } from "@/types/data-table";
+import type { NgoVM } from "../types";
+import { useSuspenseListPrograms } from "@/services/programs.queries";
 
-export function TableToolbar<TData>({
-  table,
-  searchPlaceholder = "Filter...",
-  searchKey,
-  filters = [],
-}: DataTableToolbarProps<TData>) {
+interface NgosDataTableToolbarProps {
+  table: Table<NgoVM>;
+}
+
+function mapToOptions(domains: DomainModel[] | ProgramModel[]): Option[] {
+  return domains.map((domain) => ({
+    label: domain.attributes.name,
+    value: domain.attributes.name,
+  }));
+}
+
+export function NgosDataTableToolbar({ table }: NgosDataTableToolbarProps) {
   const isFiltered =
     table.getState().columnFilters.length > 0 || table.getState().globalFilter;
 
+  const { data: domains } = useSuspenseListDomains(mapToOptions);
+  const { data: programs } = useSuspenseListPrograms(mapToOptions);
+  const counties = React.useMemo(
+    () =>
+      Object.keys(citiesByCounty).map((county) => ({
+        label: county,
+        value: county,
+      })),
+    []
+  );
+
+  const county = React.useMemo(() => {
+    const filterValue = table.getColumn("county")?.getFilterValue();
+    if (Array.isArray(filterValue) && filterValue.length > 0) {
+      return filterValue[0]; // since multiple = false, we only care about the first
+    }
+    return undefined;
+  }, [table.getColumn("county")?.getFilterValue()]);
+
+  React.useEffect(() => {
+    table.getColumn("city")?.setFilterValue(undefined);
+  }, [county]);
+
+  const availableCities = React.useMemo(
+    () =>
+      county
+        ? [...new Set(citiesByCounty[county].map((city) => city.nume))]
+            .sort()
+            .map((city) => ({
+              value: city,
+              label: city,
+            }))
+        : [],
+    [citiesByCounty, county]
+  );
+
+  const onReset = React.useCallback(() => {
+    table.resetColumnFilters();
+    table.setGlobalFilter("");
+  }, [table]);
+
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2">
-        {searchKey ? (
-          <Input
-            placeholder={searchPlaceholder}
-            value={
-              (table.getColumn(searchKey)?.getFilterValue() as string) ?? ""
-            }
-            onChange={(event) =>
-              table.getColumn(searchKey)?.setFilterValue(event.target.value)
-            }
-            className="h-8 w-[150px] lg:w-[250px]"
-          />
-        ) : (
-          <Input
-            placeholder={searchPlaceholder}
-            value={table.getState().globalFilter ?? ""}
-            onChange={(event) => table.setGlobalFilter(event.target.value)}
-            className="h-8 w-[150px] lg:w-[250px]"
-          />
-        )}
-        <div className="flex gap-x-2">
-          {filters.map((filter) => {
-            const column = table.getColumn(filter.columnId);
-            if (!column) return null;
-            return (
-              <DataTableFacetedFilter
-                key={filter.columnId}
-                column={column}
-                title={filter.title}
-                options={filter.options}
-              />
-            );
-          })}
-        </div>
+    <div
+      role="toolbar"
+      aria-orientation="horizontal"
+      className={"flex w-full items-start justify-between gap-2 p-1"}
+    >
+      <div className="flex flex-1 flex-wrap items-center gap-2">
+        <Input
+          placeholder="Cauta"
+          value={table.getState().globalFilter ?? ""}
+          onChange={(event) => table.setGlobalFilter(event.target.value)}
+          className="h-8 w-[150px] lg:w-[250px]"
+        />
+        <DataTableDateFilter
+          column={table.getColumn("createdAt")!}
+          title="Dată Înregistrare"
+          multiple={true}
+        />
+        <DataTableDateFilter
+          column={table.getColumn("lastEvaluationDate")!}
+          title="Ultima evaluare"
+          multiple={true}
+        />
+        <DataTableFacetedFilter
+          column={table.getColumn("programName")}
+          title={"Programe"}
+          options={programs}
+          multiple={true}
+        />
+        <DataTableFacetedFilter
+          column={table.getColumn("domains")}
+          title={"Domenii activitate"}
+          options={domains}
+          multiple={true}
+        />
+        <DataTableFacetedFilter
+          column={table.getColumn("county")}
+          title={"Județ"}
+          options={counties}
+          multiple={false}
+        />
+        <DataTableFacetedFilter
+          column={table.getColumn("city")}
+          title={"Localitate"}
+          options={availableCities}
+          multiple={false}
+        />
         {isFiltered && (
           <Button
-            variant="ghost"
-            onClick={() => {
-              table.resetColumnFilters();
-              table.setGlobalFilter("");
-            }}
-            className="h-8 px-2 lg:px-3"
+            aria-label="Sterge filtre"
+            variant="outline"
+            size="sm"
+            className="border-dashed"
+            onClick={onReset}
           >
-            Reset
-            <X className="ms-2 h-4 w-4" />
+            <X />
+            Sterge filtre
           </Button>
         )}
       </div>

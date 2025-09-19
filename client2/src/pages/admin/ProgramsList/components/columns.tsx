@@ -15,7 +15,7 @@ export const programColumns: ColumnDef<ProgramVM>[] = [
       return (
         <div className="flex space-x-2">
           <span className="max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]">
-            {row.getValue("name")}
+            {row.original.name}
           </span>
         </div>
       );
@@ -27,8 +27,7 @@ export const programColumns: ColumnDef<ProgramVM>[] = [
       <DataTableColumnHeader column={column} title="STATUS" />
     ),
     cell: ({ row }) => {
-      const isFinished =
-        row.getValue<"ongoing" | "finished">("status") === "finished";
+      const isFinished = row.original.status === "finished";
 
       return (
         <Badge variant={isFinished ? "destructive" : "default"}>

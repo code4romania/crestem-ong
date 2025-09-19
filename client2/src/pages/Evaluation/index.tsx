@@ -1,25 +1,18 @@
-import Button from "@/components/Button";
 import EvaluationFinished from "@/components/EvaluationFinished";
+import EvaluationResults from "@/components/EvaluationResults";
 import FullScreenLoader from "@/components/FullScreenLoader";
-import Pagination from "@/components/Pagination";
-import Section from "@/components/Section";
 import StartEvaluation from "@/components/StartEvaluation";
-import type {
-  EvaluationDimension,
-  UpsertEvaluationDimensionRequest,
-} from "@/redux/api/types";
-import {
-  useGetEvaluationQuery,
-  userApi,
-  useSubmitEvaluationMutation,
-} from "@/redux/api/userApi";
 import { useAppSelector } from "@/redux/store";
+import { Route } from "@/routes/(app)/evaluation/$evaluationId";
+import type { UpsertEvaluationDimensionRequest } from "@/services/api/upsert-evaluation.api";
+import { updateEvaluationMutation } from "@/services/evaluation.mutations";
+import { useSuspenseGetEvaluation } from "@/services/evaluation.queries";
+import { useSuspenseGetMatrix } from "@/services/matrix.queries";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { Navigate, useParams, useSearchParams } from "@tanstack/react-router";
+import { Navigate } from "@tanstack/react-router";
+import { useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { EvaluationStep } from "./EvaluationStep";
 import ExpiredEvaluation from "./ExpiredEvaluation";
 
 const invalid_type_error = "Vă rugăm alegeți o opțiune";
@@ -106,75 +99,57 @@ const mergeEvaluations = (
 const Evaluation = () => {
   const user = useAppSelector((state) => state.userState.user);
 
-  const { evaluationId } = useParams();
-  const [searchParams] = useSearchParams();
-  const emailParam = searchParams.get("email");
+  const { evaluationId } = Route.useParams();
+  const { email } = Route.useSearch();
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
-  const formRef = useRef<HTMLFormElement | null>(null);
 
   const methods = useForm<EvaluationForm>({
     resolver: zodResolver(evaluationSchema),
     shouldFocusError: true,
   });
 
-  const {
-    formState: { errors },
-    handleSubmit,
-    trigger,
-    setValue,
-    getValues,
-    watch,
-  } = methods;
+  // const userFilledInDimensions = watch("dimensions", []);
 
-  const userFilledInDimensions = watch("dimensions", []);
-
-  const { data: matrixData, isLoading: isMatrixLoading } =
-    userApi.endpoints.getMatrix.useQuery(undefined, {
-      skip: false,
-      refetchOnMountOrArgChange: true,
-    });
+  const { data: dimensions, isLoading: isMatrixLoading } = useSuspenseGetMatrix(
+    (d) => d.dimensions
+  );
 
   const {
     isLoading: isEvaluationLoading,
     data: evaluationData,
     error: evaluationError,
-  } = useGetEvaluationQuery({
-    evaluationId: evaluationId ?? "",
-    email: emailParam ?? "",
-  });
+  } = useSuspenseGetEvaluation(evaluationId, email);
 
-  const [
-    submitEvaluation,
-    { isLoading: isSubmitLoading, isSuccess: isSubmitSuccess },
-  ] = useSubmitEvaluationMutation();
+  const { mutate: updateEvaluation, isPending: isSubmitLoading } =
+    updateEvaluationMutation();
 
   const isFDSC = user?.role?.type === "fdsc";
 
-  useEffect(() => {
-    const userAnswers = evaluationData?.dimensions?.map((dimension) => {
-      const mappedQuestionAnswers = dimension.quiz.reduce(
-        (acc, curr, index) => {
-          acc[`question_${index + 1}` as keyof DimensionType] =
-            curr.answer.toString() as "0" | "1" | "2" | "3" | "4";
+  // useEffect(() => {
+  //   const userAnswers = evaluationData?.dimensions?.map((dimension) => {
+  //     const mappedQuestionAnswers = dimension.quiz.reduce(
+  //       (acc, curr, index) => {
+  //         acc[`question_${index + 1}` as keyof DimensionType] =
+  //           curr.answer.toString() as "0" | "1" | "2" | "3" | "4";
 
-          return acc;
-        },
-        {} as DimensionType
-      );
+  //         return acc;
+  //       },
+  //       {} as DimensionType
+  //     );
 
-      return {
-        ...mappedQuestionAnswers,
-        comment: dimension.comment ?? "",
-      };
-    });
+  //     return {
+  //       ...mappedQuestionAnswers,
+  //       comment: dimension.comment ?? "",
+  //     };
+  //   });
 
-    setValue("dimensions", userAnswers ?? []);
-  }, [evaluationData, setValue]);
+  //   setValue("dimensions", userAnswers ?? []);
+  // }, [evaluationData, setValue]);
 
   function incrementStep() {
-    if (currentStepIndex < matrixData?.length - 1) {
+    if (currentStepIndex < dimensions?.length - 1) {
       setCurrentStepIndex((prev) => prev + 1);
       window.scrollTo(0, 0);
     }
@@ -220,17 +195,16 @@ const Evaluation = () => {
   };
 
   const onSubmit = async (data: EvaluationForm) => {
-    const evaluation = mergeEvaluations(
-      evaluationData?.dimensions ?? [],
-      data.dimensions.map(mapToEvaluationDimension)
-    );
-
-    submitEvaluation({
-      evaluationId: evaluationId ?? "",
-      dimensions: evaluation,
-    });
-
-    incrementStep();
+    console.log(data);
+    // const evaluation = mergeEvaluations(
+    //   evaluationData?.dimensions ?? [],
+    //   data.dimensions.map(mapToEvaluationDimension)
+    // );
+    // submitEvaluation({
+    //   evaluationId: evaluationId ?? "",
+    //   dimensions: evaluation,
+    // });
+    // incrementStep();
   };
 
   const handleClickStart = useCallback(() => {
@@ -238,13 +212,13 @@ const Evaluation = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const validFilledInDimensions = useMemo(() => {
-    const validCount = userFilledInDimensions.filter(
-      (dimension) => dimensionSchema.safeParse(dimension).success
-    ).length;
+  // const validFilledInDimensions = useMemo(() => {
+  //   const validCount = userFilledInDimensions.filter(
+  //     (dimension) => dimensionSchema.safeParse(dimension).success
+  //   ).length;
 
-    return validCount;
-  }, [userFilledInDimensions]);
+  //   return validCount;
+  // }, [userFilledInDimensions]);
 
   if (isMatrixLoading || isEvaluationLoading) {
     return <FullScreenLoader />;
@@ -267,13 +241,13 @@ const Evaluation = () => {
 
   if (
     evaluationData?.dimensions?.length &&
-    matrixData?.length &&
-    evaluationData?.dimensions?.length === matrixData?.length
+    dimensions?.length &&
+    evaluationData?.dimensions?.length === dimensions?.length
   ) {
     return <EvaluationFinished />;
   }
 
-  if (!matrixData) {
+  if (!dimensions) {
     return <Navigate to="/" />;
   }
 
@@ -286,52 +260,53 @@ const Evaluation = () => {
   }
 
   return (
-    <FormProvider {...methods}>
-      <form
-        ref={formRef}
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6 bg-card rounded-lg p-6 shadow-md"
-      >
-        {matrixData?.length ? (
-          <Section>
-            <EvaluationStep
-              dimension={matrixData[currentStepIndex]}
-              stepIndex={currentStepIndex}
-              totalSteps={matrixData.length}
-            />
+    <></>
+    // <FormProvider {...methods}>
+    //   <form
+    //     ref={formRef}
+    //     onSubmit={handleSubmit(onSubmit)}
+    //     className="space-y-6 bg-card rounded-lg p-6 shadow-md"
+    //   >
+    //     {dimensions?.length ? (
+    //       <Section>
+    //         <EvaluationStep
+    //           dimension={dimensions[currentStepIndex]}
+    //           stepIndex={currentStepIndex}
+    //           totalSteps={dimensions.length}
+    //         />
 
-            <Section>
-              <Pagination step={validFilledInDimensions} />
-            </Section>
-            <Section>
-              <div className="flex place-content-end gap-3">
-                <Button
-                  type="button"
-                  color="white"
-                  onClick={handleBack}
-                  disabled={
-                    currentStepIndex === 0 || methods.formState.isSubmitting
-                  }
-                >
-                  Back
-                </Button>
-                <Button type="button" onClick={handleNext} color="teal">
-                  {currentStepIndex !== 9
-                    ? methods.formState.isSubmitting
-                      ? "Se trimite..."
-                      : "Continuă"
-                    : "Trimite"}
-                </Button>
-              </div>
-            </Section>
-          </Section>
-        ) : (
-          <div className="text-center py-8">
-            <p>No form data available. Please try again later.</p>
-          </div>
-        )}
-      </form>
-    </FormProvider>
+    //         <Section>
+    //           <Pagination step={validFilledInDimensions} />
+    //         </Section>
+    //         <Section>
+    //           <div className="flex place-content-end gap-3">
+    //             <Button
+    //               type="button"
+    //               color="white"
+    //               onClick={handleBack}
+    //               disabled={
+    //                 currentStepIndex === 0 || methods.formState.isSubmitting
+    //               }
+    //             >
+    //               Back
+    //             </Button>
+    //             <Button type="button" onClick={handleNext} color="teal">
+    //               {currentStepIndex !== 9
+    //                 ? methods.formState.isSubmitting
+    //                   ? "Se trimite..."
+    //                   : "Continuă"
+    //                 : "Trimite"}
+    //             </Button>
+    //           </div>
+    //         </Section>
+    //       </Section>
+    //     ) : (
+    //       <div className="text-center py-8">
+    //         <p>No form data available. Please try again later.</p>
+    //       </div>
+    //     )}
+    //   </form>
+    // </FormProvider>
   );
 };
 

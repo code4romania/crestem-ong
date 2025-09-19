@@ -207,3 +207,96 @@ export interface DimensionAttributes {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface FinalReportModel {
+  id: number;
+  deadline: string;
+  finished: boolean;
+  createdAt: string;
+  updatedAt: string;
+  evaluations: FinalEvaluationModel[];
+  user: FinalUserModel;
+}
+
+export interface FinalEvaluationModel {
+  id: number;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+  dimensions: FinalEvaluationDimensionModel[];
+}
+
+export interface FinalEvaluationDimensionModel {
+  id: number;
+  comment: string;
+  quiz: FinalEvaluationQuizModel[];
+}
+
+export interface FinalEvaluationQuizModel {
+  id: number;
+  answer: number;
+}
+
+export interface FinalUserModel {
+  id: number;
+  username: string;
+  email: string;
+  provider: string;
+  password?: string | undefined;
+  resetPasswordToken?: string | undefined;
+  confirmationToken?: string | undefined;
+  confirmed: boolean;
+  blocked: boolean;
+  ongName: string;
+  ongIdentificationNumber: string;
+  county: string;
+  city: string;
+  phone: string;
+  website: string;
+  keywords: string;
+  description: string;
+  contactFirstName: string;
+  contactLastName: string;
+  contactEmail: string;
+  contactPhone: string;
+  accountFacebook: string | undefined;
+  accountTwitter: string | undefined;
+  accountTiktok: string | undefined;
+  accountInstagram: string | undefined;
+  accountLinkedin: string | undefined;
+  createdAt: string;
+  updatedAt: string;
+  registrationToken?: string | undefined;
+  bio: string | undefined;
+  expertise: string | undefined;
+  firstName: string | undefined;
+  lastName: string | undefined;
+  available: boolean;
+}
+
+export interface FinalMatrixModel {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  dimensions: FinalDimensionModel[];
+}
+
+export interface FinalDimensionModel {
+  id: number;
+  name: string;
+  link: string;
+  createdAt: string;
+  updatedAt: string;
+  quiz: FinalQuizModel[];
+}
+
+export interface FinalQuizModel {
+  id: number;
+  question: string;
+  option_1: string;
+  option_2: string;
+  option_3: string;
+  option_4: string;
+  option_5: string;
+  tag: string;
+}

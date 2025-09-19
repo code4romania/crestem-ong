@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { ro } from "date-fns/locale";
 import { zhTW } from "date-fns/locale";
+import { format } from "date-fns";
 const today = new Date();
 const programSchema = z
   .object({
@@ -73,8 +74,8 @@ const CreateProgram = () => {
     createProgram(
       {
         ...data,
-        startDate: data.startDate!.toISOString(),
-        endDate: data.endDate!.toISOString(),
+        startDate: format(data.startDate!, "yyyy-MM-dd"),
+        endDate: format(data.endDate!, "yyyy-MM-dd"),
       },
       {
         onSuccess: async (program) => {

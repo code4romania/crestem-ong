@@ -3,10 +3,11 @@ import {
   useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { getMatrix, type MatrixModel } from "./api/get-matrix.api";
+import { getMatrix } from "./api/get-matrix.api";
+import type { FinalMatrixModel } from "./api/types";
 
-export const getMatrixQueryOptions = <TResult = MatrixModel>(
-  select?: (data: MatrixModel) => TResult
+export const getMatrixQueryOptions = <TResult = FinalMatrixModel>(
+  select?: (data: FinalMatrixModel) => TResult
 ) =>
   queryOptions({
     queryKey: ["matrix"],
@@ -14,10 +15,10 @@ export const getMatrixQueryOptions = <TResult = MatrixModel>(
     select,
   });
 
-export const useSuspenseGetMatrix = <TResult = MatrixModel>(
-  select?: (data: MatrixModel) => TResult
+export const useSuspenseGetMatrix = <TResult = FinalMatrixModel>(
+  select?: (data: FinalMatrixModel) => TResult
 ) => useSuspenseQuery(getMatrixQueryOptions(select));
 
-export const useGetMatrix = <TResult = MatrixModel>(
-  select?: (data: MatrixModel) => TResult
+export const useGetMatrix = <TResult = FinalMatrixModel>(
+  select?: (data: FinalMatrixModel) => TResult
 ) => useQuery(getMatrixQueryOptions(select));

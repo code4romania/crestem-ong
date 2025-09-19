@@ -40,6 +40,14 @@ export const columns: ColumnDef<NgoVM>[] = [
       return formatDate(row.original.createdAt);
     },
     enableSorting: false,
+    filterFn: (row, id, value) => {
+      const rowValue = row.getValue<string>(id);
+
+      if (!Array.isArray(value) || value.length !== 2) return true; // fallback if invalid
+
+      const [min, max] = value;
+      return rowValue >= min && rowValue <= max;
+    },
   },
   {
     accessorKey: "programName",
@@ -52,6 +60,9 @@ export const columns: ColumnDef<NgoVM>[] = [
     ),
     cell: ({ row }) => <span>{row.original.programName || "-"}</span>,
     enableSorting: false,
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   },
   {
     accessorKey: "county",
@@ -97,6 +108,10 @@ export const columns: ColumnDef<NgoVM>[] = [
         "-"
       );
     },
+    filterFn: (row, id, value) => {
+      const cellValues = row.getValue<string[]>(id) ?? [];
+      return value.length === 0 || cellValues.some((v) => value.includes(v));
+    },
     enableSorting: false,
   },
   {
@@ -114,6 +129,14 @@ export const columns: ColumnDef<NgoVM>[] = [
         : "-";
     },
     enableSorting: false,
+    filterFn: (row, id, value) => {
+      const rowValue = row.getValue<string>(id);
+
+      if (!Array.isArray(value) || value.length !== 2) return true; // fallback if invalid
+
+      const [min, max] = value;
+      return rowValue >= min && rowValue <= max;
+    },
   },
   {
     id: "navigate",

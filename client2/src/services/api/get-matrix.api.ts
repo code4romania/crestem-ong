@@ -1,32 +1,33 @@
 import qs from "qs";
 import { API } from "../api";
+import type { FinalMatrixModel } from "./types";
 
-export interface GetMatrixResponse {
+interface GetMatrixApiResponse {
   data: MatrixModel;
   meta: Meta;
 }
 
-export interface MatrixModel {
+interface MatrixModel {
   id: number;
   attributes: MatrixAttributes;
 }
 
-export interface MatrixAttributes {
+interface MatrixAttributes {
   createdAt: string;
   updatedAt: string;
   dimensions: DimensionsData;
 }
 
-export interface DimensionsData {
+interface DimensionsData {
   data: DimensionModel[];
 }
 
-export interface DimensionModel {
+interface DimensionModel {
   id: number;
   attributes: DimensionAttributes;
 }
 
-export interface DimensionAttributes {
+interface DimensionAttributes {
   name: string;
   link: string;
   createdAt: string;
@@ -34,7 +35,7 @@ export interface DimensionAttributes {
   quiz: QuizModel[];
 }
 
-export interface QuizModel {
+interface QuizModel {
   id: number;
   question: string;
   option_1: string;
@@ -45,9 +46,9 @@ export interface QuizModel {
   tag: string;
 }
 
-export interface Meta {}
+interface Meta {}
 
-export const getMatrix = (): Promise<MatrixModel> => {
+export const getMatrix = (): Promise<FinalMatrixModel> => {
   const params = {
     populate: {
       dimensions: {
@@ -56,12 +57,19 @@ export const getMatrix = (): Promise<MatrixModel> => {
     },
   };
 
-  return API.get<GetMatrixResponse>(`api/matrix`, {
+  return API.get<GetMatrixApiResponse>(`api/matrix`, {
     params,
     paramsSerializer: {
       serialize: (params) => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data.data);
+  }).then((res) => ({
+    ...res.data.data,
+    ...res.data.data.attributes,
+    dimensions: res.data.data.attributes.dimensions.data.map((d) => ({
+      ...d,
+      ...d.attributes,
+    })),
+  }));
 };

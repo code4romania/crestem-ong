@@ -18,27 +18,8 @@ const filtersSchema = z.object({
 
 export const Route = createFileRoute("/(app)/programs/")({
   validateSearch: zodValidator(filtersSchema),
-  loaderDeps: ({ search: { search, startDate, endDate, page, pageSize } }) => ({
-    search,
-    startDate,
-    endDate,
-    page,
-    pageSize,
-  }),
-
-  loader: async ({
-    context: { queryClient },
-    deps: { search, startDate, endDate, page, pageSize },
-  }) =>
-    queryClient.prefetchQuery(
-      listProgramsQueryOptions({
-        page,
-        pageSize,
-        search,
-        startDate,
-        endDate,
-      })
-    ),
+  loader: async ({ context: { queryClient } }) =>
+    queryClient.prefetchQuery(listProgramsQueryOptions()),
   component: RouteComponent,
   pendingComponent: FullScreenLoader,
 });

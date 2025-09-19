@@ -1,3 +1,4 @@
+import FullScreenLoader from "@/components/FullScreenLoader";
 import getUserType from "@/lib/userType";
 import AdminReport from "@/pages/admin/Report";
 import Report from "@/pages/authenticated/Report";
@@ -7,6 +8,7 @@ import { createFileRoute, Navigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(app)/reports/$reportId")({
   component: RouteComponent,
+  pendingComponent: FullScreenLoader,
 });
 
 function RouteComponent() {

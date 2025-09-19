@@ -835,34 +835,34 @@ const DateTimePicker = React.forwardRef<
     return (
       <Popover>
         <PopoverTrigger asChild disabled={disabled}>
-          <FormControl>
-            <Button
-              variant="outline"
-              type="button"
-              className={cn(
-                "w-full justify-start text-left font-normal",
-                !displayDate && "text-muted-foreground",
-                "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
-                className
-              )}
-              ref={buttonRef}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {displayDate ? (
-                format(
-                  displayDate,
-                  hourCycle === 24
-                    ? initHourFormat.hour24
-                    : initHourFormat.hour12,
-                  {
-                    locale: loc,
-                  }
-                )
-              ) : (
-                <span>{placeholder}</span>
-              )}
-            </Button>
-          </FormControl>
+          {/* <FormControl> */}
+          <Button
+            variant="outline"
+            type="button"
+            className={cn(
+              "w-full justify-start text-left font-normal",
+              !displayDate && "text-muted-foreground",
+              "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+              className
+            )}
+            ref={buttonRef}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {displayDate ? (
+              format(
+                displayDate,
+                hourCycle === 24
+                  ? initHourFormat.hour24
+                  : initHourFormat.hour12,
+                {
+                  locale: loc,
+                }
+              )
+            ) : (
+              <span>{placeholder}</span>
+            )}
+          </Button>
+          {/* </FormControl> */}
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0">
           <Calendar

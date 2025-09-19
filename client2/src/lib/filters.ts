@@ -1,11 +1,11 @@
-import type { EvaluationModel } from "@/services/api/get-program.api";
+import type { FinalEvaluationModel } from "@/services/api/types";
 
 export const evaluationsCompletedFilter = (
-  evaluations: EvaluationModel[]
-): EvaluationModel[] =>
+  evaluations: FinalEvaluationModel[]
+): FinalEvaluationModel[] =>
   evaluations.filter(
     (evaluation) =>
-      evaluation.attributes.dimensions.reduce(
+      evaluation.dimensions.reduce(
         (acc, dimension) => acc + dimension.quiz.length,
         0
       ) === 50

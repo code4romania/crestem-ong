@@ -1,5 +1,4 @@
 import screenshot from "@/assets/illustration.svg";
-import Button from "@/components/Button";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { useLoginUserMutation } from "@/services/user.mutations";
+import { Button } from "@/components/ui/button";
 
 const loginSchema = z.object({
   identifier: z
@@ -52,12 +52,9 @@ const FormFooter = memo(() => (
     </div>
     <div className="h-full flex items-center justify-center pt-0 pr-4 pb-0 pl-4 md:mb-0">
       <div className="container mt-0 mr-auto mb-0 ml-auto text-center">
-        <Link
-          to={"/forgot-password"}
-          className="text-sm leading-5 font-medium text-teal-600"
-        >
-          Ai uitat parola?
-        </Link>
+        <Button variant="link" asChild>
+          <Link to={"/forgot-password"}>Ai uitat parola?</Link>
+        </Button>
       </div>
     </div>
   </div>
