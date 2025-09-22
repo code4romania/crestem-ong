@@ -7,6 +7,7 @@ import { loginUser } from "./api/login-user.api";
 import { registerUser } from "./api/register-user.api";
 import { resetPassword } from "./api/reset-password.api";
 import { uploadUserAvatar } from "./api/upload-picture.api";
+import { useNavigate } from "@tanstack/react-router";
 
 export function useRegisterUserMutation() {
   const queryClient = useQueryClient();
@@ -37,6 +38,7 @@ export function useResetPasswordMutation() {
 export function useLoginUserMutation() {
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: loginUser,
@@ -44,6 +46,7 @@ export function useLoginUserMutation() {
       dispatch(setToken(data.jwt));
       Cookies.set("jwt", data.jwt);
       queryClient.invalidateQueries({ queryKey: ["me"] });
+      navigate({ to: "/" });
     },
   });
 }

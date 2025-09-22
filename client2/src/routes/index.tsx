@@ -4,6 +4,7 @@ import getUserType from "@/lib/userType";
 import Dashboard from "@/pages/Dashboard";
 import Home from "@/pages/Home";
 import HomeMentor from "@/pages/mentor/Home";
+import UnauthenticatedHome from "@/pages/UnauthenticatedHome";
 import { useAppSelector } from "@/redux/store";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
@@ -28,7 +29,7 @@ function RouteComponent() {
       ) : userType === "mentor" ? (
         <HomeMentor />
       ) : (
-        <Home />
+        <UnauthenticatedHome />
       )}
     </LayoutApp>
   );

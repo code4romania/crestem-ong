@@ -15,7 +15,7 @@ export const queryClient = new QueryClient({
       retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
       // Auto-refetch when user returns to tab - ensures displayed data is current
       // after context switches (critical for collaborative features)
-      refetchOnWindowFocus: true,
+      refetchOnWindowFocus: false,
       // Always refetch after network reconnection - prevents stale data after
       // connectivity issues (overrides staleTime check)
       refetchOnReconnect: "always",
