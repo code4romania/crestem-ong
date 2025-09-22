@@ -1,4 +1,8 @@
-const Stats = ({ data }: { data: { label: string; value: string }[] }) => (
+const Stats = ({
+  data,
+}: {
+  data: { label: string; value: string | number | undefined }[];
+}) => (
   <div>
     <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
       {data.map(({ label, value }) => (
@@ -10,7 +14,7 @@ const Stats = ({ data }: { data: { label: string; value: string }[] }) => (
             {label}
           </dt>
           <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-            {value}
+            {value ?? "-"}
           </dd>
         </div>
       ))}
