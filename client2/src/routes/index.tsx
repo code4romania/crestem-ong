@@ -1,3 +1,4 @@
+import FullScreenLoader from "@/components/FullScreenLoader";
 import LayoutApp from "@/components/LayoutApp";
 import getUserType from "@/lib/userType";
 import Dashboard from "@/pages/Dashboard";
@@ -5,9 +6,11 @@ import Home from "@/pages/Home";
 import HomeMentor from "@/pages/mentor/Home";
 import { useAppSelector } from "@/redux/store";
 import { createFileRoute } from "@tanstack/react-router";
+import { Suspense } from "react";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
+  loader: FullScreenLoader,
 });
 
 function RouteComponent() {
@@ -17,7 +20,9 @@ function RouteComponent() {
   return (
     <LayoutApp>
       {userType === "fdsc" ? (
-        <Dashboard />
+        <Suspense fallback={<FullScreenLoader />}>
+          <Dashboard />
+        </Suspense>
       ) : userType === "authenticated" ? (
         <Home />
       ) : userType === "mentor" ? (
