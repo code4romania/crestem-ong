@@ -21,7 +21,7 @@ import {
 } from "@tanstack/react-table";
 import type { ProgramVM } from "../type";
 import { programColumns as columns } from "./columns";
-import { TableToolbar } from "./toolbar";
+import { ProgramsDataTableToolbar } from "./toolbar";
 
 const route = getRouteApi("/(app)/programs/");
 const mapper = (result: ApiProgramModel[]): ProgramVM[] =>
@@ -50,8 +50,11 @@ export function ProgramsTable() {
     pagination: { defaultPage: 1, defaultPageSize: 10 },
     globalFilter: { enabled: true, key: "search" },
     columnFilters: [
-      // { columnId: "status", searchKey: "status", type: "array" },
-      // { columnId: "priority", searchKey: "priority", type: "array" },
+      {
+        columnId: "status",
+        searchKey: "status",
+        type: "array",
+      },
     ],
   });
 
@@ -77,12 +80,11 @@ export function ProgramsTable() {
     onPaginationChange,
     onGlobalFilterChange,
     onColumnFiltersChange,
-    manualPagination: true,
   });
 
   return (
     <div className="space-y-4 ">
-      <TableToolbar table={table} />
+      <ProgramsDataTableToolbar table={table} />
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>

@@ -1,83 +1,71 @@
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getRouteApi } from "@tanstack/react-router";
 import type { Table } from "@tanstack/react-table";
-import { useDebounce } from "@uidotdev/usehooks";
+import React from "react";
+
 import { X } from "lucide-react";
-import { useEffect, useState } from "react";
-import { DataTableFacetedFilter } from "@/components/data-table/faceted-filter-multi-select";
 
-type DataTableToolbarProps<TData> = {
-  table: Table<TData>;
-  searchPlaceholder?: string;
-  searchKey?: string;
-  filters?: {
-    columnId: string;
-    title: string;
-    options: {
-      label: string;
-      value: string;
-      icon?: React.ComponentType<{ className?: string }>;
-    }[];
-  }[];
-};
+import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
+import { Button } from "@/components/ui/button";
+import type { ProgramVM } from "../type";
+import { Value } from "@radix-ui/react-select";
 
-export function TableToolbar<TData>({
+interface ProgramsDataTableToolbarProps {
+  table: Table<ProgramVM>;
+}
+
+const statuses = [
+  {
+    label: "In desfasurare",
+    value: "ongoing",
+  },
+  {
+    label: "Incheiat",
+    value: "finished",
+  },
+];
+
+export function ProgramsDataTableToolbar({
   table,
-  searchPlaceholder = "Caută...",
-  searchKey,
-  filters = [],
-}: DataTableToolbarProps<TData>) {
+}: ProgramsDataTableToolbarProps) {
   const isFiltered =
     table.getState().columnFilters.length > 0 || table.getState().globalFilter;
 
+  const onReset = React.useCallback(() => {
+    table.resetColumnFilters();
+    table.setGlobalFilter("");
+  }, [table]);
+
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2">
-        {searchKey ? (
-          <Input
-            placeholder={searchPlaceholder}
-            value={
-              (table.getColumn(searchKey)?.getFilterValue() as string) ?? ""
-            }
-            onChange={(event) =>
-              table.getColumn(searchKey)?.setFilterValue(event.target.value)
-            }
-            className="h-8 w-[150px] lg:w-[250px]"
-          />
-        ) : (
-          <Input
-            placeholder={searchPlaceholder}
-            value={table.getState().globalFilter ?? ""}
-            onChange={(event) => table.setGlobalFilter(event.target.value)}
-            className="h-8 w-[150px] lg:w-[250px]"
-          />
-        )}
-        <div className="flex gap-x-2">
-          {filters.map((filter) => {
-            const column = table.getColumn(filter.columnId);
-            if (!column) return null;
-            return (
-              <DataTableFacetedFilter
-                key={filter.columnId}
-                column={column}
-                title={filter.title}
-                options={filter.options}
-              />
-            );
-          })}
-        </div>
+    <div
+      role="toolbar"
+      aria-orientation="horizontal"
+      className={"flex w-full items-start justify-between gap-2 p-1"}
+    >
+      <div className="flex flex-1 flex-wrap items-center gap-2">
+        <Input
+          placeholder="Cauta"
+          value={table.getState().globalFilter ?? ""}
+          onChange={(event) => table.setGlobalFilter(event.target.value)}
+          className="h-8 w-[150px] lg:w-[250px]"
+        />
+
+        <DataTableFacetedFilter
+          column={table.getColumn("status")}
+          title={"Status"}
+          options={statuses}
+          multiple={false}
+        />
+
         {isFiltered && (
           <Button
-            variant="ghost"
-            onClick={() => {
-              table.resetColumnFilters();
-              table.setGlobalFilter("");
-            }}
-            className="h-8 px-2 lg:px-3"
+            aria-label="Sterge filtre"
+            variant="outline"
+            size="sm"
+            className="border-dashed"
+            onClick={onReset}
           >
-            Reset
-            <X className="ms-2 h-4 w-4" />
+            <X />
+            Sterge filtre
           </Button>
         )}
       </div>

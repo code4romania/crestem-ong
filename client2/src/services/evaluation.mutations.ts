@@ -10,7 +10,6 @@ export function updateEvaluationMutation() {
   return useMutation({
     mutationFn: (request: UpsertEvaluationRequest) => upsertEvaluation(request),
     onSuccess: async (evaluation) => {
-      console.log(evaluation);
       await queryClient.invalidateQueries({ queryKey: ["evaluations"] });
     },
   });

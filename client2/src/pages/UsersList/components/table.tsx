@@ -69,12 +69,12 @@ export function NgosTable() {
       {
         columnId: "county",
         searchKey: "county",
-        type: "string",
+        type: "array",
       },
       {
         columnId: "city",
         searchKey: "city",
-        type: "string",
+        type: "array",
       },
       {
         columnId: "programName",
@@ -124,7 +124,7 @@ export function NgosTable() {
           <NgosPrimaryButtons table={table} />
         </div>
       </Section>
-      <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12">
+      <Section>
         <div className="space-y-4">
           <NgosDataTableToolbar table={table}></NgosDataTableToolbar>
           <div className="rounded-md border">
@@ -175,7 +175,7 @@ export function NgosTable() {
             </Table>
           </div>
         </div>
-      </div>
+      </Section>
     </>
   );
 }

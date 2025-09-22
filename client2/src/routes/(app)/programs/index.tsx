@@ -9,11 +9,12 @@ import z from "zod";
 
 const filtersSchema = z.object({
   search: z.string().default(""),
-  status: z.enum(["ongoing", "finished", "all"]).default("all"),
+  status: z
+    .array(z.enum(["ongoing", "finished"]))
+    .optional()
+    .catch([]),
   startDate: z.iso.date().optional(),
   endDate: z.iso.date().optional(),
-  page: z.number().default(1),
-  pageSize: z.number().default(25),
 });
 
 export const Route = createFileRoute("/(app)/programs/")({

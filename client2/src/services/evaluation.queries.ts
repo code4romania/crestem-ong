@@ -12,9 +12,10 @@ export const getEvaluationQueryOptions = <TResult = FinalEvaluationModel>(
   select?: (data: FinalEvaluationModel) => TResult
 ) =>
   queryOptions({
-    queryKey: ["evaluation", evaluationId, email],
+    queryKey: ["evaluations", evaluationId, email],
     queryFn: () => getEvaluation(evaluationId, email),
     select,
+    throwOnError: true,
   });
 
 export const useGetEvaluation = <TResult = FinalEvaluationModel>(

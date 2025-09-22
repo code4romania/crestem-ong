@@ -1,7 +1,7 @@
 import { API } from "../api";
 import type { FinalEvaluationModel } from "./types";
 export interface UpsertEvaluationRequest {
-  evaluationId: number;
+  evaluationId: string;
   dimensions: UpsertEvaluationDimensionRequest[];
 }
 export interface UpsertEvaluationDimensionRequest {

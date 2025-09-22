@@ -36,6 +36,12 @@ export const programColumns: ColumnDef<ProgramVM>[] = [
       );
     },
     enableSorting: false,
+    enableColumnFilter: true,
+    filterFn: (row, id, value) => {
+      if (!value) return true;
+
+      return value.includes(row.getValue(id));
+    },
   },
   {
     accessorKey: "numberOfNgos",

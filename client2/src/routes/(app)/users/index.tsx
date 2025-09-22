@@ -11,8 +11,8 @@ const filtersSchema = z.object({
   createdAtDateUntil: z.iso.date().optional(),
   latestEvaluationDateFrom: z.iso.date().optional(),
   latestEvaluationDateUntil: z.iso.date().optional(),
-  county: z.number().optional(),
-  localityId: z.number().optional(),
+  county: z.array(z.string()).optional(),
+  locality: z.array(z.string()).optional(),
 });
 
 export const Route = createFileRoute("/(app)/users/")({
