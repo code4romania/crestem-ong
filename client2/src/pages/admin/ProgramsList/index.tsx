@@ -3,6 +3,7 @@ import Section from "@/components/Section";
 import { Suspense } from "react";
 import { ProgramsTable } from "./components/table";
 import { ProgramsPrimaryButtons } from "./components/primary-buttons";
+import FullScreenLoader from "@/components/FullScreenLoader";
 
 const ProgramsList = () => {
   return (
@@ -16,7 +17,7 @@ const ProgramsList = () => {
         </div>
       </Section>
       <Section>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<FullScreenLoader />}>
           <ProgramsTable />
         </Suspense>
       </Section>
