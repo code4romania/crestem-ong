@@ -61,7 +61,6 @@ const FormFooter = memo(() => (
 ));
 
 const Login = memo(() => {
-  const navigate = useNavigate();
   const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
   });

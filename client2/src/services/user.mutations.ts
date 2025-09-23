@@ -7,12 +7,25 @@ import { registerUser } from "./api/register-user.api";
 import { resetPassword } from "./api/reset-password.api";
 import { uploadUserAvatar } from "./api/upload-picture.api";
 import { useNavigate } from "@tanstack/react-router";
+import { confirmAccount } from "./api/confirm-account.api";
 
 export function useRegisterUserMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: registerUser,
+    onSuccess: async (data) => {
+      Cookies.set("jwt", data.jwt);
+      await queryClient.invalidateQueries({ queryKey: ["me"] });
+    },
+  });
+}
+
+export function useConfirmAccount() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: confirmAccount,
     onSuccess: async (data) => {
       Cookies.set("jwt", data.jwt);
       await queryClient.invalidateQueries({ queryKey: ["me"] });

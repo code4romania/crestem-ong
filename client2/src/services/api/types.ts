@@ -272,8 +272,8 @@ export interface FinalUserModel {
   bio: string | undefined;
   expertise: string | undefined;
   firstName: string | undefined;
-  lastName: string | undefined;
   available: boolean;
+  lastName: string | undefined;
 }
 
 export interface FinalMatrixModel {

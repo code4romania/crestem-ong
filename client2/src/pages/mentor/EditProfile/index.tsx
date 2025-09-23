@@ -18,6 +18,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import Toggle from "@/components/Toggle";
 import Select from "@/components/Select";
 import Avatar from "@/components/Avatar";
+import { useGetMe } from "@/services/user.queries";
 
 const mentorProfileSchema = z.object({
   firstName: z.string().min(1, "Nume este obligatoriu"),

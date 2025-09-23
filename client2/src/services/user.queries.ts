@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { getMe, type MeModel } from "./api/get-me.api";
 import Cookies from "js-cookie";
+import { getRegistrationInfo } from "./api/get-registration-info.api";
 
 export const getMeQueryOptions = <TResult = MeModel>(
   select?: (data: MeModel) => TResult
@@ -13,6 +14,7 @@ export const getMeQueryOptions = <TResult = MeModel>(
     queryKey: ["me"],
     queryFn: getMe,
     select,
+    enabled: !!Cookies.get("jwt"),
   });
 
 export const useSuspenseGetMe = <TResult = MeModel>(
@@ -35,3 +37,12 @@ export const getTokenQueryOptions = <TResult = string | undefined>(
 export const useGetToken = <TResult = string | undefined>(
   select?: (data: string | undefined) => TResult
 ) => useQuery(getTokenQueryOptions(select));
+
+export const getRegistrationInfoQueryOptions = (registrationToken: string) =>
+  queryOptions({
+    queryKey: ["registration-info", registrationToken],
+    queryFn: () => getRegistrationInfo(registrationToken),
+  });
+
+export const useGetRegistrationInfo = (registrationToken: string) =>
+  useQuery(getRegistrationInfoQueryOptions(registrationToken));
