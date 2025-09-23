@@ -1,7 +1,8 @@
 import FullScreenLoader from "@/components/FullScreenLoader";
 import getUserType from "@/lib/userType";
 import ProgramsList from "@/pages/admin/ProgramsList";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import { listProgramsQueryOptions } from "@/services/programs.queries";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
@@ -26,7 +27,7 @@ export const Route = createFileRoute("/(app)/programs/")({
 });
 
 function RouteComponent() {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const userType = getUserType(user);
 
   return userType === "fdsc" ? <ProgramsList /> : <Navigate to="/" />;

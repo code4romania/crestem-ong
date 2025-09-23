@@ -92,7 +92,7 @@ export const programColumns: ColumnDef<ReportVM>[] = [
           to="/reports/$reportId"
           params={{ reportId: row.original.id.toString() }}
         >
-          vezi
+          Vezi rezultatele
         </Link>
       </Button>
     ),

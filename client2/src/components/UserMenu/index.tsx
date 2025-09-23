@@ -1,6 +1,7 @@
 import Avatar from "@/components/Avatar";
+import { queryClient } from "@/lib/query";
 import { logout } from "@/redux/features/userSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { useSuspenseGetMe } from "@/services/user.queries";
 import {
   MenuItem as HUMenuItem,
   Menu,
@@ -8,9 +9,9 @@ import {
   MenuItems,
   Transition,
 } from "@headlessui/react";
+import { Link } from "@tanstack/react-router";
 import Cookies from "js-cookie";
 import { Fragment, type ReactNode } from "react";
-import { Link } from "@tanstack/react-router";
 
 const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(" ");
@@ -51,12 +52,11 @@ const MenuItem = ({
 };
 
 const UserMenu = () => {
-  const user = useAppSelector((state) => state.userState.user)!;
-  const dispatch = useAppDispatch();
+  const { data: user } = useSuspenseGetMe();
 
   const handleLogout = () => {
     Cookies.remove("jwt");
-    dispatch(logout());
+    queryClient.invalidateQueries({ queryKey: ["me"] });
   };
 
   return (

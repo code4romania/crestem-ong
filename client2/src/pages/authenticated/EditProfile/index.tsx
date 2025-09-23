@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import Button from "@/components/Button";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { toast } from "sonner";
 import {
   useGetDomainsQuery,
@@ -19,6 +18,7 @@ import Select from "@/components/Select";
 import citiesByCounty from "@/lib/orase-dupa-judet";
 import SocialNetworkLinks from "@/components/SocialNetworkLinks";
 import Avatar from "@/components/Avatar";
+import { useGetMe } from "@/services/user.queries";
 
 const ongProfileSchema = z.object({
   id: z.number(),
@@ -54,7 +54,7 @@ const ongProfileSchema = z.object({
 export type OngProfileInput = z.infer<typeof ongProfileSchema>;
 
 const OngEditProfile = () => {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
 
   const ongDomains = useMemo(() => {
     return user?.domains
@@ -89,7 +89,6 @@ const OngEditProfile = () => {
 
   const hasAvatar = !!avatar;
 
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -100,9 +99,9 @@ const OngEditProfile = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("/profile");
+      navigate({ to: "/profile" });
     }
-  }, [isSuccess, dispatch]);
+  }, [isSuccess]);
 
   const onSubmitHandler: SubmitHandler<OngProfileInput> = async (data) => {
     updateOngProfile({

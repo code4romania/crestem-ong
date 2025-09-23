@@ -1,7 +1,8 @@
 import LayoutApp from "@/components/LayoutApp";
 import getUserType from "@/lib/userType";
 import Activities from "@/pages/mentor/Activities";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(app)/activities")({
@@ -9,7 +10,7 @@ export const Route = createFileRoute("/(app)/activities")({
 });
 
 function RouteComponent() {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const userType = getUserType(user);
 
   return userType === "mentor" ? (

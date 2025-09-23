@@ -1,4 +1,3 @@
-export type RoleType = "public" | "authenticated" | "mentor" | "fdsc";
 interface Role {
   id: number;
   type: RoleType;

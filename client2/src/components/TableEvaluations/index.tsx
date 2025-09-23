@@ -3,7 +3,8 @@
 import * as React from "react";
 import envelope from "@/assets/envelope.svg";
 import DeleteEvaluation from "@/components/DeleteEvaluation";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import type {
   FinalEvaluationModel,
   FinalReportModel,
@@ -32,7 +33,7 @@ interface TableEvaluationsProps {
 }
 
 const TableEvaluations = ({ report }: TableEvaluationsProps) => {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const isFDSC = user?.role?.type === "fdsc";
 
   const evaluations = report?.evaluations || [];

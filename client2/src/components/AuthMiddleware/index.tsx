@@ -1,6 +1,6 @@
 import FullScreenLoader from "@/components/FullScreenLoader";
-import { useAppSelector } from "@/redux/store";
-import { useGetMe } from "@/services/user.queries";
+import { useGetMe, useGetToken } from "@/services/user.queries";
+
 import Cookies from "js-cookie";
 import React, { useEffect } from "react";
 
@@ -9,9 +9,8 @@ type IAuthMiddleware = {
 };
 
 const AuthMiddleware: React.FC<IAuthMiddleware> = ({ children }) => {
-  const token = useAppSelector((state) => state.userState.token);
-  const user = useAppSelector((state) => state.userState.user);
-  const { isLoading, isError } = useGetMe();
+  const { data: token } = useGetToken();
+  const { data: user, isLoading, isError } = useGetMe();
 
   useEffect(() => {
     if (isError) {

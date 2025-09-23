@@ -1,7 +1,8 @@
 import LayoutApp from "@/components/LayoutApp";
 import LayoutDashboard from "@/components/LayoutDashboard";
 import getUserType from "@/lib/userType";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(app)/create")({
@@ -9,7 +10,7 @@ export const Route = createFileRoute("/(app)/create")({
 });
 
 function RouteComponent() {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const userType = getUserType(user);
 
   return userType === "fdsc" ? <LayoutDashboard /> : <LayoutApp />;

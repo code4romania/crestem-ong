@@ -5,7 +5,8 @@ import Section from "@/components/Section";
 import Heading from "@/components/Heading";
 import ReportResults from "./ReportResults";
 import ReportInProgress from "@/pages/authenticated/Report/ReportInProgress";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import { evaluationsCompletedFilter } from "@/lib/filters";
 import { calcScoreByDimension } from "@/lib/score";
 import FullScreenLoader from "@/components/FullScreenLoader";

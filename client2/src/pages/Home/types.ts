@@ -3,6 +3,6 @@ export interface ReportVM {
   evaluationName: string;
   completionPeriod: string;
   numberOfCompletions: number;
-  score: number | undefined;
+  score: string;
   isFinished: boolean;
 }

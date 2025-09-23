@@ -65,7 +65,7 @@ export function ProgramsTable() {
       columnFilters,
       globalFilter,
     },
-    enableRowSelection: true,
+    enableRowSelection: false,
     globalFilterFn: (row, _columnId, filterValue) => {
       const name = String(row.original.name).toLowerCase();
       const searchValue = String(filterValue).toLowerCase();

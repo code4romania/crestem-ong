@@ -6,6 +6,7 @@ import {
 import { listReports, type ListReportsResponse } from "./api/list-reports.api";
 import { getReport } from "./api/get-report.api";
 import type { FinalReportModel } from "./api/types";
+import { getUserReports } from "./api/get-user-reports.api";
 
 export const listReportsQueryOptions = <TResult = ListReportsResponse>(
   select?: (data: ListReportsResponse) => TResult
@@ -44,3 +45,20 @@ export const useGetReportById = <TResult = FinalReportModel>(
 
   select?: (data: FinalReportModel) => TResult
 ) => useQuery(getReportByIdQueryOptions(reportId, select));
+
+export const getUserReportsQueryOptions = <TResult = FinalReportModel[]>(
+  select?: (data: FinalReportModel[]) => TResult
+) =>
+  queryOptions({
+    queryKey: ["reports", "by-me"],
+    queryFn: getUserReports,
+    select,
+  });
+
+export const useSuspenseGetUserReports = <TResult = FinalReportModel[]>(
+  select?: (data: FinalReportModel[]) => TResult
+) => useSuspenseQuery(getUserReportsQueryOptions(select));
+
+export const useGetUserReports = <TResult = FinalReportModel[]>(
+  select?: (data: FinalReportModel[]) => TResult
+) => useQuery(getUserReportsQueryOptions(select));

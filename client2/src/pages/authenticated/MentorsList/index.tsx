@@ -4,10 +4,10 @@ import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import MentorCard from "@/pages/authenticated/MentorsList/MentorCard";
 import { useGetMentorsQuery } from "@/redux/api/userApi";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
 
 const Mentors = () => {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const { data: mentors, isLoading } = useGetMentorsQuery();
 
   if (isLoading) {

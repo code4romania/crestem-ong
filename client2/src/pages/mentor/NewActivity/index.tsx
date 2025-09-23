@@ -9,7 +9,8 @@ import {
 } from "@/redux/api/userApi";
 import Select from "@/components/Select";
 import Form from "@/components/Form";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import type { User } from "@/redux/api/types";
 import { ErrorMessage } from "@hookform/error-message";
 import { FormProvider, useForm } from "react-hook-form";
@@ -38,7 +39,7 @@ const activitySchema = z.object({
 export type ActivityInput = z.infer<typeof activitySchema>;
 
 const NewActivity = () => {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const navigate = useNavigate();
   const { data: dimensions } = useGetDimensionsQuery();
   const { data: activityTypes } = useGetActivityTypesQuery();

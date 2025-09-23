@@ -2,7 +2,8 @@ import Button from "@/components/Button";
 import NavbarEvaluation from "@/components/NavbarEvaluation";
 import UserMenu from "@/components/UserMenu";
 import getUserType from "@/lib/userType";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import {
   MenuButton,
   Menu as MenuHeadless,
@@ -54,7 +55,7 @@ const MENU = {
 };
 
 export const Menu = () => {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const userType = getUserType(user);
   const menu = MENU[userType];
 
@@ -163,7 +164,7 @@ export const Menu = () => {
 };
 
 const Navbar = () => {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
 
   return (
     <NavbarEvaluation menu={<Menu />}>

@@ -1,5 +1,6 @@
 import React from "react";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import Section from "@/components/Section";
 import Heading from "@/components/Heading";
 import Table from "@/components/Table";
@@ -8,7 +9,7 @@ import Avatar from "@/components/Avatar";
 import { Link } from "@tanstack/react-router";
 
 const Profile = () => {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   if (!user) {
     return <></>;
   }

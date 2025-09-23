@@ -1,7 +1,8 @@
 import FullScreenLoader from "@/components/FullScreenLoader";
 import getUserType from "@/lib/userType";
 import UsersList from "@/pages/UsersList";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import z from "zod";
@@ -22,7 +23,7 @@ export const Route = createFileRoute("/(app)/users/")({
 });
 
 function RouteComponent() {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const userType = getUserType(user);
 
   return userType === "fdsc" ? <UsersList /> : <Navigate to="/" />;

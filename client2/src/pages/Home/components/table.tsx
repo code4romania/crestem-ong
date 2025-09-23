@@ -7,7 +7,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useTableUrlState } from "@/hooks/use-table-url-state";
-import type { ProgramModel as ApiProgramModel } from "@/services/api/types";
+import type {
+  ProgramModel as ApiProgramModel,
+  FinalReportModel,
+} from "@/services/api/types";
 import { useSuspenseListPrograms } from "@/services/programs.queries";
 import { getRouteApi } from "@tanstack/react-router";
 import {
@@ -21,31 +24,40 @@ import {
 } from "@tanstack/react-table";
 import type { ReportVM } from "../types";
 import { programColumns as columns } from "./columns";
+import { useGetUserReports } from "@/services/reports.queries";
+import formatDate from "@/lib/formatDate";
+import { calcScore } from "@/lib/score";
 
-const route = getRouteApi("/(app)/programs/");
-const mapper = (result: ApiProgramModel[]): ReportVM[] =>
-  result.map((p) => ({
-    id: p.id,
-    name: p.attributes.name,
-    status:
-      new Date() < new Date(p.attributes.endDate) ? "ongoing" : "finished",
-    usersCount: p.attributes.usersCount,
-    mentorsCount: p.attributes.mentorsCount,
-  }));
+const mapper = (result: FinalReportModel[]): ReportVM[] =>
+  result.map((r) => {
+    const evaluationsCompleted = r.evaluations
+      ? r.evaluations.filter(({ dimensions }) => dimensions.length === 10)
+      : [];
 
-export function ProgramsTable() {
-  const { data } = useSuspenseListPrograms(mapper);
+    return {
+      id: r.id.toString(),
+      evaluationName: `Evaluare ${formatDate(r.createdAt)}`,
+      completionPeriod: `${formatDate(r.createdAt)} - ${formatDate(
+        r.deadline
+      )}`,
+      numberOfCompletions: evaluationsCompleted.length,
+      score:
+        evaluationsCompleted?.length > 0
+          ? r.finished
+            ? `${calcScore(evaluationsCompleted)}%`
+            : "-"
+          : "-",
+      isFinished: r.finished,
+    };
+  });
+
+export function ReportsTable() {
+  const { data } = useGetUserReports(mapper);
 
   const table = useReactTable({
-    data,
+    data: data ?? [],
     columns,
-    enableRowSelection: true,
-    globalFilterFn: (row, _columnId, filterValue) => {
-      const name = String(row.original.name).toLowerCase();
-      const searchValue = String(filterValue).toLowerCase();
-
-      return name.toLowerCase().includes(searchValue.toLowerCase());
-    },
+    enableRowSelection: false,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),

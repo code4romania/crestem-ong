@@ -2,10 +2,10 @@ import Button from "@/components/Button";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import Table from "@/components/Table";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
 
 const Profile = () => {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   if (!user) {
     return <></>;
   }

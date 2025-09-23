@@ -6,7 +6,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorMessage } from "@hookform/error-message";
 import Section from "@/components/Section";
-import { useLoginUserMutation } from "@/redux/api/authApi";
 import { useSearchParams } from "@tanstack/react-router";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
@@ -16,7 +15,6 @@ import {
 } from "@/redux/api/userApi";
 import { setToken } from "@/redux/features/userSlice";
 import Cookies from "js-cookie";
-import { useAppDispatch } from "@/redux/store";
 
 const resetPasswordSchema = z
   .object({
@@ -37,7 +35,6 @@ export type ResetPasswordInput = z.infer<typeof resetPasswordSchema> & {
 
 const ChangePassword = () => {
   const [searchParams] = useSearchParams();
-  const dispatch = useAppDispatch();
   const registrationToken = searchParams.get("registrationToken");
 
   const { data: user } = useGetRegistrationInfoQuery({ registrationToken });

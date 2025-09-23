@@ -36,8 +36,8 @@ interface UserModel {
   email: string;
   provider: string;
   password: string;
-  resetPasswordToken: null;
-  confirmationToken: null;
+  resetPasswordToken: string;
+  confirmationToken: string;
   confirmed: boolean;
   blocked: boolean;
   ongName: string;
@@ -54,16 +54,16 @@ interface UserModel {
   contactPhone: string;
   accountFacebook: string;
   accountTwitter: string;
-  accountTiktok: null;
+  accountTiktok: string;
   accountInstagram: string;
   accountLinkedin: string;
   createdAt: string;
   updatedAt: string;
-  registrationToken: null;
-  bio: null;
-  expertise: null;
-  firstName: null;
-  lastName: null;
+  registrationToken: string;
+  bio: string;
+  expertise: string;
+  firstName: string;
+  lastName: string;
   available: boolean;
 }
 

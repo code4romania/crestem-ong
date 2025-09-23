@@ -1,3 +1,5 @@
+export type FinalRoleType = "public" | "authenticated" | "mentor" | "fdsc";
+
 export interface PaginationRequest {
   page?: number;
   pageSize?: number;

@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import Button from "@/components/Button";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { toast } from "sonner";
 import {
   useGetDimensionsQuery,
@@ -37,7 +36,7 @@ const mentorProfileSchema = z.object({
 export type MentorProfileInput = z.infer<typeof mentorProfileSchema>;
 
 const EditProfile = () => {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const [updateMentorProfile, { isSuccess, isError, error, data }] =
     useUpdateUserMutation();
   const { data: programs, isLoading: isLoadingPrograms } =
@@ -64,7 +63,6 @@ const EditProfile = () => {
   const avatar = methods.watch("avatar");
   const hasAvatar = !!avatar;
 
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -77,7 +75,7 @@ const EditProfile = () => {
     if (isSuccess) {
       navigate("/profile");
     }
-  }, [isSuccess, dispatch]);
+  }, [isSuccess]);
 
   useEffect(() => {
     const message = uploadAvatarError?.data?.error?.message;

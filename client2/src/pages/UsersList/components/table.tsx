@@ -96,7 +96,7 @@ export function NgosTable() {
       columnFilters,
       globalFilter,
     },
-    enableRowSelection: true,
+    enableRowSelection: false,
     globalFilterFn: (row, _columnId, filterValue) => {
       const name = String(row.original.ongName).toLowerCase();
       const searchValue = String(filterValue).toLowerCase();

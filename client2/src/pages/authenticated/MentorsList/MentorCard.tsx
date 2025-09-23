@@ -4,7 +4,8 @@ import Confirm from "@/components/Confirm";
 import type { Dimension } from "@/redux/api/types";
 import { useCreateMentorshipRequestMutation } from "@/redux/api/userApi";
 import { selectHasFinishedReports } from "@/redux/features/userSlice";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import {
   EnvelopeIcon,
   SignalSlashIcon,

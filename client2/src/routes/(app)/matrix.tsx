@@ -2,7 +2,8 @@ import LayoutApp from "@/components/LayoutApp";
 import Matrix from "@/components/Matrix";
 import getUserType from "@/lib/userType";
 import AuthenticatedMatrix from "@/pages/authenticated/Matrix";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(app)/matrix")({
@@ -10,7 +11,7 @@ export const Route = createFileRoute("/(app)/matrix")({
 });
 
 function RouteComponent() {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const userType = getUserType(user);
 
   return (

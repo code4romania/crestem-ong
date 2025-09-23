@@ -83,7 +83,7 @@ const UserReports = () => {
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       -
                     </td>
-                  </tr>{" "}
+                  </tr>
                   <tr className="even:bg-gray-50">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       Județ
@@ -91,7 +91,7 @@ const UserReports = () => {
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {user?.county}
                     </td>
-                  </tr>{" "}
+                  </tr>
                   <tr className="even:bg-gray-50">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       Localitate
@@ -99,7 +99,7 @@ const UserReports = () => {
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {user?.city}
                     </td>
-                  </tr>{" "}
+                  </tr>
                   <tr className="even:bg-gray-50">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       Email organizație
@@ -107,7 +107,7 @@ const UserReports = () => {
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {user?.email}
                     </td>
-                  </tr>{" "}
+                  </tr>
                   <tr className="even:bg-gray-50">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       Telefon organizație
@@ -115,7 +115,7 @@ const UserReports = () => {
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {user?.phone}
                     </td>
-                  </tr>{" "}
+                  </tr>
                   <tr className="even:bg-gray-50">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       Domenii de activitate
@@ -125,7 +125,7 @@ const UserReports = () => {
                         <span key={domain.id}>{domain.name}</span>
                       ))}
                     </td>
-                  </tr>{" "}
+                  </tr>
                   <tr className="even:bg-gray-50">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       Cuvinte cheie ale activității
@@ -133,7 +133,7 @@ const UserReports = () => {
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {user?.keywords}
                     </td>
-                  </tr>{" "}
+                  </tr>
                   <tr className="even:bg-gray-50">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       Descriere organizatie
@@ -141,7 +141,7 @@ const UserReports = () => {
                     <td className="px-3 py-4 text-sm text-gray-500">
                       {user?.description}
                     </td>
-                  </tr>{" "}
+                  </tr>
                   <tr className="even:bg-gray-50">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       Website organizatie
@@ -192,7 +192,7 @@ const UserReports = () => {
                         </a>
                       )}
                     </td>
-                  </tr>{" "}
+                  </tr>
                   <tr className="even:bg-gray-50">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       Nume reprezentant organizatie
@@ -200,7 +200,7 @@ const UserReports = () => {
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {user?.contactLastName}
                     </td>
-                  </tr>{" "}
+                  </tr>
                   <tr className="even:bg-gray-50">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       Prenume reprezentant organizatie
@@ -208,7 +208,7 @@ const UserReports = () => {
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {user?.contactFirstName}
                     </td>
-                  </tr>{" "}
+                  </tr>
                   <tr className="even:bg-gray-50">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       Email reprezentant organizatie
@@ -216,7 +216,7 @@ const UserReports = () => {
                     <td className="px-3 py-4 text-sm text-gray-500">
                       {user?.contactEmail}
                     </td>
-                  </tr>{" "}
+                  </tr>
                   <tr className="even:bg-gray-50">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
                       Telefon reprezentant organizatie
@@ -224,7 +224,7 @@ const UserReports = () => {
                     <td className="px-3 py-4 text-sm text-gray-500">
                       {user?.contactPhone}
                     </td>
-                  </tr>{" "}
+                  </tr>
                 </tbody>
               </table>
             </div>

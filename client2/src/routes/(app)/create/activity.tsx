@@ -1,6 +1,7 @@
 import getUserType from "@/lib/userType";
 import NewActivity from "@/pages/mentor/NewActivity";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(app)/create/activity")({
@@ -8,7 +9,7 @@ export const Route = createFileRoute("/(app)/create/activity")({
 });
 
 function RouteComponent() {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const userType = getUserType(user);
 
   return userType === "mentor" ? <NewActivity /> : <Navigate to="/" />;

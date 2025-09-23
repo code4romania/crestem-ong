@@ -4,7 +4,8 @@ import { useFindReportQuery, userApi } from "@/redux/api/userApi";
 import Section from "@/components/Section";
 import Heading from "@/components/Heading";
 import ReportResults from "./ReportResults";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import { evaluationsCompletedFilter } from "@/lib/filters";
 import { calcScoreByDimension } from "@/lib/score";
 import FullScreenLoader from "@/components/FullScreenLoader";

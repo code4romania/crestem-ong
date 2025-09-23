@@ -84,7 +84,8 @@ export function ReportsTable() {
       columnFilters,
       globalFilter,
     },
-    enableRowSelection: true,
+    enableRowSelection: false,
+
     globalFilterFn: (row, _columnId, filterValue) => {
       const name = String(row.original.ngoName).toLowerCase();
       const searchValue = String(filterValue).toLowerCase();

@@ -5,7 +5,7 @@ import Dashboard from "@/pages/Dashboard";
 import Home from "@/pages/Home";
 import HomeMentor from "@/pages/mentor/Home";
 import UnauthenticatedHome from "@/pages/UnauthenticatedHome";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 
@@ -15,9 +15,9 @@ export const Route = createFileRoute("/")({
 });
 
 function RouteComponent() {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const userType = getUserType(user);
-
+  console.log(userType);
   return (
     <LayoutApp>
       {userType === "fdsc" ? (

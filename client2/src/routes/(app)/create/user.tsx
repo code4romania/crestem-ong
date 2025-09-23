@@ -1,6 +1,7 @@
 import getUserType from "@/lib/userType";
 import CreateUser from "@/pages/admin/CreateUser";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(app)/create/user")({
@@ -8,7 +9,7 @@ export const Route = createFileRoute("/(app)/create/user")({
 });
 
 function RouteComponent() {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const userType = getUserType(user);
 
   return userType === "fdsc" ? <CreateUser /> : <Navigate to="/" />;

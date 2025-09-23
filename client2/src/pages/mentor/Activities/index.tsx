@@ -1,5 +1,6 @@
 import React from "react";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import Feed from "@/components/Feed";
@@ -7,7 +8,7 @@ import EmptyScreen from "@/components/EmptyScreen";
 import Button from "@/components/Button";
 
 const Activities = () => {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const { mentorActivities } = user;
 
   return (

@@ -1,13 +1,24 @@
-import React from "react";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
-import { useGetMatrixQuery } from "@/redux/api/userApi";
-import { Disclosure } from "@headlessui/react";
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { useGetMatrix } from "@/services/matrix.queries";
 
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useState } from "react";
 const Matrix = () => {
-  const { data: matrix } = useGetMatrixQuery();
+  const { data: matrix } = useGetMatrix((m) => m.dimensions);
+  const [openItems, setOpenItems] = useState<Record<number, boolean>>({});
 
+  const toggleItem = (itemId: number) => {
+    setOpenItems((prev) => ({
+      ...prev,
+      [itemId]: !prev[itemId],
+    }));
+  };
   return (
     <div>
       <Section>
@@ -30,41 +41,48 @@ const Matrix = () => {
             <Heading level="h4">{dimension.name}</Heading>
             <dl className="space-y-6 divide-y divide-gray-900/10">
               {dimension.quiz?.map((quiz) => (
-                <Disclosure as="div" key={quiz.id} className="pt-6">
-                  {({ open }) => (
-                    <>
-                      <dt>
-                        <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
-                          <span className="text-base font-semibold leading-7">
-                            {quiz.question}
-                          </span>
-                          <span className="ml-6 flex h-7 w-7 items-center">
-                            {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                          </span>
-                        </Disclosure.Button>
-                      </dt>
-                      <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                        <ol className="list-decimal list-inside">
-                          <li className="text-base leading-7 text-gray-600">
-                            {quiz.option_1}
-                          </li>
-                          <li className="text-base leading-7 text-gray-600">
-                            {quiz.option_2}
-                          </li>
-                          <li className="text-base leading-7 text-gray-600">
-                            {quiz.option_3}
-                          </li>{" "}
-                          <li className="text-base leading-7 text-gray-600">
-                            {quiz.option_4}
-                          </li>{" "}
-                          <li className="text-base leading-7 text-gray-600">
-                            {quiz.option_5}
-                          </li>
-                        </ol>
-                      </Disclosure.Panel>
-                    </>
-                  )}
-                </Disclosure>
+                <Collapsible
+                  key={quiz.id}
+                  open={openItems[quiz.id] || false}
+                  onOpenChange={() => toggleItem(quiz.id)}
+                  className="pt-6"
+                >
+                  <dt>
+                    <CollapsibleTrigger className="flex w-full items-start justify-between text-left text-foreground hover:text-foreground/80 transition-colors">
+                      <span className="text-base font-semibold leading-7">
+                        {quiz.question}
+                      </span>
+                      <span className="ml-6 flex h-7 w-7 items-center">
+                        {openItems[quiz.id] ? (
+                          <ChevronUp className="h-5 w-5" />
+                        ) : (
+                          <ChevronDown className="h-5 w-5" />
+                        )}
+                      </span>
+                    </CollapsibleTrigger>
+                  </dt>
+                  <CollapsibleContent asChild>
+                    <dd className="mt-2 pr-12">
+                      <ol className="list-decimal list-inside space-y-1">
+                        <li className="text-base leading-7 text-muted-foreground">
+                          {quiz.option_1}
+                        </li>
+                        <li className="text-base leading-7 text-muted-foreground">
+                          {quiz.option_2}
+                        </li>
+                        <li className="text-base leading-7 text-muted-foreground">
+                          {quiz.option_3}
+                        </li>
+                        <li className="text-base leading-7 text-muted-foreground">
+                          {quiz.option_4}
+                        </li>
+                        <li className="text-base leading-7 text-muted-foreground">
+                          {quiz.option_5}
+                        </li>
+                      </ol>
+                    </dd>
+                  </CollapsibleContent>
+                </Collapsible>
               ))}
             </dl>
           </div>

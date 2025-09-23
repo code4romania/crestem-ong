@@ -1,7 +1,8 @@
 import getUserType from "@/lib/userType";
 import AuthenticatedMentor from "@/pages/authenticated/Mentor";
 import UserReports from "@/pages/UserReports";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(app)/users/$userId")({
@@ -9,7 +10,7 @@ export const Route = createFileRoute("/(app)/users/$userId")({
 });
 
 function RouteComponent() {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
   const userType = getUserType(user);
 
   return userType === "fdsc" ? (

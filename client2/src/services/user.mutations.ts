@@ -1,5 +1,4 @@
 import { setToken } from "@/redux/features/userSlice";
-import { useAppDispatch } from "@/redux/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { forgotPassword } from "./api/forgot-password.api";
@@ -11,12 +10,10 @@ import { useNavigate } from "@tanstack/react-router";
 
 export function useRegisterUserMutation() {
   const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
 
   return useMutation({
     mutationFn: registerUser,
     onSuccess: async (data) => {
-      dispatch(setToken(data.jwt));
       Cookies.set("jwt", data.jwt);
       await queryClient.invalidateQueries({ queryKey: ["me"] });
     },
@@ -37,13 +34,11 @@ export function useResetPasswordMutation() {
 
 export function useLoginUserMutation() {
   const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   return useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      dispatch(setToken(data.jwt));
       Cookies.set("jwt", data.jwt);
       queryClient.invalidateQueries({ queryKey: ["me"] });
       navigate({ to: "/" });

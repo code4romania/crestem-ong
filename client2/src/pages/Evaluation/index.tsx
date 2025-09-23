@@ -6,7 +6,8 @@ import Section from "@/components/Section";
 import StartEvaluation from "@/components/StartEvaluation";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useAppSelector } from "@/redux/store";
+import { useGetMe } from "@/services/user.queries";
+
 import { Route } from "@/routes/(app)/evaluation/$evaluationId";
 import type { FinalEvaluationDimensionModel } from "@/services/api/types";
 import type { UpsertEvaluationDimensionRequest } from "@/services/api/upsert-evaluation.api";
@@ -90,7 +91,7 @@ const dimensionEvaluationSchema = z.object({
 export type DimensionEvaluationForm = z.infer<typeof dimensionEvaluationSchema>;
 
 const Evaluation = () => {
-  const user = useAppSelector((state) => state.userState.user);
+  const { data: user } = useGetMe();
 
   const { evaluationId } = Route.useParams();
   const { email } = Route.useSearch();

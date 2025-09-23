@@ -1,4 +1,5 @@
 import { API } from "../api";
+import type { FinalRoleType } from "./types";
 
 export interface MeModel {
   id: number;
@@ -78,11 +79,13 @@ export interface Role {
   id: number;
   name: string;
   description: string;
-  type: string;
+  type: FinalRoleType;
   createdAt: string;
   updatedAt: string;
 }
 
 export const getMe = (): Promise<MeModel> => {
-  return API.get<MeModel>(`api/users/me`, {}).then((res) => res.data);
+  return API.get<MeModel>(`api/users/me?populate[0]=role`, {}).then(
+    (res) => res.data
+  );
 };

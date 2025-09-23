@@ -10,7 +10,6 @@ import { Provider } from "react-redux";
 import AuthMiddleware from "./components/AuthMiddleware";
 import "./globals.css";
 import { queryClient } from "./lib/query";
-import { store } from "./redux/store";
 import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({
@@ -27,18 +26,16 @@ const root = createRoot(container!);
 root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <AuthMiddleware>
-          <RouterProvider router={router} />
-        </AuthMiddleware>
+      <AuthMiddleware>
+        <RouterProvider router={router} />
+      </AuthMiddleware>
 
-        {import.meta.env.DEV && (
-          <ReactQueryDevtools
-            initialIsOpen={false}
-            buttonPosition="bottom-right"
-          />
-        )}
-      </Provider>
+      {import.meta.env.DEV && (
+        <ReactQueryDevtools
+          initialIsOpen={false}
+          buttonPosition="bottom-right"
+        />
+      )}
     </QueryClientProvider>
   </StrictMode>
 );
