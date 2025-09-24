@@ -16,236 +16,117 @@ const Profile = () => {
     return <></>;
   }
 
+  const rows = [
+    ["Nume organizație", user.ongName],
+    ["CIF-ul organizației", user.ongIdentificationNumber],
+    ["Județ", user.city],
+    ["Localitate", user.county],
+    ["Email organizație", user.email],
+    [
+      "Domenii de activitate",
+      userDomains && userDomains.length > 0 ? (
+        <div className="flex flex-wrap gap-2">
+          {userDomains.map((domain) => (
+            <Badge key={domain.id} variant="secondary">
+              {domain.name}
+            </Badge>
+          ))}
+        </div>
+      ) : (
+        "-"
+      ),
+    ],
+    ["Cuvinte cheie despre activitate", user.keywords],
+    ["Descriere organizație", user.description],
+    [
+      "Website organizație",
+      user.website ? (
+        <Button asChild variant="link" className="p-0">
+          <Link to={user.website} target="_blank" rel="noopener noreferrer">
+            {user.website}
+          </Link>
+        </Button>
+      ) : (
+        "-"
+      ),
+    ],
+    [
+      "Link-uri social media",
+      [
+        user.accountFacebook,
+        user.accountInstagram,
+        user.accountLinkedin,
+        user.accountTiktok,
+        user.accountTwitter,
+      ].filter(Boolean).length > 0 ? (
+        <div className="flex flex-wrap gap-2">
+          {[
+            user.accountFacebook,
+            user.accountInstagram,
+            user.accountLinkedin,
+            user.accountTiktok,
+            user.accountTwitter,
+          ]
+            .filter(Boolean)
+            .map((link, idx) => (
+              <Button key={idx} variant="link" asChild className="p-0">
+                <Link to={link!} target="_blank" rel="noopener noreferrer">
+                  {link}
+                </Link>
+              </Button>
+            ))}
+        </div>
+      ) : (
+        "-"
+      ),
+    ],
+    [
+      "Logo organizație",
+      <Avatar className="h-16 w-16">
+        <AvatarImage
+          src={user?.avatar?.formats?.thumbnail?.url}
+          alt={user?.ongName}
+        />
+        <AvatarFallback>
+          {user?.ongName?.charAt(0).toUpperCase() ?? "?"}
+        </AvatarFallback>
+      </Avatar>,
+    ],
+    ["Nume reprezentant organizație", user.contactLastName],
+    ["Prenume reprezentant organizație", user.contactFirstName],
+    ["Email reprezentant organizație", user.contactEmail],
+    ["Telefon reprezentant organizație", user.contactPhone],
+  ];
+
   return (
     <>
       <Section>
-        <Heading level="h2">Profilul meu: {user.ongName}</Heading>
-      </Section>
+        <div className="flex w-full items-center justify-between">
+          <Heading level="h2">Profilul meu: {user.ongName}</Heading>
 
-      <Section>
-        <div>
-          <div className="sm:flex sm:items-center">
-            <div className="sm:flex-auto">
-              <h1 className="text-base font-semibold leading-6 text-gray-900">
-                Informații despre ONG
-              </h1>
-            </div>
-            <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-              <Button asChild>
-                <Link to="/profile/edit">Editeaza</Link>
-              </Button>
-            </div>
-          </div>
+          <Button asChild>
+            <Link to="/profile/edit">Editeaza</Link>
+          </Button>
+        </div>
 
-          <div className="mt-8 bg-white shadow ring-1 ring-gray-900/5 sm:rounded-lg">
-            <dl className="divide-y divide-gray-100">
-              {user.ongName && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Nume organizație
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {user.ongName}
-                  </dd>
-                </div>
-              )}
-
-              {user.ongIdentificationNumber && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    CIF-ul organizației
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {user.ongIdentificationNumber}
-                  </dd>
-                </div>
-              )}
-
-              {user.city && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Județ
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {user.city}
-                  </dd>
-                </div>
-              )}
-
-              {user.county && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Localitate
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {user.county}
-                  </dd>
-                </div>
-              )}
-
-              {user.email && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Email organizație
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {user.email}
-                  </dd>
-                </div>
-              )}
-
-              {userDomains && userDomains.length > 0 && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Domenii de activitate
-                  </dt>
-                  <dd className="mt-1 flex flex-wrap gap-2 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 ">
-                    {userDomains.map((domain) => (
-                      <Badge key={domain.id} variant="secondary">
-                        {domain.name}
-                      </Badge>
-                    ))}
-                  </dd>
-                </div>
-              )}
-
-              {user.keywords && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Cuvinte cheie despre activitate
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {user.keywords}
-                  </dd>
-                </div>
-              )}
-
-              {user.description && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Descriere organizație
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {user.description}
-                  </dd>
-                </div>
-              )}
-
-              {user.website && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Website organizație
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
-                    <Button asChild variant="link" className="p-0">
-                      <Link
-                        to={user.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {user.website}
-                      </Link>
-                    </Button>
-                  </dd>
-                </div>
-              )}
-
-              {(user.accountFacebook ||
-                user.accountInstagram ||
-                user.accountLinkedin ||
-                user.accountTiktok ||
-                user.accountTwitter) && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Link-uri social media
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 space-x-2 flex flex-wrap gap-2">
-                    {[
-                      user.accountFacebook,
-                      user.accountInstagram,
-                      user.accountLinkedin,
-                      user.accountTiktok,
-                      user.accountTwitter,
-                    ]
-                      .filter(Boolean)
-                      .map((link, idx) => (
-                        <Button variant="link" asChild className="p-0">
-                          <Link
-                            key={idx}
-                            to={link!}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {link}
-                          </Link>
-                        </Button>
-                      ))}
-                  </dd>
-                </div>
-              )}
-
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <div className="mt-8 bg-white shadow ring-1 ring-gray-900/5 sm:rounded-lg">
+          <dl className="divide-y divide-gray-100">
+            {rows.map(([label, value], idx) => (
+              <div
+                key={idx}
+                className={`px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ${
+                  idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                }`}
+              >
                 <dt className="text-sm font-medium leading-6 text-gray-900">
-                  Logo organizație
+                  {label}
                 </dt>
-                <dd className="mt-1 sm:col-span-2 sm:mt-0">
-                  <Avatar className="h-16 w-16">
-                    <AvatarImage
-                      src={user?.avatar?.formats?.thumbnail?.url}
-                      alt={user?.ongName}
-                    />
-                    <AvatarFallback>
-                      {user?.ongName?.charAt(0).toUpperCase() ?? "?"}
-                    </AvatarFallback>
-                  </Avatar>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  {value || "-"}
                 </dd>
               </div>
-
-              {user.contactLastName && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Nume reprezentant organizație
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {user.contactLastName}
-                  </dd>
-                </div>
-              )}
-
-              {user.contactFirstName && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Prenume reprezentant organizație
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {user.contactFirstName}
-                  </dd>
-                </div>
-              )}
-
-              {user.contactEmail && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Email reprezentant organizație
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {user.contactEmail}
-                  </dd>
-                </div>
-              )}
-
-              {user.contactPhone && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Telefon reprezentant organizație
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {user.contactPhone}
-                  </dd>
-                </div>
-              )}
-            </dl>
-          </div>
+            ))}
+          </dl>
         </div>
       </Section>
     </>
