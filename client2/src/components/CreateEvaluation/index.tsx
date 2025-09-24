@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import { useCreateEvaluationMutation } from "@/redux/api/userApi";
 import { z } from "zod";
 import { useForm } from "react-hook-form";

@@ -1,6 +1,5 @@
 import Avatar from "@/components/Avatar";
 import { queryClient } from "@/lib/query";
-import { logout } from "@/redux/features/userSlice";
 import { useSuspenseGetMe } from "@/services/user.queries";
 import {
   MenuItem as HUMenuItem,

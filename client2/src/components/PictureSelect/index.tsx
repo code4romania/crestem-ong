@@ -9,6 +9,7 @@ interface LogoUploadProps {
   onImageChange?: (file: File | null) => void;
   className?: string;
   size?: "sm" | "md" | "lg";
+  currentLogo?: string;
 }
 
 export function LogoUpload({
@@ -16,6 +17,7 @@ export function LogoUpload({
   onImageChange,
   className,
   size = "md",
+  currentLogo,
 }: LogoUploadProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -105,7 +107,10 @@ export function LogoUpload({
             isDragOver && !disabled && "ring-2 ring-primary"
           )}
         >
-          <AvatarImage src={preview || undefined} alt="Previzualizare siglă" />
+          <AvatarImage
+            src={preview || currentLogo || undefined}
+            alt="Previzualizare siglă"
+          />
           <AvatarFallback className="bg-muted">
             <ImageIcon className="w-1/2 h-1/2 text-muted-foreground" />
           </AvatarFallback>

@@ -1,5 +1,5 @@
 import Avatar from "@/components/Avatar";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Confirm from "@/components/Confirm";
 import type { Dimension } from "@/redux/api/types";
 import { useCreateMentorshipRequestMutation } from "@/redux/api/userApi";

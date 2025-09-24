@@ -6,6 +6,7 @@ import {
 import { getMe, type MeModel } from "./api/get-me.api";
 import Cookies from "js-cookie";
 import { getRegistrationInfo } from "./api/get-registration-info.api";
+import { getUserDomains } from "./api/get-user-domains.api";
 
 export const getMeQueryOptions = <TResult = MeModel>(
   select?: (data: MeModel) => TResult
@@ -46,3 +47,10 @@ export const getRegistrationInfoQueryOptions = (registrationToken: string) =>
 
 export const useGetRegistrationInfo = (registrationToken: string) =>
   useQuery(getRegistrationInfoQueryOptions(registrationToken));
+
+export const getUserDomainsQueryOptions = queryOptions({
+  queryKey: ["me", "domains"],
+  queryFn: getUserDomains,
+});
+
+export const useGetUserDomains = () => useQuery(getUserDomainsQueryOptions);

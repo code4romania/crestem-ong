@@ -85,7 +85,8 @@ export interface Role {
 }
 
 export const getMe = (): Promise<MeModel> => {
-  return API.get<MeModel>(`api/users/me?populate[0]=role`, {}).then(
-    (res) => res.data
-  );
+  return API.get<MeModel>(
+    `api/users/me?populate[0]=role&populate[1]=avatar`,
+    {}
+  ).then((res) => res.data);
 };

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import { DonutChart } from "react-circle-chart";
 import CreateEvaluation from "@/components/CreateEvaluation";
 import TableEvaluations from "@/components/TableEvaluations";

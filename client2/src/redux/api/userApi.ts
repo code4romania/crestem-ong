@@ -1,9 +1,7 @@
 import type { ActivityInput } from "@/pages/mentor/NewActivity";
 import type { ReportInput } from "@/pages/NewReport";
-import type { RootState } from "@/redux/store";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import qs from "qs";
-import { setUser } from "../features/userSlice";
 import type {
   Dimension,
   Evaluation,
@@ -17,19 +15,12 @@ import type {
 
 const BASE_URL = import.meta.env.VITE_SERVER_ENDPOINT as string;
 
-interface IApiError {
-  message: string;
-  description: string;
-  statusCode: string | number;
-  data: object;
-}
-
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/api/`,
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).userState.token;
+      const token = "benis";
       if (token) {
         // include token in req header
         headers.set("authorization", `Bearer ${token}`);
@@ -391,24 +382,24 @@ export const userApi = createApi({
           ...domain.attributes,
         })),
     }),
-    getRegistrationInfo: builder.query({
-      query({ registrationToken }) {
-        return {
-          url: `users-permissions/registration-info?registrationToken=${registrationToken}`,
-        };
-      },
-    }),
-    registerWithConfirmationToken: builder.mutation<Evaluation, User>({
-      query(user) {
-        return {
-          method: "POST",
-          url: "/users-permissions/register",
-          body: {
-            data: user,
-          },
-        };
-      },
-    }),
+    // getRegistrationInfo: builder.query({
+    //   query({ registrationToken }) {
+    //     return {
+    //       url: `users-permissions/registration-info?registrationToken=${registrationToken}`,
+    //     };
+    //   },
+    // }),
+    // registerWithConfirmationToken: builder.mutation<Evaluation, User>({
+    //   query(user) {
+    //     return {
+    //       method: "POST",
+    //       url: "/users-permissions/register",
+    //       body: {
+    //         data: user,
+    //       },
+    //     };
+    //   },
+    // }),
     createEvaluation: builder.mutation<
       Evaluation,
       Pick<Evaluation, "id" | "email">
@@ -472,8 +463,8 @@ export const {
   useGetDomainsQuery,
   useGetReportsQuery,
   useGetEvaluationsCountQuery,
-  useGetRegistrationInfoQuery,
-  useRegisterWithConfirmationTokenMutation,
+  // useGetRegistrationInfoQuery,
+  // useRegisterWithConfirmationTokenMutation,
   useCreateProgramMutation,
   // useGetProgramsQuery,
   // useFindProgramQuery,

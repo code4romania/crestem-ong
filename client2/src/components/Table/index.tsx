@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 
 interface TableProps {
-  body: ReactNode[][];
+  body: (ReactNode | string | undefined)[][];
   head?: string[];
   title?: string;
   description?: string;

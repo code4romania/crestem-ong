@@ -1,4 +1,3 @@
-import Button from "@/components/Button";
 import NavbarEvaluation from "@/components/NavbarEvaluation";
 import UserMenu from "@/components/UserMenu";
 import getUserType from "@/lib/userType";
@@ -14,6 +13,7 @@ import {
 import { Bars3Icon } from "@heroicons/react/20/solid";
 import { Fragment } from "react";
 import { Link } from "@tanstack/react-router";
+import { Button } from "../ui/button";
 
 const MENU = {
   public: [
@@ -142,15 +142,15 @@ export const Menu = () => {
               <>
                 <MenuItem as="div" className="px-2 flex mb-2">
                   {({ close }) => (
-                    <Button color="white" to={"/login"} onClick={close}>
-                      Intră în cont
+                    <Button asChild onClick={close} variant="secondary">
+                      <Link to={"/login"}>Înregistrează-te</Link>
                     </Button>
                   )}
                 </MenuItem>
                 <MenuItem as="div" className="px-2 flex mb-1">
                   {({ close }) => (
-                    <Button to={"/register"} onClick={close}>
-                      Înregistrează-te
+                    <Button asChild onClick={close}>
+                      <Link to={"/register"}>Înregistrează-te</Link>
                     </Button>
                   )}
                 </MenuItem>
@@ -174,12 +174,14 @@ const Navbar = () => {
         ) : (
           <div className="hidden lg:flex justify-center items-center md:justify-start gap-4">
             <div>
-              <Button color="white" to={"/login"}>
-                Intră în cont
+              <Button asChild variant="secondary">
+                <Link to={"/login"}>Înregistrează-te</Link>
               </Button>
             </div>
             <div>
-              <Button to={"/register"}>Înregistrează-te</Button>
+              <Button asChild onClick={close}>
+                <Link to={"/register"}>Înregistrează-te</Link>
+              </Button>
             </div>
           </div>
         )}

@@ -1,4 +1,3 @@
-import Button from "@/components/Button";
 import Select from "@/components/Select";
 import {
   Dialog,
@@ -11,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Fragment, useCallback, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
+import { Button } from "../ui/button";
 
 const userIdSchema = z.object({
   user: z.string(),
@@ -99,7 +99,10 @@ const AddUserInProgram = ({
                       </div>
                     </div>
                     <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
-                      <Button color={"white"} onClick={() => setOpen(false)}>
+                      <Button
+                        variant="secondary"
+                        onClick={() => setOpen(false)}
+                      >
                         Renunță
                       </Button>
                       <Button type="submit">Salvează</Button>

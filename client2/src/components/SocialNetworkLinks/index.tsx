@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import ExternalLinkItem from "@/components/ExternalLinkItem";
 import { useState } from "react";
 

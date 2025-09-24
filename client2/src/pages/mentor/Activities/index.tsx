@@ -5,7 +5,7 @@ import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import Feed from "@/components/Feed";
 import EmptyScreen from "@/components/EmptyScreen";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 
 const Activities = () => {
   const { data: user } = useGetMe();

@@ -1,13 +1,13 @@
-import { setToken } from "@/redux/features/userSlice";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import Cookies from "js-cookie";
+import { confirmAccount } from "./api/confirm-account.api";
 import { forgotPassword } from "./api/forgot-password.api";
 import { loginUser } from "./api/login-user.api";
 import { registerUser } from "./api/register-user.api";
 import { resetPassword } from "./api/reset-password.api";
+import { updateUser, type UpdateUserRequest } from "./api/update-user.api";
 import { uploadUserAvatar } from "./api/upload-picture.api";
-import { useNavigate } from "@tanstack/react-router";
-import { confirmAccount } from "./api/confirm-account.api";
 
 export function useRegisterUserMutation() {
   const queryClient = useQueryClient();
@@ -62,5 +62,16 @@ export function useLoginUserMutation() {
 export function useUploadPictureMutation() {
   return useMutation({
     mutationFn: uploadUserAvatar,
+  });
+}
+
+export function updateUserMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (request: UpdateUserRequest) => updateUser(request),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["me"] });
+    },
   });
 }

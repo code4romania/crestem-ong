@@ -2,7 +2,7 @@ import React from "react";
 import Stats from "@/components/Stats";
 import { calcScore } from "@/lib/score";
 import ResultsByDimension from "@/components/ResultsByDimension";
-import { Evaluation, Report } from "@/redux/api/types";
+// import { Evaluation, Report } from "@/redux/api/types";
 
 const ReportResults = ({
   report,

@@ -302,3 +302,10 @@ export interface FinalQuizModel {
   option_5: string;
   tag: string;
 }
+
+export interface FinalDomainModel {
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}

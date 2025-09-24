@@ -1,5 +1,5 @@
 import screenshotStart from "@/assets/illustration.svg";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 

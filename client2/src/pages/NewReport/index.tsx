@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import Section from "@/components/Section";
 import { useCreateReportMutation } from "@/redux/api/userApi";
 import { useNavigate } from "@tanstack/react-router";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
