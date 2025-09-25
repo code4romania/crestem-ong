@@ -14,6 +14,7 @@ import { Bars3Icon } from "@heroicons/react/20/solid";
 import { Fragment } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "../ui/button";
+import { useAuth } from "@/contexts/auth";
 
 const MENU = {
   public: [
@@ -55,8 +56,8 @@ const MENU = {
 };
 
 export const Menu = () => {
-  const { userRole } = useAuth();
-  const menu = MENU[userType];
+  const { userRole, user } = useAuth();
+  const menu = MENU[userRole];
 
   return (
     <>
