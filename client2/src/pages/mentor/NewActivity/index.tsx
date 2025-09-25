@@ -94,6 +94,7 @@ const NewActivity = () => {
       type: "",
       dimension: "",
       notes: "",
+      duration: "",
     },
   });
   const { mutate: createActivity, isPending } = useCreateActivityMutation();
