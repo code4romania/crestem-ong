@@ -11,7 +11,7 @@ export const queryClient = new QueryClient({
       gcTime: 5 * 60 * 1000,
       // Retry strategy: 3 attempts with exponential backoff (1s, 2s, 4s) capped at 30s
       // Handles transient network issues without overwhelming the server
-      retry: 3,
+      retry: 1,
       retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
       // Auto-refetch when user returns to tab - ensures displayed data is current
       // after context switches (critical for collaborative features)

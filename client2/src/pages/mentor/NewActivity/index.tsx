@@ -1,37 +1,59 @@
-import React, { useCallback, useEffect } from "react";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import { Button } from "@/components/ui/button";
-import {
-  useCreateActivityMutation,
-  useGetActivityTypesQuery,
-  useGetDimensionsQuery,
-} from "@/redux/api/userApi";
-import Select from "@/components/Select";
-import Form from "@/components/Form";
-import { useGetMe } from "@/services/user.queries";
+import { useCallback } from "react";
 
-import type { User } from "@/redux/api/types";
-import { ErrorMessage } from "@hookform/error-message";
-import { FormProvider, useForm } from "react-hook-form";
+import { useGetMe, useGetUserPrograms } from "@/services/user.queries";
+
+import FullScreenLoader from "@/components/FullScreenLoader";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { Select, SelectTrigger } from "@/components/ui/select";
+import { useListActivityTypes } from "@/services/activity-types.queries";
+import { useCreateActivityMutation } from "@/services/activity.mutations";
+import { useListDimensions } from "@/services/dimensions.queries";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
-import { useNavigate } from "@tanstack/react-router";
+
+import { DateTimePicker } from "@/components/ui/date-time-picker";
+import { FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import type { FinalUserModel } from "@/services/api/types";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { ro } from "date-fns/locale";
 
 const ButtonGroup = ({ className }: { className?: string }) => (
   <div className={`${className} flex space-x-4 justify-end`}>
-    <Button color="white" to={"/activities"}>
-      Renunță
+    <Button variant="secondary" asChild>
+      <Link to={"/activities"}>Renunță</Link>
     </Button>
     <Button type="submit">Salvează detalii</Button>
   </div>
 );
 
 const activitySchema = z.object({
-  user: z.string(),
-  dimension: z.string(),
-  startDate: z.string().min(1, "Introduceti data activitatii"),
-  type: z.string(),
+  user: z.string().min(1, "Selectați ONG-ul"),
+  dimension: z.string().min(1, "Selectați dimensiune"),
+  startDate: z.date("Introduceti data activitatii"),
+  type: z.string().min(1, "Selectați tipul activității"),
   duration: z.string().min(1, "Introduceti durata activitatii"),
   notes: z.string().optional(),
 });
@@ -39,124 +61,254 @@ const activitySchema = z.object({
 export type ActivityInput = z.infer<typeof activitySchema>;
 
 const NewActivity = () => {
-  const { data: user } = useGetMe();
   const navigate = useNavigate();
-  const { data: dimensions } = useGetDimensionsQuery();
-  const { data: activityTypes } = useGetActivityTypesQuery();
-  const methods = useForm<ActivityInput>({
-    resolver: zodResolver(activitySchema),
-  });
-  const { register, handleSubmit, formState } = methods;
-  const [createActivity, { isSuccess }] = useCreateActivityMutation();
+  const { data: user, isLoading: loadingMe } = useGetMe();
+  const { data: dimensions, isLoading: loadingDimensions } = useListDimensions(
+    (domains) =>
+      domains.map((at) => ({
+        label: at.attributes.name,
+        value: at.id.toString(),
+      }))
+  );
+  const { data: activityTypes, isLoading: loadingActivityTypes } =
+    useListActivityTypes((activityTypes) =>
+      activityTypes.map((at) => ({
+        label: at.name,
+        value: at.id.toString(),
+      }))
+    );
+  const { data: users, isLoading: loadingUsers } = useGetUserPrograms(
+    (programs) =>
+      programs.flatMap((program) =>
+        program.users.map((user: FinalUserModel) => ({
+          label: user.ongName,
+          value: user.id.toString(),
+        }))
+      )
+  );
 
-  const onSubmitHandler = useCallback(
+  const form = useForm<ActivityInput>({
+    resolver: zodResolver(activitySchema),
+    defaultValues: {
+      user: "",
+      type: "",
+      dimension: "",
+      notes: "",
+    },
+  });
+  const { mutate: createActivity, isPending } = useCreateActivityMutation();
+
+  const onSubmit = useCallback(
     (data: ActivityInput) => {
-      createActivity({
-        ...data,
-        mentor: user.id,
-      });
+      createActivity(
+        {
+          ...data,
+          startDate: data.startDate.toISOString(),
+          duration: data.duration.toString(),
+          notes: data.notes ?? "",
+          mentor: user!.id,
+        },
+        {
+          onSuccess: () => navigate({ to: "/activities" }),
+          onError: () => toast.error("A aparut o problema"),
+        }
+      );
     },
     [createActivity]
   );
 
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/activities");
-    }
-  }, [isSuccess, navigate]);
+  const isFormSubmitting = form.formState.isSubmitting || isPending;
 
-  const users = user?.programs?.reduce(
-    (acc, program) =>
-      acc.concat(
-        program.users.map((user: User) => ({
-          label: user.ongName,
-          name: user.id,
-        }))
-      ),
-    []
-  );
+  if (loadingMe || loadingDimensions || loadingActivityTypes || loadingUsers)
+    return <FullScreenLoader />;
 
   return (
-    <FormProvider {...methods}>
+    <>
       <Section>
         <Heading level={"h2"}>Adaugă activitate</Heading>
       </Section>
       <Section>
-        <form onSubmit={handleSubmit(onSubmitHandler)} className="space-y-6">
-          <div className="flex space-x-4">
-            {users && (
-              <div className="w-1/2">
-                <Select
-                  name="user"
-                  label="Organizație"
-                  options={users}
-                  register={register}
-                />
-              </div>
-            )}
-            {activityTypes && (
-              <div className="w-1/2">
-                <Select
-                  name="type"
-                  label="Tip activitate"
-                  options={activityTypes.map((type) => ({
-                    label: type.name,
-                    name: type.id,
-                  }))}
-                  register={register}
-                />
-              </div>
-            )}
-          </div>
-          {dimensions && (
-            <div>
-              <Select
-                name="dimension"
-                label="Dimensiune"
-                options={dimensions.map((dimension) => ({
-                  label: dimension.name,
-                  name: dimension.id,
-                }))}
-                register={register}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="user"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Organizație</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={isFormSubmitting}
+                    >
+                      <FormControl className="w-full">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selectați organizația" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {users?.map((user) => (
+                          <SelectItem key={user.value} value={user.value}>
+                            {user.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tip activitate</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={isFormSubmitting}
+                    >
+                      <FormControl className="w-full">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selectați tipul activității" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {activityTypes?.map((type) => (
+                          <SelectItem key={type.value} value={type.value}>
+                            {type.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-          )}
-          <div className="flex space-x-4">
-            <div className="w-1/2">
-              <div className="text-gray-700 text-sm leading-5 font-medium mb-1">
-                Durată activitate (ore)
-              </div>
-              <input
-                className="w-full border-gray-300 rounded-md"
-                placeholder="Durată activitate (ore)"
-                type="number"
-                {...register("duration")}
+
+            <FormField
+              control={form.control}
+              name="dimension"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Dimensiune</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={isFormSubmitting}
+                  >
+                    <FormControl className="w-full">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selectați dimensiunea" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {dimensions?.map((dimension) => (
+                        <SelectItem
+                          key={dimension.value}
+                          value={dimension.value}
+                        >
+                          {dimension.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="duration"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Durată activitate (ore)</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Introduceți durata în ore"
+                        type="number"
+                        min="0"
+                        step="0.5"
+                        disabled={isFormSubmitting}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <div className="text-red-600 text-sm mt-1">
-                <ErrorMessage name="duration" errors={formState.errors} />
-              </div>
-            </div>
-            <div className="w-1/2">
-              <div className="text-gray-700 text-sm leading-5 font-medium mb-1">
-                Dată
-              </div>
-              <input
-                type="date"
-                className="w-full border-gray-300 rounded-md"
-                {...register("startDate")}
+
+              <FormField
+                control={form.control}
+                name="startDate"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Dată</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-[240px] pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP", { locale: ro })
+                            ) : (
+                              <span>Alege data de inceput</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) =>
+                            date > new Date() || date < new Date("1900-01-01")
+                          }
+                          captionLayout="dropdown"
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <div className="text-red-600 text-sm mt-1">
-                <ErrorMessage name="startDate" errors={formState.errors} />
-              </div>
             </div>
-          </div>
-          <div className="border-gray-300 rounded-md">
-            <Form.Textarea name="notes" label="Notițe" register={register} />
-          </div>
-          <ButtonGroup />
-        </form>
+
+            <FormField
+              control={form.control}
+              name="notes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Notițe</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Adăugați notițe despre activitate..."
+                      disabled={isFormSubmitting}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <ButtonGroup />
+          </form>
+        </Form>
       </Section>
-    </FormProvider>
+    </>
   );
 };
 

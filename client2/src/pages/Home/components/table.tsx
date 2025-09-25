@@ -6,13 +6,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useTableUrlState } from "@/hooks/use-table-url-state";
-import type {
-  ProgramModel as ApiProgramModel,
-  FinalReportModel,
-} from "@/services/api/types";
-import { useSuspenseListPrograms } from "@/services/programs.queries";
-import { getRouteApi } from "@tanstack/react-router";
+import formatDate from "@/lib/formatDate";
+import { calcScore } from "@/lib/score";
+import type { FinalReportModel } from "@/services/api/types";
+import { useGetUserReports } from "@/services/reports.queries";
 import {
   flexRender,
   getCoreRowModel,
@@ -24,9 +21,6 @@ import {
 } from "@tanstack/react-table";
 import type { ReportVM } from "../types";
 import { programColumns as columns } from "./columns";
-import { useGetUserReports } from "@/services/reports.queries";
-import formatDate from "@/lib/formatDate";
-import { calcScore } from "@/lib/score";
 
 const mapper = (result: FinalReportModel[]): ReportVM[] =>
   result.map((r) => {

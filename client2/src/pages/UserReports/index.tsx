@@ -6,6 +6,7 @@ import TableRowReport from "@/components/TableRowReport";
 import { evaluationsCompletedFilter } from "@/lib/filters";
 import { calcScore } from "@/lib/score";
 import { Route } from "@/routes/(app)/users/$userId";
+import { useSuspenseGetUserReports } from "@/services/reports.queries";
 
 const UserReports = () => {
   const { userId } = Route.useParams();

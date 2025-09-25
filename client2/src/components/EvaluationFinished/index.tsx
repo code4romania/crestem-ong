@@ -2,6 +2,7 @@ import screenshot from "@/assets/illustration.svg";
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
+import { Link } from "@tanstack/react-router";
 
 const EvaluationFinished = () => (
   <Section>
@@ -16,8 +17,8 @@ const EvaluationFinished = () => (
           la nivel de organizație, poți deja accesa Biblioteca noastră de
           resurse, organizate în funcție de cele 10 dimensiuni ale analizei.
         </p>
-        <Button to={"https://crestem.ong/ro/biblioteca"}>
-          Vezi biblioteca
+        <Button>
+          <a href="https://crestem.ong/ro/biblioteca">Vezi biblioteca</a>
         </Button>
       </div>
       <div className="w-full md:w-1/2 md:pl-12">

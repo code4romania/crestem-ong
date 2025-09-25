@@ -1,13 +1,12 @@
-import React from "react";
-import { useParams } from "@tanstack/react-router";
-import { useGetUserReportsQuery } from "@/redux/api/userApi";
-import Section from "@/components/Section";
-import Heading from "@/components/Heading";
 import FullScreenLoader from "@/components/FullScreenLoader";
+import Heading from "@/components/Heading";
+import Section from "@/components/Section";
+import { useGetUserReports } from "@/services/reports.queries";
+import { useParams } from "@tanstack/react-router";
 
 const UserReports = () => {
   const { userId } = useParams();
-  const { data: user, isLoading } = useGetUserReportsQuery({ userId });
+  const { data: user, isLoading } = useGetUserReports({ userId });
   if (isLoading) {
     return <FullScreenLoader />;
   }

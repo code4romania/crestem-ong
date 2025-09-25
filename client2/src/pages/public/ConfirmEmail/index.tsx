@@ -1,6 +1,8 @@
 import screenshot from "@/assets/illustration.svg";
-import { Button } from "@/components/ui/button";
+import FullScreenLoader from "@/components/FullScreenLoader";
+import Heading from "@/components/Heading";
 import Section from "@/components/Section";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -11,7 +13,10 @@ import {
 } from "@/components/ui/form";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Route } from "@/routes/(auth)/confirm-email";
-import { useConfirmAccount } from "@/services/user.mutations";
+import {
+  useConfirmAccount,
+  useLoginUserMutation,
+} from "@/services/user.mutations";
 import { useGetRegistrationInfo } from "@/services/user.queries";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -37,9 +42,9 @@ export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
 
 const ConfirmEmail = () => {
   const { registrationToken } = Route.useSearch();
-  const { data: user } = useGetRegistrationInfo(registrationToken);
-
+  const { data: user, isLoading } = useGetRegistrationInfo(registrationToken);
   const { mutateAsync: confirmAccount, isPending } = useConfirmAccount();
+  const { mutateAsync: login } = useLoginUserMutation();
 
   const form = useForm<ResetPasswordInput>({
     resolver: zodResolver(resetPasswordSchema),
@@ -69,7 +74,10 @@ const ConfirmEmail = () => {
       },
       {
         onSuccess: () => {
-          navigate({ to: "/" });
+          login({
+            identifier: user!.email,
+            password,
+          });
         },
         onError: () => {
           toast.error("A aparut o problema");
@@ -78,6 +86,25 @@ const ConfirmEmail = () => {
     );
   }
 
+  if (isLoading) {
+    return <FullScreenLoader />;
+  }
+
+  if (!user) {
+    return (
+      <Section>
+        <div className="grid md:grid-cols-2 items-center justify-center mt-0 mr-auto mb-0 ml-auto gap-8">
+          <Heading level="h2" color="">
+            Inregistrare expirata
+          </Heading>
+
+          <div>
+            <img src={screenshot} alt={"screenshot"} />
+          </div>
+        </div>
+      </Section>
+    );
+  }
   return (
     <Section>
       <div className="grid md:grid-cols-2 items-center justify-center mt-0 mr-auto mb-0 ml-auto gap-8">

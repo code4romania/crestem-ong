@@ -4,7 +4,7 @@ export interface ListDimensionsResponse {
   data: ApiDimensionModel[];
 }
 export const listDimensions = (): Promise<ApiDimensionModel[]> => {
-  return API.get<ListDimensionsResponse>(`api/domains`).then(
+  return API.get<ListDimensionsResponse>(`api/dimensions`).then(
     (res) => res.data.data
   );
 };

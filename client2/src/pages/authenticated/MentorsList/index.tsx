@@ -3,14 +3,14 @@ import FullScreenLoader from "@/components/FullScreenLoader";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import MentorCard from "@/pages/authenticated/MentorsList/MentorCard";
-import { useGetMentorsQuery } from "@/redux/api/userApi";
+import { useListMentors } from "@/services/mentors.queries";
 import { useGetMe } from "@/services/user.queries";
 
 const Mentors = () => {
-  const { data: user } = useGetMe();
-  const { data: mentors, isLoading } = useGetMentorsQuery();
+  const { data: user, isLoading } = useGetMe();
+  const { data: mentors, isLoading: isLoadingMentors } = useListMentors();
 
-  if (isLoading) {
+  if (isLoading || isLoadingMentors) {
     return <FullScreenLoader></FullScreenLoader>;
   }
 
@@ -27,7 +27,7 @@ const Mentors = () => {
               <MentorCard
                 key={mentor.id}
                 id={mentor.id.toString()}
-                userId={user.id}
+                userId={user!.id}
                 available={mentor.available}
                 firstName={mentor.firstName}
                 lastName={mentor.lastName}

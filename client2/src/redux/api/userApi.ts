@@ -1,7 +1,6 @@
 import type { ActivityInput } from "@/pages/mentor/NewActivity";
 import type { ReportInput } from "@/pages/NewReport";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import qs from "qs";
 import type {
   Dimension,
   Evaluation,
@@ -235,28 +234,28 @@ export const userApi = createApi({
           ...report.attributes,
         })),
     }),
-    getActivityTypes: builder.query<User[], void>({
-      query() {
-        return {
-          url: `activity-types`,
-        };
-      },
-      transformResponse: (result: { data: any }) =>
-        result.data.map((report: any) => ({
-          id: report.id,
-          ...report.attributes,
-        })),
-    }),
-    createActivity: builder.mutation<any, ActivityInput>({
-      query: (data) => ({
-        method: "POST",
-        url: "activities",
-        body: {
-          data,
-        },
-      }),
-      invalidatesTags: ["Activity"],
-    }),
+    // getActivityTypes: builder.query<User[], void>({
+    //   query() {
+    //     return {
+    //       url: `activity-types`,
+    //     };
+    //   },
+    //   transformResponse: (result: { data: any }) =>
+    //     result.data.map((report: any) => ({
+    //       id: report.id,
+    //       ...report.attributes,
+    //     })),
+    // }),
+    // createActivity: builder.mutation<any, ActivityInput>({
+    //   query: (data) => ({
+    //     method: "POST",
+    //     url: "activities",
+    //     body: {
+    //       data,
+    //     },
+    //   }),
+    //   invalidatesTags: ["Activity"],
+    // }),
     createMentorshipRequest: builder.mutation<
       any,
       { user: number; mentor: number }
@@ -449,31 +448,31 @@ export const userApi = createApi({
 
 export const {
   // useSubmitEvaluationMutation,
-  useUpdateUserMutation,
-  useGetEvaluationQuery,
+  // useUpdateUserMutation,
+  // useGetEvaluationQuery,
   useCreateEvaluationMutation,
   useDeleteEvaluationMutation,
   useCreateReportMutation,
   useFindReportQuery,
   useUpdateReportMutation,
-  useUploadMutation,
-  useGetUsersQuery,
-  useGetUserReportsQuery,
-  useGetMentorsQuery,
-  useGetDomainsQuery,
-  useGetReportsQuery,
-  useGetEvaluationsCountQuery,
+  // useUploadMutation,
+  // useGetUsersQuery,
+  // useGetUserReportsQuery,
+  // useGetMentorsQuery,
+  // useGetDomainsQuery,
+  // useGetReportsQuery,
+  // useGetEvaluationsCountQuery,
   // useGetRegistrationInfoQuery,
   // useRegisterWithConfirmationTokenMutation,
-  useCreateProgramMutation,
+  // useCreateProgramMutation,
   // useGetProgramsQuery,
   // useFindProgramQuery,
   // useUpdateProgramMutation,
-  useGetDimensionsQuery,
+  // useGetDimensionsQuery,
   // useCreateMentorMutation,
   // useCreateUserMutation,
-  useGetMatrixQuery,
-  useGetActivityTypesQuery,
-  useCreateActivityMutation,
-  useCreateMentorshipRequestMutation,
+  // useGetMatrixQuery,
+  // useGetActivityTypesQuery,
+  // useCreateActivityMutation,
+  // useCreateMentorshipRequestMutation,
 } = userApi;

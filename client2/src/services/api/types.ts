@@ -137,30 +137,38 @@ export interface FormatModel {
 
 export interface MentorActivityModel {
   id: number;
-  /** A date field */
   startDate: string;
-  /** A richtext field */
-  notes?: string;
-  /**
-   * An integer field
-   * @min -9007199254740991
-   * @max 9007199254740991
-   */
-  duration?: number;
-  /** A datetime field */
+  notes: string;
+  duration: number;
   createdAt: string;
-  /** A datetime field */
-  updatedAt?: string;
-  /**
-   * A datetime field
-   * @default "2025-09-12T06:37:57.281Z"
-   */
-  publishedAt: string;
+  updatedAt: string;
+  dimension: FinalDimensionModel;
+  type: ActivityTypeModel;
+  user: FinalUserModel;
+}
+
+export interface ActivityTypeModel {
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ProgramModel {
   id: number;
   attributes: ProgramAttributesModel;
+}
+
+export interface ProgramFinalModel {
+  id: number;
+  name: string;
+  startDate: string;
+  endDate: string;
+  sponsorName: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  users: FinalUserModel[];
 }
 
 export interface ProgramAttributesModel {

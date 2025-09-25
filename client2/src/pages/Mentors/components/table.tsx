@@ -1,4 +1,3 @@
-import { DataTablePagination } from "@/components/data-table";
 import {
   Table,
   TableBody,
@@ -12,7 +11,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect } from "react";
 
 import { useSuspenseListMentors } from "@/services/mentors.queries";
 import { columns } from "./columns";

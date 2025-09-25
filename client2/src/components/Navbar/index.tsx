@@ -143,7 +143,7 @@ export const Menu = () => {
                 <MenuItem as="div" className="px-2 flex mb-2">
                   {({ close }) => (
                     <Button asChild onClick={close} variant="secondary">
-                      <Link to={"/login"}>Înregistrează-te</Link>
+                      <Link to={"/login"}>Intră în cont</Link>
                     </Button>
                   )}
                 </MenuItem>
@@ -175,7 +175,7 @@ const Navbar = () => {
           <div className="hidden lg:flex justify-center items-center md:justify-start gap-4">
             <div>
               <Button asChild variant="secondary">
-                <Link to={"/login"}>Înregistrează-te</Link>
+                <Link to={"/login"}>Intră în cont</Link>
               </Button>
             </div>
             <div>

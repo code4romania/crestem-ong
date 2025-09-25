@@ -1,24 +1,20 @@
-import React, { useMemo } from "react";
-import { useParams } from "@tanstack/react-router";
-import { useFindReportQuery, userApi } from "@/redux/api/userApi";
-import Section from "@/components/Section";
 import Heading from "@/components/Heading";
-import ReportResults from "./ReportResults";
+import Section from "@/components/Section";
 import ReportInProgress from "@/pages/authenticated/Report/ReportInProgress";
-import { useGetMe } from "@/services/user.queries";
+import { useMemo } from "react";
+import ReportResults from "./ReportResults";
 
+import FullScreenLoader from "@/components/FullScreenLoader";
 import { evaluationsCompletedFilter } from "@/lib/filters";
 import { calcScoreByDimension } from "@/lib/score";
-import FullScreenLoader from "@/components/FullScreenLoader";
+import { Route } from "@/routes/(app)/reports/$reportId";
+import { useGetMatrix } from "@/services/matrix.queries";
+import { useGetReportById } from "@/services/reports.queries";
 
 const Report = () => {
-  const { reportId } = useParams();
-  const { data: report } = useFindReportQuery(reportId);
-  const matrix = useAppSelector((state) => state.userState.matrix);
-  const { isLoading } = userApi.endpoints.getMatrix.useQuery(null, {
-    skip: !!matrix,
-    refetchOnMountOrArgChange: true,
-  });
+  const { reportId } = Route.useParams();
+  const { data: report } = useGetReportById(reportId);
+  const { data: matrix, isLoading } = useGetMatrix();
 
   const evaluationsCompleted = useMemo(
     () =>

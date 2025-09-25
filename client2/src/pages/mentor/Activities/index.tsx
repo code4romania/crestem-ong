@@ -1,15 +1,16 @@
-import React from "react";
-import { useGetMe } from "@/services/user.queries";
+import { useGetUserMentorActivities } from "@/services/user.queries";
 
+import EmptyScreen from "@/components/EmptyScreen";
+import Feed from "@/components/Feed";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
-import Feed from "@/components/Feed";
-import EmptyScreen from "@/components/EmptyScreen";
 import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
 
 const Activities = () => {
-  const { data: user } = useGetMe();
-  const { mentorActivities } = user;
+  const { data: mentorActivities } = useGetUserMentorActivities();
+
+  console.log(mentorActivities);
 
   return (
     <div>
@@ -20,18 +21,22 @@ const Activities = () => {
         <div className="flex justify-between">
           <div className="text-lg font-semibold">Jurnal de activitate</div>
           <div>
-            <Button to="/create/activity">Adaugă activitate</Button>
+            <Button asChild>
+              <Link to="/create/activity">Adaugă activitate</Link>
+            </Button>
           </div>
         </div>
       </Section>
       <Section>
         {mentorActivities ? (
-          <Feed activity={mentorActivities} />
+          <Feed activities={mentorActivities} />
         ) : (
           <EmptyScreen
             title="Nu aveti nicio activitate creata"
             button={
-              <Button to={"/create/activity"}>Începe prima activitate</Button>
+              <Button asChild>
+                <Link to="/create/activity">Începe prima activitate</Link>
+              </Button>
             }
           />
         )}

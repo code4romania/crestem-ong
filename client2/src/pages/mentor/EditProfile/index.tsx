@@ -1,23 +1,4 @@
-import React, { useEffect } from "react";
 import { z } from "zod";
-import { type SubmitHandler, useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Heading from "@/components/Heading";
-import Section from "@/components/Section";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import {
-  useGetDimensionsQuery,
-  useUpdateUserMutation,
-  useUploadMutation,
-} from "@/redux/api/userApi";
-import { useNavigate } from "@tanstack/react-router";
-import MultiSelect from "@/components/MultiSelect";
-import { ErrorMessage } from "@hookform/error-message";
-import Toggle from "@/components/Toggle";
-import Select from "@/components/Select";
-import Avatar from "@/components/Avatar";
-import { useGetMe } from "@/services/user.queries";
 
 const mentorProfileSchema = z.object({
   firstName: z.string().min(1, "Nume este obligatoriu"),

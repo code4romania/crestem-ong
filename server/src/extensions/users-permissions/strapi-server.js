@@ -13,7 +13,7 @@ const findRegistrationInfo = async (ctx) => {
   if (!user) {
     return undefined;
   }
-  return _.pick(user, ["id", "email", "ongName"]);
+  return _.pick(user, ["id", "email", "ongName", "firstName", "lastName"]);
 };
 
 const registerWithConfirmation = async (ctx) => {
