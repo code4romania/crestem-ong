@@ -1,8 +1,7 @@
 import screenshot from "@/assets/illustration.svg";
-import { Button } from "@/components/ui/button";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
-import { Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 
 const EvaluationFinished = () => (
   <Section>
@@ -25,18 +24,6 @@ const EvaluationFinished = () => (
         <img src={screenshot} alt={"Screenshot"} />
       </div>
     </div>
-    {/*<div className="py-12">*/}
-    {/*  <Heading level={"h2"}>*/}
-    {/*    Vrei sa fii la curent cu cele mai noi resurse de pe platformă?*/}
-    {/*  </Heading>*/}
-    {/*  <div className="text-green-600">*/}
-    {/*    <Heading level={"h2"}>Abonează-te la newsletter. </Heading>*/}
-    {/*  </div>*/}
-    {/*  <div>*/}
-    {/*    <input type="text" className="" />*/}
-    {/*    <Button></Button>*/}
-    {/*  </div>*/}
-    {/*</div>*/}
   </Section>
 );
 

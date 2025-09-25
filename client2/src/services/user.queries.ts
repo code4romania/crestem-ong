@@ -18,7 +18,7 @@ export const getMeQueryOptions = <TResult = MeModel>(
     queryKey: ["me"],
     queryFn: getMe,
     select,
-    enabled: !!Cookies.get("jwt"),
+    enabled: () => !!Cookies.get("jwt"),
   });
 
 export const useSuspenseGetMe = <TResult = MeModel>(
@@ -29,17 +29,18 @@ export const useGetMe = <TResult = MeModel>(
   select?: (data: MeModel) => TResult
 ) => useQuery(getMeQueryOptions(select));
 
-export const getTokenQueryOptions = <TResult = string | undefined>(
-  select?: (data: string | undefined) => TResult
+export const getTokenQueryOptions = <TResult = string | null>(
+  select?: (data: string | null) => TResult
 ) =>
   queryOptions({
     queryKey: ["me", "token"],
-    queryFn: () => Cookies.get("jwt"),
+    queryFn: () => Cookies.get("jwt") ?? null,
     select,
+    enabled: !!Cookies.get("jwt"),
   });
 
-export const useGetToken = <TResult = string | undefined>(
-  select?: (data: string | undefined) => TResult
+export const useGetToken = <TResult = string | null>(
+  select?: (data: string | null) => TResult
 ) => useQuery(getTokenQueryOptions(select));
 
 export const getRegistrationInfoQueryOptions = (registrationToken: string) =>
@@ -54,6 +55,7 @@ export const useGetRegistrationInfo = (registrationToken: string) =>
 export const getUserDomainsQueryOptions = queryOptions({
   queryKey: ["me", "domains"],
   queryFn: getUserDomains,
+  enabled: !!Cookies.get("jwt"),
 });
 
 export const useGetUserDomains = () => useQuery(getUserDomainsQueryOptions);
@@ -68,6 +70,7 @@ export const getUserMentorActivitiesQueryOptions = <
     queryFn: getUserMentorActivities,
     placeholderData: [],
     select,
+    enabled: !!Cookies.get("jwt"),
   });
 
 export const useGetUserMentorActivities = <TResult = MentorActivityModel[]>(
@@ -82,6 +85,7 @@ export const getUserProgramsQueryOptions = <TResult = ProgramFinalModel[]>(
     queryFn: getUserPrograms,
     placeholderData: [],
     select,
+    enabled: !!Cookies.get("jwt"),
   });
 
 export const useGetUserPrograms = <TResult = ProgramFinalModel[]>(

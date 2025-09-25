@@ -83,7 +83,7 @@ const MentorCard = ({
         <Avatar className="h-16 w-16">
           <AvatarImage src={avatarUrl} alt={`${firstName} ${lastName}`} />
           <AvatarFallback>
-            {[firstName[0], lastName[0]].join("") ?? "?"}
+            {[firstName[0], lastName[0]].join("") ?? "-"}
           </AvatarFallback>
         </Avatar>
 

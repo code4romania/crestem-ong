@@ -15,6 +15,7 @@ const AuthMiddleware: React.FC<IAuthMiddleware> = ({ children }) => {
   useEffect(() => {
     if (isError) {
       Cookies.remove("jwt");
+      console.log(isError);
     }
   }, [isError]);
 
