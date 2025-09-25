@@ -1,8 +1,7 @@
 import FullScreenLoader from "@/components/FullScreenLoader";
-import getUserType from "@/lib/userType";
 import ProgramsList from "@/pages/admin/ProgramsList";
-import { useGetMe } from "@/services/user.queries";
 
+import { useAuth } from "@/contexts/auth";
 import { listProgramsQueryOptions } from "@/services/programs.queries";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
@@ -27,8 +26,6 @@ export const Route = createFileRoute("/(app)/programs/")({
 });
 
 function RouteComponent() {
-  const { data: user } = useGetMe();
-  const userType = getUserType(user);
-
-  return userType === "fdsc" ? <ProgramsList /> : <Navigate to="/" />;
+  const { userRole } = useAuth();
+  return userRole === "fdsc" ? <ProgramsList /> : <Navigate to="/" />;
 }

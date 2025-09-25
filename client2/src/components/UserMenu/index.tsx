@@ -1,5 +1,4 @@
-import { queryClient } from "@/lib/query";
-import { useSuspenseGetMe } from "@/services/user.queries";
+import { useAuth } from "@/contexts/auth";
 import {
   MenuItem as HUMenuItem,
   Menu,
@@ -8,7 +7,6 @@ import {
   Transition,
 } from "@headlessui/react";
 import { Link, useRouter } from "@tanstack/react-router";
-import Cookies from "js-cookie";
 import { Fragment, type ReactNode } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
@@ -51,19 +49,17 @@ const MenuItem = ({
 };
 
 const UserMenu = () => {
-  const { data: user } = useSuspenseGetMe();
   const router = useRouter();
-
+  const { user, logout } = useAuth();
   const handleLogout = async () => {
-    Cookies.remove("jwt");
-    queryClient.invalidateQueries({ queryKey: ["me"] });
+    logout();
     await router.invalidate();
   };
 
   return (
     <Menu as="div" className="relative ml-3">
       <div className="flex space-x-4">
-        <span>{user.ongName}</span>
+        <span>{user?.ongName}</span>
         <MenuButton className="flex rounded-full bg-gray-800 text-sm">
           <span className="sr-only">Open user menu</span>
 
@@ -72,7 +68,7 @@ const UserMenu = () => {
               src={user?.avatar?.formats?.thumbnail?.url}
               alt={user?.ongName || user?.firstName || "FDSC"}
             />
-            <AvatarFallback>USER</AvatarFallback>
+            <AvatarFallback>U</AvatarFallback>
           </Avatar>
         </MenuButton>
       </div>

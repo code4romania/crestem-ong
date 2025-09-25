@@ -4,7 +4,7 @@ import Navbar from "../Navbar";
 import { Outlet } from "@tanstack/react-router";
 
 const LayoutApp = ({ children }: { children?: ReactNode }) => (
-  <div className="flex flex-col h-screen">
+  <div className="container flex flex-col h-screen">
     <Navbar />
     <div className="mb-auto">{children ?? <Outlet />}</div>
     <Footer />

@@ -1,7 +1,6 @@
-import getUserType from "@/lib/userType";
+import { useAuth } from "@/contexts/auth";
 import OngEditProfile from "@/pages/authenticated/EditProfile";
 import MentorEditProfile from "@/pages/mentor/EditProfile";
-import { useGetMe } from "@/services/user.queries";
 
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 
@@ -10,12 +9,10 @@ export const Route = createFileRoute("/(app)/profile/edit")({
 });
 
 function RouteComponent() {
-  const { data: user } = useGetMe();
-  const userType = getUserType(user);
-
-  return userType === "authenticated" ? (
+  const { userRole } = useAuth();
+  return userRole === "authenticated" ? (
     <OngEditProfile />
-  ) : userType === "mentor" ? (
+  ) : userRole === "mentor" ? (
     <MentorEditProfile />
   ) : (
     <Navigate to="/" />

@@ -1,7 +1,6 @@
 import FullScreenLoader from "@/components/FullScreenLoader";
-import getUserType from "@/lib/userType";
+import { useAuth } from "@/contexts/auth";
 import ReportsList from "@/pages/ReportsList";
-import { useGetMe } from "@/services/user.queries";
 
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 
@@ -11,8 +10,6 @@ export const Route = createFileRoute("/(app)/reports/")({
 });
 
 function RouteComponent() {
-  const { data: user } = useGetMe();
-  const userType = getUserType(user);
-
-  return userType === "fdsc" ? <ReportsList /> : <Navigate to="/" />;
+  const { userRole } = useAuth();
+  return userRole === "fdsc" ? <ReportsList /> : <Navigate to="/" />;
 }

@@ -1,7 +1,6 @@
 import LayoutApp from "@/components/LayoutApp";
 import LayoutDashboard from "@/components/LayoutDashboard";
-import getUserType from "@/lib/userType";
-import { useGetMe } from "@/services/user.queries";
+import { useAuth } from "@/contexts/auth";
 
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -10,8 +9,6 @@ export const Route = createFileRoute("/(app)/profile")({
 });
 
 function RouteComponent() {
-  const { data: user } = useGetMe();
-  const userType = getUserType(user);
-
-  return userType === "fdsc" ? <LayoutDashboard /> : <LayoutApp />;
+  const { userRole } = useAuth();
+  return userRole === "fdsc" ? <LayoutDashboard /> : <LayoutApp />;
 }

@@ -6,15 +6,22 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import AuthMiddleware from "./components/AuthMiddleware";
 import "./globals.css";
 import { queryClient } from "./lib/query";
 import { routeTree } from "./routeTree.gen";
+import { AuthProvider, useAuth } from "./contexts/auth";
 
 const router = createRouter({
   routeTree,
   context: {
-    // auth,
+    // auth will be passed down from App component
+    auth: {
+      userRole: "public",
+      user: null,
+      isAuthenticated: false,
+      logout: () => Promise.resolve(),
+      login: (username: string, password: string) => Promise.resolve(),
+    }!,
     queryClient,
   },
 });
@@ -22,12 +29,11 @@ const router = createRouter({
 const container = document.getElementById("root");
 const root = createRoot(container!);
 
-root.render(
-  <StrictMode>
+function InnerApp() {
+  const auth = useAuth();
+  return (
     <QueryClientProvider client={queryClient}>
-      <AuthMiddleware>
-        <RouterProvider router={router} />
-      </AuthMiddleware>
+      <RouterProvider router={router} context={{ auth, queryClient }} />
 
       {import.meta.env.DEV && (
         <ReactQueryDevtools
@@ -36,6 +42,13 @@ root.render(
         />
       )}
     </QueryClientProvider>
+  );
+}
+root.render(
+  <StrictMode>
+    <AuthProvider>
+      <InnerApp />
+    </AuthProvider>
   </StrictMode>
 );
 

@@ -1,6 +1,5 @@
-import getUserType from "@/lib/userType";
+import { useAuth } from "@/contexts/auth";
 import CreateMentor from "@/pages/admin/CreateMentor";
-import { useGetMe } from "@/services/user.queries";
 
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 
@@ -9,8 +8,6 @@ export const Route = createFileRoute("/(app)/create/mentor")({
 });
 
 function RouteComponent() {
-  const { data: user } = useGetMe();
-  const userType = getUserType(user);
-
-  return userType === "fdsc" ? <CreateMentor /> : <Navigate to="/" />;
+  const { userRole } = useAuth();
+  return userRole === "fdsc" ? <CreateMentor /> : <Navigate to="/" />;
 }

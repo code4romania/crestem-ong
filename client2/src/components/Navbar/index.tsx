@@ -55,8 +55,7 @@ const MENU = {
 };
 
 export const Menu = () => {
-  const { data: user } = useGetMe();
-  const userType = getUserType(user);
+  const { userRole } = useAuth();
   const menu = MENU[userType];
 
   return (

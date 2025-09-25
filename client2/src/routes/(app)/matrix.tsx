@@ -1,8 +1,7 @@
 import LayoutApp from "@/components/LayoutApp";
 import Matrix from "@/components/Matrix";
-import getUserType from "@/lib/userType";
+import { useAuth } from "@/contexts/auth";
 import AuthenticatedMatrix from "@/pages/authenticated/Matrix";
-import { useGetMe } from "@/services/user.queries";
 
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -11,12 +10,10 @@ export const Route = createFileRoute("/(app)/matrix")({
 });
 
 function RouteComponent() {
-  const { data: user } = useGetMe();
-  const userType = getUserType(user);
-
+  const { userRole } = useAuth();
   return (
     <LayoutApp>
-      {userType === "authenticated" ? <AuthenticatedMatrix /> : <Matrix />}
+      {userRole === "authenticated" ? <AuthenticatedMatrix /> : <Matrix />}
     </LayoutApp>
   );
 }

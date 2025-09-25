@@ -15,18 +15,17 @@ export const Route = createFileRoute("/")({
 });
 
 function RouteComponent() {
-  const { data: user } = useGetMe();
-  const userType = getUserType(user);
+  const { userRole } = useAuth();
   console.log(userType);
   return (
     <LayoutApp>
-      {userType === "fdsc" ? (
+      {userRole === "fdsc" ? (
         <Suspense fallback={<FullScreenLoader />}>
           <Dashboard />
         </Suspense>
-      ) : userType === "authenticated" ? (
+      ) : userRole === "authenticated" ? (
         <Home />
-      ) : userType === "mentor" ? (
+      ) : userRole === "mentor" ? (
         <HomeMentor />
       ) : (
         <UnauthenticatedHome />

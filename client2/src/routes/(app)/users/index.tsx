@@ -1,7 +1,6 @@
 import FullScreenLoader from "@/components/FullScreenLoader";
-import getUserType from "@/lib/userType";
+import { useAuth } from "@/contexts/auth";
 import UsersList from "@/pages/UsersList";
-import { useGetMe } from "@/services/user.queries";
 
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
@@ -23,8 +22,6 @@ export const Route = createFileRoute("/(app)/users/")({
 });
 
 function RouteComponent() {
-  const { data: user } = useGetMe();
-  const userType = getUserType(user);
-
-  return userType === "fdsc" ? <UsersList /> : <Navigate to="/" />;
+  const { userRole } = useAuth();
+  return userRole === "fdsc" ? <UsersList /> : <Navigate to="/" />;
 }

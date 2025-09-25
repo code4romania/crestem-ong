@@ -1,10 +1,9 @@
 import LayoutApp from "@/components/LayoutApp";
 import LayoutDashboard from "@/components/LayoutDashboard";
-import getUserType from "@/lib/userType";
 import AuthenticatedMentorsList from "@/pages/authenticated/MentorsList";
 import Mentors from "@/pages/Mentors";
-import { useGetMe } from "@/services/user.queries";
 
+import { useAuth } from "@/contexts/auth";
 import { listMentorsQueryOptions } from "@/services/mentors.queries";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 
@@ -15,14 +14,12 @@ export const Route = createFileRoute("/(app)/mentors")({
 });
 
 function RouteComponent() {
-  const { data: user } = useGetMe();
-  const userType = getUserType(user);
-
-  return userType === "fdsc" ? (
+  const { userRole } = useAuth();
+  return userRole === "fdsc" ? (
     <LayoutDashboard>
       <Mentors />
     </LayoutDashboard>
-  ) : userType === "authenticated" ? (
+  ) : userRole === "authenticated" ? (
     <LayoutApp>
       <AuthenticatedMentorsList />
     </LayoutApp>

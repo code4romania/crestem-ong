@@ -1,7 +1,6 @@
 import LayoutApp from "@/components/LayoutApp";
-import getUserType from "@/lib/userType";
+import { useAuth } from "@/contexts/auth";
 import Activities from "@/pages/mentor/Activities";
-import { useGetMe } from "@/services/user.queries";
 
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 
@@ -10,10 +9,9 @@ export const Route = createFileRoute("/(app)/activities")({
 });
 
 function RouteComponent() {
-  const { data: user } = useGetMe();
-  const userType = getUserType(user);
+  const { userRole } = useAuth();
 
-  return userType === "mentor" ? (
+  return userRole === "mentor" ? (
     <LayoutApp>
       <Activities />
     </LayoutApp>
