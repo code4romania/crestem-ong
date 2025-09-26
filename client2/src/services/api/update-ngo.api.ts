@@ -1,7 +1,8 @@
 import { API } from "../api";
-export interface UpdateUserRequest {
+export interface UpdateNgoRequest {
   id: number;
   ongName: string;
+
   ongIdentificationNumber: string;
   county: string;
   city: string;
@@ -20,11 +21,16 @@ export interface UpdateUserRequest {
   accountTiktok?: string | undefined;
   accountInstagram?: string | undefined;
   accountLinkedin?: string | undefined;
+
+  // mentor fields
+  firstName?: string;
+  lastName?: string;
+  dimensions?: number[];
 }
 
-export const updateUser = ({
+export const updateNgo = ({
   id,
   ...request
-}: UpdateUserRequest): Promise<void> => {
+}: UpdateNgoRequest): Promise<void> => {
   return API.put<void>(`api/users/${id}`, request).then((res) => res.data);
 };

@@ -6,8 +6,8 @@ import Section from "@/components/Section";
 import StartEvaluation from "@/components/StartEvaluation";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useGetMe } from "@/services/user.queries";
 
+import { useAuth } from "@/contexts/auth";
 import { Route } from "@/routes/(app)/evaluation/$evaluationId";
 import type { FinalEvaluationDimensionModel } from "@/services/api/types";
 import type { UpsertEvaluationDimensionRequest } from "@/services/api/upsert-evaluation.api";
@@ -16,25 +16,11 @@ import { useSuspenseGetEvaluation } from "@/services/evaluation.queries";
 import { useSuspenseGetMatrix } from "@/services/matrix.queries";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Navigate } from "@tanstack/react-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { EvaluationStep } from "./EvaluationStep";
-import { toast } from "sonner";
-
-// const evaluationSchema_old = z.object({
-//   question_1: z.string().min(1, { error: invalid_type_error }),
-//   question_2: z.string().min(1, { error: invalid_type_error }),
-//   question_3: z.string().min(1, { error: invalid_type_error }),
-//   question_4: z.string().min(1, { error: invalid_type_error }),
-//   question_5: z.string().min(1, { error: invalid_type_error }),
-//   comment: z.string().min(1, { message: min_message }).max(1000),
-// });
-
-// export type EvaluationInput = z.infer<typeof evaluationSchema_old> & {
-//   evaluationId: string;
-//   dimensionIndex: string;
-// };
 
 const mapToEvaluationDimension = (
   data: DimensionEvaluationForm
@@ -91,7 +77,7 @@ const dimensionEvaluationSchema = z.object({
 export type DimensionEvaluationForm = z.infer<typeof dimensionEvaluationSchema>;
 
 const Evaluation = () => {
-  const { data: user } = useGetMe();
+  const { user } = useAuth();
 
   const { evaluationId } = Route.useParams();
   const { email } = Route.useSearch();

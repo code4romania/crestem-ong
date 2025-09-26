@@ -1,11 +1,20 @@
 import { Button } from "@/components/ui/button";
-import { useCreateEvaluationMutation } from "@/redux/api/userApi";
-import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { toast } from "sonner";
+import { useInviteNGOMemberMutation } from "@/services/evaluation.mutations";
+import { Separator } from "../ui/separator";
 
 const evaluationSchema = z.object({
   email: z
@@ -14,56 +23,48 @@ const evaluationSchema = z.object({
 });
 export type EvaluationInput = z.infer<typeof evaluationSchema>;
 
-const CreateEvaluation = ({ reportId }: { reportId: string }) => {
-  const [createEvaluation, { isSuccess, isError }] =
-    useCreateEvaluationMutation();
-  const { register, formState, handleSubmit, reset } = useForm<EvaluationInput>(
-    {
-      resolver: zodResolver(evaluationSchema),
-    }
-  );
+const CreateEvaluation = ({ reportId }: { reportId: number }) => {
+  const { mutate: createEvaluation } = useInviteNGOMemberMutation();
+
+  const form = useForm<EvaluationInput>({
+    resolver: zodResolver(evaluationSchema),
+  });
+
   const onSubmitHandler = useCallback(
     ({ email }: EvaluationInput) => {
-      createEvaluation({ id: reportId, email });
-      reset();
+      createEvaluation(
+        { report: reportId, email },
+        {
+          onSuccess: () => toast.success("Invitația a fost transmisă."),
+          onError: () => toast.error("Ceva nu a funcționat. Încearcă din nou."),
+        }
+      );
+      form.reset();
     },
-    [createEvaluation, reset]
+    [createEvaluation, form, form.reset]
   );
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success("Invitația a fost transmisă.");
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (isError) {
-      toast.error("Ceva nu a funcționat. Încearcă din nou.");
-    }
-  }, [isError]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmitHandler)}>
-      <div className="sm:col-span-6">
-        <label
-          htmlFor="last-name"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Invită membrii organizației
-        </label>
-        <div className="my-2">
-          <input
-            type="email"
-            className="inline-flex w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-            {...register("email")}
-          />{" "}
-          <div className="text-red-600 text-sm">
-            <ErrorMessage errors={formState.errors} name={"email"} />
-          </div>
-        </div>
-
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmitHandler)} className="space-y-2">
+        {/* Detalii evaluare */}
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Invită membrii organizației</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button type="submit">Invită</Button>
-      </div>
-    </form>
+        <Separator />
+      </form>
+    </Form>
   );
 };
 

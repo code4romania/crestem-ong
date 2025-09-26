@@ -2,9 +2,16 @@ import LayoutApp from "@/components/LayoutApp";
 import LayoutDashboard from "@/components/LayoutDashboard";
 import { useAuth } from "@/contexts/auth";
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(app)/create")({
+  beforeLoad: ({ context }) => {
+    if (!context.auth.isAuthenticated) {
+      throw redirect({
+        to: "/",
+      });
+    }
+  },
   component: RouteComponent,
 });
 

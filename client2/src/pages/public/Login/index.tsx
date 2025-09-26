@@ -5,9 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { memo } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
-import { useLoginUserMutation } from "@/services/user.mutations";
-import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/auth";
+import { toast } from "sonner";
 
 const loginSchema = z.object({
   identifier: z
@@ -65,11 +65,15 @@ const Login = memo(() => {
     resolver: zodResolver(loginSchema),
   });
 
-  const { mutate: login, isPending } = useLoginUserMutation();
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const onSubmitHandler: SubmitHandler<LoginInput> = (values) => {
-    login(values, {
-      onError: (error) => {
+    login(values.identifier, values.password)
+      .then(() => {
+        navigate({ to: "/" });
+      })
+      .catch((error) => {
         const message = (error as any)?.response?.data?.error?.message;
         if (message) {
           toast.error(
@@ -84,10 +88,8 @@ const Login = memo(() => {
             "Ne pare rău, dar serverul este momentan indisponibil. Vă rugăm să încercați din nou mai târziu."
           );
         }
-      },
-    });
+      });
   };
-
   return (
     <Section>
       <div className="grid md:grid-cols-2 items-center justify-center mt-0 mr-auto mb-0 ml-auto gap-8">
@@ -130,9 +132,7 @@ const Login = memo(() => {
               )}
             />
             <FormFooter />
-            <Button type="submit" disabled={isPending}>
-              Intra in cont
-            </Button>
+            <Button type="submit">Intra in cont</Button>
           </form>
         </Form>
         <div>

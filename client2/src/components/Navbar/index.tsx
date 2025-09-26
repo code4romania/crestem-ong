@@ -1,8 +1,7 @@
 import NavbarEvaluation from "@/components/NavbarEvaluation";
 import UserMenu from "@/components/UserMenu";
-import getUserType from "@/lib/userType";
-import { useGetMe } from "@/services/user.queries";
 
+import { useAuth } from "@/contexts/auth";
 import {
   MenuButton,
   Menu as MenuHeadless,
@@ -11,10 +10,9 @@ import {
   Transition,
 } from "@headlessui/react";
 import { Bars3Icon } from "@heroicons/react/20/solid";
-import { Fragment } from "react";
 import { Link } from "@tanstack/react-router";
+import { Fragment, useMemo } from "react";
 import { Button } from "../ui/button";
-import { useAuth } from "@/contexts/auth";
 
 const MENU = {
   public: [
@@ -57,7 +55,7 @@ const MENU = {
 
 export const Menu = () => {
   const { userRole, user } = useAuth();
-  const menu = MENU[userRole];
+  const menu = useMemo(() => MENU[userRole], [userRole]);
 
   return (
     <>
@@ -164,7 +162,7 @@ export const Menu = () => {
 };
 
 const Navbar = () => {
-  const { data: user } = useGetMe();
+  const { user } = useAuth();
 
   return (
     <NavbarEvaluation menu={<Menu />}>

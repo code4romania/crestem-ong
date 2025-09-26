@@ -1,5 +1,6 @@
+import qs from "qs";
 import { API } from "../api";
-import type { FinalRoleType } from "./types";
+import type { Avatar, FinalRoleType } from "./types";
 
 export interface MeModel {
   id: number;
@@ -27,52 +28,13 @@ export interface MeModel {
   accountLinkedin: string;
   createdAt: string;
   updatedAt: string;
-  bio: null;
-  expertise: null;
-  firstName: null;
-  lastName: null;
+  bio: string;
+  expertise: string;
+  firstName: string;
+  lastName: string;
   available: boolean;
   avatar: Avatar;
   role: Role;
-}
-
-export interface Avatar {
-  id: number;
-  name: string;
-  alternativeText: null;
-  caption: null;
-  width: number;
-  height: number;
-  formats: Formats;
-  hash: string;
-  ext: string;
-  mime: string;
-  size: number;
-  url: string;
-  previewUrl: null;
-  provider: string;
-  provider_metadata: null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Formats {
-  large: Format;
-  small: Format;
-  medium: Format;
-  thumbnail: Format;
-}
-
-export interface Format {
-  ext: string;
-  url: string;
-  hash: string;
-  mime: string;
-  name: string;
-  path: null;
-  size: number;
-  width: number;
-  height: number;
 }
 
 export interface Role {
@@ -85,8 +47,13 @@ export interface Role {
 }
 
 export const getMe = (): Promise<MeModel> => {
-  return API.get<MeModel>(
-    `api/users/me?populate[0]=role&populate[1]=avatar`,
-    {}
-  ).then((res) => res.data);
+  const params = { populate: ["role", "avatar"] };
+  return API.get<MeModel>(`api/users/me`, {
+    params,
+    paramsSerializer: {
+      serialize: (params) => {
+        return qs.stringify(params, { encodeValuesOnly: true });
+      },
+    },
+  }).then((res) => res.data);
 };

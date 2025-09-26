@@ -1,23 +1,21 @@
-import React, { useMemo } from "react";
-import { useParams } from "@tanstack/react-router";
-import { useFindReportQuery, userApi } from "@/redux/api/userApi";
-import Section from "@/components/Section";
 import Heading from "@/components/Heading";
+import Section from "@/components/Section";
+import { useMemo } from "react";
 import ReportResults from "./ReportResults";
-import { useGetMe } from "@/services/user.queries";
 
+import FullScreenLoader from "@/components/FullScreenLoader";
 import { evaluationsCompletedFilter } from "@/lib/filters";
 import { calcScoreByDimension } from "@/lib/score";
-import FullScreenLoader from "@/components/FullScreenLoader";
+import { Route } from "@/routes/(app)/reports/$reportId";
+import { useGetMatrix } from "@/services/matrix.queries";
+import { useSuspenseGetReportById } from "@/services/reports.queries";
+import formatDate from "@/lib/formatDate";
 
 const Report = () => {
-  const { reportId } = useParams();
-  const { data: report } = useFindReportQuery(reportId || "");
-  const matrix = useAppSelector((state) => state.userState.matrix);
-  const { isLoading } = userApi.endpoints.getMatrix.useQuery(null, {
-    skip: !!matrix,
-    refetchOnMountOrArgChange: true,
-  });
+  const { reportId } = Route.useParams();
+  const { data: report, isPending: isLoadingreport } =
+    useSuspenseGetReportById(reportId);
+  const { data: matrix, isPending: isLoadingMatrix } = useGetMatrix();
 
   const evaluationsCompleted = useMemo(
     () =>
@@ -33,7 +31,7 @@ const Report = () => {
       : [];
   }, [evaluationsCompleted, matrix]);
 
-  if (!report || isLoading) {
+  if (!isLoadingMatrix || isLoadingreport) {
     return <FullScreenLoader />;
   }
 
@@ -43,11 +41,7 @@ const Report = () => {
         <header className="mb-10">
           <Heading level="h2">
             Evaluare
-            {new Date(report.createdAt).toLocaleDateString("ro-RO", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
+            {formatDate(report.createdAt)}
           </Heading>
         </header>
       </Section>

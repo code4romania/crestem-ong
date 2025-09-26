@@ -12,13 +12,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { PasswordInput } from "@/components/ui/password-input";
+import { useAuth } from "@/contexts/auth";
 import { Route } from "@/routes/(auth)/confirm-email";
-import {
-  useConfirmAccount,
-  useLoginUserMutation,
-} from "@/services/user.mutations";
+import { useConfirmAccount } from "@/services/user.mutations";
 import { useGetRegistrationInfo } from "@/services/user.queries";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -42,9 +41,10 @@ export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
 
 const ConfirmEmail = () => {
   const { registrationToken } = Route.useSearch();
+  const navigate = Route.useNavigate();
   const { data: user, isLoading } = useGetRegistrationInfo(registrationToken);
   const { mutateAsync: confirmAccount, isPending } = useConfirmAccount();
-  const { mutateAsync: login } = useLoginUserMutation();
+  const { login } = useAuth();
 
   const form = useForm<ResetPasswordInput>({
     resolver: zodResolver(resetPasswordSchema),
@@ -53,7 +53,6 @@ const ConfirmEmail = () => {
       passwordConfirmation: "",
     },
   });
-  const navigate = Route.useNavigate();
 
   useEffect(() => {
     if (!registrationToken) {
@@ -74,10 +73,7 @@ const ConfirmEmail = () => {
       },
       {
         onSuccess: () => {
-          login({
-            identifier: user!.email,
-            password,
-          });
+          login(user!.email, password).then(() => navigate({ to: "/" }));
         },
         onError: () => {
           toast.error("A aparut o problema");

@@ -231,7 +231,7 @@ const CreateUser = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Numele organizației{" "}
+                          Numele organizației
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
@@ -248,7 +248,7 @@ const CreateUser = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          CIF-ul organizației{" "}
+                          CIF-ul organizației
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
@@ -329,7 +329,7 @@ const CreateUser = () => {
                       <FormItem>
                         <FormLabel className="flex items-center gap-2">
                           <Mail className="h-4 w-4" />
-                          Email organizație{" "}
+                          Email organizație
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
@@ -351,7 +351,7 @@ const CreateUser = () => {
                       <FormItem>
                         <FormLabel className="flex items-center gap-2">
                           <Phone className="h-4 w-4" />
-                          Telefon organizație{" "}
+                          Telefon organizație
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
@@ -395,7 +395,7 @@ const CreateUser = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Confirmă parola{" "}
+                          Confirmă parola
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>

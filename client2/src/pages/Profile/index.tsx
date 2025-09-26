@@ -1,15 +1,15 @@
-import React from "react";
-import { useGetMe, useGetUserDomains } from "@/services/user.queries";
+import { useGetUserDomains } from "@/services/user.queries";
 
-import Section from "@/components/Section";
 import Heading from "@/components/Heading";
-import { Link } from "@tanstack/react-router";
+import Section from "@/components/Section";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/contexts/auth";
+import { Link } from "@tanstack/react-router";
 
 const Profile = () => {
-  const { data: user } = useGetMe();
+  const { user } = useAuth();
   const { data: userDomains } = useGetUserDomains();
 
   if (!user) {
@@ -92,44 +92,42 @@ const Profile = () => {
         </AvatarFallback>
       </Avatar>,
     ],
-    ["Nume reprezentant organizație", user.contactLastName],
-    ["Prenume reprezentant organizație", user.contactFirstName],
+    ["Nume reprezentant organizație", user.contactFirstName],
+    ["Prenume reprezentant organizație", user.contactLastName],
     ["Email reprezentant organizație", user.contactEmail],
     ["Telefon reprezentant organizație", user.contactPhone],
   ];
 
   return (
-    <>
-      <Section>
-        <div className="flex w-full items-center justify-between">
-          <Heading level="h2">Profilul meu: {user.ongName}</Heading>
+    <Section>
+      <div className="flex w-full items-center justify-between">
+        <Heading level="h2">Profilul meu: {user.ongName}</Heading>
 
-          <Button asChild>
-            <Link to="/profile/edit">Editeaza</Link>
-          </Button>
-        </div>
+        <Button asChild>
+          <Link to="/profile/edit">Editeaza</Link>
+        </Button>
+      </div>
 
-        <div className="mt-8 bg-white shadow ring-1 ring-gray-900/5 sm:rounded-lg">
-          <dl className="divide-y divide-gray-100">
-            {rows.map(([label, value], idx) => (
-              <div
-                key={idx}
-                className={`px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ${
-                  idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                }`}
-              >
-                <dt className="text-sm font-medium leading-6 text-gray-900">
-                  {label}
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {value || "-"}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </Section>
-    </>
+      <div className="mt-8 bg-white shadow ring-1 ring-gray-900/5 sm:rounded-lg">
+        <dl className="divide-y divide-gray-100">
+          {rows.map(([label, value], idx) => (
+            <div
+              key={idx}
+              className={`px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ${
+                idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+              }`}
+            >
+              <dt className="text-sm font-medium leading-6 text-gray-900">
+                {label}
+              </dt>
+              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                {value || "-"}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </Section>
   );
 };
 

@@ -1,11 +1,29 @@
-import React from "react";
-import Stats from "@/components/Stats";
-import { calcScore } from "@/lib/score";
-import ResultsByDimension from "@/components/ResultsByDimension";
-import TableEvaluations from "@/components/TableEvaluations";
 import LibraryBanner from "@/components/LibraryBanner";
+import ResultsByDimension from "@/components/ResultsByDimension";
+import Stats from "@/components/Stats";
+import TableEvaluations from "@/components/TableEvaluations";
+import { calcScore } from "@/lib/score";
+import type {
+  FinalEvaluationModel,
+  FinalReportModel,
+} from "@/services/api/types";
+export interface ReportResultsProps {
+  report: FinalReportModel;
+  evaluationsCompleted: FinalEvaluationModel[];
+  scoreByEvaluation: {
+    id: string;
+    name: string;
+    link: string;
+    score: number;
+    tags: string[];
+  }[];
+}
 
-const ReportResults = ({ report, evaluationsCompleted, scoreByEvaluation }) => {
+const ReportResults = ({
+  report,
+  evaluationsCompleted,
+  scoreByEvaluation,
+}: ReportResultsProps) => {
   const startDate = new Date(report.createdAt).getTime();
   const endDate = new Date(report.deadline).getTime();
 

@@ -1,7 +1,15 @@
-import React, { memo } from "react";
-import { Link } from "@tanstack/react-router";
 import { calcScore } from "@/lib/score";
-
+import type { FinalEvaluationModel } from "@/services/api/types";
+import { Link } from "@tanstack/react-router";
+import { memo } from "react";
+export interface TableRowReportProps {
+  id: number;
+  createdAt: string;
+  deadline: string;
+  evaluations: FinalEvaluationModel[];
+  finished: boolean;
+  actionLabel?: string;
+}
 const TableRowReport = ({
   id,
   createdAt,
@@ -9,7 +17,7 @@ const TableRowReport = ({
   evaluations,
   finished,
   actionLabel = "Vezi",
-}) => {
+}: TableRowReportProps) => {
   const evaluationsCompleted = evaluations
     ? evaluations.filter(({ dimensions }) => dimensions.length === 10)
     : [];
@@ -45,7 +53,9 @@ const TableRowReport = ({
         {finished ? "Finalizat" : "In desfasurare"}
       </td>
       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 text-teal-600">
-        <Link to={`/reports/${id}`}>{actionLabel}</Link>
+        <Link to="/reports/$reportId" params={{ reportId: id.toString() }}>
+          {actionLabel}
+        </Link>
       </td>
     </tr>
   );

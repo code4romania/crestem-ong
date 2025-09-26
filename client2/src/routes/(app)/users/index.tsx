@@ -2,7 +2,7 @@ import FullScreenLoader from "@/components/FullScreenLoader";
 import { useAuth } from "@/contexts/auth";
 import UsersList from "@/pages/UsersList";
 
-import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { createFileRoute, Navigate, redirect } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import z from "zod";
 const filtersSchema = z.object({
@@ -16,7 +16,15 @@ const filtersSchema = z.object({
 });
 
 export const Route = createFileRoute("/(app)/users/")({
+  beforeLoad: ({ context }) => {
+    if (!context.auth.isAuthenticated) {
+      throw redirect({
+        to: "/",
+      });
+    }
+  },
   validateSearch: zodValidator(filtersSchema),
+
   component: RouteComponent,
   pendingComponent: FullScreenLoader,
 });

@@ -19,6 +19,7 @@ import {
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 import { AddNgoInProgramDialog } from "./AddNgoInProgramDialog";
+import formatDate from "@/lib/formatDate";
 
 export const columns: ColumnDef<UserModel>[] = [
   {
@@ -93,15 +94,9 @@ export const columns: ColumnDef<UserModel>[] = [
     cell: ({ row }) => {
       return row.original.attributes.reports?.data?.at(-1)?.attributes
         ?.createdAt
-        ? new Date(
-            row.original.attributes.reports?.data?.at(
-              -1
-            )?.attributes?.createdAt!
-          ).toLocaleString("ro-RO", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })
+        ? formatDate(
+            row.original.attributes.reports?.data?.at(-1)?.attributes?.createdAt
+          )
         : "-";
     },
     enableSorting: false,

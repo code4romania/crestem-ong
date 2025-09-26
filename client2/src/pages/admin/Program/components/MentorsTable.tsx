@@ -20,6 +20,7 @@ import {
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 import { AddMentorInProgramDialog } from "./AddMentorInProgramDialog";
+import formatDate from "@/lib/formatDate";
 
 export const columns: ColumnDef<ProgramMentorModel>[] = [
   {
@@ -97,13 +98,9 @@ export const columns: ColumnDef<ProgramMentorModel>[] = [
     ),
     cell: ({ row }) => {
       return row.original.attributes.mentorActivities?.data?.length
-        ? new Date(
+        ? formatDate(
             row.original.attributes.mentorActivities?.data[0]?.createdAt
-          )?.toLocaleString("ro-RO", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })
+          )
         : "-";
     },
     enableSorting: false,

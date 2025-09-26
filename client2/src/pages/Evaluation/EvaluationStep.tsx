@@ -96,7 +96,7 @@ export function EvaluationStep({
 
       <Section>
         <p className="text-base font-semibold leading-6 text-gray-900 mb-2">
-          Te rugăm să argumentezi selecțiile făcute pentru indicatorul{" "}
+          Te rugăm să argumentezi selecțiile făcute pentru indicatorul
           {dimension.name}
         </p>
 

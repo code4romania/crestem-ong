@@ -50,14 +50,14 @@ const EvaluationResults = ({ evaluationData }: EvaluationResultsProps) => {
                           <TableCell className="w-1/2 font-medium align-top">
                             <b>
                               {dimensionIndex + 1}.{quizIndex + 1}.
-                            </b>{" "}
+                            </b>
                             {quiz.question}
                           </TableCell>
                           <TableCell className="w-1/2 align-top ">
                             <div className="text-sm text-gray-700 text-wrap">
                               <b>
                                 {answerValue} / 5 - {answerLabel}
-                              </b>{" "}
+                              </b>
                               <i>
                                 (
                                 {

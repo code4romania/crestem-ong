@@ -109,7 +109,7 @@ export const programColumns: ColumnDef<ReportVM>[] = [
     ),
     cell: ({ row }) => (
       <div>
-        {row.original.completedEvaluationsCount} /{" "}
+        {row.original.completedEvaluationsCount} /
         {row.original.evaluationsCount}
       </div>
     ),

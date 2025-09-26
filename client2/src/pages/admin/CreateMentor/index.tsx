@@ -141,7 +141,7 @@ const CreateMentor = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Nume persoană resursă{" "}
+                        Nume persoană resursă
                         <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
@@ -161,7 +161,7 @@ const CreateMentor = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Prenume persoană resursă{" "}
+                        Prenume persoană resursă
                         <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
@@ -182,7 +182,7 @@ const CreateMentor = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Email persoană resursă{" "}
+                      Email persoană resursă
                       <span className="text-red-500">*</span>
                     </FormLabel>
                     <FormControl>

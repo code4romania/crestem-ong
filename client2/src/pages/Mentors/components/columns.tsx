@@ -1,5 +1,6 @@
 import { DataTableColumnHeader } from "@/components/data-table";
 import { Badge } from "@/components/ui/badge";
+import formatDate from "@/lib/formatDate";
 import type { MentorModel } from "@/services/api/list-mentors.api";
 import { type ColumnDef } from "@tanstack/react-table";
 
@@ -79,13 +80,7 @@ export const columns: ColumnDef<MentorModel>[] = [
     ),
     cell: ({ row }) => {
       return row.original.mentorActivities?.length
-        ? new Date(
-            row.original.mentorActivities?.[0]?.createdAt
-          )?.toLocaleString("ro-RO", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })
+        ? formatDate(row.original.mentorActivities?.[0]?.createdAt)
         : "-";
     },
     enableSorting: false,

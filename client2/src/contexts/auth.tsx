@@ -1,12 +1,11 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-import Cookies from "js-cookie";
-import { getMe, type MeModel } from "@/services/api/get-me.api";
-import { queryClient } from "@/lib/query";
-import { useLoginUserMutation } from "@/services/user.mutations";
-import type { FinalRoleType } from "@/services/api/types";
-import getUserType from "@/lib/userType";
 import FullScreenLoader from "@/components/FullScreenLoader";
+import { queryClient } from "@/lib/query";
+import getUserType from "@/lib/userType";
+import { getMe, type MeModel } from "@/services/api/get-me.api";
 import { loginUser } from "@/services/api/login-user.api";
+import type { FinalRoleType } from "@/services/api/types";
+import Cookies from "js-cookie";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -23,7 +22,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [userRole, setUserRole] = useState<FinalRoleType>("public");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
   // Restore auth state on app load
   useEffect(() => {
     const token = Cookies.get("jwt");
@@ -60,12 +58,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Replace with your authentication logic
     try {
       loginUser({ identifier: username, password })
-        .then((userData) => {
-          if (userData) {
-            getMe().then((userData) => {
-              if (userData) {
-                setUser(userData);
-                setUserRole(getUserType(userData));
+        .then((loginResponse) => {
+          if (loginResponse) {
+            Cookies.set("jwt", loginResponse.jwt);
+            getMe().then((meData) => {
+              if (meData) {
+                setUser(meData);
+                setUserRole(getUserType(meData));
                 setIsAuthenticated(true);
                 queryClient.invalidateQueries({ queryKey: ["me"] });
               } else {
@@ -77,8 +76,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             Cookies.remove("jwt");
           }
         })
-        .catch(() => {
+        .catch((err) => {
           Cookies.remove("jwt");
+          throw err;
         })
         .finally(() => {
           setIsLoading(false);
@@ -88,8 +88,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = () => {
     setUser(null);
+    setUserRole("public");
     setIsAuthenticated(false);
     Cookies.remove("jwt");
+    queryClient.removeQueries({ queryKey: ["me"] });
   };
 
   return (

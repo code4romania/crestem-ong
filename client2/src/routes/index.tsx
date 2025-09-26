@@ -15,6 +15,7 @@ export const Route = createFileRoute("/")({
 
 function RouteComponent() {
   const { userRole } = useAuth();
+
   return (
     <LayoutApp>
       {userRole === "fdsc" ? (

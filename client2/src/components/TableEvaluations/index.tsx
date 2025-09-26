@@ -1,23 +1,24 @@
 "use client";
 
-import * as React from "react";
 import envelope from "@/assets/envelope.svg";
 import DeleteEvaluation from "@/components/DeleteEvaluation";
-import { useGetMe } from "@/services/user.queries";
+import * as React from "react";
 
+import { useAuth } from "@/contexts/auth";
 import type {
   FinalEvaluationModel,
   FinalReportModel,
 } from "@/services/api/types";
 import { Link } from "@tanstack/react-router";
 import {
-  useReactTable,
-  getCoreRowModel,
-  type ColumnDef,
   flexRender,
+  getCoreRowModel,
+  useReactTable,
+  type ColumnDef,
   type Row,
 } from "@tanstack/react-table";
 import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 import {
   Table,
   TableBody,
@@ -26,15 +27,15 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Button } from "../ui/button";
 
 interface TableEvaluationsProps {
   report: FinalReportModel;
 }
 
 const TableEvaluations = ({ report }: TableEvaluationsProps) => {
-  const { data: user } = useGetMe();
-  const isFDSC = user?.role?.type === "fdsc";
+  const { userRole } = useAuth();
+
+  const isFDSC = userRole === "fdsc";
 
   const evaluations = report?.evaluations || [];
 

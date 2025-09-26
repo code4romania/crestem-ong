@@ -8,8 +8,14 @@ import Cookies from "js-cookie";
 import { getRegistrationInfo } from "./api/get-registration-info.api";
 import { getUserDomains } from "./api/get-user-domains.api";
 import { getUserMentorActivities } from "./api/get-user-mentor-activities.api";
-import type { MentorActivityModel, ProgramFinalModel } from "./api/types";
+import type {
+  FinalDimensionModel,
+  FinalDomainModel,
+  MentorActivityModel,
+  ProgramFinalModel,
+} from "./api/types";
 import { getUserPrograms } from "./api/get-user-programs.api";
+import { getUserDimensions } from "./api/get-user-dimensions.api";
 
 export const getMeQueryOptions = <TResult = MeModel>(
   select?: (data: MeModel) => TResult
@@ -52,13 +58,19 @@ export const getRegistrationInfoQueryOptions = (registrationToken: string) =>
 export const useGetRegistrationInfo = (registrationToken: string) =>
   useQuery(getRegistrationInfoQueryOptions(registrationToken));
 
-export const getUserDomainsQueryOptions = queryOptions({
-  queryKey: ["me", "domains"],
-  queryFn: getUserDomains,
-  enabled: !!Cookies.get("jwt"),
-});
+export const getUserDomainsQueryOptions = <TResult = FinalDomainModel[]>(
+  select?: (data: FinalDomainModel[]) => TResult
+) =>
+  queryOptions({
+    queryKey: ["me", "domains"],
+    queryFn: getUserDomains,
+    enabled: !!Cookies.get("jwt"),
+    select,
+  });
 
-export const useGetUserDomains = () => useQuery(getUserDomainsQueryOptions);
+export const useGetUserDomains = <TResult = FinalDomainModel[]>(
+  select?: (data: FinalDomainModel[]) => TResult
+) => useQuery(getUserDomainsQueryOptions(select));
 
 export const getUserMentorActivitiesQueryOptions = <
   TResult = MentorActivityModel[]
@@ -91,3 +103,17 @@ export const getUserProgramsQueryOptions = <TResult = ProgramFinalModel[]>(
 export const useGetUserPrograms = <TResult = ProgramFinalModel[]>(
   select?: (data: ProgramFinalModel[]) => TResult
 ) => useQuery(getUserProgramsQueryOptions(select));
+
+export const getUserDimensionsQueryOptions = <TResult = FinalDimensionModel[]>(
+  select?: (data: FinalDimensionModel[]) => TResult
+) =>
+  queryOptions({
+    queryKey: ["me", "dimensions"],
+    queryFn: getUserDimensions,
+    enabled: !!Cookies.get("jwt"),
+    select,
+  });
+
+export const useGetUserDimensions = <TResult = FinalDimensionModel[]>(
+  select?: (data: FinalDimensionModel[]) => TResult
+) => useQuery(getUserDimensionsQueryOptions(select));

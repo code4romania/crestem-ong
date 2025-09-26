@@ -40,7 +40,7 @@ const UnauthenticatedHome = () => {
       <Section className="bg-gray-100 bg-opacity-70 text-center py-8">
         <Heading level="h2">Înscrie-te acum</Heading>
         <div className="mt-8">
-          <Button asChild variant="secondary">
+          <Button asChild>
             <Link to="/register">Înregistrează-te</Link>
           </Button>
         </div>

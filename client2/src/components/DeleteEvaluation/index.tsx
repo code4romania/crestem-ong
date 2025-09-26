@@ -1,35 +1,24 @@
 import Confirm from "@/components/Confirm";
-import { useDeleteEvaluationMutation } from "@/redux/api/userApi";
 import { TrashIcon } from "@heroicons/react/20/solid";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Button } from "../ui/button";
+import { useDeleteEvaluationMutation } from "@/services/evaluation.mutations";
 
 const DeleteEvaluation = ({ id }: { id: number }) => {
-  const [deleteEvaluation, { isSuccess, isError, error }] =
-    useDeleteEvaluationMutation();
+  const { mutate: deleteEvaluation } = useDeleteEvaluationMutation();
   const [open, setOpen] = useState(false);
 
   const handleComplete = useCallback(() => {
-    deleteEvaluation({ id: id });
+    deleteEvaluation(id, {
+      onSuccess: () => toast.success("Invitația a fost ștearsă."),
+      onError: (error) => {
+        const errorResponse = (error as any)?.response?.data?.error;
+        const message = errorResponse?.message;
+        toast.error(message);
+      },
+    });
   }, [id]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success("Invitația a fost ștearsă.");
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (!isError) {
-      return;
-    }
-
-    if (error?.data?.error?.details?.id !== id) {
-      return;
-    }
-
-    toast.error(error.data.error.message);
-  }, [isError]);
 
   return (
     <>
@@ -43,13 +32,13 @@ trebui să trimiți invitația din nou pentru ca progresul să fie salvat."
         handleComplete={handleComplete}
         destructive={true}
       />
-      <button
+      <Button
         onClick={() => setOpen(true)}
+        variant="ghost"
         className="text-red-600 hover:text-red-900"
-        title="Șterge invitația"
       >
         <TrashIcon className="h-5 w-5" aria-hidden="true" />
-      </button>
+      </Button>
     </>
   );
 };

@@ -31,7 +31,7 @@ const MadeBy = () => (
       <span className="hover:text-blue-600 focus:text-blue-600 focus:outline-0 hover:underline focus:underline">
         Website construit cu Website Factory: ONG, soluție dezvoltată de Commit
         Global.
-      </span>{" "}
+      </span>
     </a>
   </aside>
 );

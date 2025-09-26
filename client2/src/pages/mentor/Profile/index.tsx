@@ -1,38 +1,93 @@
-import { Button } from "@/components/ui/button";
+import FullScreenLoader from "@/components/FullScreenLoader";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
-import Table from "@/components/Table";
-import { useGetMe } from "@/services/user.queries";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/auth";
+import {
+  useGetMe,
+  useGetUserDimensions,
+  useGetUserPrograms,
+} from "@/services/user.queries";
+import { Link, redirect } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 
 const Profile = () => {
-  const { data: user } = useGetMe();
+  const { data: user, isPending } = useGetMe();
+  const { data: dimensions } = useGetUserDimensions();
+  const { data: programs } = useGetUserPrograms();
+
+  if (isPending) return <FullScreenLoader />;
   if (!user) {
-    return <></>;
+    throw redirect({ to: "/" });
   }
+
+  const rows: [string, string | undefined | null | ReactNode][] = [
+    ["Nume persoană resursă", user.firstName],
+    ["Prenume persoană resursă", user.lastName],
+    ["Email persoană resursă", user.email],
+    ["Descriere (bio)", user.bio],
+    ["Arii de expertiză", user.expertise],
+    [
+      "Specializare pe dimensiuni",
+      <div className="flex flex-wrap gap-2">
+        {dimensions
+          ?.map(({ name }) => name)
+          .map((dimension) => (
+            <Badge>{dimension}</Badge>
+          ))}
+      </div>,
+    ],
+    [
+      "Programe asociate",
+      <div className="flex flex-wrap gap-2">
+        {programs
+          ?.map(({ name }) => name)
+          .map((program) => (
+            <Badge>{program}</Badge>
+          ))}
+      </div>,
+    ],
+    [
+      "Disponibilitate",
+      user.available ? (
+        <Badge>Disponibil</Badge>
+      ) : (
+        <Badge variant="destructive">Indisponibil</Badge>
+      ),
+    ],
+  ];
 
   return (
     <>
       <Section>
-        <Heading level="h2">Profilul meu: {user.ongName}</Heading>
-      </Section>
-      <Section>
-        <Table
-          title="Informații generale"
-          button={<Button to="/profile/edit">Editeaza</Button>}
-          body={[
-            ["Nume persoană resursă", user.firstName],
-            ["Prenume persoană resursă", user.lastName],
-            ["Email persoană resursă", user.email],
-            ["Descriere (bio)", user.bio],
-            ["Arii de expertiză", user.expertise],
-            [
-              "Specializare pe dimensiuni",
-              user.dimensions?.map(({ name }) => name).join(", "),
-            ],
-            ["Program asociat", user.program?.name || ""],
-            ["Disponibilitate", user.available ? "Disponibil" : "Indisponibil"],
-          ].filter(Boolean)}
-        />
+        <div className="flex w-full items-center justify-between">
+          <Heading level="h2">Profilul meu: {user.ongName}</Heading>
+
+          <Button asChild>
+            <Link to="/profile/edit">Editeaza</Link>
+          </Button>
+        </div>
+
+        <div className="mt-8 bg-white shadow ring-1 ring-gray-900/5 sm:rounded-lg">
+          <dl className="divide-y divide-gray-100">
+            {rows.map(([label, value], idx) => (
+              <div
+                key={idx}
+                className={`px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ${
+                  idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                }`}
+              >
+                <dt className="text-sm font-medium leading-6 text-gray-900">
+                  {label}
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  {value || "-"}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </Section>
     </>
   );

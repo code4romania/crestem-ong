@@ -6,8 +6,12 @@ import { forgotPassword } from "./api/forgot-password.api";
 import { loginUser } from "./api/login-user.api";
 import { registerUser } from "./api/register-user.api";
 import { resetPassword } from "./api/reset-password.api";
-import { updateUser, type UpdateUserRequest } from "./api/update-user.api";
+import { updateNgo, type UpdateNgoRequest } from "./api/update-ngo.api";
 import { uploadUserAvatar } from "./api/upload-picture.api";
+import {
+  updateMentor,
+  type UpdateMentorRequest,
+} from "./api/update-mentor.api";
 
 export function useRegisterUserMutation() {
   const queryClient = useQueryClient();
@@ -45,31 +49,28 @@ export function useResetPasswordMutation() {
   });
 }
 
-export function useLoginUserMutation() {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-
-  return useMutation({
-    mutationFn: loginUser,
-    onSuccess: (data) => {
-      Cookies.set("jwt", data.jwt);
-      queryClient.invalidateQueries({ queryKey: ["me"] });
-      navigate({ to: "/" });
-    },
-  });
-}
-
 export function useUploadPictureMutation() {
   return useMutation({
     mutationFn: uploadUserAvatar,
   });
 }
 
-export function updateUserMutation() {
+export function updateNgoMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (request: UpdateUserRequest) => updateUser(request),
+    mutationFn: (request: UpdateNgoRequest) => updateNgo(request),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["me"] });
+    },
+  });
+}
+
+export function updateMentorMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (request: UpdateMentorRequest) => updateMentor(request),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
     },

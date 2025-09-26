@@ -10,6 +10,7 @@ import { calcScoreByDimension } from "@/lib/score";
 import { Route } from "@/routes/(app)/reports/$reportId";
 import { useGetMatrix } from "@/services/matrix.queries";
 import { useGetReportById } from "@/services/reports.queries";
+import formatDate from "@/lib/formatDate";
 
 const Report = () => {
   const { reportId } = Route.useParams();
@@ -39,14 +40,7 @@ const Report = () => {
       <header className="mb-10">
         <Heading level="h2">
           {report.finished
-            ? `Evaluare ${new Date(report.createdAt).toLocaleDateString(
-                "ro-RO",
-                {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                }
-              )}`
+            ? `Evaluare ${formatDate(report.createdAt)}`
             : "Evaluare curentă"}
         </Heading>
       </header>

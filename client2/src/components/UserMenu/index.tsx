@@ -53,6 +53,7 @@ const UserMenu = () => {
   const { user, logout } = useAuth();
   const handleLogout = async () => {
     logout();
+    router.navigate({ to: "/" });
     await router.invalidate();
   };
 

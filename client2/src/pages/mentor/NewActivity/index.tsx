@@ -3,7 +3,7 @@ import Section from "@/components/Section";
 import { Button } from "@/components/ui/button";
 import { useCallback } from "react";
 
-import { useGetMe, useGetUserPrograms } from "@/services/user.queries";
+import { useGetUserPrograms } from "@/services/user.queries";
 
 import FullScreenLoader from "@/components/FullScreenLoader";
 import {
@@ -23,22 +23,22 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { DateTimePicker } from "@/components/ui/date-time-picker";
+import { Calendar } from "@/components/ui/calendar";
 import { FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import type { FinalUserModel } from "@/services/api/types";
-import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/contexts/auth";
 import { cn } from "@/lib/utils";
+import type { FinalUserModel } from "@/services/api/types";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
 import { ro } from "date-fns/locale";
+import { CalendarIcon } from "lucide-react";
 
 const ButtonGroup = ({ className }: { className?: string }) => (
   <div className={`${className} flex space-x-4 justify-end`}>
@@ -62,10 +62,10 @@ export type ActivityInput = z.infer<typeof activitySchema>;
 
 const NewActivity = () => {
   const navigate = useNavigate();
-  const { data: user, isLoading: loadingMe } = useGetMe();
+  const { user } = useAuth();
   const { data: dimensions, isLoading: loadingDimensions } = useListDimensions(
-    (domains) =>
-      domains.map((at) => ({
+    (dimensions) =>
+      dimensions.map((at) => ({
         label: at.attributes.name,
         value: at.id.toString(),
       }))
@@ -120,7 +120,7 @@ const NewActivity = () => {
 
   const isFormSubmitting = form.formState.isSubmitting || isPending;
 
-  if (loadingMe || loadingDimensions || loadingActivityTypes || loadingUsers)
+  if (loadingDimensions || loadingActivityTypes || loadingUsers)
     return <FullScreenLoader />;
 
   return (
@@ -275,9 +275,7 @@ const NewActivity = () => {
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
+                          disabled={(date) => date < new Date("1900-01-01")}
                           captionLayout="dropdown"
                         />
                       </PopoverContent>

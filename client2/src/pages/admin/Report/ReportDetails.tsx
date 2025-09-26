@@ -4,6 +4,7 @@ import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import { Separator } from "@/components/ui/separator";
 import type { FinalEvaluationModel } from "@/services/api/types";
+import formatDate from "@/lib/formatDate";
 
 interface ReportViewProps {
   report: any;
@@ -46,11 +47,7 @@ const ReportView = ({
             Dată început
           </dt>
           <dd className="whitespace-nowrap py-2 text-sm text-gray-700 sm:pl-3">
-            {new Date(report.createdAt).toLocaleString("ro-RO", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
+            {formatDate(report.createdAt)}
           </dd>
         </div>
 
@@ -59,11 +56,7 @@ const ReportView = ({
             Dată final
           </dt>
           <dd className="whitespace-nowrap py-2 text-sm text-gray-700 sm:pl-3">
-            {new Date(report.deadline).toLocaleString("ro-RO", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
+            {formatDate(report.deadline)}
           </dd>
         </div>
 

@@ -20,13 +20,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCreateProgramMutation } from "@/services/program.mutations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
+import { format } from "date-fns";
+import { ro } from "date-fns/locale";
 import { PlusIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ro } from "date-fns/locale";
-import { zhTW } from "date-fns/locale";
-import { format } from "date-fns";
+
 const today = new Date();
 const programSchema = z
   .object({
@@ -133,7 +133,7 @@ const CreateProgram = () => {
               {/* Date Range */}
               <div className="flex flex-col gap-2">
                 <FormLabel>
-                  Perioadă de desfășurare{" "}
+                  Perioadă de desfășurare
                   <span className="text-red-500">*</span>
                 </FormLabel>
                 <div className=" flex w-full gap-4">

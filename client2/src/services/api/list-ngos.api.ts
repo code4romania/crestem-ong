@@ -1,5 +1,6 @@
 import qs from "qs";
 import { API } from "../api";
+import type { Avatar, FinalDomainModel, FinalReportModel } from "./types";
 
 export interface NgoModel {
   id: number;
@@ -27,11 +28,12 @@ export interface NgoModel {
   accountLinkedin?: string;
   createdAt: string;
   updatedAt: string;
-  bio: any;
-  expertise: any;
-  firstName: any;
-  lastName: any;
+  bio: string;
+  expertise: string;
+  firstName: string;
+  lastName: string;
   available: boolean;
+  avatar: Avatar;
 }
 
 export const listNgos = (): Promise<NgoModel[]> => {
@@ -57,24 +59,9 @@ export const listNgos = (): Promise<NgoModel[]> => {
 };
 
 export interface DetailedNgoModel extends NgoModel {
-  domains: DomainModel[];
-  reports: ReportModel[];
+  domains: FinalDomainModel[];
+  reports: FinalReportModel[];
   program?: ProgramModel;
-}
-
-export interface DomainModel {
-  id: number;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ReportModel {
-  id: number;
-  deadline: string;
-  finished: boolean;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface ProgramModel {

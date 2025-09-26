@@ -11,7 +11,7 @@ const EmailSent = () => {
           </h3>
           <p className="text-gray-600">
             Ți-am trimis un mesaj cu instrucțiuni pentru resetarea parolei. Dacă
-            nu îl găsești, verifică și folderul <strong>Spam</strong> sau{" "}
+            nu îl găsești, verifică și folderul <strong>Spam</strong> sau
             <strong>Promoții</strong>.
           </p>
         </div>

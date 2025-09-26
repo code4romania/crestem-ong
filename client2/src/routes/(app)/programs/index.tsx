@@ -3,7 +3,7 @@ import ProgramsList from "@/pages/admin/ProgramsList";
 
 import { useAuth } from "@/contexts/auth";
 import { listProgramsQueryOptions } from "@/services/programs.queries";
-import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { createFileRoute, Navigate, redirect } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import z from "zod";
 
@@ -19,6 +19,13 @@ const filtersSchema = z.object({
 
 export const Route = createFileRoute("/(app)/programs/")({
   validateSearch: zodValidator(filtersSchema),
+  beforeLoad: ({ context }) => {
+    if (!context.auth.isAuthenticated) {
+      throw redirect({
+        to: "/",
+      });
+    }
+  },
   loader: async ({ context: { queryClient } }) =>
     queryClient.prefetchQuery(listProgramsQueryOptions()),
   component: RouteComponent,

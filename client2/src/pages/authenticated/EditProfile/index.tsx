@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetMe, useGetUserDomains } from "@/services/user.queries";
+import { useGetUserDomains } from "@/services/user.queries";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
@@ -43,20 +43,22 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/contexts/auth";
 import { citiesByCounty } from "@/lib/orase-dupa-judet";
 import { useListDomains } from "@/services/domains.queries";
 import {
-  updateUserMutation,
+  updateNgoMutation,
   useUploadPictureMutation,
 } from "@/services/user.mutations";
 import {
   Building2,
   Globe,
+  Link as LinkIcon,
   Mail,
   Phone,
   User,
-  Link as LinkIcon,
 } from "lucide-react";
+import type { FinalDomainModel } from "@/services/api/types";
 
 const ongProfileSchema = z.object({
   id: z.number(),
@@ -98,19 +100,21 @@ const ongProfileSchema = z.object({
 
 export type OngProfileInput = z.infer<typeof ongProfileSchema>;
 
+const domainMapper = (userDomains: FinalDomainModel[]) =>
+  userDomains
+    ? userDomains.map((d) => ({ value: d.id.toString(), label: d.name }))
+    : [];
+
 const OngEditProfile = () => {
-  const { data: user } = useGetMe();
-  const { data: userDomains } = useGetUserDomains();
+  const { user } = useAuth();
+
+  const { data: ongDomains } = useGetUserDomains(domainMapper);
   const { data: domains } = useListDomains();
 
   const navigate = useNavigate();
 
-  const ongDomains = userDomains
-    ? userDomains?.map((d) => ({ value: d.id.toString(), label: d.name }))
-    : [];
-
   const { mutateAsync: updateUser, isPending: isUpdatePending } =
-    updateUserMutation();
+    updateNgoMutation();
   const { mutateAsync: uploadAvatar, isPending: isUploadPending } =
     useUploadPictureMutation();
 
@@ -202,7 +206,7 @@ const OngEditProfile = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Numele organizației{" "}
+                          Numele organizației
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
@@ -219,7 +223,7 @@ const OngEditProfile = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          CIF-ul organizației{" "}
+                          CIF-ul organizației
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
@@ -300,7 +304,7 @@ const OngEditProfile = () => {
                       <FormItem>
                         <FormLabel className="flex items-center gap-2">
                           <Mail className="h-4 w-4" />
-                          Email organizație{" "}
+                          Email organizație
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
@@ -322,7 +326,7 @@ const OngEditProfile = () => {
                       <FormItem>
                         <FormLabel className="flex items-center gap-2">
                           <Phone className="h-4 w-4" />
-                          Telefon organizație{" "}
+                          Telefon organizație
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
