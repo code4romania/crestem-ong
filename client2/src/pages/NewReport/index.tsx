@@ -17,12 +17,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
+import formatDate from "@/lib/formatDate";
 import { cn } from "@/lib/utils";
 import { useCreateReportMutation } from "@/services/reports.mutations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { format } from "date-fns";
-import { ro } from "date-fns/locale";
 import { Calendar as CalendarIcon, Trash } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -33,15 +32,7 @@ const maxDate = new Date();
 maxDate.setDate(maxDate.getDate() + 30);
 
 const reportSchema = z.object({
-  startDate: z
-    .date({ error: "Alegeți o dată validă" })
-    .optional()
-    .refine((data) => !!data, {
-      message: "Alegeți o dată validă",
-    })
-    .refine((data) => data! > today, {
-      message: "Alegeti o data in viitor",
-    }),
+  startDate: z.date({ error: "Alegeți o dată validă" }).optional(),
   deadline: z
     .date({ error: "Alegeți o dată validă" })
     .optional()
@@ -54,7 +45,7 @@ const reportSchema = z.object({
   evaluations: z
     .array(
       z.object({
-        value: z.email({ message: "Adresa de email este invalidă" }),
+        email: z.email({ message: "Adresa de email este invalidă" }),
       })
     )
     .min(1, "Adagua o minim o adresa de email"),
@@ -76,7 +67,7 @@ const NewReport = () => {
   const form = useForm<ReportInput>({
     resolver: zodResolver(reportSchema),
     defaultValues: {
-      evaluations: [],
+      evaluations: [{ email: "" }],
       startDate: new Date(),
     },
   });
@@ -92,7 +83,7 @@ const NewReport = () => {
     createReport(
       {
         deadline: data.deadline!,
-        evaluations: data.evaluations.map((e) => e.value),
+        evaluations: data.evaluations,
       },
       {
         onError: (error) => {
@@ -144,7 +135,7 @@ const NewReport = () => {
                               )}
                             >
                               {field.value ? (
-                                format(field.value, "PPP", { locale: ro })
+                                formatDate(field.value)
                               ) : (
                                 <span>Alege data de inceput</span>
                               )}
@@ -187,7 +178,7 @@ const NewReport = () => {
                               )}
                             >
                               {field.value ? (
-                                format(field.value, "PPP", { locale: ro })
+                                formatDate(field.value)
                               ) : (
                                 <span>Alege data de final</span>
                               )}
@@ -240,11 +231,11 @@ const NewReport = () => {
                 <div key={field.id} className="flex items-start gap-2">
                   <FormField
                     control={form.control}
-                    name={`evaluations.${index}.value`}
+                    name={`evaluations.${index}.email`}
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormLabel className={cn(index !== 0 && "sr-only")}>
-                          Adrese email evaluatori
+                          Adrese email
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormDescription
@@ -254,20 +245,22 @@ const NewReport = () => {
                           invitațiile, inclusiv a ta
                         </FormDescription>
                         <FormControl>
-                          <Input {...field} />
+                          <div className="flex gap-2">
+                            <Input {...field} />
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => remove(index)}
+                            >
+                              <Trash className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => remove(index)}
-                  >
-                    <Trash className="h-4 w-4" />
-                  </Button>
                 </div>
               ))}
               <Button
@@ -275,7 +268,7 @@ const NewReport = () => {
                 variant="outline"
                 size="sm"
                 className="mt-2"
-                onClick={() => append({ value: "" })}
+                onClick={() => append({ email: "" })}
               >
                 Adauga email
               </Button>
