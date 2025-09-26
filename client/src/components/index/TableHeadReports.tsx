@@ -1,5 +1,3 @@
-import React from "react";
-
 const TableHeadReports = () => (
   <thead className="bg-gray-50">
     <tr>

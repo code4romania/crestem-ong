@@ -1,18 +1,17 @@
-import React, { Fragment } from "react";
-import {
-  ChatBubbleLeftEllipsisIcon,
-  TagIcon,
-  UserCircleIcon,
-} from "@heroicons/react/20/solid";
-import { classNames } from "@headlessui/react/dist/utils/class-names";
+import formatDate from "@/lib/formatDate";
+import type { MentorActivityModel } from "@/services/api/types";
+import { UserCircleIcon } from "@heroicons/react/20/solid";
 
-const Feed = ({ activity }) => (
+export interface FeedProps {
+  activities: MentorActivityModel[];
+}
+const Feed = ({ activities }: FeedProps) => (
   <div className="flow-root">
     <ul role="list" className="-mb-8">
-      {activity.map((activityItem, activityItemIdx) => (
+      {activities.map((activityItem, activityItemIdx) => (
         <li key={activityItem.id}>
           <div className="relative pb-8">
-            {activityItemIdx !== activity.length - 1 ? (
+            {activityItemIdx !== activities.length - 1 ? (
               <span
                 className="absolute left-5 top-5 -ml-px h-full w-0.5 bg-gray-200"
                 aria-hidden="true"
@@ -48,15 +47,8 @@ const Feed = ({ activity }) => (
                       </span>
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">
-                      {new Date(activityItem.startDate).toLocaleString(
-                        "ro-RO",
-                        {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        }
-                      )}{" "}
-                      ({activityItem.duration}h)
+                      {formatDate(activityItem.startDate)} (
+                      {activityItem.duration}h)
                     </p>
                     <p className="mt-2 text-sm text-gray-500 font-semibold">
                       {activityItem.dimension?.name}

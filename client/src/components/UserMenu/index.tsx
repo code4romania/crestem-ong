@@ -1,10 +1,14 @@
-import React, { Fragment, ReactNode } from "react";
-import { Menu, Transition } from "@headlessui/react";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { logout } from "@/redux/features/userSlice";
-import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
-import Avatar from "@/components/Avatar";
+import { useAuth } from "@/contexts/auth";
+import {
+  MenuItem as HUMenuItem,
+  Menu,
+  MenuButton,
+  MenuItems,
+  Transition,
+} from "@headlessui/react";
+import { Link, useRouter } from "@tanstack/react-router";
+import { Fragment, type ReactNode } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(" ");
@@ -22,48 +26,52 @@ const MenuItem = ({
   const className =
     "block px-4 py-2 text-sm text-gray-700 cursor-pointer text-right";
   return (
-    <Menu.Item>
-      {({ active }) =>
+    <HUMenuItem>
+      {({ focus }) =>
         to ? (
           <Link
             to={to}
-            className={classNames(active ? "bg-gray-100" : "", className)}
+            className={classNames(focus ? "bg-gray-100" : "", className)}
           >
             {children}
           </Link>
         ) : (
           <a
             onClick={onClick}
-            className={classNames(active ? "bg-gray-100" : "", className)}
+            className={classNames(focus ? "bg-gray-100" : "", className)}
           >
             {children}
           </a>
         )
       }
-    </Menu.Item>
+    </HUMenuItem>
   );
 };
 
 const UserMenu = () => {
-  const user = useAppSelector((state) => state.userState.user);
-  const dispatch = useAppDispatch();
-
-  const handleLogout = () => {
-    Cookies.remove("jwt");
-    dispatch(logout());
+  const router = useRouter();
+  const { user, logout } = useAuth();
+  const handleLogout = async () => {
+    logout();
+    router.navigate({ to: "/" });
+    await router.invalidate();
   };
 
   return (
     <Menu as="div" className="relative ml-3">
       <div className="flex space-x-4">
-        <span>{user.ongName}</span>
-        <Menu.Button className="flex rounded-full bg-gray-800 text-sm">
+        <span>{user?.ongName}</span>
+        <MenuButton className="flex rounded-full bg-gray-800 text-sm">
           <span className="sr-only">Open user menu</span>
-          <Avatar
-            src={user.avatar?.url}
-            alt={user.ongName || user.firstName || "FDSC"}
-          />
-        </Menu.Button>
+
+          <Avatar className="h-8 w-8">
+            <AvatarImage
+              src={user?.avatar?.formats?.thumbnail?.url}
+              alt={user?.ongName || user?.firstName || "FDSC"}
+            />
+            <AvatarFallback>U</AvatarFallback>
+          </Avatar>
+        </MenuButton>
       </div>
       <Transition
         as={Fragment}
@@ -74,11 +82,11 @@ const UserMenu = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <MenuItems className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <MenuItem to="/">Acasă</MenuItem>
           <MenuItem to="/profile">Profilul meu</MenuItem>
           <MenuItem onClick={handleLogout}> Log out</MenuItem>
-        </Menu.Items>
+        </MenuItems>
       </Transition>
     </Menu>
   );

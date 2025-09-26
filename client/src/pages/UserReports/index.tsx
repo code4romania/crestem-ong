@@ -1,33 +1,122 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useGetUserReportsQuery } from "@/redux/api/userApi";
+import Heading from "@/components/Heading";
 import TableHeadReports from "@/components/index/TableHeadReports";
 import Section from "@/components/Section";
-import TableRowReport from "@/components/TableRowReport";
-import Heading from "@/components/Heading";
 import Stats from "@/components/Stats";
-import FullScreenLoader from "@/components/FullScreenLoader";
-import { calcScore } from "@/lib/score";
+import TableRowReport from "@/components/TableRowReport";
 import { evaluationsCompletedFilter } from "@/lib/filters";
+import { calcScore } from "@/lib/score";
+import { Route } from "@/routes/(app)/users/$userId";
+import { useGetNgoDetails } from "@/services/ngos.queries";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
+import FullScreenLoader from "@/components/FullScreenLoader";
 
 const UserReports = () => {
-  const { userId } = useParams();
-  const { data: user, isLoading } = useGetUserReportsQuery({ userId });
-  if (isLoading) {
-    return <FullScreenLoader />;
-  }
-  const lastEvaluation = user?.reports?.filter(
+  const { userId } = Route.useParams();
+  const { data: ngoDetails, isLoading } = useGetNgoDetails(userId);
+
+  if (isLoading) return <FullScreenLoader />;
+
+  const lastEvaluation = ngoDetails?.reports?.filter(
     (report) => report.evaluations.length
   );
   const lastReportCompletedEvaluations = evaluationsCompletedFilter(
-    lastEvaluation[0]?.evaluations || []
+    lastEvaluation?.[0]?.evaluations || []
   );
   const lastScore = calcScore(lastReportCompletedEvaluations);
 
+  const rows = [
+    ["Nume organizație", ngoDetails?.ongName],
+    ["CIF-ul organizației", ngoDetails?.ongIdentificationNumber],
+    ["Județ", ngoDetails?.city],
+    ["Localitate", ngoDetails?.county],
+    ["Email organizație", ngoDetails?.email],
+    [
+      "Domenii de activitate",
+      ngoDetails?.domains?.length ? (
+        <div className="flex flex-wrap gap-2">
+          {ngoDetails?.domains.map((domain) => (
+            <Badge key={domain.id} variant="secondary">
+              {domain.name}
+            </Badge>
+          ))}
+        </div>
+      ) : (
+        "-"
+      ),
+    ],
+    ["Cuvinte cheie despre activitate", ngoDetails?.keywords],
+    ["Descriere organizație", ngoDetails?.description],
+    [
+      "Website organizație",
+      ngoDetails?.website ? (
+        <Button asChild variant="link" className="p-0">
+          <Link
+            to={ngoDetails?.website}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {ngoDetails?.website}
+          </Link>
+        </Button>
+      ) : (
+        "-"
+      ),
+    ],
+    [
+      "Link-uri social media",
+      [
+        ngoDetails?.accountFacebook,
+        ngoDetails?.accountInstagram,
+        ngoDetails?.accountLinkedin,
+        ngoDetails?.accountTiktok,
+        ngoDetails?.accountTwitter,
+      ].filter(Boolean).length > 0 ? (
+        <div className="flex flex-wrap gap-2">
+          {[
+            ngoDetails?.accountFacebook,
+            ngoDetails?.accountInstagram,
+            ngoDetails?.accountLinkedin,
+            ngoDetails?.accountTiktok,
+            ngoDetails?.accountTwitter,
+          ]
+            .filter(Boolean)
+            .map((link, idx) => (
+              <Button key={idx} variant="link" asChild className="p-0">
+                <Link to={link!} target="_blank" rel="noopener noreferrer">
+                  {link}
+                </Link>
+              </Button>
+            ))}
+        </div>
+      ) : (
+        "-"
+      ),
+    ],
+    [
+      "Logo organizație",
+      <Avatar className="h-16 w-16">
+        <AvatarImage
+          src={ngoDetails?.avatar?.formats?.thumbnail?.url}
+          alt={ngoDetails?.ongName}
+        />
+        <AvatarFallback>
+          {ngoDetails?.ongName?.charAt(0).toUpperCase() ?? "?"}
+        </AvatarFallback>
+      </Avatar>,
+    ],
+    ["Nume reprezentant organizație", ngoDetails?.firstName],
+    ["Prenume reprezentant organizație", ngoDetails?.lastName],
+    ["Email reprezentant organizație", ngoDetails?.contactEmail],
+    ["Telefon reprezentant organizație", ngoDetails?.contactPhone],
+  ];
   return (
     <>
       <Section>
-        <Heading level={"h2"}>{user?.ongName}</Heading>
+        <Heading level={"h2"}>{ngoDetails?.ongName}</Heading>
         <Stats
           data={[
             {
@@ -40,208 +129,43 @@ const UserReports = () => {
             },
             {
               label: "Total evaluări realizate",
-              value: user?.reports.length,
+              value: ngoDetails?.reports?.length,
             },
           ]}
         />
       </Section>
       <Section>
-        <div className="sm:flex sm:items-center">
-          <div className="sm:flex-auto">
-            <h1 className="text-base font-semibold leading-6 text-gray-900">
-              Informații despre ONG
-            </h1>
-            {/*<p className="mt-2 text-sm text-gray-700">*/}
-            {/*  A list of all the users in your account including their name,*/}
-            {/*  title, email and role.*/}
-            {/*</p>*/}
-          </div>
-          {/*<div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">*/}
-          {/*  <Button>Editează</Button>*/}
-          {/*</div>*/}
+        <div className="flex w-full items-center justify-between">
+          <Heading level="h2">Informații despre ONG</Heading>
         </div>
-        <div className="mt-8 flow-root">
-          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-              <table className="min-w-full divide-y divide-gray-300">
-                <tbody className="bg-white">
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Nume organizație
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {user?.ongName}
-                    </td>
-                  </tr>
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      CIF-ul organizației
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {user?.ongIdentificationNumber}
-                    </td>
-                  </tr>
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Program
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      -
-                    </td>
-                  </tr>{" "}
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Județ
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {user?.county}
-                    </td>
-                  </tr>{" "}
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Localitate
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {user?.city}
-                    </td>
-                  </tr>{" "}
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Email organizație
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {user?.email}
-                    </td>
-                  </tr>{" "}
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Telefon organizație
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {user?.phone}
-                    </td>
-                  </tr>{" "}
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Domenii de activitate
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {user?.domains?.map((domain) => (
-                        <span key={domain.id}>{domain.name}</span>
-                      ))}
-                    </td>
-                  </tr>{" "}
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Cuvinte cheie ale activității
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {user?.keywords}
-                    </td>
-                  </tr>{" "}
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Descriere organizatie
-                    </td>
-                    <td className="px-3 py-4 text-sm text-gray-500">
-                      {user?.description}
-                    </td>
-                  </tr>{" "}
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Website organizatie
-                    </td>
-                    <td className="px-3 py-4 text-sm text-gray-500">
-                      {user?.website}
-                    </td>
-                  </tr>
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Link-uri social media
-                    </td>
-                    <td className="px-3 py-4 text-sm text-gray-500">
-                      {user?.accountFacebook && (
-                        <a
-                          className="text-sky-700 mr-2"
-                          href={user?.accountFacebook}
-                        >
-                          Facebook
-                        </a>
-                      )}
-                      {user?.accountInstagram && (
-                        <a
-                          className="text-sky-700 mr-2"
-                          href={user?.accountInstagram}
-                        >
-                          Instagram
-                        </a>
-                      )}
-                      {user?.accountInstagram && (
-                        <a className="text-sky-700" href={user?.accountTwitter}>
-                          Twitter
-                        </a>
-                      )}
 
-                      {user?.accountInstagram && (
-                        <a className="text-sky-700" href={user?.accountTiktok}>
-                          TikTok
-                        </a>
-                      )}
-
-                      {user?.accountInstagram && (
-                        <a
-                          className="text-sky-700"
-                          href={user?.accountLinkedin}
-                        >
-                          Linkedin
-                        </a>
-                      )}
-                    </td>
-                  </tr>{" "}
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Nume reprezentant organizatie
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {user?.contactLastName}
-                    </td>
-                  </tr>{" "}
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Prenume reprezentant organizatie
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {user?.contactFirstName}
-                    </td>
-                  </tr>{" "}
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Email reprezentant organizatie
-                    </td>
-                    <td className="px-3 py-4 text-sm text-gray-500">
-                      {user?.contactEmail}
-                    </td>
-                  </tr>{" "}
-                  <tr className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                      Telefon reprezentant organizatie
-                    </td>
-                    <td className="px-3 py-4 text-sm text-gray-500">
-                      {user?.contactPhone}
-                    </td>
-                  </tr>{" "}
-                </tbody>
-              </table>
-            </div>
-          </div>
+        <div className="mt-8 bg-white shadow ring-1 ring-gray-900/5 sm:rounded-lg">
+          <dl className="divide-y divide-gray-100">
+            {rows.map(([label, value], idx) => (
+              <div
+                key={idx}
+                className={`px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ${
+                  idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                }`}
+              >
+                <dt className="text-sm font-medium leading-6 text-gray-900">
+                  {label}
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  {value || "-"}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </Section>
+
       <Section>
         <div className="mb-4 text-lg font-semibold">Istoric evaluări</div>
         <table className="w-full">
           <TableHeadReports />
           <tbody className="divide-y divide-gray-200 bg-white">
-            {user?.reports?.map((report) => {
+            {ngoDetails?.reports?.map((report) => {
               return (
                 <TableRowReport
                   key={report.id}

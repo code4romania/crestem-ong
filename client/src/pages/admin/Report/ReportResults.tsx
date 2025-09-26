@@ -1,14 +1,17 @@
-import React from "react";
 import ResultsByDimension from "@/components/ResultsByDimension";
 import TableEvaluations from "@/components/TableEvaluations";
-
-const ReportResults = ({ report, scoreByEvaluation }) => {
-  const startDate = new Date(report.createdAt).getTime();
-  const endDate = new Date(report.deadline).getTime();
-
-  const period = Math.ceil(
-    Math.abs(endDate - startDate) / (1000 * 60 * 60 * 24)
-  );
+import type { FinalReportModel } from "@/services/api/types";
+export interface ReportResultsProps {
+  report: FinalReportModel;
+  scoreByEvaluation: {
+    id: string;
+    name: string;
+    link: string;
+    score: number;
+    tags: string[];
+  }[];
+}
+const ReportResults = ({ report, scoreByEvaluation }: ReportResultsProps) => {
   return (
     <div>
       <ResultsByDimension scoreByEvaluation={scoreByEvaluation} />

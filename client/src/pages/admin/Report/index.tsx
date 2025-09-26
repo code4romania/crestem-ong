@@ -1,23 +1,18 @@
-import React, { useMemo } from "react";
-import { useParams } from "react-router-dom";
-import { useFindReportQuery, userApi } from "@/redux/api/userApi";
-import Section from "@/components/Section";
 import Heading from "@/components/Heading";
-import ReportResults from "./ReportResults";
-import ReportDetails from "@/pages/admin/Report/ReportDetails";
+import Section from "@/components/Section";
 import { evaluationsCompletedFilter } from "@/lib/filters";
-import { useAppSelector } from "@/redux/store";
-import FullScreenLoader from "@/components/FullScreenLoader";
 import { calcScoreByDimension } from "@/lib/score";
+import ReportDetails from "@/pages/admin/Report/ReportDetails";
+import { Route } from "@/routes/(app)/reports/$reportId";
+import { useSuspenseGetReportById } from "@/services/reports.queries";
+import { useMemo } from "react";
+import ReportResults from "./ReportResults";
+import { useGetMatrix } from "@/services/matrix.queries";
 
 const Report = () => {
-  const { reportId } = useParams();
-  const { data: report } = useFindReportQuery(reportId);
-  const matrix = useAppSelector((state) => state.userState.matrix);
-  const { isLoading } = userApi.endpoints.getMatrix.useQuery(null, {
-    skip: !!matrix,
-    refetchOnMountOrArgChange: true,
-  });
+  const { reportId } = Route.useParams();
+  const { data: report } = useSuspenseGetReportById(reportId);
+  const { data: matrix } = useGetMatrix();
 
   const evaluationsCompleted = useMemo(
     () =>
@@ -33,14 +28,10 @@ const Report = () => {
       : [];
   }, [evaluationsCompleted, matrix]);
 
-  if (!report || isLoading) {
-    return <FullScreenLoader />;
-  }
-
   return (
     <>
       <Section>
-        <header className="mb-10">
+        <header>
           <Heading level="h2">Evaluare #{reportId}</Heading>
         </header>
       </Section>

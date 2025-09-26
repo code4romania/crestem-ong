@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import Confirm from "@/components/Confirm";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import type { MentorDimensionModel } from "@/services/api/types";
+import { useCreateMentorshipRequestMutation } from "@/services/mentors.mutations";
+import { useGetUserReports } from "@/services/reports.queries";
 import {
   EnvelopeIcon,
   SignalSlashIcon,
   UserIcon,
 } from "@heroicons/react/20/solid";
-import { useCreateMentorshipRequestMutation } from "@/redux/api/userApi";
-import Confirm from "@/components/Confirm";
-import { useAppSelector } from "@/redux/store";
-import { selectHasFinishedReports } from "@/redux/features/userSlice";
-import Button from "@/components/Button";
-import { toast } from "react-toastify";
-import { Dimension } from "@/redux/api/types";
-import Avatar from "@/components/Avatar";
+import { Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const MentorCard = ({
   id,
@@ -23,32 +23,23 @@ const MentorCard = ({
   avatarUrl,
 }: {
   id: string;
-  userId: string;
+  userId: number;
   firstName: string;
   lastName: string;
-  dimensions: Dimension[];
+  dimensions: MentorDimensionModel[];
   available: boolean;
   avatarUrl?: string;
 }) => {
   const [openConfirm, setOpenConfirm] = useState(false);
-  const [createMentorshipRequest, { isSuccess, isError }] =
+  const { mutate: createMentorshipRequest } =
     useCreateMentorshipRequestMutation();
-  const hasFinishedReports = useAppSelector(selectHasFinishedReports);
+
+  const hasFinishedReports = useGetUserReports(
+    (reports) => reports?.some((r) => r.finished) ?? false
+  );
   const handleClickEmail = () => {
     setOpenConfirm(true);
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success("Trimis cu succes");
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (isError) {
-      toast.error("Această acțiune nu a putut fi realizată");
-    }
-  }, [isError]);
 
   return (
     <li className="flex flex-col justify-between overflow-hidden bg-white sm:rounded-lg sm:shadow text-center divide-y ">
@@ -63,9 +54,16 @@ const MentorCard = ({
           <>
             <button
               type="button"
-              className="inline-flex w-full justify-center rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 sm:col-start-2"
+              className="inline-flex w-full justify-center rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline-offset-2 focus-visible:outline-teal-600 sm:col-start-2"
               onClick={() => {
-                createMentorshipRequest({ mentor: +id, user: +userId });
+                createMentorshipRequest(
+                  { mentor: +id, user: +userId },
+                  {
+                    onSuccess: () => toast.success("Trimis cu succes"),
+                    onError: () =>
+                      toast.error("Această acțiune nu a putut fi realizată"),
+                  }
+                );
                 setOpenConfirm(false);
               }}
             >
@@ -82,12 +80,12 @@ const MentorCard = ({
         }
       />
       <div className="flex flex-col items-center py-2">
-        <Avatar
-          src={avatarUrl || ""}
-          alt={`${firstName} ${lastName}`}
-          width={100}
-          height={100}
-        />
+        <Avatar className="h-16 w-16">
+          <AvatarImage src={avatarUrl} alt={`${firstName} ${lastName}`} />
+          <AvatarFallback>
+            {[firstName[0], lastName[0]].join("") ?? "-"}
+          </AvatarFallback>
+        </Avatar>
 
         <h3 className="mt-6 text-xl font-semibold leading-8 tracking-tight text-gray-900">
           {firstName} {lastName}
@@ -100,14 +98,16 @@ const MentorCard = ({
         role="list"
         className="mt-6 flex justify-center items-center gap-x-2 py-4"
       >
-        <Button to={`/users/${id}`}>
-          <span className="sr-only">Twitter</span>
-          <UserIcon className="h-5 w-5 inline mr-2" />
-          <span className="inline">Vezi profil</span>
+        <Button asChild>
+          <Link to={`/users/$userId`} params={{ userId: id }}>
+            <span className="sr-only">Twitter</span>
+            <UserIcon className="h-5 w-5 inline mr-2" />
+            <span className="inline">Vezi profil</span>
+          </Link>
         </Button>
         {available ? (
           <Button
-            color="white"
+            variant="secondary"
             disabled={!hasFinishedReports}
             onClick={handleClickEmail}
           >
@@ -116,7 +116,7 @@ const MentorCard = ({
             <span>Trimite email</span>
           </Button>
         ) : (
-          <Button color="white" disabled>
+          <Button variant="secondary" disabled>
             <SignalSlashIcon className="h-5 w-5 inline mr-2 text-gray-400" />
             <span className="text-sm text-gray-700 italic">Indisponibil</span>
           </Button>

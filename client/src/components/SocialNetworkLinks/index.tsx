@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import ExternalLinkItem from "@/components/ExternalLinkItem";
+import { useState } from "react";
 
 const SOCIAL_NETWORKS = [
   { name: "accountFacebook", label: "Facebook" },

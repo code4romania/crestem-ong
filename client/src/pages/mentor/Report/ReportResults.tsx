@@ -1,19 +1,23 @@
-import React from "react";
+import ResultsByDimension from "@/components/ResultsByDimension";
 import Stats from "@/components/Stats";
 import { calcScore } from "@/lib/score";
-import ResultsByDimension from "@/components/ResultsByDimension";
-import { Evaluation, Report } from "@/redux/api/types";
+import type {
+  FinalEvaluationModel,
+  FinalReportModel,
+} from "@/services/api/types";
+// import { Evaluation, Report } from "@/redux/api/types";
 
 const ReportResults = ({
   report,
   evaluationsCompleted,
   scoreByEvaluation,
 }: {
-  report: Report;
-  evaluationsCompleted: Evaluation[];
+  report: FinalReportModel;
+  evaluationsCompleted: FinalEvaluationModel[];
   scoreByEvaluation?: {
     id: string;
     name: string;
+    link: string;
     score: number;
     tags: string[];
   }[];

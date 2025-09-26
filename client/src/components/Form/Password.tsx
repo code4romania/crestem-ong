@@ -1,6 +1,6 @@
-import React, { ReactNode, useState } from "react";
-import { UseFormRegister } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
+import { type ReactNode, useState } from "react";
+import type { UseFormRegister } from "react-hook-form";
 
 export default function PasswordInput({
   register,

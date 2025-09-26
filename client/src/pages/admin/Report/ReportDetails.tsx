@@ -1,91 +1,107 @@
-import React from "react";
 import { calcScore } from "@/lib/score";
 
-export default ({ report, evaluationsCompleted, scoreByEvaluation }) => {
+import Heading from "@/components/Heading";
+import Section from "@/components/Section";
+import { Separator } from "@/components/ui/separator";
+import type { FinalEvaluationModel } from "@/services/api/types";
+import formatDate from "@/lib/formatDate";
+
+interface ReportViewProps {
+  report: any;
+  evaluationsCompleted: FinalEvaluationModel[];
+  scoreByEvaluation: { name: string; score: number }[];
+}
+
+const ReportView = ({
+  report,
+  evaluationsCompleted,
+  scoreByEvaluation,
+}: ReportViewProps) => {
   return (
-    <table className="w-full table-auto divide-y divide-gray-300">
-      <tbody>
-        <tr className="even:bg-gray-50">
-          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+    <div>
+      <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        Informații despre raport
+      </h2>
+
+      <dl className="divide-y divide-gray-200">
+        <div className="py-2 grid grid-cols-3 gap-4 odd:bg-white even:bg-gray-50">
+          <dt className="pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">
             ID
-          </td>
-          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+          </dt>
+          <dd className="whitespace-nowrap py-2 text-sm text-gray-700 sm:pl-3">
             {report.id}
-          </td>
-        </tr>
-        <tr className="even:bg-gray-50">
-          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+          </dd>
+        </div>
+
+        <div className="py-2 grid grid-cols-3 gap-4 odd:bg-white even:bg-gray-50">
+          <dt className="pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">
             Organizație
-          </td>
-          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+          </dt>
+          <dd className="whitespace-nowrap py-2 text-sm text-gray-700 sm:pl-3">
             {report.user?.ongName}
-          </td>
-        </tr>
-        <tr className="even:bg-gray-50">
-          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+          </dd>
+        </div>
+
+        <div className="py-2 grid grid-cols-3 gap-4 odd:bg-white even:bg-gray-50">
+          <dt className="pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">
             Dată început
-          </td>
-          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-            {new Date(report.createdAt).toLocaleString("ro-RO", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </td>
-        </tr>
-        <tr className="even:bg-gray-50">
-          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+          </dt>
+          <dd className="whitespace-nowrap py-2 text-sm text-gray-700 sm:pl-3">
+            {formatDate(report.createdAt)}
+          </dd>
+        </div>
+
+        <div className="py-2 grid grid-cols-3 gap-4 odd:bg-white even:bg-gray-50">
+          <dt className="pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">
             Dată final
-          </td>
-          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-            {new Date(report.deadline).toLocaleString("ro-RO", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </td>
-        </tr>
-        <tr className="even:bg-gray-50">
-          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+          </dt>
+          <dd className="whitespace-nowrap py-2 text-sm text-gray-700 sm:pl-3">
+            {formatDate(report.deadline)}
+          </dd>
+        </div>
+
+        <div className="py-2 grid grid-cols-3 gap-4 odd:bg-white even:bg-gray-50">
+          <dt className="pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">
             Scor obținut
-          </td>
-          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+          </dt>
+          <dd className="whitespace-nowrap py-2 text-sm text-gray-700 sm:pl-3">
             {calcScore(evaluationsCompleted) || 0}%
-          </td>
-        </tr>
-        <tr className="even:bg-gray-50">
-          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+          </dd>
+        </div>
+
+        <div className="py-2 grid grid-cols-3 gap-4 odd:bg-white even:bg-gray-50">
+          <dt className="pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">
             Număr completări
-          </td>
-          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+          </dt>
+          <dd className="whitespace-nowrap py-2 text-sm text-gray-700 sm:pl-3">
             {evaluationsCompleted.length}
-          </td>
-        </tr>
-        <tr className="even:bg-gray-50">
-          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+          </dd>
+        </div>
+
+        <div className="py-2 grid grid-cols-3 gap-4 odd:bg-white even:bg-gray-50">
+          <dt className="pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">
             Cel mai mare scor
-          </td>
-          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+          </dt>
+          <dd className="whitespace-nowrap py-2 text-sm text-gray-700 sm:pl-3">
             {scoreByEvaluation[0]?.score
-              ? `${scoreByEvaluation[0]?.name} (${
-                  (scoreByEvaluation && scoreByEvaluation[0]?.score) || 0
-                }%)`
+              ? `${scoreByEvaluation[0]?.name} (${scoreByEvaluation[0]?.score}%)`
               : "-"}
-          </td>
-        </tr>
-        <tr className="even:bg-gray-50">
-          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+          </dd>
+        </div>
+
+        <div className="py-2 grid grid-cols-3 gap-4 odd:bg-white even:bg-gray-50">
+          <dt className="pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">
             Cel mai mic scor
-          </td>
-          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+          </dt>
+          <dd className="whitespace-nowrap py-2 text-sm text-gray-700 sm:pl-3">
             {scoreByEvaluation[9]?.score
-              ? `${scoreByEvaluation[9]?.name} (${
-                  (scoreByEvaluation && scoreByEvaluation[9]?.score) || 0
-                }%)`
+              ? `${scoreByEvaluation[9]?.name} (${scoreByEvaluation[9]?.score}%)`
               : "-"}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </dd>
+        </div>
+      </dl>
+    </div>
   );
 };
+
+export default ReportView;

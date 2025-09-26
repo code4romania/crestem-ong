@@ -1,6 +1,5 @@
-import React from "react";
-import { UseFormRegister } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
+import type { UseFormRegister } from "react-hook-form";
 
 const Textarea = ({
   name,

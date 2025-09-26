@@ -2,17 +2,18 @@ import React from "react";
 import Heading from "@/components/Heading";
 import Stats from "@/components/Stats";
 import Section from "@/components/Section";
-import {
-  useGetEvaluationsCountQuery,
-  useGetReportsQuery,
-  useGetUsersQuery,
-} from "@/redux/api/userApi";
+
 import { evaluationsCompletedFilter } from "@/lib/filters";
+import { useSuspenseListReports } from "@/services/reports.queries";
+import { useListNgos } from "@/services/ngos.queries";
+import { useListEvaluations } from "@/services/evaluation.queries";
 
 const Dashboard = () => {
-  const { data: reports } = useGetReportsQuery(null);
-  const { data: users } = useGetUsersQuery();
-  const { data: evaluations } = useGetEvaluationsCountQuery();
+  const { data: reports } = useSuspenseListReports(
+    (d) => d.meta.pagination.total
+  );
+  const { data: users } = useListNgos();
+  const { data: evaluations } = useListEvaluations();
 
   return (
     <Section className="py-4">
@@ -21,12 +22,13 @@ const Dashboard = () => {
       </div>
       <Stats
         data={[
-          { label: "Total evaluări create", value: reports?.length },
+          { label: "Total evaluări create", value: reports },
           { label: "Total organizații în platformă", value: users?.length },
           {
             label: "Total completări evaluare",
             value:
-              evaluations && evaluationsCompletedFilter(evaluations).length,
+              evaluations &&
+              evaluationsCompletedFilter(evaluations.data).length,
           },
         ]}
       />

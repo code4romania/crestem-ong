@@ -1,155 +1,235 @@
-import React, { useEffect } from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import Section from "@/components/Section";
-import Heading from "@/components/Heading";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { DateTimePicker } from "@/components/ui/date-time-picker";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useCreateProgramMutation } from "@/services/program.mutations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { date, object, preprocess, string, TypeOf } from "zod";
-import { ErrorMessage } from "@hookform/error-message";
-import { useCreateProgramMutation } from "@/redux/api/userApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
+import { format } from "date-fns";
+import { ro } from "date-fns/locale";
+import { PlusIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
-const programSchema = object({
-  name: string().min(1, "Denumirea programului este obligatorie"),
-  startDate: preprocess((arg) => {
-    if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
-  }, date({ invalid_type_error: "Alegeti o data" }).min(new Date(), { message: "Alegeti o data in viitor" })),
-  endDate: preprocess((arg) => {
-    if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
-  }, date({ invalid_type_error: "Alegeti o data" }).min(new Date(), { message: "Alegeti o data in viitor" })),
-  description: string(),
-  sponsorName: string().optional(),
-});
+const today = new Date();
+const programSchema = z
+  .object({
+    name: z.string().min(1, "Denumirea programului este obligatorie"),
+    startDate: z
+      .date({ error: "Alegeți o dată validă" })
+      .optional()
+      .refine((data) => !!data, {
+        message: "Alegeți o dată validă",
+      })
+      .refine((data) => data! > today, {
+        message: "Data de început trebuie să fie în viitor",
+      }),
+    endDate: z
+      .date({ error: "Alegeți o dată validă" })
+      .optional()
+      .refine((data) => !!data, {
+        message: "Alegeți o dată validă",
+      }),
+    description: z.string().min(1, "Descrierea este obligatorie"),
+    sponsorName: z.string(),
+  })
+  .refine((data) => data.endDate! > data.startDate!, {
+    message: "Data de sfârșit trebuie să fie după data de început",
+    path: ["endDate"],
+  });
 
-export type ProgramInput = TypeOf<typeof programSchema>;
-
-const Input = ({ register, name, label, errors, ...rest }) => (
-  <div className="container mt-0 mr-auto mb-0 ml-auto pt-2 pb-2">
-    <label className="block text-sm font-medium text-gray-700">{label}</label>
-    <div className="mt-1 mr-0 mb-0 ml-0 rounded-md shadow-sm relative">
-      <input
-        className="border focus:ring-teal-500 focus:border-teal-500
-            w-full h-10 block border-gray-300 shadow-sm pt-0 pr-0 pb-0 pl-4 rounded-md sm:text-sm"
-        {...register(name)}
-        {...rest}
-      />
-      {errors && (
-        <div className="text-red-400 text-sm py-2">
-          <ErrorMessage errors={errors} name={name} />
-        </div>
-      )}
-    </div>
-  </div>
-);
+export type ProgramInput = z.infer<typeof programSchema>;
 
 const CreateProgram = () => {
-  const methods = useForm<ProgramInput>({
+  const form = useForm<ProgramInput>({
     resolver: zodResolver(programSchema),
+    defaultValues: {
+      description: "",
+      name: "",
+      sponsorName: "",
+    },
   });
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = methods;
+
   const navigate = useNavigate();
 
-  const [createProgram, { isSuccess, isError }] = useCreateProgramMutation();
+  const { mutate: createProgram, isPending } = useCreateProgramMutation();
 
-  const onSubmitHandler = (data: ProgramInput) => {
-    createProgram(data);
+  const onSubmit = (data: ProgramInput) => {
+    createProgram(
+      {
+        ...data,
+        startDate: format(data.startDate!, "yyyy-MM-dd"),
+        endDate: format(data.endDate!, "yyyy-MM-dd"),
+      },
+      {
+        onSuccess: async (program) => {
+          toast.success("Program creat cu success");
+          await navigate({
+            to: "/programs/$programId",
+            params: { programId: program.data.id.toString() },
+          });
+        },
+      }
+    );
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/programs");
-    }
-  }, [isSuccess]);
-
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmitHandler)}>
-        <Section>
-          <Heading level={"h2"}>Adaugă program</Heading>
-        </Section>
-        <Section>
-          <div className="text-lg leading-6 font-medium">
-            Informații despre program
-          </div>
-        </Section>
-        <Section>
-          <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-1/2">Denumire program</div>
-            <div className="w-full md:w-1/2">
-              <Input
-                placeholder="Introdu denumire program"
-                register={register}
-                errors={errors}
-                name={"name"}
-              />
-            </div>
-          </div>
+    <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight">Adaugă program</h1>
+        <p className="text-muted-foreground">
+          Completează informațiile pentru a crea un program nou
+        </p>
+      </div>
 
-          <div className="flex flex-col md:flex-row">
-            <div className="w-1/2">Perioadă de desfășurare</div>
-            <div className="flex md:w-1/2 space-x-8">
-              <div className="w-1/2">
-                <Input
-                  name="startDate"
-                  placeholder="Introdu data de început"
-                  type="date"
-                  register={register}
-                  errors={errors}
-                  autoComplete="off"
-                />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <PlusIcon className="h-5 w-5" />
+                Informații despre program
+              </CardTitle>
+              <CardDescription>
+                Completează detaliile de bază ale programului
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Denumire program <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Introdu denumirea programului"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Date Range */}
+              <div className="flex flex-col gap-2">
+                <FormLabel>
+                  Perioadă de desfășurare
+                  <span className="text-red-500">*</span>
+                </FormLabel>
+                <div className=" flex w-full gap-4">
+                  <FormField
+                    control={form.control}
+                    name="startDate"
+                    render={({ field }) => (
+                      <FormItem className="w-full sm:w-56">
+                        <DateTimePicker
+                          granularity="day"
+                          value={field.value}
+                          onChange={field.onChange}
+                          locale={ro}
+                          displayFormat={{
+                            hour24: "PPP",
+                            hour12: "PP",
+                          }}
+                          placeholder="Data de început"
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="endDate"
+                    render={({ field }) => (
+                      <FormItem className="w-full sm:w-56">
+                        <DateTimePicker
+                          granularity="day"
+                          value={field.value}
+                          onChange={field.onChange}
+                          locale={ro}
+                          displayFormat={{
+                            hour24: "PPP",
+                            hour12: "PP",
+                          }}
+                          placeholder="Data de sfârșit"
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
-              <div className="w-1/2">
-                <Input
-                  name="endDate"
-                  placeholder="Introdu data de final"
-                  type="date"
-                  register={register}
-                  errors={errors}
-                  autoComplete="off"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row">
-            <div className="w-1/2">
-              <div>Nume finanțator</div>
-            </div>
-            <div className="flex w-full md:w-1/2">
-              <Input
+              <FormField
+                control={form.control}
                 name="sponsorName"
-                placeholder="Introdu nume finanțator"
-                register={register}
-                errors={errors}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nume finanțator</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Introdu numele finanțatorului"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-1/2">Descriere</div>
-            <div className="w-full md:w-1/2">
-              <textarea
-                placeholder="Introdu descrierea programului"
-                className="border focus:ring-teal-500 focus:border-teal-500
-            w-full block border-gray-300 shadow-sm rounded-md sm:text-sm pt-2 pr-4 pb-2 pl-4"
-                rows={4}
-                {...register("description")}
+
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Descriere <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Introdu descrierea programului"
+                        className="min-h-[120px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-          </div>
-        </Section>
-        <Section>
-          <div className="flex space-x-3 justify-end">
-            <Button to="/programs" color="white">
+            </CardContent>
+          </Card>
+
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-3">
+            <Button type="button" variant="outline">
               Renunță
             </Button>
-            <Button type="submit">Salvează</Button>
+            <Button type="submit" disabled={isPending}>
+              Salvează
+            </Button>
           </div>
-        </Section>
-      </form>
-    </FormProvider>
+        </form>
+      </Form>
+    </div>
   );
 };
 

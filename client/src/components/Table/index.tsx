@@ -1,7 +1,7 @@
-import React, { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 interface TableProps {
-  body: ReactNode[][];
+  body: (ReactNode | string | undefined)[][];
   head?: string[];
   title?: string;
   description?: string;
@@ -53,10 +53,7 @@ const Table = ({ title, description, button, head, body }: TableProps) => {
               )}
               <tbody className="bg-white">
                 {body.map((row, index) => (
-                  <tr
-                    key={index}
-                    className="even:bg-gray-50"
-                  >
+                  <tr key={index} className="even:bg-gray-50">
                     {row.map((cell, index) => (
                       <td
                         key={index}
@@ -65,23 +62,6 @@ const Table = ({ title, description, button, head, body }: TableProps) => {
                         {cell}
                       </td>
                     ))}
-                    {/*<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">*/}
-                    {/*  {person.title}*/}
-                    {/*</td>*/}
-                    {/*<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">*/}
-                    {/*  {person.email}*/}
-                    {/*</td>*/}
-                    {/*<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">*/}
-                    {/*  {person.role}*/}
-                    {/*</td>*/}
-                    {/*<td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">*/}
-                    {/*  <a*/}
-                    {/*    href="#"*/}
-                    {/*    className="text-teal-600 hover:text-teal-900"*/}
-                    {/*  >*/}
-                    {/*    Edit<span className="sr-only">, {person.name}</span>*/}
-                    {/*  </a>*/}
-                    {/*</td>*/}
                   </tr>
                 ))}
               </tbody>
