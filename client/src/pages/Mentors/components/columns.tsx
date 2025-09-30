@@ -1,0 +1,88 @@
+import { DataTableColumnHeader } from "@/components/data-table";
+import { Badge } from "@/components/ui/badge";
+import formatDate from "@/lib/formatDate";
+import type { MentorModel } from "@/services/api/list-mentors.api";
+import { type ColumnDef } from "@tanstack/react-table";
+
+export const columns: ColumnDef<MentorModel>[] = [
+  {
+    accessorKey: "name",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Nume"
+        className="whitespace-nowrap py-4  text-sm font-bold text-gray-900"
+      />
+    ),
+    cell: ({ row }) => {
+      const mentorName =
+        row.original.firstName || row.original.lastName
+          ? `${row.original.firstName ?? ""} ${
+              row.original.lastName ?? ""
+            }`.trim()
+          : "-";
+
+      return (
+        <div className="flex space-x-2">
+          <span className="max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]">
+            {mentorName}
+          </span>
+        </div>
+      );
+    },
+    enableSorting: false,
+  },
+  {
+    accessorKey: "dimensions",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Specializare"
+        className="whitespace-nowrap py-4  text-sm font-bold text-gray-900"
+      />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex flex-wrap gap-2">
+          {row.original.dimensions?.map((dimension) => (
+            <Badge variant="secondary">{dimension.name}</Badge>
+          )) ?? "-"}
+        </div>
+      );
+    },
+    enableSorting: false,
+  },
+  {
+    accessorKey: "availability",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Disponibilitate"
+        className="whitespace-nowrap py-4  text-sm font-bold text-gray-900"
+      />
+    ),
+    cell: ({ row }) =>
+      row.original.available ? (
+        <Badge>Disponibil</Badge>
+      ) : (
+        <Badge variant="destructive">Indisponibil</Badge>
+      ),
+    enableSorting: false,
+  },
+  {
+    accessorKey: "lastActivity",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Ultima activitate"
+        className="whitespace-nowrap py-4  text-sm font-bold text-gray-900"
+      />
+    ),
+    cell: ({ row }) => {
+      return row.original.mentorActivities?.length
+        ? formatDate(row.original.mentorActivities?.[0]?.createdAt)
+        : "-";
+    },
+    enableSorting: false,
+  },
+];
