@@ -68,12 +68,14 @@ const Login = memo(() => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const onSubmitHandler: SubmitHandler<LoginInput> = (values) => {
-    login(values.identifier, values.password)
+  const onSubmitHandler: SubmitHandler<LoginInput> = async (values) => {
+    await login(values.identifier, values.password)
       .then(() => {
+        console.log("then");
         navigate({ to: "/" });
       })
       .catch((error) => {
+        console.log("12333");
         const message = (error as any)?.response?.data?.error?.message;
         if (message) {
           toast.error(

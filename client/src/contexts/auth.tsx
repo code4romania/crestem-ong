@@ -56,34 +56,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (username: string, password: string) => {
     // Replace with your authentication logic
-    try {
-      loginUser({ identifier: username, password })
-        .then((loginResponse) => {
-          if (loginResponse) {
-            Cookies.set("jwt", loginResponse.jwt);
-            getMe().then((meData) => {
-              if (meData) {
-                setUser(meData);
-                setUserRole(getUserType(meData));
-                setIsAuthenticated(true);
-                queryClient.invalidateQueries({ queryKey: ["me"] });
-              } else {
-                Cookies.remove("jwt");
-              }
-            });
-            queryClient.invalidateQueries({ queryKey: ["me"] });
-          } else {
-            Cookies.remove("jwt");
-          }
-        })
-        .catch((err) => {
+    return loginUser({ identifier: username, password })
+      .then((loginResponse) => {
+        if (loginResponse) {
+          Cookies.set("jwt", loginResponse.jwt);
+          getMe().then((meData) => {
+            if (meData) {
+              setUser(meData);
+              setUserRole(getUserType(meData));
+              setIsAuthenticated(true);
+              queryClient.invalidateQueries({ queryKey: ["me"] });
+            } else {
+              Cookies.remove("jwt");
+            }
+          });
+          queryClient.invalidateQueries({ queryKey: ["me"] });
+        } else {
           Cookies.remove("jwt");
-          throw err;
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } catch {}
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        Cookies.remove("jwt");
+        throw err;
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const logout = () => {
