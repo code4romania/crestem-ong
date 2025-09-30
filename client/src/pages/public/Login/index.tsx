@@ -71,11 +71,9 @@ const Login = memo(() => {
   const onSubmitHandler: SubmitHandler<LoginInput> = async (values) => {
     await login(values.identifier, values.password)
       .then(() => {
-        console.log("then");
         navigate({ to: "/" });
       })
       .catch((error) => {
-        console.log("12333");
         const message = (error as any)?.response?.data?.error?.message;
         if (message) {
           toast.error(

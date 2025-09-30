@@ -10,8 +10,6 @@ import { Link } from "@tanstack/react-router";
 const Activities = () => {
   const { data: mentorActivities } = useGetUserMentorActivities();
 
-  console.log(mentorActivities);
-
   return (
     <div>
       <Section>

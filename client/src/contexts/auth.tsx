@@ -76,7 +76,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       })
       .catch((err) => {
-        console.log(err);
         Cookies.remove("jwt");
         throw err;
       })
