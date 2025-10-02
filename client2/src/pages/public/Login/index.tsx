@@ -61,9 +61,13 @@ const FormFooter = memo(() => (
 ));
 
 const Login = memo(() => {
-  const form = useForm<LoginInput>({
-    resolver: zodResolver(loginSchema),
-  });
+    const form = useForm<LoginInput>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            identifier: '',
+            password: ''
+        }
+    });
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -71,7 +75,7 @@ const Login = memo(() => {
   const onSubmitHandler: SubmitHandler<LoginInput> = (values) => {
     login(values.identifier, values.password)
       .then(() => {
-        navigate({ to: "/" });
+          navigate({ to: "/" });
       })
       .catch((error) => {
         const message = (error as any)?.response?.data?.error?.message;
@@ -79,10 +83,14 @@ const Login = memo(() => {
           toast.error(
             "Credențialele introduse nu sunt corecte. Vă rugăm să verificați și să încercați din nou."
           );
+          form.setError("identifier", {
+              type: "disabled"
+          })
           form.setError("password", {
             message:
               "Credențialele introduse nu sunt corecte. Vă rugăm să verificați și să încercați din nou.",
           });
+          form.setValue("password", "");
         } else {
           toast.error(
             "Ne pare rău, dar serverul este momentan indisponibil. Vă rugăm să încercați din nou mai târziu."

@@ -54,45 +54,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return <FullScreenLoader />;
   }
 
-  const login = async (username: string, password: string) => {
-    // Replace with your authentication logic
-    try {
-      loginUser({ identifier: username, password })
-        .then((loginResponse) => {
-          if (loginResponse) {
-            Cookies.set("jwt", loginResponse.jwt);
-            getMe().then((meData) => {
-              if (meData) {
-                setUser(meData);
-                setUserRole(getUserType(meData));
-                setIsAuthenticated(true);
-                queryClient.invalidateQueries({ queryKey: ["me"] });
-              } else {
+    const login = async (username: string, password: string) => {
+        try {
+            const loginResponse = await loginUser({ identifier: username, password });
+            if (!loginResponse) {
                 Cookies.remove("jwt");
-              }
-            });
-            queryClient.invalidateQueries({ queryKey: ["me"] });
-          } else {
-            Cookies.remove("jwt");
-          }
-        })
-        .catch((err) => {
-          Cookies.remove("jwt");
-          throw err;
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } catch {}
-  };
+            }
 
-  const logout = () => {
-    setUser(null);
-    setUserRole("public");
-    setIsAuthenticated(false);
-    Cookies.remove("jwt");
-    queryClient.removeQueries({ queryKey: ["me"] });
-  };
+            Cookies.set("jwt", loginResponse.jwt);
+
+            const meData = await getMe();
+            if (!meData) {
+                Cookies.remove("jwt");
+            }
+
+            setUser(meData);
+            setUserRole(getUserType(meData));
+            setIsAuthenticated(true);
+            await queryClient.invalidateQueries({queryKey: ["me"]});
+        } catch (err) {
+            Cookies.remove("jwt");
+            setIsAuthenticated(false);
+
+            throw err;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const logout = () => {
+        setUser(null);
+        setUserRole("public");
+        setIsAuthenticated(false);
+        Cookies.remove("jwt");
+        queryClient.clear();
+    };
 
   return (
     <AuthContext.Provider
