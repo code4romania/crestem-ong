@@ -6,6 +6,7 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { Fragment, useRef, type ReactNode } from "react";
+import { Button } from "../ui/button";
 export interface ConfirmProps {
   header: string | ReactNode;
   body: string | ReactNode;
@@ -78,28 +79,24 @@ const Confirm = ({
                     footer
                   ) : (
                     <>
-                      <button
+                      <Button
                         type="button"
-                        className={`${
-                          destructive
-                            ? "bg-red-600 hover:bg-red-500 focus-visible:outline-red-500"
-                            : "bg-teal-600 hover:bg-teal-500 focus-visible:outline-teal-500"
-                        } inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 sm:col-start-2`}
+                        variant={destructive ? "destructive" : "default"}
                         onClick={() => {
                           handleComplete();
                           setOpen(false);
                         }}
                       >
                         {buttonText}
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         type="button"
-                        className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
+                        variant="secondary"
                         onClick={() => setOpen(false)}
                         ref={cancelButtonRef}
                       >
                         Renunță
-                      </button>
+                      </Button>
                     </>
                   )}
                 </div>
