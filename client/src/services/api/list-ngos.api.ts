@@ -1,42 +1,14 @@
 import qs from "qs";
 import { API } from "../api";
-import type { Avatar, FinalDomainModel, FinalReportModel } from "./types";
+import type {
+  Avatar,
+  FinalDetailedUserModel,
+  FinalDomainModel,
+  FinalReportModel,
+  FinalUserModel,
+} from "./types";
 
-export interface NgoModel {
-  id: number;
-  username: string;
-  email: string;
-  provider: string;
-  confirmed: boolean;
-  blocked: boolean;
-  ongName: string;
-  ongIdentificationNumber: string;
-  county: string;
-  city: string;
-  phone?: string;
-  website: string;
-  keywords?: string;
-  description?: string;
-  contactFirstName?: string;
-  contactLastName?: string;
-  contactEmail?: string;
-  contactPhone?: string;
-  accountFacebook?: string;
-  accountTwitter?: string;
-  accountTiktok?: string;
-  accountInstagram?: string;
-  accountLinkedin?: string;
-  createdAt: string;
-  updatedAt: string;
-  bio: string;
-  expertise: string;
-  firstName: string;
-  lastName: string;
-  available: boolean;
-  avatar: Avatar;
-}
-
-export const listNgos = (): Promise<NgoModel[]> => {
+export const listNgos = (): Promise<FinalUserModel[]> => {
   const params = {
     filters: {
       role: {
@@ -48,7 +20,7 @@ export const listNgos = (): Promise<NgoModel[]> => {
     sort: "createdAt:desc",
   };
 
-  return API.get<NgoModel[]>(`api/users`, {
+  return API.get<FinalUserModel[]>(`api/users`, {
     params,
     paramsSerializer: {
       serialize: (params) => {
@@ -57,12 +29,6 @@ export const listNgos = (): Promise<NgoModel[]> => {
     },
   }).then((res) => res.data);
 };
-
-export interface DetailedNgoModel extends NgoModel {
-  domains: FinalDomainModel[];
-  reports: FinalReportModel[];
-  program?: ProgramModel;
-}
 
 export interface ProgramModel {
   id: number;
@@ -75,7 +41,7 @@ export interface ProgramModel {
   publishedAt: string;
 }
 
-export const listNgosWithDetails = (): Promise<DetailedNgoModel[]> => {
+export const listNgosWithDetails = (): Promise<FinalDetailedUserModel[]> => {
   const params = {
     filters: {
       role: {
@@ -88,7 +54,7 @@ export const listNgosWithDetails = (): Promise<DetailedNgoModel[]> => {
     sort: "createdAt:desc",
   };
 
-  return API.get<DetailedNgoModel[]>(`api/users`, {
+  return API.get<FinalDetailedUserModel[]>(`api/users`, {
     params,
     paramsSerializer: {
       serialize: (params) => {

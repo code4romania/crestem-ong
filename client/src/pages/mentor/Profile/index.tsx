@@ -3,7 +3,6 @@ import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/auth";
 import {
   useGetMe,
   useGetUserDimensions,

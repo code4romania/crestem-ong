@@ -1,6 +1,7 @@
 import { useAuth } from "@/contexts/auth";
 import AuthenticatedMentor from "@/pages/authenticated/Mentor";
 import UserReports from "@/pages/UserReports";
+import { getUserDetailsQueryOptions } from "@/services/user.queries";
 
 import { createFileRoute, Navigate, redirect } from "@tanstack/react-router";
 
@@ -12,6 +13,8 @@ export const Route = createFileRoute("/(app)/users/$userId")({
       });
     }
   },
+  loader: async ({ context: { queryClient }, params }) =>
+    queryClient.ensureQueryData(getUserDetailsQueryOptions(params.userId)),
   component: RouteComponent,
 });
 

@@ -7,6 +7,7 @@ import { listReports, type ListReportsResponse } from "./api/list-reports.api";
 import { getReport } from "./api/get-report.api";
 import type { FinalReportModel } from "./api/types";
 import { getUserReports } from "./api/get-user-reports.api";
+import { getReportsByUser } from "./api/get-reports-by-user.api";
 
 export const listReportsQueryOptions = <TResult = ListReportsResponse>(
   select?: (data: ListReportsResponse) => TResult

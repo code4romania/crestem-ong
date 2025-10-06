@@ -9,6 +9,7 @@ import { getRegistrationInfo } from "./api/get-registration-info.api";
 import { getUserDomains } from "./api/get-user-domains.api";
 import { getUserMentorActivities } from "./api/get-user-mentor-activities.api";
 import type {
+  FinalDetailedUserModel,
   FinalDimensionModel,
   FinalDomainModel,
   MentorActivityModel,
@@ -16,6 +17,7 @@ import type {
 } from "./api/types";
 import { getUserPrograms } from "./api/get-user-programs.api";
 import { getUserDimensions } from "./api/get-user-dimensions.api";
+import { getUserDetails } from "./api/get-user-details.api";
 
 export const getMeQueryOptions = <TResult = MeModel>(
   select?: (data: MeModel) => TResult
@@ -117,3 +119,23 @@ export const getUserDimensionsQueryOptions = <TResult = FinalDimensionModel[]>(
 export const useGetUserDimensions = <TResult = FinalDimensionModel[]>(
   select?: (data: FinalDimensionModel[]) => TResult
 ) => useQuery(getUserDimensionsQueryOptions(select));
+
+export const getUserDetailsQueryOptions = <TResult = FinalDetailedUserModel>(
+  userId: string,
+  select?: (data: FinalDetailedUserModel) => TResult
+) =>
+  queryOptions({
+    queryKey: ["users-detailed", userId],
+    queryFn: () => getUserDetails(userId),
+    select,
+  });
+
+export const useSuspenseGetUserDetails = <TResult = FinalDetailedUserModel>(
+  userId: string,
+  select?: (data: FinalDetailedUserModel) => TResult
+) => useSuspenseQuery(getUserDetailsQueryOptions(userId, select));
+
+export const useGetUserDetails = <TResult = FinalDetailedUserModel>(
+  userId: string,
+  select?: (data: FinalDetailedUserModel) => TResult
+) => useQuery(getUserDetailsQueryOptions(userId, select));

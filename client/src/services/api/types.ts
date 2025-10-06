@@ -282,6 +282,14 @@ export interface FinalUserModel {
   firstName: string | undefined;
   available: boolean;
   lastName: string | undefined;
+  avatar: Avatar;
+}
+
+export interface FinalDetailedUserModel extends FinalUserModel {
+  domains: FinalDomainModel[];
+  dimensions: FinalDimensionModel[];
+  reports: FinalReportModel[];
+  program?: ProgramModel;
 }
 
 export interface FinalMatrixModel {

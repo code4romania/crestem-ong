@@ -6,17 +6,17 @@ import TableRowReport from "@/components/TableRowReport";
 import { evaluationsCompletedFilter } from "@/lib/filters";
 import { calcScore } from "@/lib/score";
 import { Route } from "@/routes/(app)/users/$userId";
-import { useGetNgoDetails } from "@/services/ngos.queries";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import FullScreenLoader from "@/components/FullScreenLoader";
+import { useSuspenseGetUserDetails } from "@/services/user.queries";
 
 const UserReports = () => {
   const { userId } = Route.useParams();
-  const { data: ngoDetails, isLoading } = useGetNgoDetails(userId);
+  const { data: ngoDetails, isLoading } = useSuspenseGetUserDetails(userId);
 
   if (isLoading) return <FullScreenLoader />;
 

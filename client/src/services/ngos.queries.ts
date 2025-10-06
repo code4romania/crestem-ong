@@ -3,16 +3,11 @@ import {
   useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import {
-  listNgos,
-  listNgosWithDetails,
-  type DetailedNgoModel,
-  type NgoModel,
-} from "./api/list-ngos.api";
-import { getNgoDetails } from "./api/get-ngo-details.api";
+import { listNgos, listNgosWithDetails } from "./api/list-ngos.api";
+import type { FinalDetailedUserModel, FinalUserModel } from "./api/types";
 
-export const listNgosQueryOptions = <TResult = NgoModel[]>(
-  select?: (data: NgoModel[]) => TResult
+export const listNgosQueryOptions = <TResult = FinalUserModel[]>(
+  select?: (data: FinalUserModel[]) => TResult
 ) =>
   queryOptions({
     queryKey: ["ngos"],
@@ -20,16 +15,18 @@ export const listNgosQueryOptions = <TResult = NgoModel[]>(
     select,
   });
 
-export const useSuspenseListNgos = <TResult = NgoModel[]>(
-  select?: (data: NgoModel[]) => TResult
+export const useSuspenseListNgos = <TResult = FinalUserModel[]>(
+  select?: (data: FinalUserModel[]) => TResult
 ) => useSuspenseQuery(listNgosQueryOptions(select));
 
-export const useListNgos = <TResult = NgoModel[]>(
-  select?: (data: NgoModel[]) => TResult
+export const useListNgos = <TResult = FinalUserModel[]>(
+  select?: (data: FinalUserModel[]) => TResult
 ) => useQuery(listNgosQueryOptions(select));
 
-export const listNgosWithDetailsQueryOptions = <TResult = DetailedNgoModel[]>(
-  select?: (data: DetailedNgoModel[]) => TResult
+export const listNgosWithDetailsQueryOptions = <
+  TResult = FinalDetailedUserModel[]
+>(
+  select?: (data: FinalDetailedUserModel[]) => TResult
 ) =>
   queryOptions({
     queryKey: ["ngos-detailed"],
@@ -37,30 +34,12 @@ export const listNgosWithDetailsQueryOptions = <TResult = DetailedNgoModel[]>(
     select,
   });
 
-export const useSuspenseListNgosWithDetails = <TResult = DetailedNgoModel[]>(
-  select?: (data: DetailedNgoModel[]) => TResult
+export const useSuspenseListNgosWithDetails = <
+  TResult = FinalDetailedUserModel[]
+>(
+  select?: (data: FinalDetailedUserModel[]) => TResult
 ) => useSuspenseQuery(listNgosWithDetailsQueryOptions(select));
 
-export const useListNgosWithDetails = <TResult = DetailedNgoModel[]>(
-  select?: (data: DetailedNgoModel[]) => TResult
+export const useListNgosWithDetails = <TResult = FinalDetailedUserModel[]>(
+  select?: (data: FinalDetailedUserModel[]) => TResult
 ) => useQuery(listNgosWithDetailsQueryOptions(select));
-
-export const getNgoDetailsQueryOptions = <TResult = DetailedNgoModel>(
-  id: string,
-  select?: (data: DetailedNgoModel) => TResult
-) =>
-  queryOptions({
-    queryKey: ["ngos-detailed", id],
-    queryFn: () => getNgoDetails(id),
-    select,
-  });
-
-export const useSuspenseGetNgoDetails = <TResult = DetailedNgoModel>(
-  id: string,
-  select?: (data: DetailedNgoModel) => TResult
-) => useSuspenseQuery(getNgoDetailsQueryOptions(id, select));
-
-export const useGetNgoDetails = <TResult = DetailedNgoModel>(
-  id: string,
-  select?: (data: DetailedNgoModel) => TResult
-) => useQuery(getNgoDetailsQueryOptions(id, select));
