@@ -60,7 +60,7 @@ const UserMenu = () => {
   return (
     <Menu as="div" className="relative ml-3">
       <div className="flex space-x-4">
-        <span>{user?.ongName}</span>
+        <span>{user?.ongName || `${user?.firstName} ${user?.lastName}`}</span>
         <MenuButton className="flex rounded-full bg-gray-800 text-sm">
           <span className="sr-only">Open user menu</span>
 

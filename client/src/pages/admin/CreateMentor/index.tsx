@@ -31,6 +31,7 @@ import type { DimensionModel as ApiDimensionModel } from "@/services/api/types";
 import { useUploadPictureMutation } from "@/services/user.mutations";
 import { toast } from "sonner";
 
+import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
 import type { ProgramModel as ApiProgramModel } from "@/services/api/types";
 
 const mentorSchema = z.object({
@@ -206,10 +207,16 @@ const CreateMentor = () => {
                       Descriere (bio) <span className="text-red-500">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder="Adaugă o scurtă descriere a persoanei resursă"
-                        className="min-h-[100px]"
-                        {...field}
+                      <MinimalTiptapEditor
+                        value={field.value}
+                        onChange={field.onChange}
+                        className="w-full"
+                        editorContentClassName="p-5"
+                        output="html"
+                        placeholder="Scrie o scurtă descriere..."
+                        autofocus={true}
+                        editable={true}
+                        editorClassName="focus:outline-hidden"
                       />
                     </FormControl>
                     <FormMessage />

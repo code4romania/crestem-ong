@@ -10,6 +10,7 @@ import {
 } from "@/services/user.queries";
 import { Link, redirect } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import DOMPurify from "dompurify";
 
 const Profile = () => {
   const { data: user, isPending } = useGetMe();
@@ -25,7 +26,18 @@ const Profile = () => {
     ["Nume persoană resursă", user.firstName],
     ["Prenume persoană resursă", user.lastName],
     ["Email persoană resursă", user.email],
-    ["Descriere (bio)", user.bio],
+    [
+      "Descriere (bio)",
+      <div className="minimal-tiptap-editor">
+        <div className="ProseMirror">
+          <div
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(user.bio || "-"),
+            }}
+          ></div>
+        </div>
+      </div>,
+    ],
     ["Arii de expertiză", user.expertise],
     [
       "Specializare pe dimensiuni",
@@ -80,6 +92,7 @@ const Profile = () => {
                 <dt className="text-sm font-medium leading-6 text-gray-900">
                   {label}
                 </dt>
+
                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   {value || "-"}
                 </dd>

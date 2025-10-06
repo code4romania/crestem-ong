@@ -10,6 +10,7 @@ import "./globals.css";
 import { queryClient } from "./lib/query";
 import { routeTree } from "./routeTree.gen";
 import { AuthProvider, useAuth } from "./contexts/auth";
+import { TooltipProvider } from "./components/ui/tooltip";
 
 const router = createRouter({
   routeTree,
@@ -47,7 +48,9 @@ function InnerApp() {
 root.render(
   <StrictMode>
     <AuthProvider>
-      <InnerApp />
+      <TooltipProvider>
+        <InnerApp />
+      </TooltipProvider>
     </AuthProvider>
   </StrictMode>
 );

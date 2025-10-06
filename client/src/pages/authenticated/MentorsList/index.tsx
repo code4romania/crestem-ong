@@ -15,34 +15,46 @@ const Mentors = () => {
   }
 
   return (
-    <div>
-      <Section>
-        <Heading level={"h2"}>Persoane resursă</Heading>
-        {mentors?.length ? (
-          <ul
-            role="list"
-            className="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3"
-          >
-            {mentors?.map((mentor) => (
-              <MentorCard
-                key={mentor.id}
-                id={mentor.id.toString()}
-                userId={user!.id}
-                available={mentor.available}
-                firstName={mentor.firstName}
-                lastName={mentor.lastName}
-                dimensions={mentor.dimensions}
-                avatarUrl={mentor.avatar?.url}
-              />
-            ))}
-          </ul>
-        ) : (
-          <div className="py-6">
-            <EmptyScreen title="Nicio persoană resursă înregistrată" />
-          </div>
-        )}
-      </Section>
-    </div>
+    <Section className="py-12">
+      <div className="text-center mb-12">
+        <Heading level="h2">Persoane resursă</Heading>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Găsiți persoane resursă disponibile pentru colaborare.
+        </p>
+      </div>
+
+      {mentors?.length ? (
+        <div
+          role="list"
+          className="
+            mx-auto
+            grid
+            gap-8
+            sm:grid-cols-2
+            lg:grid-cols-3
+            max-w-7xl
+            px-4
+            sm:px-6
+            lg:px-8
+          "
+        >
+          {mentors.map((mentor) => (
+            <MentorCard
+              id={mentor.id.toString()}
+              userId={user!.id}
+              firstName={mentor.firstName}
+              lastName={mentor.lastName}
+              dimensions={mentor.dimensions}
+              avatarUrl={mentor.avatar?.formats?.medium?.url}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="flex items-center justify-center py-12">
+          <EmptyScreen title="Nicio persoană resursă înregistrată" />
+        </div>
+      )}
+    </Section>
   );
 };
 

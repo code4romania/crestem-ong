@@ -94,7 +94,7 @@ const NewReport = () => {
         onSuccess: (response) => {
           navigate({
             to: `/reports/$reportId`,
-            params: { reportId: response.data.id.toString() },
+            params: { reportId: response.id.toString() },
           });
         },
       }

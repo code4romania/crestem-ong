@@ -4,9 +4,7 @@ export interface CreateReportRequest {
   deadline: Date;
 }
 export interface CreateReportResponse {
-  data: {
-    id: number;
-  };
+  id: number;
 }
 export const createReport = (
   request: CreateReportRequest

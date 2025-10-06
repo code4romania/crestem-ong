@@ -61,7 +61,7 @@ export const listMentors = (): Promise<MentorModel[]> => {
         },
       },
     },
-    populate: ["domains", "mentorActivities", "avatar"],
+    populate: ["domains", "mentorActivities", "avatar", "dimensions"],
     sort: "createdAt:desc",
   };
 

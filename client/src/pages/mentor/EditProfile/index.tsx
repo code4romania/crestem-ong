@@ -26,13 +26,13 @@ import {
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
 import { useListDimensions } from "@/services/dimensions.queries";
-import { useListPrograms } from "@/services/programs.queries";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Briefcase, User } from "lucide-react";
 import { z } from "zod";
 
 import FullScreenLoader from "@/components/FullScreenLoader";
 import { Button } from "@/components/ui/button";
+import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import type {
@@ -45,7 +45,6 @@ import {
 } from "@/services/user.mutations";
 import {
   useGetUserDimensions,
-  useGetUserPrograms,
   useSuspenseGetMe,
 } from "@/services/user.queries";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -100,11 +99,13 @@ const EditMentorProfile = () => {
   const form = useForm<MentorProfileInput>({
     resolver: zodResolver(mentorProfileSchema),
     defaultValues: {
-      ...user,
+      firstName: user?.firstName || "",
+      lastName: user?.lastName || "",
       dimensions: userDimensions ?? [],
       available: user?.available || false,
       avatar: undefined,
       bio: user?.bio || "",
+      expertise: user?.expertise || "",
     },
   });
 
@@ -245,10 +246,16 @@ const EditMentorProfile = () => {
                         Descriere (bio) <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
-                        <Textarea
+                        <MinimalTiptapEditor
+                          value={field.value}
+                          onChange={field.onChange}
+                          className="w-full"
+                          editorContentClassName="p-5"
+                          output="html"
                           placeholder="Scrie o scurtă descriere..."
-                          className="min-h-[100px]"
-                          {...field}
+                          autofocus={true}
+                          editable={true}
+                          editorClassName="focus:outline-hidden"
                         />
                       </FormControl>
                       <FormMessage />
