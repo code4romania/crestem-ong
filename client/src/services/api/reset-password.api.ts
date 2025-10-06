@@ -6,6 +6,6 @@ export const resetPassword = (payload: {
   passwordConfirmation: string;
 }): Promise<void> => {
   return publicAPI
-    .post(`/auth/reset-password`, payload)
+    .post(`/api/auth/reset-password`, payload)
     .then((res) => res.data);
 };
