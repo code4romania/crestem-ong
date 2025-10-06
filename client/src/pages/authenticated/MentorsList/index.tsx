@@ -11,7 +11,7 @@ const Mentors = () => {
   const { data: mentors, isLoading: isLoadingMentors } = useListMentors();
 
   if (isLoading || isLoadingMentors) {
-    return <FullScreenLoader></FullScreenLoader>;
+    return <FullScreenLoader />;
   }
 
   return (
