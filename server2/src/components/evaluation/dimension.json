@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_evaluation_dimensions",
+  "info": {
+    "displayName": "Dimension",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "quiz": {
+      "displayName": "Question",
+      "type": "component",
+      "repeatable": true,
+      "component": "evaluation.question"
+    },
+    "comment": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

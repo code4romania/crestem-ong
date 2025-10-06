@@ -1,0 +1,19 @@
+{
+  "kind": "singleType",
+  "collectionName": "matrices",
+  "info": {
+    "singularName": "matrix",
+    "pluralName": "matrices",
+    "displayName": "Matrix"
+  },
+  "options": {
+    "comment": ""
+  },
+  "attributes": {
+    "dimensions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::dimension.dimension"
+    }
+  }
+}

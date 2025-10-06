@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_evaluation_questions",
+  "info": {
+    "displayName": "Question",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "answer": {
+      "type": "integer",
+      "max": 4,
+      "min": 0,
+      "required": true
+    }
+  }
+}

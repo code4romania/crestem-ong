@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "mentorship_requests",
+  "info": {
+    "singularName": "mentorship-request",
+    "pluralName": "mentorship-requests",
+    "displayName": "Mentorship Request"
+  },
+  "options": {
+    "comment": ""
+  },
+  "attributes": {
+    "mentor": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "mentorSessions"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "userSessions"
+    }
+  }
+}

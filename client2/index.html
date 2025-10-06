@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evaluare ONG | Creștem.ONG</title>
+  <meta name="apple-mobile-web-app-title" content="Creștem.ONG" />
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+</head>
+
+<body>
+  <div id="root"></div>
+  <div id="fb-root"></div>
+  <script type="module" src="/src/index.tsx"></script>
+
+  <!-- Your Chat Plugin code -->
+  <div id="fb-customer-chat" class="fb-customerchat"></div>
+
+  <script>
+    var chatbox = document.getElementById("fb-customer-chat");
+    chatbox.setAttribute("page_id", "158962987472579");
+    chatbox.setAttribute("attribution", "biz_inbox");
+  </script>
+
+  <!-- Your SDK code -->
+  <!--    <script>-->
+  <!--      window.fbAsyncInit = function () {-->
+  <!--        FB.init({-->
+  <!--          xfbml: true,-->
+  <!--          version: "v16.0",-->
+  <!--        });-->
+  <!--      };-->
+
+  <!--      (function (d, s, id) {-->
+  <!--        var js,-->
+  <!--          fjs = d.getElementsByTagName(s)[0];-->
+  <!--        if (d.getElementById(id)) return;-->
+  <!--        js = d.createElement(s);-->
+  <!--        js.id = id;-->
+  <!--        js.src = "https://connect.facebook.net/ro_RO/sdk/xfbml.customerchat.js";-->
+  <!--        fjs.parentNode.insertBefore(js, fjs);-->
+  <!--      })(document, "script", "facebook-jssdk");-->
+  <!--    </script>-->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YYGDLRNFCC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-YYGDLRNFCC");
+  </script>
+</body>
+
+</html>

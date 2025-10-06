@@ -1,0 +1,30 @@
+import screenshot from "@/assets/illustration.svg";
+import Heading from "@/components/Heading";
+import Section from "@/components/Section";
+import { Button } from "@/components/ui/button";
+
+const EvaluationFinished = () => (
+  <Section>
+    <div className="flex space-y-8 flex-col md:flex-row bg-teal-700 rounded-md items-center gap-4">
+      <div className="w-full md:w-1/2 text-white px-10 md:pl-20 py-10">
+        <Heading level="h2">Felicitări!</Heading>
+        <Heading level="h2">
+          Răspunsurile tale au fost trimise cu succes!
+        </Heading>
+        <p className={"text-teal-200 text-lg leading-6 mt-4 mb-8"}>
+          Le vei primi în scurt timp și pe mail. Până la procesarea rezultatelor
+          la nivel de organizație, poți deja accesa Biblioteca noastră de
+          resurse, organizate în funcție de cele 10 dimensiuni ale analizei.
+        </p>
+        <Button>
+          <a href="https://crestem.ong/ro/biblioteca">Vezi biblioteca</a>
+        </Button>
+      </div>
+      <div className="w-full md:w-1/2 md:pl-12">
+        <img src={screenshot} alt={"Screenshot"} />
+      </div>
+    </div>
+  </Section>
+);
+
+export default EvaluationFinished;

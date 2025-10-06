@@ -1,0 +1,48 @@
+{
+  "name": "server-2",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A Strapi application",
+  "scripts": {
+    "build": "strapi build",
+    "console": "strapi console",
+    "deploy": "strapi deploy",
+    "dev": "strapi develop",
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "strapi": "strapi",
+    "upgrade": "npx @strapi/upgrade latest",
+    "upgrade:dry": "npx @strapi/upgrade latest --dry"
+  },
+  "dependencies": {
+    "@strapi/plugin-cloud": "5.23.4",
+    "@strapi/plugin-sentry": "^5.23.0",
+    "@strapi/plugin-users-permissions": "^5.23.0",
+    "@strapi/provider-email-amazon-ses": "^5.23.0",
+    "@strapi/strapi": "5.23.4",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "8.8.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.1",
+    "remeda": "^2.30.0",
+    "strapi-plugin-config-sync": "^3.1.2",
+    "strapi-plugin-email-designer-5": "^0.0.7",
+    "strapi-provider-upload-aws-s3-advanced": "^5.0.1",
+    "styled-components": "^6.1.19"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.11",
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.3.7",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=18.0.0 <=22.x.x",
+    "npm": ">=6.0.0"
+  },
+  "strapi": {
+    "uuid": "6878e53a-439e-4519-b790-3a9234d5f843",
+    "installId": "9c77ef4df6b1d353a71764bfec73b344f6f34b8a9d35828c77d0ca9166e0acdb"
+  }
+}

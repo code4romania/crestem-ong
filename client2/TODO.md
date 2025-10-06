@@ -1,0 +1,9 @@
+- change react-circle-chart
+- check in prod user permissions for me
+- fix password input icon
+- check in prod user permissions for role >find
+- rework tables to from shadcn ui + paginations
+- allow auth user to list domains ?
+- check in prod user permissions for program >findOne
+- check program update by fdsc
+- rework program list

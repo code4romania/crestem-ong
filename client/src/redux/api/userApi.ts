@@ -90,7 +90,10 @@ export const userApi = createApi({
       transformResponse: (result: User) => ({
         ...result,
         reports: result.reports?.sort((a: Report, b: Report) => {
-          return new Date(b?.createdAt) - new Date(a?.createdAt);
+          return (
+            new Date(b?.createdAt ?? 0).getTime() -
+            new Date(a?.createdAt ?? 0).getTime()
+          );
         }),
       }),
       providesTags: ["Report"],
