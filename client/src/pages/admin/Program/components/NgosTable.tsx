@@ -141,7 +141,7 @@ function NgosTable({ ngos }: { ngos: UserModel[] }) {
     <div className="space-y-4 ">
       <div className="flex items-center justify-between">
         <h1 className="text-base font-semibold leading-6 text-gray-900">
-          Persoane resursă în program
+          ONG-uri în program
         </h1>
         {availableNgos.length > 0 && (
           <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">

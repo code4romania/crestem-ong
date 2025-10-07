@@ -11,7 +11,7 @@ const ReportsList = () => {
       <Section>
         <div className="flex flex-wrap items-center justify-between space-y-2 gap-x-4">
           <div>
-            <Heading level={"h2"}>Programe</Heading>
+            <Heading level={"h2"}>Evaluări</Heading>
           </div>
           <ReportsPrimaryButtons />
         </div>

@@ -23,8 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { UserModel } from "@/services/api/get-program.api";
-import type { NgoModel } from "@/services/api/list-ngos.api";
+import type { FinalUserModel } from "@/services/api/types";
 import { useUpdateProgramMutation } from "@/services/program.mutations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getRouteApi } from "@tanstack/react-router";
@@ -40,8 +39,8 @@ type AddNgoForm = z.infer<typeof formSchema>;
 type AddNgoInProgramDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  availableNgos: NgoModel[];
-  existingNgos: UserModel[];
+  availableNgos: FinalUserModel[];
+  existingNgos: FinalUserModel[];
 };
 const route = getRouteApi("/(app)/programs/$programId");
 

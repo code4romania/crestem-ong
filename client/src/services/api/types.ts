@@ -53,10 +53,6 @@ export interface DomainModel {
 
 export interface DomainAtrributeModel {
   name: string;
-  /** A datetime field */
-  createdAt?: string;
-  /** A datetime field */
-  updatedAt?: string;
 }
 
 export interface MentorProgramModel {
@@ -282,7 +278,10 @@ export interface FinalUserModel {
   firstName: string | undefined;
   available: boolean;
   lastName: string | undefined;
-  avatar: Avatar;
+  avatar?: Avatar;
+  domains?: FinalDomainModel[];
+  dimensions?: FinalDimensionModel[];
+  mentor?: FinalUserModel;
 }
 
 export interface FinalDetailedUserModel extends FinalUserModel {
@@ -303,8 +302,6 @@ export interface FinalDimensionModel {
   id: number;
   name: string;
   link: string;
-  createdAt: string;
-  updatedAt: string;
   quiz: FinalQuizModel[];
 }
 
@@ -322,8 +319,6 @@ export interface FinalQuizModel {
 export interface FinalDomainModel {
   id: number;
   name: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface Avatar {

@@ -1,6 +1,6 @@
 import qs from "qs";
 import { API } from "../api";
-import type { FinalReportModel, PaginationRequest } from "./types";
+import type { DomainModel, FinalReportModel } from "./types";
 
 export interface ListReportsResponse {
   data: FinalReportModel[];
@@ -36,9 +36,13 @@ interface UseModel {
 }
 
 interface DataAttributes {
+  id: number;
   username: string;
   email: string;
   provider: string;
+  password?: string | undefined;
+  resetPasswordToken?: string | undefined;
+  confirmationToken?: string | undefined;
   confirmed: boolean;
   blocked: boolean;
   ongName: string;
@@ -53,18 +57,20 @@ interface DataAttributes {
   contactLastName: string;
   contactEmail: string;
   contactPhone: string;
-  accountFacebook: string;
+  accountFacebook: string | undefined;
   accountTwitter: string | undefined;
   accountTiktok: string | undefined;
-  accountInstagram: string | undefined | string;
+  accountInstagram: string | undefined;
   accountLinkedin: string | undefined;
   createdAt: string;
   updatedAt: string;
+  registrationToken?: string | undefined;
   bio: string | undefined;
   expertise: string | undefined;
   firstName: string | undefined;
   lastName: string | undefined;
   available: boolean;
+  domains: { data: DomainModel[] };
 }
 
 interface EvaluationsDataModel {
@@ -80,10 +86,10 @@ interface EvaluationModelAttributes {
   email: string;
   createdAt: string;
   updatedAt: string;
-  dimensions: DimensionModel[];
+  dimensions: EvaluationDimensionModel[];
 }
 
-interface DimensionModel {
+interface EvaluationDimensionModel {
   id: number;
   comment: string;
   quiz: QuizModel[];
@@ -107,7 +113,13 @@ interface Pagination {
 
 export const listReports = (): Promise<ListReportsResponse> => {
   const params = {
-    populate: ["evaluations.dimensions.quiz", "user"],
+    populate: [
+      "evaluations.dimensions.quiz",
+      "user",
+      "user.mentor",
+      "user.dimensions",
+      "user.domains",
+    ],
     pagination: {
       page: 1,
       pageSize: 1000,
@@ -134,6 +146,13 @@ export const listReports = (): Promise<ListReportsResponse> => {
       user: {
         ...r.attributes.user.data,
         ...r.attributes.user.data?.attributes,
+        avatar: undefined!,
+        domains: r.attributes.user.data?.attributes.domains.data.map((d) => ({
+          ...d,
+          ...d.attributes,
+        })),
+        dimensions: undefined!,
+        mentor: undefined!,
       },
     })),
   }));

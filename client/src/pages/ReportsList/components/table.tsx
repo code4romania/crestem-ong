@@ -23,7 +23,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import type { ReportVM } from "../type";
-import { programColumns as columns } from "./columns";
+import { reportsColumns as columns } from "./columns";
 
 const route = getRouteApi("/(app)/reports/");
 
@@ -34,6 +34,18 @@ export const reportsMapper = (reports: ListReportsResponse): ReportVM[] =>
       id: report.id,
       finished: report.finished,
       ngoName: report.user?.ongName,
+      domains: report.user?.domains?.map((d) => d.name) ?? [],
+      ongIdentificationNumber: report.user?.ongIdentificationNumber,
+      city: report.user?.city,
+      county: report.user?.county,
+      mentor: report.user?.mentor
+        ? [
+            report.user?.mentor?.firstName || "",
+            report.user?.mentor?.lastName || "",
+          ]
+            .filter(Boolean)
+            .join(" ")
+        : "NA",
       startDate: report.createdAt.split("T")[0],
       endDate: report.deadline.split("T")[0],
       score: calcScore(completedEvaluations) || 0,

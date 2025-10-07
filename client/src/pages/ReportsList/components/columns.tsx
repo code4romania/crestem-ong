@@ -8,7 +8,7 @@ import type { ReportVM } from "../type";
 import { CalendarIcon, Percent } from "lucide-react";
 import { format } from "date-fns";
 
-export const programColumns: ColumnDef<ReportVM>[] = [
+export const reportsColumns: ColumnDef<ReportVM>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -31,6 +31,52 @@ export const programColumns: ColumnDef<ReportVM>[] = [
       <DataTableColumnHeader column={column} title="ONG" />
     ),
     cell: ({ row }) => <div>{row.original.ngoName ?? "-"}</div>,
+    enableSorting: false,
+  },
+  {
+    accessorKey: "domains",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="DOMENIU DE ACTIVITATE" />
+    ),
+    cell: ({ row }) => (
+      <div className="flex flex-wrap gap-2">
+        {row.original.domains?.length
+          ? row.original.domains.map((d) => <Badge>{d}</Badge>)
+          : "-"}
+      </div>
+    ),
+    enableSorting: false,
+  },
+  {
+    accessorKey: "ongIdentificationNumber",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="CIF" />
+    ),
+    cell: ({ row }) => <div>{row.original.ongIdentificationNumber ?? "-"}</div>,
+    enableSorting: false,
+  },
+  {
+    accessorKey: "city",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="LOCALITATE" />
+    ),
+    cell: ({ row }) => <div>{row.original.city ?? "-"}</div>,
+    enableSorting: false,
+  },
+  {
+    accessorKey: "county",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="JUDEȚ" />
+    ),
+    cell: ({ row }) => <div>{row.original.county ?? "-"}</div>,
+    enableSorting: false,
+  },
+  {
+    accessorKey: "mentor",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="PERSOANA RESURSA ALOCATĂ" />
+    ),
+    cell: ({ row }) => <div>{row.original.mentor ?? "-"}</div>,
     enableSorting: false,
   },
   {

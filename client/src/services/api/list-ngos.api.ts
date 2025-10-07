@@ -1,12 +1,6 @@
 import qs from "qs";
 import { API } from "../api";
-import type {
-  Avatar,
-  FinalDetailedUserModel,
-  FinalDomainModel,
-  FinalReportModel,
-  FinalUserModel,
-} from "./types";
+import type { FinalDetailedUserModel, FinalUserModel } from "./types";
 
 export const listNgos = (): Promise<FinalUserModel[]> => {
   const params = {

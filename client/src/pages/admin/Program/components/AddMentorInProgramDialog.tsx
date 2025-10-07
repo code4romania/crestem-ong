@@ -67,7 +67,7 @@ export function AddMentorInProgramDialog({
     updateProgram(
       {
         programId,
-        ngoIds: [...existingMentors.map((x) => x.id), +values.mentorId],
+        mentorIds: [...existingMentors.map((x) => x.id), +values.mentorId],
       },
       {
         onSuccess: () => {
