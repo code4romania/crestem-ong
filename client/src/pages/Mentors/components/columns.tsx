@@ -1,7 +1,9 @@
 import { DataTableColumnHeader } from "@/components/data-table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import formatDate from "@/lib/formatDate";
 import type { MentorModel } from "@/services/api/list-mentors.api";
+import { Link } from "@tanstack/react-router";
 import { type ColumnDef } from "@tanstack/react-table";
 
 export const columns: ColumnDef<MentorModel>[] = [
@@ -84,5 +86,18 @@ export const columns: ColumnDef<MentorModel>[] = [
         : "-";
     },
     enableSorting: false,
+  },
+  {
+    id: "navigate",
+    cell: ({ row }) => (
+      <Button asChild variant="link">
+        <Link
+          to="/users/$userId"
+          params={{ userId: row.original.id.toString() }}
+        >
+          vezi
+        </Link>
+      </Button>
+    ),
   },
 ];

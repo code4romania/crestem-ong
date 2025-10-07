@@ -221,7 +221,7 @@ export interface FinalReportModel {
   createdAt: string;
   updatedAt: string;
   evaluations: FinalEvaluationModel[];
-  user: FinalUserModel;
+  user?: FinalUserModel;
 }
 
 export interface FinalEvaluationModel {
@@ -282,6 +282,8 @@ export interface FinalUserModel {
   domains?: FinalDomainModel[];
   dimensions?: FinalDimensionModel[];
   mentor?: FinalUserModel;
+  mentorActivities?: any[];
+  reports?: FinalReportModel[];
 }
 
 export interface FinalDetailedUserModel extends FinalUserModel {
@@ -358,4 +360,16 @@ export interface Format {
   size: number;
   width: number;
   height: number;
+}
+export interface FinalProgramModel {
+  id: number;
+  name: string;
+  startDate: string;
+  endDate: string;
+  sponsorName: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  mentors: FinalUserModel[];
+  users: FinalUserModel[];
 }

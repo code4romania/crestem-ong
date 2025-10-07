@@ -8,7 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { ProgramModel, UserModel } from "@/services/api/get-program.api";
+import formatDate from "@/lib/formatDate";
+import type { FinalUserModel } from "@/services/api/types";
 import { useSuspenseListNgos } from "@/services/ngos.queries";
 import { Link } from "@tanstack/react-router";
 import {
@@ -19,9 +20,8 @@ import {
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 import { AddNgoInProgramDialog } from "./AddNgoInProgramDialog";
-import formatDate from "@/lib/formatDate";
 
-export const columns: ColumnDef<UserModel>[] = [
+export const columns: ColumnDef<FinalUserModel>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -35,7 +35,7 @@ export const columns: ColumnDef<UserModel>[] = [
       return (
         <div className="flex space-x-2">
           <span className="max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]">
-            {row.original.attributes.ongName}
+            {row.original.ongName}
           </span>
         </div>
       );
@@ -53,10 +53,9 @@ export const columns: ColumnDef<UserModel>[] = [
     ),
     cell: ({ row }) => {
       const contactPersonName =
-        row.original.attributes.contactFirstName ||
-        row.original.attributes.contactLastName
-          ? `${row.original.attributes.contactFirstName ?? ""} ${
-              row.original.attributes.contactLastName ?? ""
+        row.original.contactFirstName || row.original.contactLastName
+          ? `${row.original.contactFirstName ?? ""} ${
+              row.original.contactLastName ?? ""
             }`.trim()
           : "-";
 
@@ -92,11 +91,8 @@ export const columns: ColumnDef<UserModel>[] = [
       />
     ),
     cell: ({ row }) => {
-      return row.original.attributes.reports?.data?.at(-1)?.attributes
-        ?.createdAt
-        ? formatDate(
-            row.original.attributes.reports?.data?.at(-1)?.attributes?.createdAt
-          )
+      return row.original.reports?.at(-1)?.createdAt
+        ? formatDate(row.original.reports?.at(-1)?.createdAt)
         : "-";
     },
     enableSorting: false,
@@ -116,11 +112,11 @@ export const columns: ColumnDef<UserModel>[] = [
   },
 ];
 
-function NgosTable({ ngos }: { ngos: UserModel[] }) {
+function NgosTable({ ngos }: { ngos: FinalUserModel[] }) {
   const [openAddNgoInProgramDialog, setOpenAddNgoInProgramDialog] =
     useState(false);
 
-  const programNgoIds = ngos.map((ngo: UserModel) => ngo.id);
+  const programNgoIds = ngos.map((ngo: FinalUserModel) => ngo.id);
 
   const { data: allNgos } = useSuspenseListNgos();
 

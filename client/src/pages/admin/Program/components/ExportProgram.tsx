@@ -3,21 +3,24 @@ import FullScreenLoader from "@/components/FullScreenLoader";
 import { evaluationsCompletedFilter } from "@/lib/filters";
 import formatDate from "@/lib/formatDate";
 import { calcScore, calcScoreByDimension } from "@/lib/score";
-import type { MatrixModel } from "@/services/api/get-matrix.api";
 import type {
-  ProgramModel,
-  ReportModel,
-  UserModel,
-} from "@/services/api/get-program.api";
+  FinalMatrixModel,
+  FinalProgramModel,
+  FinalReportModel,
+  FinalUserModel,
+} from "@/services/api/types";
 import { useGetMatrix } from "@/services/matrix.queries";
 
-const getSheets = (data: ProgramModel, matrix: MatrixModel): Sheet[] => {
+const getSheets = (
+  data: FinalProgramModel,
+  matrix: FinalMatrixModel
+): Sheet[] => {
   const coverRow = {
-    "Denumire program": data.attributes.name,
-    "Data de început": formatDate(data.attributes.startDate),
-    "Data de final": formatDate(data.attributes.endDate),
-    "Nume finanțator": data.attributes.sponsorName || "-",
-    "Număr ONG-uri înscrise în program": data.attributes.users?.data?.length,
+    "Denumire program": data.name,
+    "Data de început": formatDate(data.startDate),
+    "Data de final": formatDate(data.endDate),
+    "Nume finanțator": data.sponsorName || "-",
+    "Număr ONG-uri înscrise în program": data.users?.length,
   };
 
   const sheets: {
@@ -32,17 +35,17 @@ const getSheets = (data: ProgramModel, matrix: MatrixModel): Sheet[] => {
     },
   ];
 
-  data.attributes.users?.data?.forEach((user: UserModel) => {
+  data.users?.forEach((user: FinalUserModel) => {
     const ongName: string =
-      user.attributes.ongName.length > 23
-        ? user.attributes.ongName.slice(0, 23) + "..."
-        : user.attributes.ongName;
+      user.ongName.length > 23
+        ? user.ongName.slice(0, 23) + "..."
+        : user.ongName;
 
     const rows: Record<string, string | number>[] = [];
 
-    user.attributes.reports?.data.forEach((report: ReportModel) => {
+    user.reports?.forEach((report: FinalReportModel) => {
       const evaluationsCompleted = evaluationsCompletedFilter(
-        report.attributes.evaluations.data
+        report.evaluations
       );
 
       const scoreByEvaluation =
@@ -58,15 +61,17 @@ const getSheets = (data: ProgramModel, matrix: MatrixModel): Sheet[] => {
 
       const row: Record<string, string | number> = {
         // NGO
-        "Nume ONG": user.attributes.ongName,
-        "Domeniu de activitate": "–", // TODO: get from relationship
-        "Nume reprezentant": `${user.attributes.contactFirstName} ${user.attributes.contactLastName}`,
-        "Email reprezentant": user.attributes.contactEmail,
+        "Nume ONG": user.ongName,
+        CIF: user.ongIdentificationNumber,
+        "Domeniu de activitate":
+          user.domains?.map((d) => d.name).join(", ") || "-",
+        "Nume reprezentant": `${user.contactFirstName} ${user.contactLastName}`,
+        "Email reprezentant": user.contactEmail,
 
         // Report
         "Dată intrare program": "-", // TODO: add created_at to up_users_program_links table
-        "Dată început evaluare": formatDate(report.attributes.createdAt),
-        "Dată final evaluare": formatDate(report.attributes.deadline),
+        "Dată început evaluare": formatDate(report.createdAt),
+        "Dată final evaluare": formatDate(report.deadline),
         "Număr de completări": evaluationsCompleted.length,
 
         // Evaluation
@@ -77,7 +82,7 @@ const getSheets = (data: ProgramModel, matrix: MatrixModel): Sheet[] => {
       scoreByEvaluation?.forEach(({ name, score }, index) => {
         row[`Scor ${name}`] = score;
         row[`Comentariu ${name}`] = evaluationsCompleted
-          .map((evaluation) => evaluation.attributes.dimensions[index].comment)
+          .map((evaluation) => evaluation.dimensions[index].comment)
           .join("\n---\n");
       });
 
@@ -98,7 +103,7 @@ const getSheets = (data: ProgramModel, matrix: MatrixModel): Sheet[] => {
   return sheets;
 };
 
-const ExportProgram = ({ data }: { data: ProgramModel }) => {
+const ExportProgram = ({ data }: { data: FinalProgramModel }) => {
   const { isLoading, data: matrix } = useGetMatrix();
 
   if (isLoading) {
@@ -108,7 +113,7 @@ const ExportProgram = ({ data }: { data: ProgramModel }) => {
   return (
     <ExportXLSX
       className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none"
-      fileName={`${data.attributes.name}.xlsx`}
+      fileName={`${data.name}.xlsx`}
       getSheets={() => getSheets(data, matrix!)}
     />
   );

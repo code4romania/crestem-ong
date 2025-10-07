@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { ProgramMentorModel } from "@/services/api/get-program.api";
 import { useSuspenseListMentors } from "@/services/mentors.queries";
 import { Link } from "@tanstack/react-router";
 import {
@@ -21,8 +20,9 @@ import {
 import { useMemo, useState } from "react";
 import { AddMentorInProgramDialog } from "./AddMentorInProgramDialog";
 import formatDate from "@/lib/formatDate";
+import type { FinalUserModel } from "@/services/api/types";
 
-export const columns: ColumnDef<ProgramMentorModel>[] = [
+export const columns: ColumnDef<FinalUserModel>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -34,9 +34,9 @@ export const columns: ColumnDef<ProgramMentorModel>[] = [
     ),
     cell: ({ row }) => {
       const mentorName =
-        row.original.attributes.firstName || row.original.attributes.lastName
-          ? `${row.original.attributes.firstName ?? ""} ${
-              row.original.attributes.lastName ?? ""
+        row.original.firstName || row.original.lastName
+          ? `${row.original.firstName ?? ""} ${
+              row.original.lastName ?? ""
             }`.trim()
           : "-";
 
@@ -62,8 +62,8 @@ export const columns: ColumnDef<ProgramMentorModel>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex flex-wrap gap-2">
-          {row.original.attributes.dimensions?.data?.map((dimension) => (
-            <Badge variant="secondary">{dimension.attributes.name}</Badge>
+          {row.original.dimensions?.map((dimension) => (
+            <Badge variant="secondary">{dimension.name}</Badge>
           )) ?? "-"}
         </div>
       );
@@ -80,7 +80,7 @@ export const columns: ColumnDef<ProgramMentorModel>[] = [
       />
     ),
     cell: ({ row }) =>
-      row.original.attributes.available ? (
+      row.original.available ? (
         <Badge>Disponibil</Badge>
       ) : (
         <Badge variant="destructive">Indisponibil</Badge>
@@ -97,10 +97,8 @@ export const columns: ColumnDef<ProgramMentorModel>[] = [
       />
     ),
     cell: ({ row }) => {
-      return row.original.attributes.mentorActivities?.data?.length
-        ? formatDate(
-            row.original.attributes.mentorActivities?.data[0]?.createdAt
-          )
+      return row.original.mentorActivities?.length
+        ? formatDate(row.original.mentorActivities?.[0]?.createdAt)
         : "-";
     },
     enableSorting: false,
@@ -120,13 +118,11 @@ export const columns: ColumnDef<ProgramMentorModel>[] = [
   },
 ];
 
-function MentorsTable({ mentors }: { mentors: ProgramMentorModel[] }) {
+function MentorsTable({ mentors }: { mentors: FinalUserModel[] }) {
   const [openAddMentorInProgramDialog, setOpenAddMentorInProgramDialog] =
     useState(false);
 
-  const programMentorsIds = mentors.map(
-    (mentor: ProgramMentorModel) => mentor.id
-  );
+  const programMentorsIds = mentors.map((mentor: FinalUserModel) => mentor.id);
 
   const { data: allMentors } = useSuspenseListMentors();
 

@@ -1,16 +1,17 @@
 import qs from "qs";
 import { API } from "../api";
-export interface GetProgramResponse {
+import type { FinalProgramModel } from "./types";
+interface GetProgramResponse {
   data: ProgramModel;
   meta: Meta;
 }
 
-export interface ProgramModel {
+interface ProgramModel {
   id: number;
   attributes: ProgramAttributes;
 }
 
-export interface ProgramAttributes {
+interface ProgramAttributes {
   name: string;
   startDate: string;
   endDate: string;
@@ -22,82 +23,23 @@ export interface ProgramAttributes {
   users: UsersData;
 }
 
-export interface MentorsData {
+interface MentorsData {
   data: ProgramMentorModel[];
 }
 
-export interface ProgramMentorModel {
+interface ProgramMentorModel {
   id: number;
   attributes: MentorAttributes;
 }
 
-export interface MentorAttributes {
+interface MentorAttributes {
+  id: number;
   username: string;
   email: string;
   provider: string;
-  confirmed: boolean;
-  blocked: boolean;
-  ongName: any;
-  ongIdentificationNumber: any;
-  county: any;
-  city: any;
-  phone: any;
-  website: any;
-  keywords: any;
-  description: any;
-  contactFirstName: any;
-  contactLastName: any;
-  contactEmail: any;
-  contactPhone: any;
-  accountFacebook: any;
-  accountTwitter: any;
-  accountTiktok: any;
-  accountInstagram: any;
-  accountLinkedin: any;
-  createdAt: string;
-  updatedAt: string;
-  bio: string;
-  expertise: string;
-  firstName: string;
-  lastName: string;
-  available: boolean;
-  dimensions: DimensionsData;
-  mentorActivities: MentorActivitiesData;
-}
-
-export interface DimensionsData {
-  data: DimensionModel[];
-}
-
-export interface DimensionModel {
-  id: number;
-  attributes: DimensionAttributes;
-}
-
-export interface DimensionAttributes {
-  name: string;
-  link: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface MentorActivitiesData {
-  data: any[];
-}
-
-export interface UsersData {
-  data: UserModel[];
-}
-
-export interface UserModel {
-  id: number;
-  attributes: UserAttributes;
-}
-
-export interface UserAttributes {
-  username: string;
-  email: string;
-  provider: string;
+  password?: string | undefined;
+  resetPasswordToken?: string | undefined;
+  confirmationToken?: string | undefined;
   confirmed: boolean;
   blocked: boolean;
   ongName: string;
@@ -112,31 +54,99 @@ export interface UserAttributes {
   contactLastName: string;
   contactEmail: string;
   contactPhone: string;
-  accountFacebook: string;
-  accountTwitter?: string;
-  accountTiktok: any;
-  accountInstagram?: string;
-  accountLinkedin: any;
+  accountFacebook: string | undefined;
+  accountTwitter: string | undefined;
+  accountTiktok: string | undefined;
+  accountInstagram: string | undefined;
+  accountLinkedin: string | undefined;
   createdAt: string;
   updatedAt: string;
-  bio: any;
-  expertise: any;
-  firstName: any;
-  lastName: any;
+  registrationToken?: string | undefined;
+  bio: string | undefined;
+  expertise: string | undefined;
+  firstName: string | undefined;
   available: boolean;
+  lastName: string | undefined;
+  dimensions: DimensionsData;
+  mentorActivities: MentorActivitiesData;
+}
+
+interface DimensionsData {
+  data: DimensionModel[];
+}
+
+interface DimensionModel {
+  id: number;
+  attributes: DimensionAttributes;
+}
+
+interface DimensionAttributes {
+  id: number;
+  name: string;
+  link: string;
+}
+
+interface MentorActivitiesData {
+  data: any[];
+}
+
+interface UsersData {
+  data: UserModel[];
+}
+
+interface UserModel {
+  id: number;
+  attributes: UserAttributes;
+}
+
+interface UserAttributes {
+  id: number;
+  username: string;
+  email: string;
+  provider: string;
+  password?: string | undefined;
+  resetPasswordToken?: string | undefined;
+  confirmationToken?: string | undefined;
+  confirmed: boolean;
+  blocked: boolean;
+  ongName: string;
+  ongIdentificationNumber: string;
+  county: string;
+  city: string;
+  phone: string;
+  website: string;
+  keywords: string;
+  description: string;
+  contactFirstName: string;
+  contactLastName: string;
+  contactEmail: string;
+  contactPhone: string;
+  accountFacebook: string | undefined;
+  accountTwitter: string | undefined;
+  accountTiktok: string | undefined;
+  accountInstagram: string | undefined;
+  accountLinkedin: string | undefined;
+  createdAt: string;
+  updatedAt: string;
+  registrationToken?: string | undefined;
+  bio: string | undefined;
+  expertise: string | undefined;
+  firstName: string | undefined;
+  available: boolean;
+  lastName: string | undefined;
   reports: ReportsData;
 }
 
-export interface ReportsData {
+interface ReportsData {
   data: ReportModel[];
 }
 
-export interface ReportModel {
+interface ReportModel {
   id: number;
   attributes: ReportAttributes;
 }
 
-export interface ReportAttributes {
+interface ReportAttributes {
   deadline: string;
   finished: boolean;
   createdAt: string;
@@ -144,36 +154,36 @@ export interface ReportAttributes {
   evaluations: EvaluationsData;
 }
 
-export interface EvaluationsData {
+interface EvaluationsData {
   data: EvaluationModel[];
 }
 
-export interface EvaluationModel {
+interface EvaluationModel {
   id: number;
   attributes: EvaluationAttributes;
 }
 
-export interface EvaluationAttributes {
+interface EvaluationAttributes {
   email: string;
   createdAt: string;
   updatedAt: string;
-  dimensions: DimensionModel[];
+  dimensions: EvaluationDimensionModel[];
 }
 
-export interface DimensionModel {
+interface EvaluationDimensionModel {
   id: number;
   comment: string;
   quiz: QuizModel[];
 }
 
-export interface QuizModel {
+interface QuizModel {
   id: number;
   answer: number;
 }
 
-export interface Meta {}
+interface Meta {}
 
-export const getProgram = (programId: string): Promise<ProgramModel> => {
+export const getProgram = (programId: string): Promise<FinalProgramModel> => {
   const params = {
     populate: {
       mentors: {
@@ -206,5 +216,36 @@ export const getProgram = (programId: string): Promise<ProgramModel> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data.data);
+  }).then((res) => ({
+    ...res.data.data,
+    ...res.data.data.attributes,
+    mentors: res.data.data.attributes.mentors.data.map((m) => ({
+      ...m,
+      ...m.attributes,
+      dimensions: m.attributes.dimensions.data.map((d) => ({
+        ...d,
+        ...d.attributes,
+        quiz: [],
+      })),
+      mentorActivities: m.attributes.mentorActivities.data.map((a) => ({
+        ...a,
+        ...a.attributes,
+      })),
+    })),
+    users: res.data.data.attributes.users.data.map((u) => ({
+      ...u,
+      ...u.attributes,
+      reports: u.attributes.reports.data.map((r) => ({
+        ...r,
+        ...r.attributes,
+        evaluations: r.attributes.evaluations.data.map((e) => ({
+          ...e,
+          ...e.attributes,
+          dimensions: e.attributes.dimensions.map((d) => ({
+            ...d,
+          })),
+        })),
+      })),
+    })),
+  }));
 };

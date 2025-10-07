@@ -16,7 +16,7 @@ const Program = () => {
       <Section>
         <div className="sm:flex sm:items-center w-full">
           <div className="sm:flex-auto">
-            <Heading level={"h2"}>{program.attributes.name}</Heading>
+            <Heading level={"h2"}>{program.name}</Heading>
           </div>
 
           <ExportProgram data={program} />
@@ -34,7 +34,7 @@ const Program = () => {
                 Denumire program
               </dt>
               <dd className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                {program.attributes.name}
+                {program.name}
               </dd>
             </div>
 
@@ -43,7 +43,7 @@ const Program = () => {
                 Data de început
               </dt>
               <dd className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                {formatDate(program.attributes.startDate)}
+                {formatDate(program.startDate)}
               </dd>
             </div>
 
@@ -52,7 +52,7 @@ const Program = () => {
                 Data de final
               </dt>
               <dd className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                {formatDate(program.attributes.endDate)}
+                {formatDate(program.endDate)}
               </dd>
             </div>
 
@@ -61,7 +61,7 @@ const Program = () => {
                 Nume finanțator
               </dt>
               <dd className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                {program.attributes.sponsorName || "-"}
+                {program.sponsorName || "-"}
               </dd>
             </div>
           </dl>
@@ -69,10 +69,10 @@ const Program = () => {
         <Separator />
       </Section>
       <Section>
-        <NgosTable ngos={program.attributes?.users?.data || []} />
+        <NgosTable ngos={program?.users || []} />
       </Section>
       <Section>
-        <MentorsTable mentors={program.attributes?.mentors?.data || []} />
+        <MentorsTable mentors={program?.mentors || []} />
       </Section>
     </>
   );

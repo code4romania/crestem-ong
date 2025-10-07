@@ -24,6 +24,7 @@ import {
 } from "@tanstack/react-table";
 import type { ReportVM } from "../type";
 import { reportsColumns as columns } from "./columns";
+import { getCommonPinningStyles } from "@/lib/data-table";
 
 const route = getRouteApi("/(app)/reports/");
 
@@ -33,11 +34,11 @@ export const reportsMapper = (reports: ListReportsResponse): ReportVM[] =>
     return {
       id: report.id,
       finished: report.finished,
-      ngoName: report.user?.ongName,
+      ngoName: report.user?.ongName || "-",
       domains: report.user?.domains?.map((d) => d.name) ?? [],
-      ongIdentificationNumber: report.user?.ongIdentificationNumber,
-      city: report.user?.city,
-      county: report.user?.county,
+      ongIdentificationNumber: report.user?.ongIdentificationNumber || "-",
+      city: report.user?.city || "-",
+      county: report.user?.county || "-",
       mentor: report.user?.mentor
         ? [
             report.user?.mentor?.firstName || "",
@@ -95,6 +96,9 @@ export function ReportsTable() {
     state: {
       columnFilters,
       globalFilter,
+      columnPinning: {
+        right: ["navigate"],
+      },
     },
     enableRowSelection: false,
 
@@ -125,7 +129,13 @@ export function ReportsTable() {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
+                    <TableHead
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      style={{
+                        ...getCommonPinningStyles({ column: header.column }),
+                      }}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -146,7 +156,12 @@ export function ReportsTable() {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      style={{
+                        ...getCommonPinningStyles({ column: cell.column }),
+                      }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
