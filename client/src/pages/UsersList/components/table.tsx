@@ -34,6 +34,7 @@ const ngoMapper = (ngos: FinalDetailedUserModel[]): NgoVM[] =>
     (ngo): NgoVM => ({
       id: ngo.id,
       ongName: ngo.ongName,
+      ongIdentificationNumber: ngo.ongIdentificationNumber,
       createdAt: ngo.createdAt,
       programName: ngo.program?.name || "-",
       county: ngo.county,

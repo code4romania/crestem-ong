@@ -28,6 +28,18 @@ export const columns: ColumnDef<NgoVM>[] = [
     enableSorting: false,
   },
   {
+    accessorKey: "ongIdentificationNumber",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="CIF"
+        className="whitespace-nowrap py-4 text-sm font-bold text-gray-900 "
+      />
+    ),
+    cell: ({ row }) => <div>{row.original.ongIdentificationNumber ?? "-"}</div>,
+    enableSorting: false,
+  },
+  {
     accessorKey: "createdAt",
     header: ({ column }) => (
       <DataTableColumnHeader

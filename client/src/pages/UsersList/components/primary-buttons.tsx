@@ -12,6 +12,7 @@ export function NgosPrimaryButtons({ table }: { table: Table<NgoVM> }) {
   const navigate = route.useNavigate();
   const header = [
     "NUME ONG",
+    "CIF",
     "DATĂ ÎNREGISTRARE",
     "PROGRAM",
     "JUDEȚ",
@@ -26,6 +27,7 @@ export function NgosPrimaryButtons({ table }: { table: Table<NgoVM> }) {
     .map(
       ({
         ongName,
+        ongIdentificationNumber,
         createdAt,
         county,
         programName,
@@ -34,6 +36,7 @@ export function NgosPrimaryButtons({ table }: { table: Table<NgoVM> }) {
         domains,
       }) => ({
         ongName,
+        ongIdentificationNumber,
         createdAt: formatDate(createdAt),
         program: programName || "-",
         county,

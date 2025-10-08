@@ -1,6 +1,7 @@
 export interface NgoVM {
   id: number;
   ongName: string;
+  ongIdentificationNumber: string;
   createdAt: string;
   programName: string | undefined;
   county: string;
