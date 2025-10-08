@@ -41,7 +41,6 @@ const Mentors = () => {
           {mentors.map((mentor) => (
             <MentorCard
               id={mentor.id.toString()}
-              userId={user!.id}
               firstName={mentor.firstName}
               lastName={mentor.lastName}
               dimensions={mentor.dimensions}
