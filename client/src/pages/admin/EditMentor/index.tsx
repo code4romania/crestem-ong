@@ -26,10 +26,9 @@ import {
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
 import { useListDimensions } from "@/services/dimensions.queries";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, Navigate, useNavigate } from "@tanstack/react-router";
 import { Briefcase, User } from "lucide-react";
 
-import FullScreenLoader from "@/components/FullScreenLoader";
 import { Button } from "@/components/ui/button";
 import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
 import { Switch } from "@/components/ui/switch";
@@ -37,8 +36,9 @@ import {
   mentorProfileSchema,
   type MentorProfileInput,
 } from "@/pages/mentor/EditProfile";
-import { Route } from "@/routes/(app)/users/$userId/edit";
+import { Route } from "@/routes/(app)/mentors/$mentorId/edit";
 import type {
+  FinalDetailedUserModel,
   FinalDimensionModel,
   FinalUserModel,
   ProgramFinalModel,
@@ -47,13 +47,11 @@ import {
   updateMentorMutation,
   useUploadPictureMutation,
 } from "@/services/user.mutations";
-import {
-  useGetUserDimensions,
-  useSuspenseGetUserDetails,
-} from "@/services/user.queries";
+import { useSuspenseGetUserDetails } from "@/services/user.queries";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
+import FullScreenLoader from "@/components/FullScreenLoader";
 const optionsMapper = (
   userDimensions: FinalDimensionModel[] | ProgramFinalModel[]
 ) =>
@@ -61,14 +59,18 @@ const optionsMapper = (
     ? userDimensions.map((d) => ({ value: d.id.toString(), label: d.name }))
     : [];
 
-const mentorMapper = (user: FinalUserModel) => ({
+const mentorMapper = (user: FinalDetailedUserModel) => ({
   ...user,
   dimensions: optionsMapper(user.dimensions ?? []),
 });
 
 function EditMentor() {
-  const { userId } = Route.useParams();
-  const { data: userDetails } = useSuspenseGetUserDetails(userId, mentorMapper);
+  const { mentorId } = Route.useParams();
+  const { data: userDetails } = useSuspenseGetUserDetails(
+    mentorId,
+    mentorMapper
+  );
+
   const navigate = useNavigate();
 
   const { mutateAsync: updatementor, isPending: isUpdatePending } =
@@ -115,9 +117,15 @@ function EditMentor() {
       await uploadAvatar({ userId: userDetails.id, file: data.avatar });
     }
 
-    navigate({ to: "/users/$userId", params: { userId: userId } });
+    navigate({ to: "/mentors/$mentorId", params: { mentorId } });
     toast.success("Salvat");
   };
+
+  if (isLoading) return <FullScreenLoader />;
+
+  if (userDetails.role.type !== "mentor") {
+    return <Navigate to="/" />;
+  }
 
   return (
     <div>
@@ -319,7 +327,9 @@ function EditMentor() {
                 className="sm:w-auto bg-transparent"
                 asChild
               >
-                <Link to="/profile">Renunță</Link>
+                <Link to="/mentors/$mentorId" params={{ mentorId }}>
+                  Renunță
+                </Link>
               </Button>
               <Button
                 type="submit"

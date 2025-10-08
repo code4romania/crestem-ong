@@ -41,7 +41,7 @@ export const reportsColumns: ColumnDef<ReportVM>[] = [
     cell: ({ row }) => (
       <div className="flex flex-wrap gap-2">
         {row.original.domains?.length
-          ? row.original.domains.map((d) => <Badge>{d}</Badge>)
+          ? row.original.domains.map((d) => <Badge key={d}>{d}</Badge>)
           : "-"}
       </div>
     ),

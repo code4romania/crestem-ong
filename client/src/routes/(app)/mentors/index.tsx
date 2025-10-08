@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/auth";
 import { listMentorsQueryOptions } from "@/services/mentors.queries";
 import { createFileRoute, Navigate, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/(app)/mentors")({
+export const Route = createFileRoute("/(app)/mentors/")({
   beforeLoad: ({ context }) => {
     if (!context.auth.isAuthenticated) {
       throw redirect({

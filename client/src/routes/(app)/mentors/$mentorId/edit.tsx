@@ -4,7 +4,7 @@ import { getUserDetailsQueryOptions } from "@/services/user.queries";
 
 import { createFileRoute, Navigate, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/(app)/users/$userId/edit")({
+export const Route = createFileRoute("/(app)/mentors/$mentorId/edit")({
   beforeLoad: ({ context }) => {
     if (!context.auth.isAuthenticated) {
       throw redirect({
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/(app)/users/$userId/edit")({
     }
   },
   loader: async ({ context: { queryClient }, params }) =>
-    queryClient.ensureQueryData(getUserDetailsQueryOptions(params.userId)),
+    queryClient.ensureQueryData(getUserDetailsQueryOptions(params.mentorId)),
   component: RouteComponent,
 });
 

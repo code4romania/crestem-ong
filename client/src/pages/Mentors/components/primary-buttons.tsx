@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { getRouteApi } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
-const route = getRouteApi("/(app)/mentors");
+const route = getRouteApi("/(app)/mentors/");
 
 export function MentorsPrimaryButtons() {
   const navigate = route.useNavigate();

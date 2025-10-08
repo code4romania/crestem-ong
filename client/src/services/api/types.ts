@@ -150,24 +150,8 @@ export interface ActivityTypeModel {
   updatedAt: string;
 }
 
-export interface ProgramModel {
+export interface FinalProgramModel {
   id: number;
-  attributes: ProgramAttributesModel;
-}
-
-export interface ProgramFinalModel {
-  id: number;
-  name: string;
-  startDate: string;
-  endDate: string;
-  sponsorName: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  users: FinalUserModel[];
-}
-
-export interface ProgramAttributesModel {
   name: string;
   startDate: string;
   endDate: string;
@@ -175,19 +159,9 @@ export interface ProgramAttributesModel {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
-  // Temoprary fix until we upgrade to strapi v5
-  // This is used just to get the count of mentors
-  mentors?: {
-    data: any[];
-  };
+  users: FinalUserModel[];
+  mentors: FinalUserModel[];
   mentorsCount: number | undefined;
-
-  // Temoprary fix until we upgrade to strapi v5
-  // This is used just to get the count of users
-  users?: {
-    data: any[];
-  };
-
   usersCount: number | undefined;
 }
 
@@ -290,7 +264,7 @@ export interface FinalDetailedUserModel extends FinalUserModel {
   domains: FinalDomainModel[];
   dimensions: FinalDimensionModel[];
   reports: FinalReportModel[];
-  program?: ProgramModel;
+  program?: FinalProgramModel;
   role: RoleModel;
 }
 
@@ -367,7 +341,7 @@ export interface FinalProgramModel {
   name: string;
   startDate: string;
   endDate: string;
-  sponsorName: string;
+  sponsorName?: string;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;

@@ -24,17 +24,6 @@ export const listNgos = (): Promise<FinalUserModel[]> => {
   }).then((res) => res.data);
 };
 
-export interface ProgramModel {
-  id: number;
-  name: string;
-  startDate: string;
-  endDate: string;
-  sponsorName: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-}
-
 export const listNgosWithDetails = (): Promise<FinalDetailedUserModel[]> => {
   const params = {
     filters: {

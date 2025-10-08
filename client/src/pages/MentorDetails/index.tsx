@@ -4,18 +4,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth";
-import { Route } from "@/routes/(app)/users/$userId";
-import { useSuspenseGetUserDetails } from "@/services/user.queries";
+import type { FinalDetailedUserModel } from "@/services/api/types";
 import { Link, Navigate } from "@tanstack/react-router";
 import DOMPurify from "dompurify";
 import { type ReactNode } from "react";
 
-const MentorDetails = () => {
-  const { userId } = Route.useParams();
-  const { data: user } = useSuspenseGetUserDetails(userId);
+const MentorDetails = ({ mentor }: { mentor: FinalDetailedUserModel }) => {
   const { userRole } = useAuth();
 
-  if (!user) {
+  if (mentor.role.type !== "mentor") {
     return <Navigate to="/" />;
   }
 
@@ -26,7 +23,7 @@ const MentorDetails = () => {
         <div className="ProseMirror">
           <div
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(user.bio || "-"),
+              __html: DOMPurify.sanitize(mentor.bio || "-"),
             }}
           ></div>
         </div>
@@ -38,7 +35,7 @@ const MentorDetails = () => {
         <div className="ProseMirror">
           <div
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(user.expertise || "-"),
+              __html: DOMPurify.sanitize(mentor.expertise || "-"),
             }}
           ></div>
         </div>
@@ -47,7 +44,7 @@ const MentorDetails = () => {
     [
       "Specializare pe dimensiuni",
       <div className="flex flex-wrap gap-2">
-        {user.dimensions?.map(({ id, name }) => (
+        {mentor.dimensions?.map(({ id, name }) => (
           <Badge key={id}>{name}</Badge>
         ))}
       </div>,
@@ -56,17 +53,17 @@ const MentorDetails = () => {
       "Poză profil",
       <Avatar className="h-16 w-16">
         <AvatarImage
-          src={user.avatar?.formats?.medium?.url}
-          alt={`${user.firstName} ${user.lastName}`}
+          src={mentor.avatar?.formats?.medium?.url}
+          alt={`${mentor.firstName} ${mentor.lastName}`}
         />
         <AvatarFallback>
-          {[user.firstName?.[0], user.lastName?.[0]].join("") ?? "-"}
+          {[mentor.firstName?.[0], mentor.lastName?.[0]].join("") ?? "-"}
         </AvatarFallback>
       </Avatar>,
     ],
     [
       "Disponibilitate",
-      user.available ? (
+      mentor.available ? (
         <Badge>Disponibil</Badge>
       ) : (
         <Badge variant="destructive">Indisponibil</Badge>
@@ -79,15 +76,23 @@ const MentorDetails = () => {
       <Section>
         <div className="flex w-full items-center justify-between">
           <Heading level="h2">
-            {user.firstName} {user.lastName}
+            {mentor.firstName} {mentor.lastName}
           </Heading>
-          {userRole === "fdsc" && (
-            <Button asChild>
-              <Link to="/users/$userId/edit" params={{ userId }}>
-                Editeaza
-              </Link>
+          <div className="flex gap-2">
+            <Button asChild variant="secondary">
+              <Link to="/mentors">Înapoi</Link>
             </Button>
-          )}
+            {userRole === "fdsc" && (
+              <Button asChild>
+                <Link
+                  to="/mentors/$mentorId/edit"
+                  params={{ mentorId: mentor.id.toString() }}
+                >
+                  Editeaza
+                </Link>
+              </Button>
+            )}
+          </div>
         </div>
 
         <div className="mt-8 bg-white shadow ring-1 ring-gray-900/5 sm:rounded-lg">

@@ -17,7 +17,6 @@ import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as authEmailSentRouteImport } from './routes/(auth)/email-sent'
 import { Route as authConfirmEmailRouteImport } from './routes/(auth)/confirm-email'
-import { Route as appMentorsRouteImport } from './routes/(app)/mentors'
 import { Route as appMatrixRouteImport } from './routes/(app)/matrix'
 import { Route as appActivitiesRouteImport } from './routes/(app)/activities'
 import { Route as appUsersRouteRouteImport } from './routes/(app)/users/route'
@@ -30,6 +29,8 @@ import { Route as appUsersIndexRouteImport } from './routes/(app)/users/index'
 import { Route as appReportsIndexRouteImport } from './routes/(app)/reports/index'
 import { Route as appProgramsIndexRouteImport } from './routes/(app)/programs/index'
 import { Route as appProfileIndexRouteImport } from './routes/(app)/profile/index'
+import { Route as appMentorsIndexRouteImport } from './routes/(app)/mentors/index'
+import { Route as appUsersUserIdRouteImport } from './routes/(app)/users/$userId'
 import { Route as appReportsReportIdRouteImport } from './routes/(app)/reports/$reportId'
 import { Route as appProgramsProgramIdRouteImport } from './routes/(app)/programs/$programId'
 import { Route as appProfileEditRouteImport } from './routes/(app)/profile/edit'
@@ -39,8 +40,8 @@ import { Route as appCreateReportRouteImport } from './routes/(app)/create/repor
 import { Route as appCreateProgramRouteImport } from './routes/(app)/create/program'
 import { Route as appCreateMentorRouteImport } from './routes/(app)/create/mentor'
 import { Route as appCreateActivityRouteImport } from './routes/(app)/create/activity'
-import { Route as appUsersUserIdIndexRouteImport } from './routes/(app)/users/$userId/index'
-import { Route as appUsersUserIdEditRouteImport } from './routes/(app)/users/$userId/edit'
+import { Route as appMentorsMentorIdIndexRouteImport } from './routes/(app)/mentors/$mentorId/index'
+import { Route as appMentorsMentorIdEditRouteImport } from './routes/(app)/mentors/$mentorId/edit'
 
 const authRouteRoute = authRouteRouteImport.update({
   id: '/(auth)',
@@ -80,11 +81,6 @@ const authConfirmEmailRoute = authConfirmEmailRouteImport.update({
   id: '/confirm-email',
   path: '/confirm-email',
   getParentRoute: () => authRouteRoute,
-} as any)
-const appMentorsRoute = appMentorsRouteImport.update({
-  id: '/(app)/mentors',
-  path: '/mentors',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const appMatrixRoute = appMatrixRouteImport.update({
   id: '/(app)/matrix',
@@ -146,6 +142,16 @@ const appProfileIndexRoute = appProfileIndexRouteImport.update({
   path: '/',
   getParentRoute: () => appProfileRouteRoute,
 } as any)
+const appMentorsIndexRoute = appMentorsIndexRouteImport.update({
+  id: '/(app)/mentors/',
+  path: '/mentors/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const appUsersUserIdRoute = appUsersUserIdRouteImport.update({
+  id: '/$userId',
+  path: '/$userId',
+  getParentRoute: () => appUsersRouteRoute,
+} as any)
 const appReportsReportIdRoute = appReportsReportIdRouteImport.update({
   id: '/$reportId',
   path: '/$reportId',
@@ -192,15 +198,15 @@ const appCreateActivityRoute = appCreateActivityRouteImport.update({
   path: '/activity',
   getParentRoute: () => appCreateRouteRoute,
 } as any)
-const appUsersUserIdIndexRoute = appUsersUserIdIndexRouteImport.update({
-  id: '/$userId/',
-  path: '/$userId/',
-  getParentRoute: () => appUsersRouteRoute,
+const appMentorsMentorIdIndexRoute = appMentorsMentorIdIndexRouteImport.update({
+  id: '/(app)/mentors/$mentorId/',
+  path: '/mentors/$mentorId/',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const appUsersUserIdEditRoute = appUsersUserIdEditRouteImport.update({
-  id: '/$userId/edit',
-  path: '/$userId/edit',
-  getParentRoute: () => appUsersRouteRoute,
+const appMentorsMentorIdEditRoute = appMentorsMentorIdEditRouteImport.update({
+  id: '/(app)/mentors/$mentorId/edit',
+  path: '/mentors/$mentorId/edit',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -213,7 +219,6 @@ export interface FileRoutesByFullPath {
   '/users': typeof appUsersRouteRouteWithChildren
   '/activities': typeof appActivitiesRoute
   '/matrix': typeof appMatrixRoute
-  '/mentors': typeof appMentorsRoute
   '/confirm-email': typeof authConfirmEmailRoute
   '/email-sent': typeof authEmailSentRoute
   '/forgot-password': typeof authForgotPasswordRoute
@@ -229,12 +234,14 @@ export interface FileRoutesByFullPath {
   '/profile/edit': typeof appProfileEditRoute
   '/programs/$programId': typeof appProgramsProgramIdRoute
   '/reports/$reportId': typeof appReportsReportIdRoute
+  '/users/$userId': typeof appUsersUserIdRoute
+  '/mentors': typeof appMentorsIndexRoute
   '/profile/': typeof appProfileIndexRoute
   '/programs/': typeof appProgramsIndexRoute
   '/reports/': typeof appReportsIndexRoute
   '/users/': typeof appUsersIndexRoute
-  '/users/$userId/edit': typeof appUsersUserIdEditRoute
-  '/users/$userId': typeof appUsersUserIdIndexRoute
+  '/mentors/$mentorId/edit': typeof appMentorsMentorIdEditRoute
+  '/mentors/$mentorId': typeof appMentorsMentorIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof authRouteRouteWithChildren
@@ -242,7 +249,6 @@ export interface FileRoutesByTo {
   '/evaluation': typeof appEvaluationRouteRouteWithChildren
   '/activities': typeof appActivitiesRoute
   '/matrix': typeof appMatrixRoute
-  '/mentors': typeof appMentorsRoute
   '/confirm-email': typeof authConfirmEmailRoute
   '/email-sent': typeof authEmailSentRoute
   '/forgot-password': typeof authForgotPasswordRoute
@@ -258,12 +264,14 @@ export interface FileRoutesByTo {
   '/profile/edit': typeof appProfileEditRoute
   '/programs/$programId': typeof appProgramsProgramIdRoute
   '/reports/$reportId': typeof appReportsReportIdRoute
+  '/users/$userId': typeof appUsersUserIdRoute
+  '/mentors': typeof appMentorsIndexRoute
   '/profile': typeof appProfileIndexRoute
   '/programs': typeof appProgramsIndexRoute
   '/reports': typeof appReportsIndexRoute
   '/users': typeof appUsersIndexRoute
-  '/users/$userId/edit': typeof appUsersUserIdEditRoute
-  '/users/$userId': typeof appUsersUserIdIndexRoute
+  '/mentors/$mentorId/edit': typeof appMentorsMentorIdEditRoute
+  '/mentors/$mentorId': typeof appMentorsMentorIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -277,7 +285,6 @@ export interface FileRoutesById {
   '/(app)/users': typeof appUsersRouteRouteWithChildren
   '/(app)/activities': typeof appActivitiesRoute
   '/(app)/matrix': typeof appMatrixRoute
-  '/(app)/mentors': typeof appMentorsRoute
   '/(auth)/confirm-email': typeof authConfirmEmailRoute
   '/(auth)/email-sent': typeof authEmailSentRoute
   '/(auth)/forgot-password': typeof authForgotPasswordRoute
@@ -293,12 +300,14 @@ export interface FileRoutesById {
   '/(app)/profile/edit': typeof appProfileEditRoute
   '/(app)/programs/$programId': typeof appProgramsProgramIdRoute
   '/(app)/reports/$reportId': typeof appReportsReportIdRoute
+  '/(app)/users/$userId': typeof appUsersUserIdRoute
+  '/(app)/mentors/': typeof appMentorsIndexRoute
   '/(app)/profile/': typeof appProfileIndexRoute
   '/(app)/programs/': typeof appProgramsIndexRoute
   '/(app)/reports/': typeof appReportsIndexRoute
   '/(app)/users/': typeof appUsersIndexRoute
-  '/(app)/users/$userId/edit': typeof appUsersUserIdEditRoute
-  '/(app)/users/$userId/': typeof appUsersUserIdIndexRoute
+  '/(app)/mentors/$mentorId/edit': typeof appMentorsMentorIdEditRoute
+  '/(app)/mentors/$mentorId/': typeof appMentorsMentorIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -312,7 +321,6 @@ export interface FileRouteTypes {
     | '/users'
     | '/activities'
     | '/matrix'
-    | '/mentors'
     | '/confirm-email'
     | '/email-sent'
     | '/forgot-password'
@@ -328,12 +336,14 @@ export interface FileRouteTypes {
     | '/profile/edit'
     | '/programs/$programId'
     | '/reports/$reportId'
+    | '/users/$userId'
+    | '/mentors'
     | '/profile/'
     | '/programs/'
     | '/reports/'
     | '/users/'
-    | '/users/$userId/edit'
-    | '/users/$userId'
+    | '/mentors/$mentorId/edit'
+    | '/mentors/$mentorId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -341,7 +351,6 @@ export interface FileRouteTypes {
     | '/evaluation'
     | '/activities'
     | '/matrix'
-    | '/mentors'
     | '/confirm-email'
     | '/email-sent'
     | '/forgot-password'
@@ -357,12 +366,14 @@ export interface FileRouteTypes {
     | '/profile/edit'
     | '/programs/$programId'
     | '/reports/$reportId'
+    | '/users/$userId'
+    | '/mentors'
     | '/profile'
     | '/programs'
     | '/reports'
     | '/users'
-    | '/users/$userId/edit'
-    | '/users/$userId'
+    | '/mentors/$mentorId/edit'
+    | '/mentors/$mentorId'
   id:
     | '__root__'
     | '/'
@@ -375,7 +386,6 @@ export interface FileRouteTypes {
     | '/(app)/users'
     | '/(app)/activities'
     | '/(app)/matrix'
-    | '/(app)/mentors'
     | '/(auth)/confirm-email'
     | '/(auth)/email-sent'
     | '/(auth)/forgot-password'
@@ -391,12 +401,14 @@ export interface FileRouteTypes {
     | '/(app)/profile/edit'
     | '/(app)/programs/$programId'
     | '/(app)/reports/$reportId'
+    | '/(app)/users/$userId'
+    | '/(app)/mentors/'
     | '/(app)/profile/'
     | '/(app)/programs/'
     | '/(app)/reports/'
     | '/(app)/users/'
-    | '/(app)/users/$userId/edit'
-    | '/(app)/users/$userId/'
+    | '/(app)/mentors/$mentorId/edit'
+    | '/(app)/mentors/$mentorId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -410,7 +422,9 @@ export interface RootRouteChildren {
   appUsersRouteRoute: typeof appUsersRouteRouteWithChildren
   appActivitiesRoute: typeof appActivitiesRoute
   appMatrixRoute: typeof appMatrixRoute
-  appMentorsRoute: typeof appMentorsRoute
+  appMentorsIndexRoute: typeof appMentorsIndexRoute
+  appMentorsMentorIdEditRoute: typeof appMentorsMentorIdEditRoute
+  appMentorsMentorIdIndexRoute: typeof appMentorsMentorIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -470,13 +484,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/confirm-email'
       preLoaderRoute: typeof authConfirmEmailRouteImport
       parentRoute: typeof authRouteRoute
-    }
-    '/(app)/mentors': {
-      id: '/(app)/mentors'
-      path: '/mentors'
-      fullPath: '/mentors'
-      preLoaderRoute: typeof appMentorsRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/(app)/matrix': {
       id: '/(app)/matrix'
@@ -562,6 +569,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appProfileIndexRouteImport
       parentRoute: typeof appProfileRouteRoute
     }
+    '/(app)/mentors/': {
+      id: '/(app)/mentors/'
+      path: '/mentors'
+      fullPath: '/mentors'
+      preLoaderRoute: typeof appMentorsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(app)/users/$userId': {
+      id: '/(app)/users/$userId'
+      path: '/$userId'
+      fullPath: '/users/$userId'
+      preLoaderRoute: typeof appUsersUserIdRouteImport
+      parentRoute: typeof appUsersRouteRoute
+    }
     '/(app)/reports/$reportId': {
       id: '/(app)/reports/$reportId'
       path: '/$reportId'
@@ -625,19 +646,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appCreateActivityRouteImport
       parentRoute: typeof appCreateRouteRoute
     }
-    '/(app)/users/$userId/': {
-      id: '/(app)/users/$userId/'
-      path: '/$userId'
-      fullPath: '/users/$userId'
-      preLoaderRoute: typeof appUsersUserIdIndexRouteImport
-      parentRoute: typeof appUsersRouteRoute
+    '/(app)/mentors/$mentorId/': {
+      id: '/(app)/mentors/$mentorId/'
+      path: '/mentors/$mentorId'
+      fullPath: '/mentors/$mentorId'
+      preLoaderRoute: typeof appMentorsMentorIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/(app)/users/$userId/edit': {
-      id: '/(app)/users/$userId/edit'
-      path: '/$userId/edit'
-      fullPath: '/users/$userId/edit'
-      preLoaderRoute: typeof appUsersUserIdEditRouteImport
-      parentRoute: typeof appUsersRouteRoute
+    '/(app)/mentors/$mentorId/edit': {
+      id: '/(app)/mentors/$mentorId/edit'
+      path: '/mentors/$mentorId/edit'
+      fullPath: '/mentors/$mentorId/edit'
+      preLoaderRoute: typeof appMentorsMentorIdEditRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -737,15 +758,13 @@ const appReportsRouteRouteWithChildren = appReportsRouteRoute._addFileChildren(
 )
 
 interface appUsersRouteRouteChildren {
+  appUsersUserIdRoute: typeof appUsersUserIdRoute
   appUsersIndexRoute: typeof appUsersIndexRoute
-  appUsersUserIdEditRoute: typeof appUsersUserIdEditRoute
-  appUsersUserIdIndexRoute: typeof appUsersUserIdIndexRoute
 }
 
 const appUsersRouteRouteChildren: appUsersRouteRouteChildren = {
+  appUsersUserIdRoute: appUsersUserIdRoute,
   appUsersIndexRoute: appUsersIndexRoute,
-  appUsersUserIdEditRoute: appUsersUserIdEditRoute,
-  appUsersUserIdIndexRoute: appUsersUserIdIndexRoute,
 }
 
 const appUsersRouteRouteWithChildren = appUsersRouteRoute._addFileChildren(
@@ -763,7 +782,9 @@ const rootRouteChildren: RootRouteChildren = {
   appUsersRouteRoute: appUsersRouteRouteWithChildren,
   appActivitiesRoute: appActivitiesRoute,
   appMatrixRoute: appMatrixRoute,
-  appMentorsRoute: appMentorsRoute,
+  appMentorsIndexRoute: appMentorsIndexRoute,
+  appMentorsMentorIdEditRoute: appMentorsMentorIdEditRoute,
+  appMentorsMentorIdIndexRoute: appMentorsMentorIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

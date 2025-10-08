@@ -22,14 +22,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useTableUrlState } from "@/hooks/use-table-url-state";
-import type { DetailedNgoModel } from "@/services/api/list-ngos.api";
 import type { NgoVM } from "../types";
 import { columns } from "./columns";
 import { NgosPrimaryButtons } from "./primary-buttons";
 import { NgosDataTableToolbar } from "./toolbar";
+import type { FinalDetailedUserModel } from "@/services/api/types";
 const route = getRouteApi("/(app)/users/");
 
-const ngoMapper = (ngos: DetailedNgoModel[]): NgoVM[] =>
+const ngoMapper = (ngos: FinalDetailedUserModel[]): NgoVM[] =>
   ngos.map(
     (ngo): NgoVM => ({
       id: ngo.id,

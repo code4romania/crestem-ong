@@ -1,27 +1,25 @@
-import { Route } from "@/routes/(app)/users/$userId";
-
 import FullScreenLoader from "@/components/FullScreenLoader";
-import { useSuspenseGetUserDetails } from "@/services/user.queries";
-import { Navigate } from "@tanstack/react-router";
 import MentorDetails from "@/pages/MentorDetails";
 import NgoDetails from "@/pages/NgoDetails";
+import type { FinalDetailedUserModel } from "@/services/api/types";
+import { Navigate } from "@tanstack/react-router";
+import { Suspense } from "react";
 
-const UserDetails = () => {
-  const { userId } = Route.useParams();
-  const { data: userDetails, isLoading } = useSuspenseGetUserDetails(userId);
-
-  if (isLoading) return <FullScreenLoader />;
-
+const UserDetails = ({
+  userDetails,
+}: {
+  userDetails: FinalDetailedUserModel;
+}) => {
   return (
-    <>
+    <Suspense fallback={<FullScreenLoader />}>
       {userDetails.role?.type === "authenticated" ? (
-        <NgoDetails />
+        <NgoDetails ngo={userDetails} />
       ) : userDetails.role.type === "mentor" ? (
-        <MentorDetails />
+        <MentorDetails mentor={userDetails} />
       ) : (
         <Navigate to="/" />
       )}
-    </>
+    </Suspense>
   );
 };
 

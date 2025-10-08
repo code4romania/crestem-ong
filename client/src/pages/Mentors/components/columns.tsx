@@ -47,7 +47,9 @@ export const columns: ColumnDef<MentorModel>[] = [
       return (
         <div className="flex flex-wrap gap-2">
           {row.original.dimensions?.map((dimension) => (
-            <Badge variant="secondary">{dimension.name}</Badge>
+            <Badge variant="secondary" key={dimension.id}>
+              {dimension.name}
+            </Badge>
           )) ?? "-"}
         </div>
       );
@@ -92,8 +94,8 @@ export const columns: ColumnDef<MentorModel>[] = [
     cell: ({ row }) => (
       <Button asChild variant="link">
         <Link
-          to="/users/$userId"
-          params={{ userId: row.original.id.toString() }}
+          to="/mentors/$mentorId"
+          params={{ mentorId: row.original.id.toString() }}
         >
           vezi
         </Link>

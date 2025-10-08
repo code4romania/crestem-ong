@@ -5,22 +5,19 @@ import Stats from "@/components/Stats";
 import TableRowReport from "@/components/TableRowReport";
 import { evaluationsCompletedFilter } from "@/lib/filters";
 import { calcScore } from "@/lib/score";
-import { Route } from "@/routes/(app)/users/$userId";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Link } from "@tanstack/react-router";
-import FullScreenLoader from "@/components/FullScreenLoader";
-import { useSuspenseGetUserDetails } from "@/services/user.queries";
+import type { FinalDetailedUserModel } from "@/services/api/types";
+import { Link, Navigate } from "@tanstack/react-router";
 
-const NgoDetails = () => {
-  const { userId } = Route.useParams();
-  const { data: ngoDetails, isLoading } = useSuspenseGetUserDetails(userId);
+const NgoDetails = ({ ngo }: { ngo: FinalDetailedUserModel }) => {
+  if (ngo.role.type !== "authenticated") {
+    return <Navigate to="/" />;
+  }
 
-  if (isLoading) return <FullScreenLoader />;
-
-  const lastEvaluation = ngoDetails?.reports?.filter(
+  const lastEvaluation = ngo.reports?.filter(
     (report) => report.evaluations.length
   );
   const lastReportCompletedEvaluations = evaluationsCompletedFilter(
@@ -29,16 +26,16 @@ const NgoDetails = () => {
   const lastScore = calcScore(lastReportCompletedEvaluations);
 
   const rows = [
-    ["Nume organizație", ngoDetails?.ongName],
-    ["CIF-ul organizației", ngoDetails?.ongIdentificationNumber],
-    ["Județ", ngoDetails?.city],
-    ["Localitate", ngoDetails?.county],
-    ["Email organizație", ngoDetails?.email],
+    ["Nume organizație", ngo.ongName],
+    ["CIF-ul organizației", ngo.ongIdentificationNumber],
+    ["Județ", ngo.city],
+    ["Localitate", ngo.county],
+    ["Email organizație", ngo.email],
     [
       "Domenii de activitate",
-      ngoDetails?.domains?.length ? (
+      ngo.domains?.length ? (
         <div className="flex flex-wrap gap-2">
-          {ngoDetails?.domains.map((domain) => (
+          {ngo.domains.map((domain) => (
             <Badge key={domain.id} variant="secondary">
               {domain.name}
             </Badge>
@@ -48,18 +45,14 @@ const NgoDetails = () => {
         "-"
       ),
     ],
-    ["Cuvinte cheie despre activitate", ngoDetails?.keywords],
-    ["Descriere organizație", ngoDetails?.description],
+    ["Cuvinte cheie despre activitate", ngo.keywords],
+    ["Descriere organizație", ngo.description],
     [
       "Website organizație",
-      ngoDetails?.website ? (
+      ngo.website ? (
         <Button asChild variant="link" className="p-0">
-          <Link
-            to={ngoDetails?.website}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {ngoDetails?.website}
+          <Link to={ngo.website} target="_blank" rel="noopener noreferrer">
+            {ngo.website}
           </Link>
         </Button>
       ) : (
@@ -69,19 +62,19 @@ const NgoDetails = () => {
     [
       "Link-uri social media",
       [
-        ngoDetails?.accountFacebook,
-        ngoDetails?.accountInstagram,
-        ngoDetails?.accountLinkedin,
-        ngoDetails?.accountTiktok,
-        ngoDetails?.accountTwitter,
+        ngo.accountFacebook,
+        ngo.accountInstagram,
+        ngo.accountLinkedin,
+        ngo.accountTiktok,
+        ngo.accountTwitter,
       ].filter(Boolean).length > 0 ? (
         <div className="flex flex-wrap gap-2">
           {[
-            ngoDetails?.accountFacebook,
-            ngoDetails?.accountInstagram,
-            ngoDetails?.accountLinkedin,
-            ngoDetails?.accountTiktok,
-            ngoDetails?.accountTwitter,
+            ngo.accountFacebook,
+            ngo.accountInstagram,
+            ngo.accountLinkedin,
+            ngo.accountTiktok,
+            ngo.accountTwitter,
           ]
             .filter(Boolean)
             .map((link, idx) => (
@@ -100,23 +93,30 @@ const NgoDetails = () => {
       "Logo organizație",
       <Avatar className="h-16 w-16">
         <AvatarImage
-          src={ngoDetails?.avatar?.formats?.thumbnail?.url}
-          alt={ngoDetails?.ongName}
+          src={ngo.avatar?.formats?.thumbnail?.url}
+          alt={ngo.ongName}
         />
         <AvatarFallback>
-          {ngoDetails?.ongName?.charAt(0).toUpperCase() ?? "?"}
+          {ngo.ongName?.charAt(0).toUpperCase() ?? "?"}
         </AvatarFallback>
       </Avatar>,
     ],
-    ["Nume reprezentant organizație", ngoDetails?.firstName],
-    ["Prenume reprezentant organizație", ngoDetails?.lastName],
-    ["Email reprezentant organizație", ngoDetails?.contactEmail],
-    ["Telefon reprezentant organizație", ngoDetails?.contactPhone],
+    ["Nume reprezentant organizație", ngo.firstName],
+    ["Prenume reprezentant organizație", ngo.lastName],
+    ["Email reprezentant organizație", ngo.contactEmail],
+    ["Telefon reprezentant organizație", ngo.contactPhone],
   ];
   return (
     <>
       <Section>
-        <Heading level={"h2"}>{ngoDetails?.ongName}</Heading>
+        <div className="flex w-full items-center justify-between">
+          <Heading level={"h2"}>{ngo.ongName}</Heading>
+          <div className="flex gap-2">
+            <Button asChild variant="secondary">
+              <Link to="/users">Înapoi</Link>
+            </Button>
+          </div>
+        </div>
         <Stats
           data={[
             {
@@ -129,7 +129,7 @@ const NgoDetails = () => {
             },
             {
               label: "Total evaluări realizate",
-              value: ngoDetails?.reports?.length,
+              value: ngo.reports?.length,
             },
           ]}
         />
@@ -165,7 +165,7 @@ const NgoDetails = () => {
         <table className="w-full">
           <TableHeadReports />
           <tbody className="divide-y divide-gray-200 bg-white">
-            {ngoDetails?.reports?.map((report) => {
+            {ngo.reports?.map((report) => {
               return (
                 <TableRowReport
                   key={report.id}

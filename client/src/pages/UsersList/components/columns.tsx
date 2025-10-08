@@ -101,7 +101,7 @@ export const columns: ColumnDef<NgoVM>[] = [
       return row.original.domains?.length ? (
         <div className="flex flex-wrap gap-2">
           {row.original.domains.map((domain) => (
-            <Badge>{domain}</Badge>
+            <Badge key={domain}>{domain}</Badge>
           ))}
         </div>
       ) : (
