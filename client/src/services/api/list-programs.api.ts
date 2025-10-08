@@ -55,13 +55,15 @@ export const listPrograms = (): Promise<FinalProgramModel[]> => {
     },
   }).then((res) => {
     const result = res.data;
-    return result.data.map((p) => ({
-      ...p,
-      ...p.attributes,
-      users: [],
-      mentors: [],
-      usersCount: p.attributes.users?.data?.length,
-      mentorsCount: p.attributes.mentors?.data?.length,
-    }));
+    return (
+      result.data.map((p) => ({
+        ...p,
+        ...p.attributes,
+        users: [],
+        mentors: [],
+        usersCount: p.attributes.users?.data?.length,
+        mentorsCount: p.attributes.mentors?.data?.length,
+      })) ?? []
+    );
   });
 };

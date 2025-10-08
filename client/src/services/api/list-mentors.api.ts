@@ -72,5 +72,5 @@ export const listMentors = (): Promise<MentorModel[]> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data);
+  }).then((res) => res.data ?? []);
 };

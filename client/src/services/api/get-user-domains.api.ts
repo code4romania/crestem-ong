@@ -18,5 +18,5 @@ export const getUserDomains = (): Promise<FinalDomainModel[]> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data.domains);
+  }).then((res) => res.data.domains ?? []);
 };

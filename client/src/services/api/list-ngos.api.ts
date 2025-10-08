@@ -44,5 +44,5 @@ export const listNgosWithDetails = (): Promise<FinalDetailedUserModel[]> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data);
+  }).then((res) => res.data ?? []);
 };

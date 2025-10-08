@@ -18,5 +18,5 @@ export const getUserReports = (): Promise<FinalReportModel[]> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data.reports);
+  }).then((res) => res.data.reports ?? []);
 };

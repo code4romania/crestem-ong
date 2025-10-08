@@ -22,5 +22,5 @@ export const getMentorActivities = (
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data.mentorActivities);
+  }).then((res) => res.data.mentorActivities ?? []);
 };

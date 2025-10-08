@@ -21,5 +21,5 @@ export const listDomains = (): Promise<ApiDomainModel[]> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data.data);
+  }).then((res) => res.data.data ?? []);
 };

@@ -18,5 +18,5 @@ export const getUserDimensions = (): Promise<FinalDimensionModel[]> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data.dimensions);
+  }).then((res) => res.data.dimensions ?? []);
 };

@@ -16,5 +16,5 @@ export const getUserPrograms = (): Promise<FinalProgramModel[]> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data.programs);
+  }).then((res) => res.data.programs ?? []);
 };

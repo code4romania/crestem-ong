@@ -136,24 +136,25 @@ export const listReports = (): Promise<ListReportsResponse> => {
     },
   }).then((res) => ({
     ...res.data,
-    data: res.data.data.map((r) => ({
-      ...r,
-      ...r.attributes,
-      evaluations: r.attributes.evaluations.data.map((e) => ({
-        ...e,
-        ...e.attributes,
-      })),
-      user: {
-        ...r.attributes.user.data,
-        ...r.attributes.user.data?.attributes,
-        avatar: undefined!,
-        domains: r.attributes.user.data?.attributes.domains.data.map((d) => ({
-          ...d,
-          ...d.attributes,
+    data:
+      res.data.data.map((r) => ({
+        ...r,
+        ...r.attributes,
+        evaluations: r.attributes.evaluations.data.map((e) => ({
+          ...e,
+          ...e.attributes,
         })),
-        dimensions: undefined!,
-        mentor: undefined!,
-      },
-    })),
+        user: {
+          ...r.attributes.user.data,
+          ...r.attributes.user.data?.attributes,
+          avatar: undefined!,
+          domains: r.attributes.user.data?.attributes.domains.data.map((d) => ({
+            ...d,
+            ...d.attributes,
+          })),
+          dimensions: undefined!,
+          mentor: undefined!,
+        },
+      })) ?? [],
   }));
 };
