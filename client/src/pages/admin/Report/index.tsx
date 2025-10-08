@@ -8,9 +8,12 @@ import { useSuspenseGetReportById } from "@/services/reports.queries";
 import { useMemo } from "react";
 import ReportResults from "./ReportResults";
 import { useGetMatrix } from "@/services/matrix.queries";
+import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
 
 const Report = () => {
   const { reportId } = Route.useParams();
+  const { fromNgoId } = Route.useSearch();
   const { data: report } = useSuspenseGetReportById(reportId);
   const { data: matrix } = useGetMatrix();
 
@@ -31,9 +34,21 @@ const Report = () => {
   return (
     <>
       <Section>
-        <header>
+        <div className="flex justify-between items-center">
           <Heading level="h2">Evaluare #{reportId}</Heading>
-        </header>
+          <Button asChild variant="secondary">
+            {fromNgoId ? (
+              <Link
+                to={`/users/$userId`}
+                params={{ userId: fromNgoId.toString() }}
+              >
+                Înapoi
+              </Link>
+            ) : (
+              <Link to="/reports">Înapoi</Link>
+            )}
+          </Button>
+        </div>
       </Section>
       <Section>
         <ReportDetails

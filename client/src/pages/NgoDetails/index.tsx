@@ -1,16 +1,17 @@
 import Heading from "@/components/Heading";
-import TableHeadReports from "@/components/index/TableHeadReports";
 import Section from "@/components/Section";
 import Stats from "@/components/Stats";
-import TableRowReport from "@/components/TableRowReport";
+
 import { evaluationsCompletedFilter } from "@/lib/filters";
 import { calcScore } from "@/lib/score";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import type { FinalDetailedUserModel } from "@/services/api/types";
 import { Link, Navigate } from "@tanstack/react-router";
+import NgoReportsTable from "./components/table";
 
 const NgoDetails = ({ ngo }: { ngo: FinalDetailedUserModel }) => {
   if (ngo.role.type !== "authenticated") {
@@ -111,11 +112,9 @@ const NgoDetails = ({ ngo }: { ngo: FinalDetailedUserModel }) => {
       <Section>
         <div className="flex w-full items-center justify-between">
           <Heading level={"h2"}>{ngo.ongName}</Heading>
-          <div className="flex gap-2">
-            <Button asChild variant="secondary">
-              <Link to="/users">Înapoi</Link>
-            </Button>
-          </div>
+          <Button asChild variant="secondary">
+            <Link to="/users">Înapoi</Link>
+          </Button>
         </div>
         <Stats
           data={[
@@ -135,50 +134,36 @@ const NgoDetails = ({ ngo }: { ngo: FinalDetailedUserModel }) => {
         />
       </Section>
       <Section>
-        <div className="flex w-full items-center justify-between">
-          <Heading level="h2">Informații despre ONG</Heading>
-        </div>
-
-        <div className="mt-8 bg-white shadow ring-1 ring-gray-900/5 sm:rounded-lg">
-          <dl className="divide-y divide-gray-100">
-            {rows.map(([label, value], idx) => (
-              <div
-                key={idx}
-                className={`px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ${
-                  idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                }`}
-              >
-                <dt className="text-sm font-medium leading-6 text-gray-900">
-                  {label}
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {value || "-"}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+        <Card>
+          <CardContent>
+            <dl className="divide-y divide-gray-100">
+              {rows.map(([label, value], idx) => (
+                <div
+                  key={idx}
+                  className={`px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ${
+                    idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                  }`}
+                >
+                  <dt className="text-sm font-medium leading-6 text-gray-900">
+                    {label}
+                  </dt>
+                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    {value || "-"}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </CardContent>
+        </Card>
       </Section>
 
       <Section>
-        <div className="mb-4 text-lg font-semibold">Istoric evaluări</div>
-        <table className="w-full">
-          <TableHeadReports />
-          <tbody className="divide-y divide-gray-200 bg-white">
-            {ngo.reports?.map((report) => {
-              return (
-                <TableRowReport
-                  key={report.id}
-                  id={report.id}
-                  createdAt={report.createdAt}
-                  deadline={report.deadline}
-                  evaluations={report.evaluations}
-                  finished={report.finished}
-                />
-              );
-            })}
-          </tbody>
-        </table>
+        <Heading level="h3">Istoric evaluări</Heading>
+        <Card>
+          <CardContent>
+            <NgoReportsTable ngo={ngo} reports={ngo.reports} />
+          </CardContent>
+        </Card>
       </Section>
     </>
   );

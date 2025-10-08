@@ -1,5 +1,6 @@
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
+import Stats from "@/components/Stats";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,8 @@ import type { FinalDetailedUserModel } from "@/services/api/types";
 import { Link, Navigate } from "@tanstack/react-router";
 import DOMPurify from "dompurify";
 import { type ReactNode } from "react";
+import { MentorActivitiesTable } from "./components/table";
+import { MentorStats } from "./components/mentor-stats";
 
 const MentorDetails = ({ mentor }: { mentor: FinalDetailedUserModel }) => {
   const { userRole } = useAuth();
@@ -114,6 +117,13 @@ const MentorDetails = ({ mentor }: { mentor: FinalDetailedUserModel }) => {
               </div>
             ))}
           </dl>
+        </div>
+      </Section>
+      <Section>
+        <Heading level="h3">Jurnal de activitate</Heading>
+        <div className="flex flex-col gap-4">
+          <MentorStats mentor={mentor} />
+          <MentorActivitiesTable mentor={mentor} />
         </div>
       </Section>
     </>

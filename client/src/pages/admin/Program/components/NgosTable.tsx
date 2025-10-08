@@ -1,4 +1,4 @@
-import { DataTableColumnHeader } from "@/components/data-table";
+import { DataTableColumnHeader } from "@/components/data-table/column-header";
 import { Button } from "@/components/ui/button";
 import {
   Table,

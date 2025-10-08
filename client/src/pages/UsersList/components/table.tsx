@@ -27,6 +27,7 @@ import { columns } from "./columns";
 import { NgosPrimaryButtons } from "./primary-buttons";
 import { NgosDataTableToolbar } from "./toolbar";
 import type { FinalDetailedUserModel } from "@/services/api/types";
+import { DataTable } from "@/components/ui/data-table";
 const route = getRouteApi("/(app)/users/");
 
 const ngoMapper = (ngos: FinalDetailedUserModel[]): NgoVM[] =>
@@ -96,6 +97,9 @@ export function NgosTable() {
     state: {
       columnFilters,
       globalFilter,
+      columnPinning: {
+        right: ["navigate"],
+      },
     },
     enableRowSelection: false,
     globalFilterFn: (row, _columnId, filterValue) => {
@@ -126,56 +130,9 @@ export function NgosTable() {
         </div>
       </Section>
       <Section>
-        <div className="space-y-4">
+        <DataTable table={table}>
           <NgosDataTableToolbar table={table}></NgosDataTableToolbar>
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <TableHead key={header.id} colSpan={header.colSpan}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                        </TableHead>
-                      );
-                    })}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow key={row.id}>
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
-                    >
-                      0 Rezultate
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
+        </DataTable>
       </Section>
     </>
   );

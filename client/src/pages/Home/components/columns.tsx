@@ -1,4 +1,4 @@
-import { DataTableColumnHeader } from "@/components/data-table";
+import { DataTableColumnHeader } from "@/components/data-table/column-header";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@tanstack/react-router";
 import { type ColumnDef } from "@tanstack/react-table";

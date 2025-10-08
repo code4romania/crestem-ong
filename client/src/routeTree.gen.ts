@@ -18,7 +18,6 @@ import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-p
 import { Route as authEmailSentRouteImport } from './routes/(auth)/email-sent'
 import { Route as authConfirmEmailRouteImport } from './routes/(auth)/confirm-email'
 import { Route as appMatrixRouteImport } from './routes/(app)/matrix'
-import { Route as appActivitiesRouteImport } from './routes/(app)/activities'
 import { Route as appUsersRouteRouteImport } from './routes/(app)/users/route'
 import { Route as appReportsRouteRouteImport } from './routes/(app)/reports/route'
 import { Route as appProgramsRouteRouteImport } from './routes/(app)/programs/route'
@@ -30,6 +29,7 @@ import { Route as appReportsIndexRouteImport } from './routes/(app)/reports/inde
 import { Route as appProgramsIndexRouteImport } from './routes/(app)/programs/index'
 import { Route as appProfileIndexRouteImport } from './routes/(app)/profile/index'
 import { Route as appMentorsIndexRouteImport } from './routes/(app)/mentors/index'
+import { Route as appActivitiesIndexRouteImport } from './routes/(app)/activities/index'
 import { Route as appUsersUserIdRouteImport } from './routes/(app)/users/$userId'
 import { Route as appReportsReportIdRouteImport } from './routes/(app)/reports/$reportId'
 import { Route as appProgramsProgramIdRouteImport } from './routes/(app)/programs/$programId'
@@ -40,6 +40,7 @@ import { Route as appCreateReportRouteImport } from './routes/(app)/create/repor
 import { Route as appCreateProgramRouteImport } from './routes/(app)/create/program'
 import { Route as appCreateMentorRouteImport } from './routes/(app)/create/mentor'
 import { Route as appCreateActivityRouteImport } from './routes/(app)/create/activity'
+import { Route as appActivitiesActivityIdRouteImport } from './routes/(app)/activities/$activityId'
 import { Route as appMentorsMentorIdIndexRouteImport } from './routes/(app)/mentors/$mentorId/index'
 import { Route as appMentorsMentorIdEditRouteImport } from './routes/(app)/mentors/$mentorId/edit'
 
@@ -85,11 +86,6 @@ const authConfirmEmailRoute = authConfirmEmailRouteImport.update({
 const appMatrixRoute = appMatrixRouteImport.update({
   id: '/(app)/matrix',
   path: '/matrix',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const appActivitiesRoute = appActivitiesRouteImport.update({
-  id: '/(app)/activities',
-  path: '/activities',
   getParentRoute: () => rootRouteImport,
 } as any)
 const appUsersRouteRoute = appUsersRouteRouteImport.update({
@@ -147,6 +143,11 @@ const appMentorsIndexRoute = appMentorsIndexRouteImport.update({
   path: '/mentors/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const appActivitiesIndexRoute = appActivitiesIndexRouteImport.update({
+  id: '/(app)/activities/',
+  path: '/activities/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const appUsersUserIdRoute = appUsersUserIdRouteImport.update({
   id: '/$userId',
   path: '/$userId',
@@ -198,6 +199,11 @@ const appCreateActivityRoute = appCreateActivityRouteImport.update({
   path: '/activity',
   getParentRoute: () => appCreateRouteRoute,
 } as any)
+const appActivitiesActivityIdRoute = appActivitiesActivityIdRouteImport.update({
+  id: '/(app)/activities/$activityId',
+  path: '/activities/$activityId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const appMentorsMentorIdIndexRoute = appMentorsMentorIdIndexRouteImport.update({
   id: '/(app)/mentors/$mentorId/',
   path: '/mentors/$mentorId/',
@@ -217,7 +223,6 @@ export interface FileRoutesByFullPath {
   '/programs': typeof appProgramsRouteRouteWithChildren
   '/reports': typeof appReportsRouteRouteWithChildren
   '/users': typeof appUsersRouteRouteWithChildren
-  '/activities': typeof appActivitiesRoute
   '/matrix': typeof appMatrixRoute
   '/confirm-email': typeof authConfirmEmailRoute
   '/email-sent': typeof authEmailSentRoute
@@ -225,6 +230,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/reset-password': typeof authResetPasswordRoute
+  '/activities/$activityId': typeof appActivitiesActivityIdRoute
   '/create/activity': typeof appCreateActivityRoute
   '/create/mentor': typeof appCreateMentorRoute
   '/create/program': typeof appCreateProgramRoute
@@ -235,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/programs/$programId': typeof appProgramsProgramIdRoute
   '/reports/$reportId': typeof appReportsReportIdRoute
   '/users/$userId': typeof appUsersUserIdRoute
+  '/activities': typeof appActivitiesIndexRoute
   '/mentors': typeof appMentorsIndexRoute
   '/profile/': typeof appProfileIndexRoute
   '/programs/': typeof appProgramsIndexRoute
@@ -247,7 +254,6 @@ export interface FileRoutesByTo {
   '/': typeof authRouteRouteWithChildren
   '/create': typeof appCreateRouteRouteWithChildren
   '/evaluation': typeof appEvaluationRouteRouteWithChildren
-  '/activities': typeof appActivitiesRoute
   '/matrix': typeof appMatrixRoute
   '/confirm-email': typeof authConfirmEmailRoute
   '/email-sent': typeof authEmailSentRoute
@@ -255,6 +261,7 @@ export interface FileRoutesByTo {
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/reset-password': typeof authResetPasswordRoute
+  '/activities/$activityId': typeof appActivitiesActivityIdRoute
   '/create/activity': typeof appCreateActivityRoute
   '/create/mentor': typeof appCreateMentorRoute
   '/create/program': typeof appCreateProgramRoute
@@ -265,6 +272,7 @@ export interface FileRoutesByTo {
   '/programs/$programId': typeof appProgramsProgramIdRoute
   '/reports/$reportId': typeof appReportsReportIdRoute
   '/users/$userId': typeof appUsersUserIdRoute
+  '/activities': typeof appActivitiesIndexRoute
   '/mentors': typeof appMentorsIndexRoute
   '/profile': typeof appProfileIndexRoute
   '/programs': typeof appProgramsIndexRoute
@@ -283,7 +291,6 @@ export interface FileRoutesById {
   '/(app)/programs': typeof appProgramsRouteRouteWithChildren
   '/(app)/reports': typeof appReportsRouteRouteWithChildren
   '/(app)/users': typeof appUsersRouteRouteWithChildren
-  '/(app)/activities': typeof appActivitiesRoute
   '/(app)/matrix': typeof appMatrixRoute
   '/(auth)/confirm-email': typeof authConfirmEmailRoute
   '/(auth)/email-sent': typeof authEmailSentRoute
@@ -291,6 +298,7 @@ export interface FileRoutesById {
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
   '/(auth)/reset-password': typeof authResetPasswordRoute
+  '/(app)/activities/$activityId': typeof appActivitiesActivityIdRoute
   '/(app)/create/activity': typeof appCreateActivityRoute
   '/(app)/create/mentor': typeof appCreateMentorRoute
   '/(app)/create/program': typeof appCreateProgramRoute
@@ -301,6 +309,7 @@ export interface FileRoutesById {
   '/(app)/programs/$programId': typeof appProgramsProgramIdRoute
   '/(app)/reports/$reportId': typeof appReportsReportIdRoute
   '/(app)/users/$userId': typeof appUsersUserIdRoute
+  '/(app)/activities/': typeof appActivitiesIndexRoute
   '/(app)/mentors/': typeof appMentorsIndexRoute
   '/(app)/profile/': typeof appProfileIndexRoute
   '/(app)/programs/': typeof appProgramsIndexRoute
@@ -319,7 +328,6 @@ export interface FileRouteTypes {
     | '/programs'
     | '/reports'
     | '/users'
-    | '/activities'
     | '/matrix'
     | '/confirm-email'
     | '/email-sent'
@@ -327,6 +335,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
+    | '/activities/$activityId'
     | '/create/activity'
     | '/create/mentor'
     | '/create/program'
@@ -337,6 +346,7 @@ export interface FileRouteTypes {
     | '/programs/$programId'
     | '/reports/$reportId'
     | '/users/$userId'
+    | '/activities'
     | '/mentors'
     | '/profile/'
     | '/programs/'
@@ -349,7 +359,6 @@ export interface FileRouteTypes {
     | '/'
     | '/create'
     | '/evaluation'
-    | '/activities'
     | '/matrix'
     | '/confirm-email'
     | '/email-sent'
@@ -357,6 +366,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
+    | '/activities/$activityId'
     | '/create/activity'
     | '/create/mentor'
     | '/create/program'
@@ -367,6 +377,7 @@ export interface FileRouteTypes {
     | '/programs/$programId'
     | '/reports/$reportId'
     | '/users/$userId'
+    | '/activities'
     | '/mentors'
     | '/profile'
     | '/programs'
@@ -384,7 +395,6 @@ export interface FileRouteTypes {
     | '/(app)/programs'
     | '/(app)/reports'
     | '/(app)/users'
-    | '/(app)/activities'
     | '/(app)/matrix'
     | '/(auth)/confirm-email'
     | '/(auth)/email-sent'
@@ -392,6 +402,7 @@ export interface FileRouteTypes {
     | '/(auth)/login'
     | '/(auth)/register'
     | '/(auth)/reset-password'
+    | '/(app)/activities/$activityId'
     | '/(app)/create/activity'
     | '/(app)/create/mentor'
     | '/(app)/create/program'
@@ -402,6 +413,7 @@ export interface FileRouteTypes {
     | '/(app)/programs/$programId'
     | '/(app)/reports/$reportId'
     | '/(app)/users/$userId'
+    | '/(app)/activities/'
     | '/(app)/mentors/'
     | '/(app)/profile/'
     | '/(app)/programs/'
@@ -420,8 +432,9 @@ export interface RootRouteChildren {
   appProgramsRouteRoute: typeof appProgramsRouteRouteWithChildren
   appReportsRouteRoute: typeof appReportsRouteRouteWithChildren
   appUsersRouteRoute: typeof appUsersRouteRouteWithChildren
-  appActivitiesRoute: typeof appActivitiesRoute
   appMatrixRoute: typeof appMatrixRoute
+  appActivitiesActivityIdRoute: typeof appActivitiesActivityIdRoute
+  appActivitiesIndexRoute: typeof appActivitiesIndexRoute
   appMentorsIndexRoute: typeof appMentorsIndexRoute
   appMentorsMentorIdEditRoute: typeof appMentorsMentorIdEditRoute
   appMentorsMentorIdIndexRoute: typeof appMentorsMentorIdIndexRoute
@@ -490,13 +503,6 @@ declare module '@tanstack/react-router' {
       path: '/matrix'
       fullPath: '/matrix'
       preLoaderRoute: typeof appMatrixRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(app)/activities': {
-      id: '/(app)/activities'
-      path: '/activities'
-      fullPath: '/activities'
-      preLoaderRoute: typeof appActivitiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(app)/users': {
@@ -576,6 +582,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appMentorsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(app)/activities/': {
+      id: '/(app)/activities/'
+      path: '/activities'
+      fullPath: '/activities'
+      preLoaderRoute: typeof appActivitiesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(app)/users/$userId': {
       id: '/(app)/users/$userId'
       path: '/$userId'
@@ -645,6 +658,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/create/activity'
       preLoaderRoute: typeof appCreateActivityRouteImport
       parentRoute: typeof appCreateRouteRoute
+    }
+    '/(app)/activities/$activityId': {
+      id: '/(app)/activities/$activityId'
+      path: '/activities/$activityId'
+      fullPath: '/activities/$activityId'
+      preLoaderRoute: typeof appActivitiesActivityIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/(app)/mentors/$mentorId/': {
       id: '/(app)/mentors/$mentorId/'
@@ -780,8 +800,9 @@ const rootRouteChildren: RootRouteChildren = {
   appProgramsRouteRoute: appProgramsRouteRouteWithChildren,
   appReportsRouteRoute: appReportsRouteRouteWithChildren,
   appUsersRouteRoute: appUsersRouteRouteWithChildren,
-  appActivitiesRoute: appActivitiesRoute,
   appMatrixRoute: appMatrixRoute,
+  appActivitiesActivityIdRoute: appActivitiesActivityIdRoute,
+  appActivitiesIndexRoute: appActivitiesIndexRoute,
   appMentorsIndexRoute: appMentorsIndexRoute,
   appMentorsMentorIdEditRoute: appMentorsMentorIdEditRoute,
   appMentorsMentorIdIndexRoute: appMentorsMentorIdIndexRoute,

@@ -8,7 +8,7 @@ const ResultsByDimension = ({
   scoreByEvaluation: {
     id: string;
     name: string;
-    link: string;
+    link?: string;
     score: number;
     tags: string[];
   }[];

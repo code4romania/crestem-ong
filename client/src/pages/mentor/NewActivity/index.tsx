@@ -39,6 +39,7 @@ import type { FinalUserModel } from "@/services/api/types";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
+import { queryClient } from "@/lib/query";
 
 const ButtonGroup = ({ className }: { className?: string }) => (
   <div className={`${className} flex space-x-4 justify-end`}>
@@ -110,7 +111,12 @@ const NewActivity = () => {
           mentor: user!.id,
         },
         {
-          onSuccess: () => navigate({ to: "/activities" }),
+          onSuccess: () => {
+            queryClient.invalidateQueries({
+              queryKey: ["me", "mentor-activities"],
+            });
+            navigate({ to: "/activities" });
+          },
           onError: () => toast.error("A aparut o problema"),
         }
       );

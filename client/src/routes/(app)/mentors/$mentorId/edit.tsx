@@ -1,3 +1,4 @@
+import LayoutDashboard from "@/components/LayoutDashboard";
 import { useAuth } from "@/contexts/auth";
 import EditMentor from "@/pages/admin/EditMentor";
 import { getUserDetailsQueryOptions } from "@/services/user.queries";
@@ -19,5 +20,11 @@ export const Route = createFileRoute("/(app)/mentors/$mentorId/edit")({
 
 function RouteComponent() {
   const { userRole } = useAuth();
-  return userRole === "fdsc" ? <EditMentor /> : <Navigate to="/" />;
+  return userRole === "fdsc" ? (
+    <LayoutDashboard>
+      <EditMentor />
+    </LayoutDashboard>
+  ) : (
+    <Navigate to="/" />
+  );
 }

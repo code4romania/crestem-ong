@@ -19,7 +19,7 @@ const ProgressBar = ({
   percentage,
 }: {
   label: string;
-  link: string;
+  link?: string;
   percentage: number;
 }) => {
   const color = getColor(percentage);

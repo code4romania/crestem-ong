@@ -141,6 +141,7 @@ export interface MentorActivityModel {
   dimension: FinalDimensionModel;
   type: ActivityTypeModel;
   user: FinalUserModel;
+  mentor: FinalUserModel;
 }
 
 export interface ActivityTypeModel {
@@ -178,10 +179,6 @@ export interface PaginationModel {
 
 export interface DimensionModel {
   id: number;
-  attributes: DimensionAttributes;
-}
-
-export interface DimensionAttributes {
   name: string;
   link?: string;
   createdAt: string;
@@ -278,7 +275,7 @@ export interface FinalMatrixModel {
 export interface FinalDimensionModel {
   id: number;
   name: string;
-  link: string;
+  link?: string | undefined;
   quiz: FinalQuizModel[];
 }
 

@@ -13,7 +13,7 @@ import type {
   FinalDimensionModel,
   FinalDomainModel,
   MentorActivityModel,
-  ProgramFinalModel,
+  FinalProgramModel,
 } from "./api/types";
 import { getUserPrograms } from "./api/get-user-programs.api";
 import { getUserDimensions } from "./api/get-user-dimensions.api";
@@ -91,8 +91,8 @@ export const useGetUserMentorActivities = <TResult = MentorActivityModel[]>(
   select?: (data: MentorActivityModel[]) => TResult
 ) => useQuery(getUserMentorActivitiesQueryOptions(select));
 
-export const getUserProgramsQueryOptions = <TResult = ProgramFinalModel[]>(
-  select?: (data: ProgramFinalModel[]) => TResult
+export const getUserProgramsQueryOptions = <TResult = FinalProgramModel[]>(
+  select?: (data: FinalProgramModel[]) => TResult
 ) =>
   queryOptions({
     queryKey: ["me", "programs"],
@@ -102,8 +102,8 @@ export const getUserProgramsQueryOptions = <TResult = ProgramFinalModel[]>(
     enabled: !!Cookies.get("jwt"),
   });
 
-export const useGetUserPrograms = <TResult = ProgramFinalModel[]>(
-  select?: (data: ProgramFinalModel[]) => TResult
+export const useGetUserPrograms = <TResult = FinalProgramModel[]>(
+  select?: (data: FinalProgramModel[]) => TResult
 ) => useQuery(getUserProgramsQueryOptions(select));
 
 export const getUserDimensionsQueryOptions = <TResult = FinalDimensionModel[]>(

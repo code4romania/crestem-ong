@@ -232,6 +232,7 @@ export const getProgram = (programId: string): Promise<FinalProgramModel> => {
         ...a.attributes,
       })),
     })),
+    mentorsCount: res.data.data.attributes.mentors.data.length,
     users: res.data.data.attributes.users.data.map((u) => ({
       ...u,
       ...u.attributes,
@@ -247,5 +248,6 @@ export const getProgram = (programId: string): Promise<FinalProgramModel> => {
         })),
       })),
     })),
+    usersCount: res.data.data.attributes.users.data.length,
   }));
 };

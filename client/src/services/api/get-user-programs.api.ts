@@ -1,14 +1,14 @@
 import qs from "qs";
 import { API } from "../api";
-import type { ProgramFinalModel } from "./types";
+import type { FinalProgramModel } from "./types";
 
-export const getUserPrograms = (): Promise<ProgramFinalModel[]> => {
+export const getUserPrograms = (): Promise<FinalProgramModel[]> => {
   const params = {
     populate: ["program", "programs.users"],
   };
 
   return API.get<{
-    programs: ProgramFinalModel[];
+    programs: FinalProgramModel[];
   }>(`api/users/me`, {
     params,
     paramsSerializer: {

@@ -1,10 +1,8 @@
-import Confirm from "@/components/Confirm";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -12,22 +10,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { MentorDimensionModel } from "@/services/api/types";
-import { useCreateMentorshipRequestMutation } from "@/services/mentors.mutations";
 import { UserIcon } from "@heroicons/react/20/solid";
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { toast } from "sonner";
 
 const MentorCard = ({
   id,
-  userId,
   firstName,
   lastName,
   dimensions,
   avatarUrl,
 }: {
   id: string;
-  userId: number;
   firstName: string;
   lastName: string;
   dimensions: MentorDimensionModel[];
@@ -40,7 +33,7 @@ const MentorCard = ({
           <Avatar className="h-32 w-32">
             <AvatarImage src={avatarUrl} alt={`${firstName} ${lastName}`} />
             <AvatarFallback>
-              {[firstName[0], lastName[0]].join("") ?? "-"}
+              {[firstName?.[0], lastName?.[0]].filter(Boolean).join("") ?? "-"}
             </AvatarFallback>
           </Avatar>
         </CardTitle>
