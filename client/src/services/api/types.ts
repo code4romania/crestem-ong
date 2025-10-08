@@ -291,6 +291,7 @@ export interface FinalDetailedUserModel extends FinalUserModel {
   dimensions: FinalDimensionModel[];
   reports: FinalReportModel[];
   program?: ProgramModel;
+  role: RoleModel;
 }
 
 export interface FinalMatrixModel {

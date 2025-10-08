@@ -1,11 +1,10 @@
 import { useAuth } from "@/contexts/auth";
-import AuthenticatedMentor from "@/pages/authenticated/Mentor";
-import UserReports from "@/pages/UserReports";
+import EditMentor from "@/pages/admin/EditMentor";
 import { getUserDetailsQueryOptions } from "@/services/user.queries";
 
 import { createFileRoute, Navigate, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/(app)/users/$userId")({
+export const Route = createFileRoute("/(app)/users/$userId/edit")({
   beforeLoad: ({ context }) => {
     if (!context.auth.isAuthenticated) {
       throw redirect({
@@ -20,11 +19,5 @@ export const Route = createFileRoute("/(app)/users/$userId")({
 
 function RouteComponent() {
   const { userRole } = useAuth();
-  return userRole === "fdsc" ? (
-    <UserReports />
-  ) : userRole === "authenticated" ? (
-    <AuthenticatedMentor />
-  ) : (
-    <Navigate to="/" />
-  );
+  return userRole === "fdsc" ? <EditMentor /> : <Navigate to="/" />;
 }

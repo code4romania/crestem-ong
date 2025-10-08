@@ -28,14 +28,19 @@ import {
 import { useListDimensions } from "@/services/dimensions.queries";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Briefcase, User } from "lucide-react";
-import { z } from "zod";
 
 import FullScreenLoader from "@/components/FullScreenLoader";
 import { Button } from "@/components/ui/button";
 import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
 import { Switch } from "@/components/ui/switch";
+import {
+  mentorProfileSchema,
+  type MentorProfileInput,
+} from "@/pages/mentor/EditProfile";
+import { Route } from "@/routes/(app)/users/$userId/edit";
 import type {
   FinalDimensionModel,
+  FinalUserModel,
   ProgramFinalModel,
 } from "@/services/api/types";
 import {
@@ -44,31 +49,11 @@ import {
 } from "@/services/user.mutations";
 import {
   useGetUserDimensions,
-  useSuspenseGetMe,
+  useSuspenseGetUserDetails,
 } from "@/services/user.queries";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
-
-export const mentorProfileSchema = z.object({
-  firstName: z.string().min(1, "Nume este obligatoriu"),
-  lastName: z.string().min(1, "Prenume este obligatoriu"),
-  bio: z.string().min(1, "Adaugati o scurta descriere"),
-  expertise: z.string().optional(),
-  dimensions: z
-    .array(
-      z.object({
-        value: z.string(),
-        label: z.string(),
-      })
-    )
-    .min(1, "Selectează cel puțin o specializare"),
-  available: z.boolean(),
-  avatar: z.custom<File>(),
-});
-
-export type MentorProfileInput = z.infer<typeof mentorProfileSchema>;
-
 const optionsMapper = (
   userDimensions: FinalDimensionModel[] | ProgramFinalModel[]
 ) =>
@@ -76,8 +61,14 @@ const optionsMapper = (
     ? userDimensions.map((d) => ({ value: d.id.toString(), label: d.name }))
     : [];
 
-const EditMentorProfile = () => {
-  const { data: user } = useSuspenseGetMe();
+const mentorMapper = (user: FinalUserModel) => ({
+  ...user,
+  dimensions: optionsMapper(user.dimensions ?? []),
+});
+
+function EditMentor() {
+  const { userId } = Route.useParams();
+  const { data: userDetails } = useSuspenseGetUserDetails(userId, mentorMapper);
   const navigate = useNavigate();
 
   const { mutateAsync: updatementor, isPending: isUpdatePending } =
@@ -92,19 +83,16 @@ const EditMentorProfile = () => {
     }))
   );
 
-  const { data: userDimensions, isLoading: userDimensionsLoading } =
-    useGetUserDimensions(optionsMapper);
-
   const form = useForm<MentorProfileInput>({
     resolver: zodResolver(mentorProfileSchema),
     defaultValues: {
-      firstName: user?.firstName || "",
-      lastName: user?.lastName || "",
-      dimensions: userDimensions ?? [],
-      available: user?.available || false,
+      firstName: userDetails.firstName || "",
+      lastName: userDetails.lastName || "",
+      dimensions: userDetails.dimensions ?? [],
+      available: userDetails.available || false,
       avatar: undefined,
-      bio: user?.bio || "",
-      expertise: user?.expertise || "",
+      bio: userDetails.bio || "",
+      expertise: userDetails.expertise || "",
     },
   });
 
@@ -112,7 +100,7 @@ const EditMentorProfile = () => {
     await updatementor(
       {
         ...data,
-        id: user!.id,
+        id: userDetails!.id,
         dimensions: data.dimensions.map((d) => +d.value),
       },
       {
@@ -124,19 +112,20 @@ const EditMentorProfile = () => {
     );
 
     if (data.avatar) {
-      await uploadAvatar({ userId: user!.id, file: data.avatar });
+      await uploadAvatar({ userId: userDetails.id, file: data.avatar });
     }
 
-    navigate({ to: "/profile" });
+    navigate({ to: "/users/$userId", params: { userId: userId } });
     toast.success("Salvat");
   };
 
-  if (isLoading || userDimensionsLoading) return <FullScreenLoader />;
   return (
     <div>
       <Section>
         <div className="space-y-2">
-          <Heading level="h2">Editează profilul de mentor</Heading>
+          <Heading level="h2">
+            Editează profilul: {userDetails.firstName} {userDetails.lastName}
+          </Heading>
         </div>
       </Section>
 
@@ -310,7 +299,7 @@ const EditMentorProfile = () => {
                       <FormLabel>Poza de profil</FormLabel>
                       <FormControl>
                         <LogoUpload
-                          currentLogo={user?.avatar?.url}
+                          currentLogo={userDetails?.avatar?.url}
                           onImageChange={(file) => field.onChange(file)}
                           disabled={isUploadPending || isUpdatePending}
                         />
@@ -345,5 +334,5 @@ const EditMentorProfile = () => {
       </Section>
     </div>
   );
-};
-export default EditMentorProfile;
+}
+export default EditMentor;

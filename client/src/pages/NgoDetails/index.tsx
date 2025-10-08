@@ -14,7 +14,7 @@ import { Link } from "@tanstack/react-router";
 import FullScreenLoader from "@/components/FullScreenLoader";
 import { useSuspenseGetUserDetails } from "@/services/user.queries";
 
-const UserReports = () => {
+const NgoDetails = () => {
   const { userId } = Route.useParams();
   const { data: ngoDetails, isLoading } = useSuspenseGetUserDetails(userId);
 
@@ -184,4 +184,4 @@ const UserReports = () => {
   );
 };
 
-export default UserReports;
+export default NgoDetails;

@@ -1,6 +1,6 @@
 import FullScreenLoader from "@/components/FullScreenLoader";
 import { queryClient } from "@/lib/query";
-import getUserType from "@/lib/userType";
+import { getUserType } from "@/lib/userType";
 import { getMe, type MeModel } from "@/services/api/get-me.api";
 import { loginUser } from "@/services/api/login-user.api";
 import type { FinalRoleType } from "@/services/api/types";

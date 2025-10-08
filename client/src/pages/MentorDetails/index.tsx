@@ -2,15 +2,18 @@ import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/auth";
 import { Route } from "@/routes/(app)/users/$userId";
 import { useSuspenseGetUserDetails } from "@/services/user.queries";
-import { Navigate } from "@tanstack/react-router";
+import { Link, Navigate } from "@tanstack/react-router";
 import DOMPurify from "dompurify";
 import { type ReactNode } from "react";
 
-const UserReports = () => {
+const MentorDetails = () => {
   const { userId } = Route.useParams();
   const { data: user } = useSuspenseGetUserDetails(userId);
+  const { userRole } = useAuth();
 
   if (!user) {
     return <Navigate to="/" />;
@@ -29,15 +32,24 @@ const UserReports = () => {
         </div>
       </div>,
     ],
-    ["Arii de expertiză", user.expertise],
+    [
+      "Arii de expertiză",
+      <div className="minimal-tiptap-editor">
+        <div className="ProseMirror">
+          <div
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(user.expertise || "-"),
+            }}
+          ></div>
+        </div>
+      </div>,
+    ],
     [
       "Specializare pe dimensiuni",
       <div className="flex flex-wrap gap-2">
-        {user.dimensions
-          ?.map(({ name }) => name)
-          .map((dimension) => (
-            <Badge>{dimension}</Badge>
-          ))}
+        {user.dimensions?.map(({ id, name }) => (
+          <Badge key={id}>{name}</Badge>
+        ))}
       </div>,
     ],
     [
@@ -69,6 +81,13 @@ const UserReports = () => {
           <Heading level="h2">
             {user.firstName} {user.lastName}
           </Heading>
+          {userRole === "fdsc" && (
+            <Button asChild>
+              <Link to="/users/$userId/edit" params={{ userId }}>
+                Editeaza
+              </Link>
+            </Button>
+          )}
         </div>
 
         <div className="mt-8 bg-white shadow ring-1 ring-gray-900/5 sm:rounded-lg">
@@ -96,4 +115,4 @@ const UserReports = () => {
   );
 };
 
-export default UserReports;
+export default MentorDetails;

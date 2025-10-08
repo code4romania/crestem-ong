@@ -30,7 +30,6 @@ import { Route as appUsersIndexRouteImport } from './routes/(app)/users/index'
 import { Route as appReportsIndexRouteImport } from './routes/(app)/reports/index'
 import { Route as appProgramsIndexRouteImport } from './routes/(app)/programs/index'
 import { Route as appProfileIndexRouteImport } from './routes/(app)/profile/index'
-import { Route as appUsersUserIdRouteImport } from './routes/(app)/users/$userId'
 import { Route as appReportsReportIdRouteImport } from './routes/(app)/reports/$reportId'
 import { Route as appProgramsProgramIdRouteImport } from './routes/(app)/programs/$programId'
 import { Route as appProfileEditRouteImport } from './routes/(app)/profile/edit'
@@ -40,6 +39,8 @@ import { Route as appCreateReportRouteImport } from './routes/(app)/create/repor
 import { Route as appCreateProgramRouteImport } from './routes/(app)/create/program'
 import { Route as appCreateMentorRouteImport } from './routes/(app)/create/mentor'
 import { Route as appCreateActivityRouteImport } from './routes/(app)/create/activity'
+import { Route as appUsersUserIdIndexRouteImport } from './routes/(app)/users/$userId/index'
+import { Route as appUsersUserIdEditRouteImport } from './routes/(app)/users/$userId/edit'
 
 const authRouteRoute = authRouteRouteImport.update({
   id: '/(auth)',
@@ -145,11 +146,6 @@ const appProfileIndexRoute = appProfileIndexRouteImport.update({
   path: '/',
   getParentRoute: () => appProfileRouteRoute,
 } as any)
-const appUsersUserIdRoute = appUsersUserIdRouteImport.update({
-  id: '/$userId',
-  path: '/$userId',
-  getParentRoute: () => appUsersRouteRoute,
-} as any)
 const appReportsReportIdRoute = appReportsReportIdRouteImport.update({
   id: '/$reportId',
   path: '/$reportId',
@@ -196,6 +192,16 @@ const appCreateActivityRoute = appCreateActivityRouteImport.update({
   path: '/activity',
   getParentRoute: () => appCreateRouteRoute,
 } as any)
+const appUsersUserIdIndexRoute = appUsersUserIdIndexRouteImport.update({
+  id: '/$userId/',
+  path: '/$userId/',
+  getParentRoute: () => appUsersRouteRoute,
+} as any)
+const appUsersUserIdEditRoute = appUsersUserIdEditRouteImport.update({
+  id: '/$userId/edit',
+  path: '/$userId/edit',
+  getParentRoute: () => appUsersRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof authRouteRouteWithChildren
@@ -223,11 +229,12 @@ export interface FileRoutesByFullPath {
   '/profile/edit': typeof appProfileEditRoute
   '/programs/$programId': typeof appProgramsProgramIdRoute
   '/reports/$reportId': typeof appReportsReportIdRoute
-  '/users/$userId': typeof appUsersUserIdRoute
   '/profile/': typeof appProfileIndexRoute
   '/programs/': typeof appProgramsIndexRoute
   '/reports/': typeof appReportsIndexRoute
   '/users/': typeof appUsersIndexRoute
+  '/users/$userId/edit': typeof appUsersUserIdEditRoute
+  '/users/$userId': typeof appUsersUserIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof authRouteRouteWithChildren
@@ -251,11 +258,12 @@ export interface FileRoutesByTo {
   '/profile/edit': typeof appProfileEditRoute
   '/programs/$programId': typeof appProgramsProgramIdRoute
   '/reports/$reportId': typeof appReportsReportIdRoute
-  '/users/$userId': typeof appUsersUserIdRoute
   '/profile': typeof appProfileIndexRoute
   '/programs': typeof appProgramsIndexRoute
   '/reports': typeof appReportsIndexRoute
   '/users': typeof appUsersIndexRoute
+  '/users/$userId/edit': typeof appUsersUserIdEditRoute
+  '/users/$userId': typeof appUsersUserIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -285,11 +293,12 @@ export interface FileRoutesById {
   '/(app)/profile/edit': typeof appProfileEditRoute
   '/(app)/programs/$programId': typeof appProgramsProgramIdRoute
   '/(app)/reports/$reportId': typeof appReportsReportIdRoute
-  '/(app)/users/$userId': typeof appUsersUserIdRoute
   '/(app)/profile/': typeof appProfileIndexRoute
   '/(app)/programs/': typeof appProgramsIndexRoute
   '/(app)/reports/': typeof appReportsIndexRoute
   '/(app)/users/': typeof appUsersIndexRoute
+  '/(app)/users/$userId/edit': typeof appUsersUserIdEditRoute
+  '/(app)/users/$userId/': typeof appUsersUserIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -319,11 +328,12 @@ export interface FileRouteTypes {
     | '/profile/edit'
     | '/programs/$programId'
     | '/reports/$reportId'
-    | '/users/$userId'
     | '/profile/'
     | '/programs/'
     | '/reports/'
     | '/users/'
+    | '/users/$userId/edit'
+    | '/users/$userId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -347,11 +357,12 @@ export interface FileRouteTypes {
     | '/profile/edit'
     | '/programs/$programId'
     | '/reports/$reportId'
-    | '/users/$userId'
     | '/profile'
     | '/programs'
     | '/reports'
     | '/users'
+    | '/users/$userId/edit'
+    | '/users/$userId'
   id:
     | '__root__'
     | '/'
@@ -380,11 +391,12 @@ export interface FileRouteTypes {
     | '/(app)/profile/edit'
     | '/(app)/programs/$programId'
     | '/(app)/reports/$reportId'
-    | '/(app)/users/$userId'
     | '/(app)/profile/'
     | '/(app)/programs/'
     | '/(app)/reports/'
     | '/(app)/users/'
+    | '/(app)/users/$userId/edit'
+    | '/(app)/users/$userId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -550,13 +562,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appProfileIndexRouteImport
       parentRoute: typeof appProfileRouteRoute
     }
-    '/(app)/users/$userId': {
-      id: '/(app)/users/$userId'
-      path: '/$userId'
-      fullPath: '/users/$userId'
-      preLoaderRoute: typeof appUsersUserIdRouteImport
-      parentRoute: typeof appUsersRouteRoute
-    }
     '/(app)/reports/$reportId': {
       id: '/(app)/reports/$reportId'
       path: '/$reportId'
@@ -619,6 +624,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/create/activity'
       preLoaderRoute: typeof appCreateActivityRouteImport
       parentRoute: typeof appCreateRouteRoute
+    }
+    '/(app)/users/$userId/': {
+      id: '/(app)/users/$userId/'
+      path: '/$userId'
+      fullPath: '/users/$userId'
+      preLoaderRoute: typeof appUsersUserIdIndexRouteImport
+      parentRoute: typeof appUsersRouteRoute
+    }
+    '/(app)/users/$userId/edit': {
+      id: '/(app)/users/$userId/edit'
+      path: '/$userId/edit'
+      fullPath: '/users/$userId/edit'
+      preLoaderRoute: typeof appUsersUserIdEditRouteImport
+      parentRoute: typeof appUsersRouteRoute
     }
   }
 }
@@ -718,13 +737,15 @@ const appReportsRouteRouteWithChildren = appReportsRouteRoute._addFileChildren(
 )
 
 interface appUsersRouteRouteChildren {
-  appUsersUserIdRoute: typeof appUsersUserIdRoute
   appUsersIndexRoute: typeof appUsersIndexRoute
+  appUsersUserIdEditRoute: typeof appUsersUserIdEditRoute
+  appUsersUserIdIndexRoute: typeof appUsersUserIdIndexRoute
 }
 
 const appUsersRouteRouteChildren: appUsersRouteRouteChildren = {
-  appUsersUserIdRoute: appUsersUserIdRoute,
   appUsersIndexRoute: appUsersIndexRoute,
+  appUsersUserIdEditRoute: appUsersUserIdEditRoute,
+  appUsersUserIdIndexRoute: appUsersUserIdIndexRoute,
 }
 
 const appUsersRouteRouteWithChildren = appUsersRouteRoute._addFileChildren(

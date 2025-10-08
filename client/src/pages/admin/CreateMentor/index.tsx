@@ -26,7 +26,6 @@ import {
   MultiSelectorList,
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
-import { Textarea } from "@/components/ui/textarea";
 import type { DimensionModel as ApiDimensionModel } from "@/services/api/types";
 import { useUploadPictureMutation } from "@/services/user.mutations";
 import { toast } from "sonner";
@@ -231,10 +230,16 @@ const CreateMentor = () => {
                   <FormItem>
                     <FormLabel>Arii de expertiză</FormLabel>
                     <FormControl>
-                      <Textarea
+                      <MinimalTiptapEditor
+                        value={field.value}
+                        onChange={field.onChange}
+                        className="w-full"
+                        editorContentClassName="p-5"
+                        output="html"
                         placeholder="Descriere ariile de expertiză ale persoanei resursă"
-                        className="min-h-[100px]"
-                        {...field}
+                        autofocus={true}
+                        editable={true}
+                        editorClassName="focus:outline-hidden"
                       />
                     </FormControl>
                     <FormMessage />

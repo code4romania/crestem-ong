@@ -11,6 +11,7 @@ export const getUserDetails = (
       "reports.evaluations.dimensions.quiz",
       "avatar",
       "dimensions",
+      "role",
     ],
   };
 

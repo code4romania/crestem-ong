@@ -38,7 +38,18 @@ const Profile = () => {
         </div>
       </div>,
     ],
-    ["Arii de expertiză", user.expertise],
+    [
+      "Arii de expertiză",
+      <div className="minimal-tiptap-editor">
+        <div className="ProseMirror">
+          <div
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(user.expertise || "-"),
+            }}
+          ></div>
+        </div>
+      </div>,
+    ],
     [
       "Specializare pe dimensiuni",
       <div className="flex flex-wrap gap-2">

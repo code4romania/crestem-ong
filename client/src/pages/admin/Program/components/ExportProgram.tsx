@@ -62,7 +62,7 @@ const getSheets = (
       const row: Record<string, string | number> = {
         // NGO
         "Nume ONG": user.ongName,
-        CIF: user.ongIdentificationNumber,
+        CUI: user.ongIdentificationNumber,
         "Domeniu de activitate":
           user.domains?.map((d) => d.name).join(", ") || "-",
         "Nume reprezentant": `${user.contactFirstName} ${user.contactLastName}`,
@@ -75,7 +75,7 @@ const getSheets = (
         "Număr de completări": evaluationsCompleted.length,
 
         // Evaluation
-        "ID evaluare": report.id, // TODO: CHECK
+        "ID evaluare": report.id,
         "Scor total obținut": totalScore,
       };
 
