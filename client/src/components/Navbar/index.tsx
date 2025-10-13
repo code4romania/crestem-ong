@@ -24,6 +24,10 @@ const MENU = {
       text: "Programele noastre",
       link: "https://crestem.ong/ro/programele-noastre",
     },
+    {
+      text: "Susținători",
+      link: "https://crestem.ong/ro/sustinatori",
+    },
     { text: "FAQ", link: "https://crestem.ong/ro/intrebari-frecvente" },
     { text: "Contact", link: "https://crestem.ong/ro/contact" },
   ],
