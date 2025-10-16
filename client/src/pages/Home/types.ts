@@ -3,6 +3,7 @@ export interface ReportVM {
   evaluationName: string;
   completionPeriod: string;
   numberOfCompletions: number;
+  totalEvaluations: number;
   score: string;
   isFinished: boolean;
 }

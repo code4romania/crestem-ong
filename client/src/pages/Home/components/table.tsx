@@ -1,17 +1,9 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { DataTable } from "@/components/ui/data-table";
 import formatDate from "@/lib/formatDate";
 import { calcScore } from "@/lib/score";
 import type { FinalReportModel } from "@/services/api/types";
 import { useGetUserReports } from "@/services/reports.queries";
 import {
-  flexRender,
   getCoreRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
@@ -21,7 +13,6 @@ import {
 } from "@tanstack/react-table";
 import type { ReportVM } from "../types";
 import { programColumns as columns } from "./columns";
-import { DataTable } from "@/components/ui/data-table";
 
 const mapper = (result: FinalReportModel[]): ReportVM[] =>
   result.map((r) => {
@@ -36,6 +27,7 @@ const mapper = (result: FinalReportModel[]): ReportVM[] =>
         r.deadline
       )}`,
       numberOfCompletions: evaluationsCompleted.length,
+      totalEvaluations: r.evaluations?.length || 0,
       score:
         evaluationsCompleted?.length > 0
           ? r.finished

@@ -68,9 +68,9 @@ const registerSchema = z
       .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
     confirmPassword: z
       .string()
-      .min(1, "Parola este obligatorie")
-      .min(8, "Parola trebuie sa contina cel putin 8 caractere")
-      .max(32, "Parola trebuie sa contina cel mult 32 caractere"),
+      .min(1, "Confirmarea parolei este obligatorie")
+      .min(8, "Confirmarea parolei trebuie sa contina cel putin 8 caractere")
+      .max(32, "Confirmarea parolei trebuie sa contina cel mult 32 caractere"),
     avatar: z.custom<File>().nullable(),
     domains: z
       .array(
@@ -83,10 +83,12 @@ const registerSchema = z
     website: z.string(),
     keywords: z.string(),
     description: z.string(),
-    contactFirstName: z.string(),
-    contactLastName: z.string(),
-    contactEmail: z.email("Adresa de email este invalida").optional().catch(""),
-    contactPhone: z.string(),
+    contactFirstName: z.string().min(1, "Prenumele este obligatoriu"),
+    contactLastName: z.string().min(1, "Numele este obligatoriu"),
+    contactEmail: z
+      .email("Adresa de email este invalida")
+      .min(1, "Adresa de email este obligatorie"),
+    contactPhone: z.string().min(1, "Telefonul este obligatoriu"),
     accountFacebook: z.string().optional(),
     accountTwitter: z.string().optional(),
     accountTiktok: z.string().optional(),
@@ -424,6 +426,102 @@ const Register = () => {
                   />
                 </div>
               </CardContent>
+
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <User className="h-5 w-5" />
+                  Persoana de Contact
+                </CardTitle>
+                <CardDescription>
+                  Informații despre persoana de contact a organizației
+                </CardDescription>
+              </CardHeader>
+
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="contactLastName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Nume
+                          <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="Nume" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="contactFirstName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Prenume
+                          <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="Prenume" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="contactEmail"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Adresă de email
+                          <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                            <Input
+                              className="pl-10"
+                              placeholder="contact@example.com"
+                              type="email"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="contactPhone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Telefon <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                            <Input
+                              className="pl-10"
+                              placeholder="+40 123 456 789"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </CardContent>
             </Card>
 
             <Card>
@@ -546,92 +644,6 @@ const Register = () => {
                     </FormItem>
                   )}
                 />
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <User className="h-5 w-5" />
-                  Persoana de Contact
-                </CardTitle>
-                <CardDescription>
-                  Informații despre persoana de contact a organizației
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="contactLastName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nume</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Nume" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="contactFirstName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Prenume</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Prenume" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="contactEmail"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Adresă de email</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                            <Input
-                              className="pl-10"
-                              placeholder="contact@example.com"
-                              type="email"
-                              {...field}
-                            />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="contactPhone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Telefon</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                            <Input
-                              className="pl-10"
-                              placeholder="+40 123 456 789"
-                              {...field}
-                            />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
               </CardContent>
             </Card>
 

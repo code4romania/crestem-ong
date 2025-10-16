@@ -74,7 +74,7 @@ const ReportView = ({
             Număr completări
           </dt>
           <dd className="whitespace-nowrap py-2 text-sm text-gray-700 sm:pl-3">
-            {evaluationsCompleted.length}
+            {evaluationsCompleted.length} / {report.evaluations.length}
           </dd>
         </div>
 

@@ -57,7 +57,7 @@ export const reportsColumns: (
     cell: ({ row }) => {
       return (
         <span>
-          {row.original.numberOfCompletedEvaluations} /{" "}
+          {row.original.numberOfCompletedEvaluations} /
           {row.original.totalEvaluations}
         </span>
       );
