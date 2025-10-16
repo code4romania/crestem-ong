@@ -7,7 +7,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useTableUrlState } from "@/hooks/use-table-url-state";
-import type { ProgramModel as ApiProgramModel } from "@/services/api/types";
 import { useSuspenseListPrograms } from "@/services/programs.queries";
 import { getRouteApi } from "@tanstack/react-router";
 import {
@@ -22,16 +21,16 @@ import {
 import type { ProgramVM } from "../type";
 import { programColumns as columns } from "./columns";
 import { ProgramsDataTableToolbar } from "./toolbar";
+import type { FinalProgramModel } from "@/services/api/types";
 
 const route = getRouteApi("/(app)/programs/");
-const mapper = (result: ApiProgramModel[]): ProgramVM[] =>
+const mapper = (result: FinalProgramModel[]): ProgramVM[] =>
   result.map((p) => ({
     id: p.id,
-    name: p.attributes.name,
-    status:
-      new Date() < new Date(p.attributes.endDate) ? "ongoing" : "finished",
-    usersCount: p.attributes.usersCount,
-    mentorsCount: p.attributes.mentorsCount,
+    name: p.name,
+    status: new Date() < new Date(p.endDate) ? "ongoing" : "finished",
+    usersCount: p.usersCount,
+    mentorsCount: p.mentorsCount,
   }));
 
 export function ProgramsTable() {

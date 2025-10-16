@@ -5,13 +5,10 @@ import {
 } from "@tanstack/react-query";
 import { getProgram } from "./api/get-program.api";
 import { listPrograms } from "./api/list-programs.api";
-import type {
-  ProgramModel as ApiProgramModel,
-  FinalProgramModel,
-} from "./api/types";
+import type { FinalProgramModel } from "./api/types";
 
-export const listProgramsQueryOptions = <TResult = ApiProgramModel[]>(
-  select?: (data: ApiProgramModel[]) => TResult
+export const listProgramsQueryOptions = <TResult = FinalProgramModel[]>(
+  select?: (data: FinalProgramModel[]) => TResult
 ) =>
   queryOptions({
     queryKey: ["programs"],
@@ -19,12 +16,12 @@ export const listProgramsQueryOptions = <TResult = ApiProgramModel[]>(
     select,
   });
 
-export const useSuspenseListPrograms = <TResult = ApiProgramModel[]>(
-  select?: (data: ApiProgramModel[]) => TResult
+export const useSuspenseListPrograms = <TResult = FinalProgramModel[]>(
+  select?: (data: FinalProgramModel[]) => TResult
 ) => useSuspenseQuery(listProgramsQueryOptions(select));
 
-export const useListPrograms = <TResult = ApiProgramModel[]>(
-  select?: (data: ApiProgramModel[]) => TResult
+export const useListPrograms = <TResult = FinalProgramModel[]>(
+  select?: (data: FinalProgramModel[]) => TResult
 ) => useQuery(listProgramsQueryOptions(select));
 
 export const getProgramQueryOptions = <TResult = FinalProgramModel>(
