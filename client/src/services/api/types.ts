@@ -204,13 +204,11 @@ export interface FinalEvaluationModel {
 }
 
 export interface FinalEvaluationDimensionModel {
-  id: number;
   comment: string;
   quiz: FinalEvaluationQuizModel[];
 }
 
 export interface FinalEvaluationQuizModel {
-  id: number;
   answer: number;
 }
 

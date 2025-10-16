@@ -1,4 +1,5 @@
 import { useAuth } from "@/contexts/auth";
+import FDSCProfile from "@/pages/admin/Profile";
 import MentorProfile from "@/pages/mentor/Profile";
 import Profile from "@/pages/Profile";
 
@@ -19,7 +20,7 @@ function RouteComponent() {
   const { userRole } = useAuth();
 
   return userRole === "fdsc" ? (
-    <Profile />
+    <FDSCProfile />
   ) : userRole === "authenticated" ? (
     <Profile />
   ) : userRole === "mentor" ? (

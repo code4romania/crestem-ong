@@ -67,7 +67,7 @@ const NewActivity = () => {
   const { data: dimensions, isLoading: loadingDimensions } = useListDimensions(
     (dimensions) =>
       dimensions.map((at) => ({
-        label: at.attributes.name,
+        label: at.name,
         value: at.id.toString(),
       }))
   );

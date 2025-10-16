@@ -19,7 +19,21 @@ const MentorDetails = ({ mentor }: { mentor: FinalDetailedUserModel }) => {
     return <Navigate to="/" />;
   }
 
-  const rows: [string, string | undefined | null | ReactNode][] = [
+  const rows: [string | ReactNode, string | undefined | null | ReactNode][] = [
+    [
+      <Avatar className="size-72 rounded-none">
+        <AvatarImage
+          src={mentor.avatar?.formats?.medium?.url}
+          alt={`${mentor.firstName} ${mentor.lastName}`}
+        />
+        <AvatarFallback>
+          {[mentor.firstName?.[0], mentor.lastName?.[0]].join("") ?? "M"}
+        </AvatarFallback>
+      </Avatar>,
+      <Heading level="h2">
+        {mentor.firstName} {mentor.lastName}
+      </Heading>,
+    ],
     [
       "Descriere (bio)",
       <div className="minimal-tiptap-editor">
@@ -52,35 +66,12 @@ const MentorDetails = ({ mentor }: { mentor: FinalDetailedUserModel }) => {
         ))}
       </div>,
     ],
-    [
-      "Poză profil",
-      <Avatar className="h-16 w-16">
-        <AvatarImage
-          src={mentor.avatar?.formats?.medium?.url}
-          alt={`${mentor.firstName} ${mentor.lastName}`}
-        />
-        <AvatarFallback>
-          {[mentor.firstName?.[0], mentor.lastName?.[0]].join("") ?? "-"}
-        </AvatarFallback>
-      </Avatar>,
-    ],
-    [
-      "Disponibilitate",
-      mentor.available ? (
-        <Badge>Disponibil</Badge>
-      ) : (
-        <Badge variant="destructive">Indisponibil</Badge>
-      ),
-    ],
   ];
 
   return (
     <>
       <Section>
-        <div className="flex w-full items-center justify-between">
-          <Heading level="h2">
-            {mentor.firstName} {mentor.lastName}
-          </Heading>
+        <div className="flex w-full justify-end">
           <div className="flex gap-2">
             <Button asChild variant="secondary">
               <Link to="/mentors">Înapoi</Link>
@@ -97,7 +88,6 @@ const MentorDetails = ({ mentor }: { mentor: FinalDetailedUserModel }) => {
             )}
           </div>
         </div>
-
         <div className="mt-8 bg-white shadow ring-1 ring-gray-900/5 sm:rounded-lg">
           <dl className="divide-y divide-gray-100">
             {rows.map(([label, value], idx) => (
@@ -119,13 +109,15 @@ const MentorDetails = ({ mentor }: { mentor: FinalDetailedUserModel }) => {
           </dl>
         </div>
       </Section>
-      <Section>
-        <Heading level="h3">Jurnal de activitate</Heading>
-        <div className="flex flex-col gap-4">
-          <MentorStats mentor={mentor} />
-          <MentorActivitiesTable mentor={mentor} />
-        </div>
-      </Section>
+      {userRole === "fdsc" && (
+        <Section>
+          <Heading level="h3">Jurnal de activitate</Heading>
+          <div className="flex flex-col gap-4">
+            <MentorStats mentor={mentor} />
+            <MentorActivitiesTable mentor={mentor} />
+          </div>
+        </Section>
+      )}
     </>
   );
 };

@@ -43,7 +43,7 @@ export function EvaluationStep({
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  value={field.value ?? ""}
                   className="flex flex-col"
                 >
                   <FormItem className="flex items-center gap-3">

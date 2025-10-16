@@ -9,18 +9,29 @@ import { Form } from "@/components/ui/form";
 
 import { useAuth } from "@/contexts/auth";
 import { Route } from "@/routes/(app)/evaluation/$evaluationId";
-import type { FinalEvaluationDimensionModel } from "@/services/api/types";
-import type { UpsertEvaluationDimensionRequest } from "@/services/api/upsert-evaluation.api";
+import type {
+  FinalEvaluationDimensionModel,
+  FinalEvaluationModel,
+  FinalEvaluationQuizModel,
+} from "@/services/api/types";
+import type {
+  UpsertEvaluationDimensionQuizRequest,
+  UpsertEvaluationDimensionRequest,
+} from "@/services/api/upsert-evaluation.api";
 import { updateEvaluationMutation } from "@/services/evaluation.mutations";
-import { useSuspenseGetEvaluation } from "@/services/evaluation.queries";
+import {
+  getEvaluationQueryOptions,
+  useSuspenseGetEvaluation,
+} from "@/services/evaluation.queries";
 import { useSuspenseGetMatrix } from "@/services/matrix.queries";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Navigate } from "@tanstack/react-router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { EvaluationStep } from "./EvaluationStep";
+import { queryClient } from "@/lib/query";
 
 const mapToEvaluationDimension = (
   data: DimensionEvaluationForm
@@ -113,6 +124,32 @@ const Evaluation = () => {
     },
   });
 
+  useEffect(() => {
+    form.reset({
+      comment: evaluationData.dimensions?.[currentStepIndex]?.comment ?? "",
+      question_1:
+        (evaluationData.dimensions?.[
+          currentStepIndex
+        ]?.quiz?.[0]?.answer?.toString() as AnswerType) ?? "",
+      question_2:
+        (evaluationData.dimensions?.[
+          currentStepIndex
+        ]?.quiz?.[1]?.answer?.toString() as AnswerType) ?? "",
+      question_3:
+        (evaluationData.dimensions?.[
+          currentStepIndex
+        ]?.quiz?.[2]?.answer?.toString() as AnswerType) ?? "",
+      question_4:
+        (evaluationData.dimensions?.[
+          currentStepIndex
+        ]?.quiz?.[3]?.answer?.toString() as AnswerType) ?? "",
+      question_5:
+        (evaluationData.dimensions?.[
+          currentStepIndex
+        ]?.quiz?.[4]?.answer?.toString() as AnswerType) ?? "",
+    });
+  }, [currentStepIndex, evaluationData, form]);
+
   const { data: dimensions } = useSuspenseGetMatrix((d) => d.dimensions);
 
   const { mutate: updateEvaluation, isPending } = updateEvaluationMutation();
@@ -147,6 +184,13 @@ const Evaluation = () => {
         onSuccess: () => {
           incrementStep();
           form.reset();
+          queryClient.setQueryData(
+            getEvaluationQueryOptions(evaluationId, email).queryKey,
+            {
+              ...evaluationData,
+              dimensions: evaluation,
+            }
+          );
         },
         onError: () =>
           toast.error("A aparut o problema la trimiterea raspunsurilor"),

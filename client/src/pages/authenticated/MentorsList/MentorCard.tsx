@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -28,27 +27,20 @@ const MentorCard = ({
 }) => {
   return (
     <Card>
-      <CardHeader className="flex flex-col items-center">
-        <CardTitle>
+      <CardHeader>
+        <CardTitle className="flex flex-col items-center gap-2">
           <Avatar className="h-32 w-32">
             <AvatarImage src={avatarUrl} alt={`${firstName} ${lastName}`} />
             <AvatarFallback>
               {[firstName?.[0], lastName?.[0]].filter(Boolean).join("") ?? "-"}
             </AvatarFallback>
           </Avatar>
+          <span>
+            {firstName} {lastName}
+          </span>
         </CardTitle>
-        <CardDescription>
-          {firstName} {lastName}
-        </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-wrap gap-2 px-2 w-full">
-        {dimensions?.map((dimension) => (
-          <Badge key={dimension.name} variant="secondary">
-            {dimension.name}
-          </Badge>
-        ))}
-      </CardContent>
-      <CardFooter className="flex justify-center ">
+      <CardContent className="flex justify-center ">
         <Button asChild>
           <Link to={`/users/$userId`} params={{ userId: id }}>
             <span className="sr-only">Twitter</span>
@@ -56,6 +48,13 @@ const MentorCard = ({
             <span className="inline">Vezi profil</span>
           </Link>
         </Button>
+      </CardContent>
+      <CardFooter className="flex flex-wrap gap-2 px-2 w-full items-center justify-center">
+        {dimensions?.map((dimension) => (
+          <Badge key={dimension.name} variant="secondary">
+            {dimension.name}
+          </Badge>
+        ))}
       </CardFooter>
     </Card>
   );

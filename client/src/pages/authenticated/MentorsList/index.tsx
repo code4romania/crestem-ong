@@ -4,13 +4,11 @@ import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import MentorCard from "@/pages/authenticated/MentorsList/MentorCard";
 import { useListMentors } from "@/services/mentors.queries";
-import { useGetMe } from "@/services/user.queries";
 
 const Mentors = () => {
-  const { data: user, isLoading } = useGetMe();
   const { data: mentors, isLoading: isLoadingMentors } = useListMentors();
 
-  if (isLoading || isLoadingMentors) {
+  if (isLoadingMentors) {
     return <FullScreenLoader />;
   }
 
@@ -19,7 +17,7 @@ const Mentors = () => {
       <div className="text-center mb-12">
         <Heading level="h2">Persoane resursă</Heading>
         <p className="mt-2 text-sm text-muted-foreground">
-          Găsiți persoane resursă disponibile pentru colaborare.
+          Vezi lista persoanelor resursă
         </p>
       </div>
 

@@ -15,25 +15,32 @@ import { Input } from "../ui/input";
 import { toast } from "sonner";
 import { useInviteNGOMemberMutation } from "@/services/evaluation.mutations";
 import { Separator } from "../ui/separator";
+import type { FinalReportModel } from "@/services/api/types";
 
-const evaluationSchema = z.object({
-  email: z
-    .email("Adresa de email este invalidă")
-    .min(1, "Vă rugăm introduceți adresa de email"),
-});
-export type EvaluationInput = z.infer<typeof evaluationSchema>;
-
-const CreateEvaluation = ({ reportId }: { reportId: number }) => {
+const CreateEvaluation = ({ report }: { report: FinalReportModel }) => {
   const { mutate: createEvaluation } = useInviteNGOMemberMutation();
+  const evaluationSchema = z.object({
+    email: z
+      .email("Adresa de email este invalidă")
+      .min(1, "Vă rugăm introduceți adresa de email")
+      .refine((email) => !report.evaluations.some((e) => e.email === email), {
+        message: "Adresa de email este deja invitată.",
+      }),
+  });
+
+  type EvaluationInput = z.infer<typeof evaluationSchema>;
 
   const form = useForm<EvaluationInput>({
     resolver: zodResolver(evaluationSchema),
+    defaultValues: {
+      email: "",
+    },
   });
 
   const onSubmitHandler = useCallback(
     ({ email }: EvaluationInput) => {
       createEvaluation(
-        { report: reportId, email },
+        { report: report.id, email },
         {
           onSuccess: () => toast.success("Invitația a fost transmisă."),
           onError: () => toast.error("Ceva nu a funcționat. Încearcă din nou."),
@@ -47,7 +54,6 @@ const CreateEvaluation = ({ reportId }: { reportId: number }) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmitHandler)} className="space-y-2">
-        {/* Detalii evaluare */}
         <FormField
           control={form.control}
           name="email"

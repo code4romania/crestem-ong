@@ -13,7 +13,7 @@ export interface ReportResultsProps {
   scoreByEvaluation: {
     id: string;
     name: string;
-    link: string;
+    link: string | undefined;
     score: number;
     tags: string[];
   }[];

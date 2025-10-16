@@ -24,6 +24,7 @@ function ActivityDetails() {
     ["Tip activitate", activity.type.name || "-"],
     ["Data", formatDate(activity.startDate) || "-"],
     ["Durata", `${activity.duration} ore`],
+    ["Notițe", `${activity.notes || "-"}`],
   ];
 
   return (

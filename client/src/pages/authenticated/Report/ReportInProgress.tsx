@@ -91,8 +91,6 @@ const ReportInProgress = ({ report }: { report: FinalReportModel }) => {
     },
   });
 
-  const today = new Date().toISOString().split("T")[0];
-
   const onSubmit = useCallback((form: ReportInput) => {
     updateReport(
       {
@@ -247,7 +245,7 @@ const ReportInProgress = ({ report }: { report: FinalReportModel }) => {
       </div>
       <div>
         <div className="my-10 md:max-w-xl">
-          <CreateEvaluation reportId={reportId} />
+          <CreateEvaluation report={report} />
         </div>
         <TableEvaluations report={report} />
       </div>
