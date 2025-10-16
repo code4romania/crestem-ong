@@ -62,7 +62,6 @@ export const reportsColumns: (
         </span>
       );
     },
-    enableSorting: false,
   },
 
   {

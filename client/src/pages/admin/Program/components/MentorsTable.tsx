@@ -22,7 +22,9 @@ import { AddMentorInProgramDialog } from "./AddMentorInProgramDialog";
 import formatDate from "@/lib/formatDate";
 import type { FinalUserModel } from "@/services/api/types";
 
-export const columns: ColumnDef<FinalUserModel>[] = [
+export const columns: (programId: string) => ColumnDef<FinalUserModel>[] = (
+  programId: string
+) => [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -109,6 +111,7 @@ export const columns: ColumnDef<FinalUserModel>[] = [
       <Button asChild variant="link">
         <Link
           to="/users/$userId"
+          search={{ returnToProgramId: programId }}
           params={{ userId: row.original.id.toString() }}
         >
           vezi
@@ -118,7 +121,13 @@ export const columns: ColumnDef<FinalUserModel>[] = [
   },
 ];
 
-function MentorsTable({ mentors }: { mentors: FinalUserModel[] }) {
+function MentorsTable({
+  mentors,
+  programId,
+}: {
+  mentors: FinalUserModel[];
+  programId: string;
+}) {
   const [openAddMentorInProgramDialog, setOpenAddMentorInProgramDialog] =
     useState(false);
 
@@ -130,10 +139,11 @@ function MentorsTable({ mentors }: { mentors: FinalUserModel[] }) {
     () => allMentors?.filter(({ id }) => !programMentorsIds.includes(id)),
     [allMentors, programMentorsIds]
   );
+  const memoizedColumns = useMemo(() => columns(programId), [programId]);
 
   const table = useReactTable({
     data: mentors,
-    columns,
+    columns: memoizedColumns,
     rowCount: mentors.length,
     enableRowSelection: false,
     getCoreRowModel: getCoreRowModel(),

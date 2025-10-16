@@ -12,7 +12,13 @@ import { type ReactNode } from "react";
 import { MentorActivitiesTable } from "./components/table";
 import { MentorStats } from "./components/mentor-stats";
 
-const MentorDetails = ({ mentor }: { mentor: FinalDetailedUserModel }) => {
+const MentorDetails = ({
+  mentor,
+  returnToProgramId,
+}: {
+  mentor: FinalDetailedUserModel;
+  returnToProgramId?: string;
+}) => {
   const { userRole } = useAuth();
 
   if (mentor.role.type !== "mentor") {
@@ -73,9 +79,20 @@ const MentorDetails = ({ mentor }: { mentor: FinalDetailedUserModel }) => {
       <Section>
         <div className="flex w-full justify-end">
           <div className="flex gap-2">
-            <Button asChild variant="secondary">
-              <Link to="/mentors">Înapoi</Link>
-            </Button>
+            {returnToProgramId ? (
+              <Button asChild variant="secondary">
+                <Link
+                  to="/programs/$programId"
+                  params={{ programId: returnToProgramId.toString() }}
+                >
+                  Înapoi
+                </Link>
+              </Button>
+            ) : (
+              <Button asChild variant="secondary">
+                <Link to="/mentors">Înapoi</Link>
+              </Button>
+            )}
             {userRole === "fdsc" && (
               <Button asChild>
                 <Link

@@ -7,8 +7,12 @@ import {
 } from "@/services/user.queries";
 
 import { createFileRoute, Navigate, redirect } from "@tanstack/react-router";
+import z from "zod";
 
 export const Route = createFileRoute("/(app)/users/$userId")({
+  validateSearch: z.object({
+    returnToProgramId: z.string().optional(),
+  }),
   beforeLoad: ({ context }) => {
     if (!context.auth.isAuthenticated) {
       throw redirect({
@@ -25,11 +29,15 @@ function RouteComponent() {
   const { userRole } = useAuth();
   const { userId } = Route.useParams();
   const { data: userDetails } = useSuspenseGetUserDetails(userId);
+  const { returnToProgramId } = Route.useSearch();
 
   return userRole === "fdsc" ? (
-    <UserDetails userDetails={userDetails} />
+    <UserDetails
+      userDetails={userDetails}
+      returnToProgramId={returnToProgramId}
+    />
   ) : userRole === "authenticated" ? (
-    <MentorDetails mentor={userDetails} />
+    <MentorDetails mentor={userDetails} returnToProgramId={returnToProgramId} />
   ) : (
     <Navigate to="/" />
   );

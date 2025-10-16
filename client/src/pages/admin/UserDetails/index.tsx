@@ -7,15 +7,20 @@ import { Suspense } from "react";
 
 const UserDetails = ({
   userDetails,
+  returnToProgramId,
 }: {
   userDetails: FinalDetailedUserModel;
+  returnToProgramId?: string;
 }) => {
   return (
     <Suspense fallback={<FullScreenLoader />}>
       {userDetails.role?.type === "authenticated" ? (
-        <NgoDetails ngo={userDetails} />
+        <NgoDetails ngo={userDetails} returnToProgramId={returnToProgramId} />
       ) : userDetails.role.type === "mentor" ? (
-        <MentorDetails mentor={userDetails} />
+        <MentorDetails
+          mentor={userDetails}
+          returnToProgramId={returnToProgramId}
+        />
       ) : (
         <Navigate to="/" />
       )}

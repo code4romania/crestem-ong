@@ -13,7 +13,13 @@ import type { FinalDetailedUserModel } from "@/services/api/types";
 import { Link, Navigate } from "@tanstack/react-router";
 import NgoReportsTable from "./components/table";
 
-const NgoDetails = ({ ngo }: { ngo: FinalDetailedUserModel }) => {
+const NgoDetails = ({
+  ngo,
+  returnToProgramId,
+}: {
+  ngo: FinalDetailedUserModel;
+  returnToProgramId?: string;
+}) => {
   if (ngo.role.type !== "authenticated") {
     return <Navigate to="/" />;
   }
@@ -112,9 +118,20 @@ const NgoDetails = ({ ngo }: { ngo: FinalDetailedUserModel }) => {
       <Section>
         <div className="flex w-full items-center justify-between">
           <Heading level={"h2"}>{ngo.ongName}</Heading>
-          <Button asChild variant="secondary">
-            <Link to="/users">Înapoi</Link>
-          </Button>
+          {returnToProgramId ? (
+            <Button asChild variant="secondary">
+              <Link
+                to="/programs/$programId"
+                params={{ programId: returnToProgramId.toString() }}
+              >
+                Înapoi
+              </Link>
+            </Button>
+          ) : (
+            <Button asChild variant="secondary">
+              <Link to="/users">Înapoi</Link>
+            </Button>
+          )}
         </div>
         <Stats
           data={[

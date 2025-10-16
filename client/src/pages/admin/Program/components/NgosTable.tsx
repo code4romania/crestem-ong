@@ -21,27 +21,9 @@ import {
 import { useMemo, useState } from "react";
 import { AddNgoInProgramDialog } from "./AddNgoInProgramDialog";
 
-export const columns: ColumnDef<FinalUserModel>[] = [
-  {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Nume ONG"
-        className="whitespace-nowrap  text-sm font-bold text-gray-900"
-      />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex space-x-2">
-          <span className="max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]">
-            {row.original.ongName}
-          </span>
-        </div>
-      );
-    },
-    enableSorting: false,
-  },
+export const columns: (programId: string) => ColumnDef<FinalUserModel>[] = (
+  programId: string
+) => [
   {
     accessorKey: "contactPersonName",
     header: ({ column }) => (
@@ -103,6 +85,7 @@ export const columns: ColumnDef<FinalUserModel>[] = [
       <Button asChild variant="link">
         <Link
           to="/users/$userId"
+          search={{ returnToProgramId: programId }}
           params={{ userId: row.original.id.toString() }}
         >
           vezi
@@ -111,8 +94,13 @@ export const columns: ColumnDef<FinalUserModel>[] = [
     ),
   },
 ];
-
-function NgosTable({ ngos }: { ngos: FinalUserModel[] }) {
+function NgosTable({
+  ngos,
+  programId,
+}: {
+  ngos: FinalUserModel[];
+  programId: string;
+}) {
   const [openAddNgoInProgramDialog, setOpenAddNgoInProgramDialog] =
     useState(false);
 
@@ -124,10 +112,11 @@ function NgosTable({ ngos }: { ngos: FinalUserModel[] }) {
     () => allNgos?.filter(({ id }) => !programNgoIds.includes(id)),
     [allNgos, programNgoIds]
   );
+  const memoizedColumns = useMemo(() => columns(programId), [programId]);
 
   const table = useReactTable({
     data: ngos,
-    columns,
+    columns: memoizedColumns,
     rowCount: ngos.length,
     enableRowSelection: false,
     getCoreRowModel: getCoreRowModel(),
