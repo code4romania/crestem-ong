@@ -8,7 +8,7 @@ import { DataTableDateFilter } from "@/components/data-table/data-table-date-fil
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { Button } from "@/components/ui/button";
 import { citiesByCounty } from "@/lib/orase-dupa-judet";
-import type { DomainModel, ProgramModel } from "@/services/api/types";
+import type { FinalDomainModel, FinalProgramModel } from "@/services/api/types";
 import { useSuspenseListDomains } from "@/services/domains.queries";
 import type { Option } from "@/types/data-table";
 import type { NgoVM } from "../types";
@@ -18,10 +18,12 @@ interface NgosDataTableToolbarProps {
   table: Table<NgoVM>;
 }
 
-function mapToOptions(domains: DomainModel[] | ProgramModel[]): Option[] {
+function mapToOptions(
+  domains: FinalDomainModel[] | FinalProgramModel[]
+): Option[] {
   return domains.map((domain) => ({
-    label: domain.attributes.name,
-    value: domain.attributes.name,
+    label: domain.name,
+    value: domain.name,
   }));
 }
 

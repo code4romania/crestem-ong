@@ -26,12 +26,14 @@ import {
   MultiSelectorList,
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
-import type { DimensionModel as ApiDimensionModel } from "@/services/api/types";
+import type {
+  DimensionModel as ApiDimensionModel,
+  FinalProgramModel,
+} from "@/services/api/types";
 import { useUploadPictureMutation } from "@/services/user.mutations";
 import { toast } from "sonner";
 
 import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
-import type { ProgramModel as ApiProgramModel } from "@/services/api/types";
 
 const mentorSchema = z.object({
   firstName: z.string().min(1, "Nume este obligatoriu"),
@@ -63,10 +65,10 @@ const mentorSchema = z.object({
 });
 
 export type MentorInput = z.infer<typeof mentorSchema>;
-const programsMapper = (programs: ApiProgramModel[]) =>
-  programs.map((p) => ({ id: p.id, name: p.attributes.name }));
+const programsMapper = (programs: FinalProgramModel[]) =>
+  programs.map((p) => ({ id: p.id, name: p.name }));
 const dimensionsMapper = (programs: ApiDimensionModel[]) =>
-  programs.map((d) => ({ id: d.id, name: d.attributes.name }));
+  programs.map((d) => ({ id: d.id, name: d.name }));
 
 const CreateMentor = () => {
   const navigate = useNavigate();

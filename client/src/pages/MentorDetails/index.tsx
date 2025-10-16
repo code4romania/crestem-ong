@@ -27,18 +27,20 @@ const MentorDetails = ({
 
   const rows: [string | ReactNode, string | undefined | null | ReactNode][] = [
     [
-      <Avatar className="size-72 rounded-none">
-        <AvatarImage
-          src={mentor.avatar?.formats?.medium?.url}
-          alt={`${mentor.firstName} ${mentor.lastName}`}
-        />
-        <AvatarFallback>
-          {[mentor.firstName?.[0], mentor.lastName?.[0]].join("") ?? "M"}
-        </AvatarFallback>
-      </Avatar>,
-      <Heading level="h2">
-        {mentor.firstName} {mentor.lastName}
-      </Heading>,
+      <div className="flex flex-col items-center sm:items-start sm:flex-row gap-4">
+        {mentor.avatar?.formats?.medium?.url && (
+          <Avatar className="size-72 rounded-none shrink-0">
+            <AvatarImage
+              src={mentor.avatar?.formats?.medium?.url}
+              alt={`${mentor.firstName} ${mentor.lastName}`}
+            />
+          </Avatar>
+        )}
+        <Heading level="h2" className="text-center sm:text-left">
+          {mentor.firstName} {mentor.lastName}
+        </Heading>
+      </div>,
+      null,
     ],
     [
       "Descriere (bio)",
@@ -119,7 +121,7 @@ const MentorDetails = ({
                 </dt>
 
                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {value || "-"}
+                  {value}
                 </dd>
               </div>
             ))}

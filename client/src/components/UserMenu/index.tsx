@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/auth";
 import { queryClient } from "@/lib/query";
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Link, useRouter } from "@tanstack/react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
@@ -11,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
 const UserMenu = () => {

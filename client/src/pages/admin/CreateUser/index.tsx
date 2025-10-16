@@ -446,11 +446,11 @@ const CreateUser = () => {
                           <MultiSelectorList>
                             {domains.map((domain) => (
                               <MultiSelectorItem
-                                key={domain.attributes.name}
+                                key={domain.name}
                                 value={domain.id.toString()}
-                                label={domain.attributes.name}
+                                label={domain.name}
                               >
-                                <span>{domain.attributes.name}</span>
+                                <span>{domain.name}</span>
                               </MultiSelectorItem>
                             ))}
                           </MultiSelectorList>

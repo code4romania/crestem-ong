@@ -46,15 +46,6 @@ export interface MentorDimensionModel {
   publishedAt: string;
 }
 
-export interface DomainModel {
-  id: number;
-  attributes: DomainAtrributeModel;
-}
-
-export interface DomainAtrributeModel {
-  name: string;
-}
-
 export interface MentorProgramModel {
   id: number;
   /** A string field */

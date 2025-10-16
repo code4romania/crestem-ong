@@ -7,7 +7,6 @@ import { X } from "lucide-react";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { Button } from "@/components/ui/button";
 import type { ProgramVM } from "../type";
-import { Value } from "@radix-ui/react-select";
 
 interface ProgramsDataTableToolbarProps {
   table: Table<ProgramVM>;

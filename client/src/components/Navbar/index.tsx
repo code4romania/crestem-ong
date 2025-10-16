@@ -2,17 +2,20 @@ import NavbarEvaluation from "@/components/NavbarEvaluation";
 import UserMenu from "@/components/UserMenu";
 
 import { useAuth } from "@/contexts/auth";
-import {
-  MenuButton,
-  Menu as MenuHeadless,
-  MenuItem,
-  MenuItems,
-  Transition,
-} from "@headlessui/react";
+
 import { Bars3Icon } from "@heroicons/react/20/solid";
 import { Link } from "@tanstack/react-router";
 import { Fragment, useMemo } from "react";
 import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 const MENU = {
   public: [
@@ -99,31 +102,26 @@ export const Menu = () => {
       </ul>
 
       {/* Mobile Menu */}
-      <MenuHeadless
-        as="div"
-        className="lg:hidden !mt-0 relative flex items-center"
-      >
-        <MenuButton>
-          <Bars3Icon className="h-5" />
-        </MenuButton>
-        <Transition
-          as={Fragment}
-          enter="transition ease-out duration-100"
-          enterFrom="transform opacity-0 scale-95"
-          enterTo="transform opacity-100 scale-100"
-          leave="transition ease-in duration-75"
-          leaveFrom="transform opacity-100 scale-100"
-          leaveTo="transform opacity-0 scale-95"
-        >
-          <MenuItems className="absolute top-5 right-0 z-10 mt-2 w-60 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none flex flex-col">
+
+      <DropdownMenu modal={false}>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="lg:hidden !mt-0 relative flex items-center"
+          >
+            <Bars3Icon className="h-5" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56" align="end" forceMount>
+          <DropdownMenuGroup>
             {menu.map((menuItem) => (
-              <MenuItem key={menuItem.text}>
+              <DropdownMenuItem asChild key={menuItem.text}>
                 {menuItem.link.startsWith("https://crestem.ong") ? (
                   <a
                     href={menuItem.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex flex-wrap border-b-2 px-3 py-2 font-medium items-center text-gray-900 hover:bg-gray-50"
+                    // className="flex flex-wrap border-b-2 px-3 py-2 font-medium items-center text-gray-900 hover:bg-gray-50"
                   >
                     {menuItem.text}
                   </a>
@@ -131,40 +129,40 @@ export const Menu = () => {
                   <Link
                     to={menuItem.link}
                     activeProps={{
-                      className: "bg-gray-100 border-teal-600",
+                      className:
+                        "bg-gray-100 border-2 border-teal-600 font-semibold",
                     }}
                     inactiveProps={{
-                      className: "border-transparent",
+                      className: "border-transparent hover:bg-gray-100",
                     }}
-                    className="flex flex-wrap border-b-2 px-3 py-2 font-medium items-center text-gray-900"
                   >
                     {menuItem.text}
                   </Link>
                 )}
-              </MenuItem>
+              </DropdownMenuItem>
             ))}
 
             {!user && (
               <>
-                <MenuItem as="div" className="px-2 flex mb-2">
-                  {({ close }) => (
-                    <Button asChild onClick={close} variant="secondary">
-                      <Link to={"/login"}>Intră în cont</Link>
-                    </Button>
-                  )}
-                </MenuItem>
-                <MenuItem as="div" className="px-2 flex mb-1">
-                  {({ close }) => (
-                    <Button asChild onClick={close}>
-                      <Link to={"/register"}>Înregistrează-te</Link>
-                    </Button>
-                  )}
-                </MenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to={"/login"}>Intră în cont</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to={"/register"}>Înregistrează-te</Link>
+                </DropdownMenuItem>
               </>
             )}
-          </MenuItems>
-        </Transition>
-      </MenuHeadless>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link to="/">Acasă</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/profile">Profilul meu</Link>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </>
   );
 };
