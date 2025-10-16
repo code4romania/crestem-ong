@@ -48,7 +48,26 @@ const reportSchema = z.object({
         email: z.email({ message: "Adresa de email este invalidă" }),
       })
     )
-    .min(1, "Adagua o minim o adresa de email"),
+    .min(1, "Adagua o minim o adresa de email")
+    .superRefine((evaluations, ctx) => {
+      // normalize emails (lowercase + trim)
+      const normalizedEmails = evaluations.map((e) =>
+        e.email.toLowerCase().trim()
+      );
+
+      normalizedEmails.forEach((email, index) => {
+        const firstIndex = normalizedEmails.indexOf(email);
+        if (firstIndex !== index) {
+          console.log(email, firstIndex, index);
+          ctx.addIssue({
+            code: "custom",
+            message: `Adresa de email "${email}" este duplicată`,
+            path: [index, "email"],
+            input: evaluations,
+          });
+        }
+      });
+    }),
 });
 
 export type ReportInput = z.infer<typeof reportSchema>;
@@ -228,7 +247,7 @@ const NewReport = () => {
             <Separator />
             <div>
               {fields.map((field, index) => (
-                <div key={field.id} className="flex items-start gap-2">
+                <div key={field.id} className="flex items-start gap-2 mt-2">
                   <FormField
                     control={form.control}
                     name={`evaluations.${index}.email`}
