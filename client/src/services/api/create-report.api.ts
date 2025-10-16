@@ -1,7 +1,7 @@
 import { API } from "../api";
 export interface CreateReportRequest {
   evaluations: { email: string }[];
-  deadline: Date;
+  deadline: string;
 }
 export interface CreateReportResponse {
   id: number;

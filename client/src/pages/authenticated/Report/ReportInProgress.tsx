@@ -37,7 +37,7 @@ const CallToAction = ({ reportId }: { reportId: number }) => {
     updateReport({
       id: reportId,
       finished: true,
-      deadline: new Date(),
+      deadline: format(new Date(), "yyyy-MM-dd"),
     });
   }, [reportId]);
 
@@ -95,7 +95,7 @@ const ReportInProgress = ({ report }: { report: FinalReportModel }) => {
     updateReport(
       {
         id: reportId,
-        deadline: form.deadline!,
+        deadline: format(form.deadline!, "yyyy-MM-dd"),
       },
       { onSuccess: () => setEditDeadline(false) }
     );

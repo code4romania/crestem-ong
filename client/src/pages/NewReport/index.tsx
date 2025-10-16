@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 import { useCreateReportMutation } from "@/services/reports.mutations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { format } from "date-fns";
 import { Calendar as CalendarIcon, Trash } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -30,6 +31,13 @@ import { z } from "zod";
 const today = new Date();
 const maxDate = new Date();
 maxDate.setDate(maxDate.getDate() + 30);
+
+const normalizeDateToUTC = (date: Date) => {
+  const normalized = new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+  );
+  return normalized;
+};
 
 const reportSchema = z.object({
   startDate: z.date({ error: "Alegeți o dată validă" }).optional(),
@@ -58,7 +66,6 @@ const reportSchema = z.object({
       normalizedEmails.forEach((email, index) => {
         const firstIndex = normalizedEmails.indexOf(email);
         if (firstIndex !== index) {
-          console.log(email, firstIndex, index);
           ctx.addIssue({
             code: "custom",
             message: `Adresa de email "${email}" este duplicată`,
@@ -101,7 +108,7 @@ const NewReport = () => {
   const onSubmit = (data: ReportInput) => {
     createReport(
       {
-        deadline: data.deadline!,
+        deadline: format(data.deadline!, "yyyy-MM-dd"),
         evaluations: data.evaluations,
       },
       {
@@ -251,7 +258,7 @@ const NewReport = () => {
                   <FormField
                     control={form.control}
                     name={`evaluations.${index}.email`}
-                    render={({ field }) => (
+                    render={({ field, fieldState }) => (
                       <FormItem className="flex-1">
                         <FormLabel className={cn(index !== 0 && "sr-only")}>
                           Adrese email
@@ -265,7 +272,7 @@ const NewReport = () => {
                         </FormDescription>
                         <FormControl>
                           <div className="flex gap-2">
-                            <Input {...field} />
+                            <Input {...field} {...fieldState} />
                             <Button
                               type="button"
                               variant="ghost"

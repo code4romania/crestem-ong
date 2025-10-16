@@ -1,7 +1,7 @@
 import { API } from "../api";
 export interface UpdateReportRequest {
   id: number;
-  deadline: Date;
+  deadline: string;
   finished?: boolean;
 }
 export const updateReport = ({
