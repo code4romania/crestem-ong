@@ -54,6 +54,15 @@ export const reportsColumns: (
       <DataTableColumnHeader column={column} title="TOTAL COMPLETĂRI" />
     ),
     enableSorting: false,
+    cell: ({ row }) => {
+      return (
+        <span>
+          {row.original.numberOfCompletedEvaluations} /{" "}
+          {row.original.totalEvaluations}
+        </span>
+      );
+    },
+    enableSorting: false,
   },
 
   {
