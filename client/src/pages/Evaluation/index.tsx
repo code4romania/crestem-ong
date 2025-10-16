@@ -248,11 +248,11 @@ const Evaluation = () => {
             <div className="flex place-content-end gap-3">
               <Button
                 type="button"
-                color="white"
+                variant="secondary"
                 onClick={handleBack}
                 disabled={currentStepIndex === 0 || isPending}
               >
-                Back
+                Înapoi
               </Button>
               <Button type="submit">
                 {currentStepIndex !== 9

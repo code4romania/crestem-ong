@@ -30,7 +30,7 @@ const SocialNetworkLinks = () => {
         />
       ))}
       <div className="flex justify-end mt-4">
-        <Button color="white" onClick={handleAddLink} type="button">
+        <Button variant="secondary" onClick={handleAddLink} type="button">
           + Adaugă încă un link
         </Button>
       </div>
