@@ -1,11 +1,11 @@
 import { useGetUserMentorActivities } from "@/services/user.queries";
 
 import EmptyScreen from "@/components/EmptyScreen";
-import Feed from "@/components/Feed";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
+import { Feed } from "@/components/Feed";
 
 const Activities = () => {
   const { data: mentorActivities } = useGetUserMentorActivities();

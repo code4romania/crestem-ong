@@ -14,10 +14,12 @@ import type {
   FinalDomainModel,
   MentorActivityModel,
   FinalProgramModel,
+  MenteeModel,
 } from "./api/types";
 import { getUserPrograms } from "./api/get-user-programs.api";
 import { getUserDimensions } from "./api/get-user-dimensions.api";
 import { getUserDetails } from "./api/get-user-details.api";
+import { listMentees } from "./api/list-mentees.api";
 
 export const getMeQueryOptions = <TResult = MeModel>(
   select?: (data: MeModel) => TResult
@@ -139,3 +141,20 @@ export const useGetUserDetails = <TResult = FinalDetailedUserModel>(
   userId: string,
   select?: (data: FinalDetailedUserModel) => TResult
 ) => useQuery(getUserDetailsQueryOptions(userId, select));
+
+export const listMenteesQueryOptions = <TResult = MenteeModel[]>(
+  mentorId: number,
+  select?: (data: MenteeModel[]) => TResult
+) =>
+  queryOptions({
+    queryKey: ["mentees"],
+    queryFn: () => listMentees(mentorId),
+    placeholderData: [],
+    select,
+    enabled: !!Cookies.get("jwt"),
+  });
+
+export const useListMentees = <TResult = MenteeModel[]>(
+  mentorId: number,
+  select?: (data: MenteeModel[]) => TResult
+) => useQuery(listMenteesQueryOptions(mentorId, select));

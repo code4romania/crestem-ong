@@ -20,11 +20,11 @@ const mapper = (result: MentorActivityModel[]): MentorActivityVM[] =>
   result.map((ma) => {
     return {
       id: ma.id.toString(),
-      ngo: ma.user.ongName,
-      dimension: ma.dimension.name,
-      activityType: ma.type.name,
-      startDate: ma.startDate,
-      duration: ma.duration,
+      ngo: ma.user?.ongName ?? "N/A",
+      dimension: ma.dimension?.name ?? "N/A",
+      activityType: ma.type?.name ?? "N/A",
+      startDate: ma.startDate ?? "N/A",
+      duration: ma.duration ?? 0,
     };
   });
 
@@ -34,6 +34,7 @@ export function MentorActivitiesTable({
   mentor: FinalDetailedUserModel;
 }) {
   const { data } = useListMentorActivities(mentor.id, mapper);
+
   const { userRole } = useAuth();
 
   const table = useReactTable({

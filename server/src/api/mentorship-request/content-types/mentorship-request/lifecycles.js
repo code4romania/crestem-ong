@@ -1,4 +1,4 @@
-const { PolicyError, ValidationError } = require("@strapi/utils").errors;
+const { ValidationError } = require("@strapi/utils").errors;
 
 const sendEmailToMentorFromUser = (to, data) =>
   strapi.plugin("email-designer").service("email").sendTemplatedEmail(
@@ -7,6 +7,16 @@ const sendEmailToMentorFromUser = (to, data) =>
     },
     {
       templateReferenceId: 10,
+    },
+    data
+  );
+const sendEmailToUserFromMentor = (to, data) =>
+  strapi.plugin("email-designer").service("email").sendTemplatedEmail(
+    {
+      to,
+    },
+    {
+      templateReferenceId: 11,
     },
     data
   );
@@ -30,6 +40,21 @@ module.exports = {
     if (!userId || !mentorId) {
       ctx.badRequest(`Organizatie sau persoana resursa invalide`);
       throw new ValidationError(`Organizatie sau persoana resursa invalide`);
+    }
+
+    // ✅ Check if a mentorship request between the same user and mentor already exists
+    const existingRequest = await strapi.db
+      .query("api::mentorship-request.mentorship-request")
+      .findOne({
+        where: {
+          mentor: { id: mentorId },
+          user: { id: userId },
+        },
+      });
+
+    if (existingRequest) {
+      ctx.badRequest(`Aceasta relatie exista deja`);
+      throw new ValidationError(`Aceasta relatie exista deja`);
     }
 
     const mentorData = await strapi.entityService.findOne(
@@ -82,6 +107,11 @@ module.exports = {
         USER_NAME: user.ongName,
         USER_EMAIL: user.email,
         REPORT_ID: reportId,
+      });
+
+      await sendEmailToUserFromMentor(user.email, {
+        USER_NAME: mentor.firstName + " " + mentor.lastName,
+        USER_EMAIL: mentor.email,
       });
     } catch (e) {
       strapi.log.error(`Eroare la trimiterea email-ului: ${e}`);

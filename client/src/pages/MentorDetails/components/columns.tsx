@@ -4,6 +4,8 @@ import { Link } from "@tanstack/react-router";
 import { type ColumnDef } from "@tanstack/react-table";
 import type { MentorActivityVM } from "./types";
 import formatDate from "@/lib/formatDate";
+import { Router } from "lucide-react";
+import { router } from "@/index";
 
 export const programColumns: ColumnDef<MentorActivityVM>[] = [
   {
@@ -47,6 +49,9 @@ export const programColumns: ColumnDef<MentorActivityVM>[] = [
         <Link
           to="/activities/$activityId"
           params={{ activityId: row.original.id.toString() }}
+          search={{
+            returnTo: router.state.location.pathname,
+          }}
         >
           Vezi activitatea
         </Link>

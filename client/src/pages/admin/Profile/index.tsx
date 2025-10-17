@@ -13,8 +13,6 @@ const FDSCProfile = () => {
     return <Navigate to="/" />;
   }
 
-  console.log(user);
-
   const rows = [["Email", user.email]];
 
   return (

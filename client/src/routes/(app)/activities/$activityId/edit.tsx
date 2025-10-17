@@ -1,11 +1,11 @@
 import LayoutApp from "@/components/LayoutApp";
 import { useAuth } from "@/contexts/auth";
-import ActivityDetails from "@/pages/admin/ActivityDetails";
+import EditActivity from "@/pages/mentor/EditActivity";
 import { getActivityByIdQueryOptions } from "@/services/activities.queries";
 
 import { createFileRoute, Navigate, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/(app)/activities/$activityId")({
+export const Route = createFileRoute("/(app)/activities/$activityId/edit")({
   beforeLoad: ({ context }) => {
     if (!context.auth.isAuthenticated) {
       throw redirect({
@@ -22,9 +22,9 @@ export const Route = createFileRoute("/(app)/activities/$activityId")({
 function RouteComponent() {
   const { userRole } = useAuth();
 
-  return userRole === "fdsc" ? (
+  return userRole === "mentor" ? (
     <LayoutApp>
-      <ActivityDetails />
+      <EditActivity />
     </LayoutApp>
   ) : (
     <Navigate to="/" />

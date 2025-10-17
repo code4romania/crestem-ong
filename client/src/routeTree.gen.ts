@@ -40,9 +40,10 @@ import { Route as appCreateReportRouteImport } from './routes/(app)/create/repor
 import { Route as appCreateProgramRouteImport } from './routes/(app)/create/program'
 import { Route as appCreateMentorRouteImport } from './routes/(app)/create/mentor'
 import { Route as appCreateActivityRouteImport } from './routes/(app)/create/activity'
-import { Route as appActivitiesActivityIdRouteImport } from './routes/(app)/activities/$activityId'
 import { Route as appMentorsMentorIdIndexRouteImport } from './routes/(app)/mentors/$mentorId/index'
+import { Route as appActivitiesActivityIdIndexRouteImport } from './routes/(app)/activities/$activityId/index'
 import { Route as appMentorsMentorIdEditRouteImport } from './routes/(app)/mentors/$mentorId/edit'
+import { Route as appActivitiesActivityIdEditRouteImport } from './routes/(app)/activities/$activityId/edit'
 
 const authRouteRoute = authRouteRouteImport.update({
   id: '/(auth)',
@@ -199,21 +200,28 @@ const appCreateActivityRoute = appCreateActivityRouteImport.update({
   path: '/activity',
   getParentRoute: () => appCreateRouteRoute,
 } as any)
-const appActivitiesActivityIdRoute = appActivitiesActivityIdRouteImport.update({
-  id: '/(app)/activities/$activityId',
-  path: '/activities/$activityId',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const appMentorsMentorIdIndexRoute = appMentorsMentorIdIndexRouteImport.update({
   id: '/(app)/mentors/$mentorId/',
   path: '/mentors/$mentorId/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const appActivitiesActivityIdIndexRoute =
+  appActivitiesActivityIdIndexRouteImport.update({
+    id: '/(app)/activities/$activityId/',
+    path: '/activities/$activityId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const appMentorsMentorIdEditRoute = appMentorsMentorIdEditRouteImport.update({
   id: '/(app)/mentors/$mentorId/edit',
   path: '/mentors/$mentorId/edit',
   getParentRoute: () => rootRouteImport,
 } as any)
+const appActivitiesActivityIdEditRoute =
+  appActivitiesActivityIdEditRouteImport.update({
+    id: '/(app)/activities/$activityId/edit',
+    path: '/activities/$activityId/edit',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof authRouteRouteWithChildren
@@ -230,7 +238,6 @@ export interface FileRoutesByFullPath {
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/reset-password': typeof authResetPasswordRoute
-  '/activities/$activityId': typeof appActivitiesActivityIdRoute
   '/create/activity': typeof appCreateActivityRoute
   '/create/mentor': typeof appCreateMentorRoute
   '/create/program': typeof appCreateProgramRoute
@@ -247,7 +254,9 @@ export interface FileRoutesByFullPath {
   '/programs/': typeof appProgramsIndexRoute
   '/reports/': typeof appReportsIndexRoute
   '/users/': typeof appUsersIndexRoute
+  '/activities/$activityId/edit': typeof appActivitiesActivityIdEditRoute
   '/mentors/$mentorId/edit': typeof appMentorsMentorIdEditRoute
+  '/activities/$activityId': typeof appActivitiesActivityIdIndexRoute
   '/mentors/$mentorId': typeof appMentorsMentorIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -261,7 +270,6 @@ export interface FileRoutesByTo {
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/reset-password': typeof authResetPasswordRoute
-  '/activities/$activityId': typeof appActivitiesActivityIdRoute
   '/create/activity': typeof appCreateActivityRoute
   '/create/mentor': typeof appCreateMentorRoute
   '/create/program': typeof appCreateProgramRoute
@@ -278,7 +286,9 @@ export interface FileRoutesByTo {
   '/programs': typeof appProgramsIndexRoute
   '/reports': typeof appReportsIndexRoute
   '/users': typeof appUsersIndexRoute
+  '/activities/$activityId/edit': typeof appActivitiesActivityIdEditRoute
   '/mentors/$mentorId/edit': typeof appMentorsMentorIdEditRoute
+  '/activities/$activityId': typeof appActivitiesActivityIdIndexRoute
   '/mentors/$mentorId': typeof appMentorsMentorIdIndexRoute
 }
 export interface FileRoutesById {
@@ -298,7 +308,6 @@ export interface FileRoutesById {
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
   '/(auth)/reset-password': typeof authResetPasswordRoute
-  '/(app)/activities/$activityId': typeof appActivitiesActivityIdRoute
   '/(app)/create/activity': typeof appCreateActivityRoute
   '/(app)/create/mentor': typeof appCreateMentorRoute
   '/(app)/create/program': typeof appCreateProgramRoute
@@ -315,7 +324,9 @@ export interface FileRoutesById {
   '/(app)/programs/': typeof appProgramsIndexRoute
   '/(app)/reports/': typeof appReportsIndexRoute
   '/(app)/users/': typeof appUsersIndexRoute
+  '/(app)/activities/$activityId/edit': typeof appActivitiesActivityIdEditRoute
   '/(app)/mentors/$mentorId/edit': typeof appMentorsMentorIdEditRoute
+  '/(app)/activities/$activityId/': typeof appActivitiesActivityIdIndexRoute
   '/(app)/mentors/$mentorId/': typeof appMentorsMentorIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -335,7 +346,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
-    | '/activities/$activityId'
     | '/create/activity'
     | '/create/mentor'
     | '/create/program'
@@ -352,7 +362,9 @@ export interface FileRouteTypes {
     | '/programs/'
     | '/reports/'
     | '/users/'
+    | '/activities/$activityId/edit'
     | '/mentors/$mentorId/edit'
+    | '/activities/$activityId'
     | '/mentors/$mentorId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -366,7 +378,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
-    | '/activities/$activityId'
     | '/create/activity'
     | '/create/mentor'
     | '/create/program'
@@ -383,7 +394,9 @@ export interface FileRouteTypes {
     | '/programs'
     | '/reports'
     | '/users'
+    | '/activities/$activityId/edit'
     | '/mentors/$mentorId/edit'
+    | '/activities/$activityId'
     | '/mentors/$mentorId'
   id:
     | '__root__'
@@ -402,7 +415,6 @@ export interface FileRouteTypes {
     | '/(auth)/login'
     | '/(auth)/register'
     | '/(auth)/reset-password'
-    | '/(app)/activities/$activityId'
     | '/(app)/create/activity'
     | '/(app)/create/mentor'
     | '/(app)/create/program'
@@ -419,7 +431,9 @@ export interface FileRouteTypes {
     | '/(app)/programs/'
     | '/(app)/reports/'
     | '/(app)/users/'
+    | '/(app)/activities/$activityId/edit'
     | '/(app)/mentors/$mentorId/edit'
+    | '/(app)/activities/$activityId/'
     | '/(app)/mentors/$mentorId/'
   fileRoutesById: FileRoutesById
 }
@@ -433,10 +447,11 @@ export interface RootRouteChildren {
   appReportsRouteRoute: typeof appReportsRouteRouteWithChildren
   appUsersRouteRoute: typeof appUsersRouteRouteWithChildren
   appMatrixRoute: typeof appMatrixRoute
-  appActivitiesActivityIdRoute: typeof appActivitiesActivityIdRoute
   appActivitiesIndexRoute: typeof appActivitiesIndexRoute
   appMentorsIndexRoute: typeof appMentorsIndexRoute
+  appActivitiesActivityIdEditRoute: typeof appActivitiesActivityIdEditRoute
   appMentorsMentorIdEditRoute: typeof appMentorsMentorIdEditRoute
+  appActivitiesActivityIdIndexRoute: typeof appActivitiesActivityIdIndexRoute
   appMentorsMentorIdIndexRoute: typeof appMentorsMentorIdIndexRoute
 }
 
@@ -659,13 +674,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appCreateActivityRouteImport
       parentRoute: typeof appCreateRouteRoute
     }
-    '/(app)/activities/$activityId': {
-      id: '/(app)/activities/$activityId'
-      path: '/activities/$activityId'
-      fullPath: '/activities/$activityId'
-      preLoaderRoute: typeof appActivitiesActivityIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/(app)/mentors/$mentorId/': {
       id: '/(app)/mentors/$mentorId/'
       path: '/mentors/$mentorId'
@@ -673,11 +681,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appMentorsMentorIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(app)/activities/$activityId/': {
+      id: '/(app)/activities/$activityId/'
+      path: '/activities/$activityId'
+      fullPath: '/activities/$activityId'
+      preLoaderRoute: typeof appActivitiesActivityIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(app)/mentors/$mentorId/edit': {
       id: '/(app)/mentors/$mentorId/edit'
       path: '/mentors/$mentorId/edit'
       fullPath: '/mentors/$mentorId/edit'
       preLoaderRoute: typeof appMentorsMentorIdEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(app)/activities/$activityId/edit': {
+      id: '/(app)/activities/$activityId/edit'
+      path: '/activities/$activityId/edit'
+      fullPath: '/activities/$activityId/edit'
+      preLoaderRoute: typeof appActivitiesActivityIdEditRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -801,10 +823,11 @@ const rootRouteChildren: RootRouteChildren = {
   appReportsRouteRoute: appReportsRouteRouteWithChildren,
   appUsersRouteRoute: appUsersRouteRouteWithChildren,
   appMatrixRoute: appMatrixRoute,
-  appActivitiesActivityIdRoute: appActivitiesActivityIdRoute,
   appActivitiesIndexRoute: appActivitiesIndexRoute,
   appMentorsIndexRoute: appMentorsIndexRoute,
+  appActivitiesActivityIdEditRoute: appActivitiesActivityIdEditRoute,
   appMentorsMentorIdEditRoute: appMentorsMentorIdEditRoute,
+  appActivitiesActivityIdIndexRoute: appActivitiesActivityIdIndexRoute,
   appMentorsMentorIdIndexRoute: appMentorsMentorIdIndexRoute,
 }
 export const routeTree = rootRouteImport

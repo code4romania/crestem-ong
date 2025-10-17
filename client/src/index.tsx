@@ -12,7 +12,7 @@ import { routeTree } from "./routeTree.gen";
 import { AuthProvider, useAuth } from "./contexts/auth";
 import { TooltipProvider } from "./components/ui/tooltip";
 
-const router = createRouter({
+export const router = createRouter({
   routeTree,
   context: {
     // auth will be passed down from App component
