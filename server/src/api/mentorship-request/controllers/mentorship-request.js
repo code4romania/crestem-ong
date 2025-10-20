@@ -3,68 +3,102 @@
 /**
  * mentorship-request controller
  */
-
 const { createCoreController } = require("@strapi/strapi").factories;
-const { PolicyError } = require("@strapi/utils").errors;
-
-const sendEmailToMentorFromUser = (to, data) =>
-  strapi.plugin("email-designer").service("email").sendTemplatedEmail(
-    {
-      to,
-    },
-    {
-      templateReferenceId: 10,
-    },
-    data
-  );
 
 module.exports = createCoreController(
   "api::mentorship-request.mentorship-request",
   ({ strapi }) => ({
-    async create(ctx) {
-      const { body } = ctx.request;
-      const { user, mentor } = body?.data || {};
-      if (!user || !mentor) {
-        throw new PolicyError(`Organizatie sau persoana resursa invalide`);
+    /**
+     * Find mentorship requests based on user role
+     */
+    async find(ctx) {
+      const user = ctx.state?.user;
+
+      if (!user) {
+        return ctx.unauthorized("You must be logged in");
       }
 
-      const mentorData = await strapi.entityService.findOne(
-        "plugin::users-permissions.user",
-        mentor,
-        { populate: "role" }
-      );
-      const userData = await strapi.entityService.findOne(
-        "plugin::users-permissions.user",
-        user,
-        { populate: ["role", "reports"] }
-      );
-      const reportId = userData.reports
-        .filter(({ finished }) => finished)
-        .sort(({ createdAt }) => createdAt)
-        .reverse()
-        .at(0);
+      const { query } = ctx;
+      const roleName = user?.role?.type;
 
-      if (userData?.role?.type !== "authenticated") {
-        throw new PolicyError(`Organizatia nu este valida`);
-      }
-      if (mentorData?.role?.type !== "mentor") {
-        throw new PolicyError(`Persoana resursa nu este valida`);
+      if (!["mentor", "authenticated", "fdsc"].includes(roleName)) {
+        return ctx.forbidden(
+          "You do not have permission to access mentorship requests"
+        );
       }
 
-      sendEmailToMentorFromUser(mentorData.email, {
-        USER_NAME: userData.ongName,
-        USER_EMAIL: userData.email,
-        REPORT_ID: reportId,
-      }).catch((e) => {
-        throw new PolicyError(`A aparut o eroare la trimiterea email-ului`);
-      });
+      let filters = query.filters || {};
 
-      const result = await strapi.entityService.create(
+      if (roleName === "mentor") {
+        filters = {
+          ...filters,
+          mentor: { id: { $eq: user.id } },
+        };
+      } else if (roleName === "authenticated") {
+        filters = {
+          ...filters,
+          user: { id: { $eq: user.id } },
+        };
+      }
+
+      const entities = await strapi.entityService.findMany(
         "api::mentorship-request.mentorship-request",
-        body
+        {
+          ...query,
+          filters,
+          populate: ["user"],
+          sort: [{ createdAt: "desc" }],
+        }
       );
 
-      ctx.created(result);
+      return entities?.map((entity) => ({
+        id: entity.user.id,
+        ongName: entity.user.ongName,
+      }));
+    },
+
+    /**
+     * Find one mentorship request with role-based access
+     */
+    async findOne(ctx) {
+      const user = ctx.state.user;
+      if (!user) {
+        return ctx.unauthorized("You must be logged in");
+      }
+
+      const roleName = user.role?.name?.toLowerCase();
+      // deny all other roles
+      if (!["mentor", "authenticated", "fdsc"].includes(roleName)) {
+        return ctx.forbidden(
+          "You do not have permission to access mentorship requests"
+        );
+      }
+      const { id } = ctx.params;
+
+      const entity = await strapi.entityService.findOne(
+        "api::mentorship-request.mentorship-request",
+        id,
+        {
+          populate: ["mentor", "user"],
+        }
+      );
+
+      if (!entity) {
+        return ctx.notFound("Mentorship request not found");
+      }
+
+      if (roleName === "mentor" && entity.mentor?.id !== user.id) {
+        return ctx.notFound("Mentorship request not found");
+      }
+
+      if (roleName === "authenticated" && entity.user?.id !== user.id) {
+        return ctx.notFound("Mentorship request not found");
+      }
+
+      return {
+        id: entity.user.id,
+        ongName: entity.user.ongName,
+      };
     },
   })
 );
