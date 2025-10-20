@@ -17,7 +17,7 @@ const ReportResults = ({
   scoreByEvaluation?: {
     id: string;
     name: string;
-    link: string;
+    link?: string;
     score: number;
     tags: string[];
   }[];
