@@ -4,7 +4,7 @@ import Section from "@/components/Section";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 
-const UnauthenticatedHome = () => {
+const Home = () => {
   return (
     <div>
       <Section>
@@ -49,4 +49,4 @@ const UnauthenticatedHome = () => {
   );
 };
 
-export default UnauthenticatedHome;
+export default Home;

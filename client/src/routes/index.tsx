@@ -1,10 +1,10 @@
 import FullScreenLoader from "@/components/FullScreenLoader";
 import LayoutApp from "@/components/LayoutApp";
 import { useAuth } from "@/contexts/auth";
-import Dashboard from "@/pages/Dashboard";
-import Home from "@/pages/Home";
-import HomeMentor from "@/pages/mentor/Home";
-import UnauthenticatedHome from "@/pages/UnauthenticatedHome";
+import FDSCHome from "@/pages/admin/Home";
+import NGOHome from "@/pages/authenticated/Home";
+import MentorHome from "@/pages/mentor/Home";
+import Home from "@/pages/public/Home";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 
@@ -20,14 +20,14 @@ function RouteComponent() {
     <LayoutApp>
       {userRole === "fdsc" ? (
         <Suspense fallback={<FullScreenLoader />}>
-          <Dashboard />
+          <FDSCHome />
         </Suspense>
       ) : userRole === "authenticated" ? (
-        <Home />
+        <NGOHome />
       ) : userRole === "mentor" ? (
-        <HomeMentor />
+        <MentorHome />
       ) : (
-        <UnauthenticatedHome />
+        <Home />
       )}
     </LayoutApp>
   );

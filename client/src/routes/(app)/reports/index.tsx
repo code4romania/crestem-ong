@@ -1,6 +1,7 @@
 import FullScreenLoader from "@/components/FullScreenLoader";
 import { useAuth } from "@/contexts/auth";
-import ReportsList from "@/pages/ReportsList";
+import ReportsList from "@/pages/admin/ReportsList";
+import Evaluations from "@/pages/authenticated/Evaluations";
 
 import { createFileRoute, Navigate, redirect } from "@tanstack/react-router";
 
@@ -18,5 +19,11 @@ export const Route = createFileRoute("/(app)/reports/")({
 
 function RouteComponent() {
   const { userRole } = useAuth();
-  return userRole === "fdsc" ? <ReportsList /> : <Navigate to="/" />;
+  return userRole === "fdsc" ? (
+    <ReportsList />
+  ) : userRole === "authenticated" ? (
+    <Evaluations />
+  ) : (
+    <Navigate to="/" />
+  );
 }

@@ -1,6 +1,6 @@
 import FullScreenLoader from "@/components/FullScreenLoader";
 import { useAuth } from "@/contexts/auth";
-import UsersList from "@/pages/UsersList";
+import UsersList from "@/pages/admin/UsersList";
 
 import { createFileRoute, Navigate, redirect } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";

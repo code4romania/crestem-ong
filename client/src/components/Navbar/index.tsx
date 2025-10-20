@@ -44,7 +44,8 @@ const MENU = {
   authenticated: [
     { text: "Acasă", link: "https://crestem.ong/ro/acasa" },
     { text: "Despre", link: "https://crestem.ong/ro/despre-proiect" },
-    { text: "Evaluare ONG", link: "/" },
+    { text: "Statistici ONG", link: "/" },
+    { text: "Evaluare ONG", link: "/reports" },
     { text: "Bibliotecă", link: "https://crestem.ong/ro/biblioteca" },
     { text: "Persoane resursă", link: "/mentors" },
     {

@@ -8,7 +8,7 @@ import { Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { ReportsTable } from "./components/table";
 
-const Home = () => {
+const Evaluations = () => {
   const { data: reports } = useGetUserReports();
 
   const hasReports = !!reports?.length;
@@ -96,4 +96,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Evaluations;
