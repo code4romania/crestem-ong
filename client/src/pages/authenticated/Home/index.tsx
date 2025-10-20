@@ -4,14 +4,11 @@ import Stats from "@/components/Stats";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardAction,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { calcScore } from "@/lib/score";
 import type { FinalReportModel } from "@/services/api/types";
 import { useGetUserReports } from "@/services/reports.queries";
 import { Link } from "@tanstack/react-router";
