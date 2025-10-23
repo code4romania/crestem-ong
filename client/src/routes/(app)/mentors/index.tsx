@@ -1,7 +1,7 @@
 import LayoutApp from "@/components/LayoutApp";
 import LayoutDashboard from "@/components/LayoutDashboard";
 import AuthenticatedMentorsList from "@/pages/authenticated/MentorsList";
-import Mentors from "@/pages/Mentors";
+import Mentors from "@/pages/admin/Mentors";
 
 import { useAuth } from "@/contexts/auth";
 import { listMentorsQueryOptions } from "@/services/mentors.queries";

@@ -1,43 +1,33 @@
 import qs from "qs";
 import { API } from "../api";
-import type {
-  FinalDetailedUserModel,
-  FinalDimensionModel,
-  FinalDomainModel,
-  FinalReportModel,
-  FinalUserModel,
-  RoleModel,
-} from "./types";
+import type { FinalUserModel, MentorshipRelationModel } from "./types";
 
-interface ListMenteesResponse {
-  data: MenteeModel[];
+interface ListMentorshipRelationsResponse {
+  data: MentorshipRelation[];
   meta: Meta;
 }
 
-interface MenteeModel {
+interface MentorshipRelation {
   id: number;
-  attributes: MenteeAttributes;
+  attributes: MentorshipRelationAttributes;
 }
 
-interface MenteeAttributes {
+interface MentorshipRelationAttributes {
   createdAt: string;
   updatedAt: string;
-  user: User;
+  user: { data: User };
+  mentor: { data: User };
 }
 
 interface User {
-  data: UserModel;
-}
-
-interface UserModel {
   id: number;
   attributes: UserAttributes;
 }
 
 interface UserAttributes {
   username: string;
-  email: string;
   provider: string;
+  email: string;
   confirmed: boolean;
   blocked: boolean;
   ongName: string;
@@ -64,10 +54,6 @@ interface UserAttributes {
   firstName: string;
   lastName: string;
   available: boolean;
-  domains: FinalDomainModel[];
-  dimensions: FinalDimensionModel[];
-  reports: FinalReportModel[];
-  role: RoleModel;
 }
 
 interface Meta {
@@ -81,40 +67,39 @@ interface Pagination {
   total: number;
 }
 
-export const listMentees = (
-  userId: number
-): Promise<FinalDetailedUserModel[]> => {
+export const listMentorshipRelations = (): Promise<
+  MentorshipRelationModel[]
+> => {
   const params = {
-    filters: {
-      mentor: {
-        id: {
-          $eq: userId,
-        },
-      },
-    },
-    populate: ["user", "program", "domains"],
+    populate: ["user", "mentor"],
     pagination: {
       page: 1,
       pageSize: 100,
     },
   };
 
-  return API.get<ListMenteesResponse>(`api/mentorship-requests`, {
+  return API.get<ListMentorshipRelationsResponse>(`api/mentorship-requests`, {
     params,
     paramsSerializer: {
       serialize: (params) => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then(
-    (res) =>
-      res.data.data.map((m) => ({
-        id: m.attributes.user.data.id,
-        ...m.attributes.user.data.attributes,
-        domains: m.attributes.user.data.attributes.domains,
-        dimensions: m.attributes.user.data.attributes.dimensions,
-        reports: m.attributes.user.data.attributes.reports,
-        role: m.attributes.user.data.attributes.role,
-      })) ?? []
+  }).then((res) =>
+    res.data.data.map(
+      (m): MentorshipRelationModel => ({
+        id: m.id,
+        createdAt: m.attributes.createdAt,
+        updatedAt: m.attributes.updatedAt,
+        user: {
+          id: m.attributes.user.data?.id,
+          ...m.attributes.user.data?.attributes,
+        },
+        mentor: {
+          id: m.attributes.mentor.data?.id,
+          ...m.attributes.mentor.data?.attributes,
+        },
+      })
+    )
   );
 };

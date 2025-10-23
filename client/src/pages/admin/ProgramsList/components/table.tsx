@@ -47,7 +47,7 @@ export function ProgramsTable() {
     search: route.useSearch(),
     navigate: route.useNavigate(),
     pagination: { defaultPage: 1, defaultPageSize: 10 },
-    globalFilter: { enabled: true, key: "search" },
+    globalFilter: { enabled: true, key: "search", trim: false },
     columnFilters: [
       {
         columnId: "status",

@@ -8,7 +8,12 @@ import { Link } from "@tanstack/react-router";
 import { Feed } from "@/components/Feed";
 
 const Activities = () => {
-  const { data: mentorActivities } = useGetUserMentorActivities();
+  const { data: mentorActivities } = useGetUserMentorActivities((activities) =>
+    activities.sort(
+      (a, b) =>
+        new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+    )
+  );
 
   return (
     <div>

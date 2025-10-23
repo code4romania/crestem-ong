@@ -10,6 +10,7 @@ import { DataTableSliderFilter } from "@/components/data-table/data-table-slider
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { DebouncedInput } from "../ui/debounced-input";
 
 interface DataTableToolbarProps<TData> extends React.ComponentProps<"div"> {
   table: Table<TData>;
@@ -44,12 +45,15 @@ export function DataTableToolbar<TData>({
       {...props}
     >
       <div className="flex flex-1 flex-wrap items-center gap-2">
-        <Input
+        <DebouncedInput
           placeholder="Cauta"
-          value={table.getState().globalFilter ?? ""}
-          onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="h-8 w-[150px] lg:w-[250px]"
+          onChange={(value) => {
+            table.setGlobalFilter(value);
+          }}
+          value={table.getState().globalFilter ?? ""}
         />
+
         {columns.map((column) => (
           <DataTableToolbarFilter key={column.id} column={column} />
         ))}

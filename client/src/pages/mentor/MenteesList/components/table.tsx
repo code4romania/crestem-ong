@@ -1,5 +1,4 @@
 import {
-  flexRender,
   getCoreRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
@@ -8,32 +7,26 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { useSuspenseListNgosWithDetails } from "@/services/ngos.queries";
 import { getRouteApi } from "@tanstack/react-router";
 
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { useTableUrlState } from "@/hooks/use-table-url-state";
-import type { NgoVM } from "../types";
-import { columns } from "./columns";
-import { NgosPrimaryButtons } from "./primary-buttons";
-import { NgosDataTableToolbar } from "./toolbar";
-import type { FinalDetailedUserModel } from "@/services/api/types";
 import { DataTable } from "@/components/ui/data-table";
 import { useAuth } from "@/contexts/auth";
+import { useTableUrlState } from "@/hooks/use-table-url-state";
+import type {
+  FinalDetailedUserModel,
+  FinalUserModel,
+} from "@/services/api/types";
+import { useSuspenseListMentees } from "@/services/user.queries";
+import type { MenteeVM } from "../types";
+import { columns } from "./columns";
+import { MenteesDataTableToolbar } from "./toolbar";
 const route = getRouteApi("/(app)/users/");
 
-const ngoMapper = (ngos: FinalDetailedUserModel[]): NgoVM[] =>
-  ngos.map(
-    (ngo): NgoVM => ({
+const menteeMapper = (mentees: FinalDetailedUserModel[]): MenteeVM[] =>
+  mentees.map(
+    (ngo): MenteeVM => ({
       id: ngo.id,
       ongName: ngo.ongName,
       ongIdentificationNumber: ngo.ongIdentificationNumber,
@@ -41,13 +34,15 @@ const ngoMapper = (ngos: FinalDetailedUserModel[]): NgoVM[] =>
       programName: ngo.program?.name || "-",
       county: ngo.county,
       city: ngo.city,
-      domains: ngo.domains.map((d) => d.name) ?? [],
+      domains: ngo?.domains?.map((d) => d.name) ?? [],
       lastEvaluationDate: ngo.reports?.at(-1)?.createdAt,
     })
   );
-export function NgosTable() {
-  const { userRole } = useAuth();
-  const { data } = useSuspenseListNgosWithDetails(ngoMapper);
+export function MenteesTable() {
+  const { user } = useAuth();
+
+  const { data } = useSuspenseListMentees(user?.id!, menteeMapper);
+
   const {
     globalFilter,
     onGlobalFilterChange,
@@ -58,7 +53,7 @@ export function NgosTable() {
     search: route.useSearch(),
     navigate: route.useNavigate(),
     pagination: { defaultPage: 1, defaultPageSize: 10 },
-    globalFilter: { enabled: true, key: "search" },
+    globalFilter: { enabled: true, key: "search", trim: false },
     columnFilters: [
       {
         columnId: "createdAt",
@@ -128,12 +123,11 @@ export function NgosTable() {
           <div>
             <Heading level={"h2"}>Organizații</Heading>
           </div>
-          {userRole === "fdsc" && <NgosPrimaryButtons table={table} />}
         </div>
       </Section>
       <Section>
         <DataTable table={table}>
-          <NgosDataTableToolbar table={table}></NgosDataTableToolbar>
+          <MenteesDataTableToolbar table={table}></MenteesDataTableToolbar>
         </DataTable>
       </Section>
     </>

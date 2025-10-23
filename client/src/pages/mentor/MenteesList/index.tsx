@@ -1,13 +1,13 @@
 import { Suspense } from "react";
-import { NgosTable } from "./components/table";
+import { MenteesTable } from "./components/table";
 import FullScreenLoader from "@/components/FullScreenLoader";
 
-const UsersList = () => {
+const MenteesList = () => {
   return (
     <Suspense fallback={<FullScreenLoader />}>
-      <NgosTable />
+      <MenteesTable />
     </Suspense>
   );
 };
 
-export default UsersList;
+export default MenteesList;

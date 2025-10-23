@@ -334,3 +334,11 @@ export interface FinalProgramModel {
   mentors: FinalUserModel[];
   users: FinalUserModel[];
 }
+
+export interface MentorshipRelationModel {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  user: FinalUserModel;
+  mentor: FinalUserModel;
+}

@@ -1,4 +1,3 @@
-import { Input } from "@/components/ui/input";
 import type { Table } from "@tanstack/react-table";
 import React from "react";
 
@@ -6,6 +5,7 @@ import { X } from "lucide-react";
 
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { Button } from "@/components/ui/button";
+import { DebouncedInput } from "@/components/ui/debounced-input";
 import type { ProgramVM } from "../type";
 
 interface ProgramsDataTableToolbarProps {
@@ -41,11 +41,13 @@ export function ProgramsDataTableToolbar({
       className={"flex w-full items-start justify-between gap-2 p-1"}
     >
       <div className="flex flex-1 flex-wrap items-center gap-2">
-        <Input
+        <DebouncedInput
           placeholder="Cauta"
-          value={table.getState().globalFilter ?? ""}
-          onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="h-8 w-[150px] lg:w-[250px]"
+          onChange={(value) => {
+            table.setGlobalFilter(value);
+          }}
+          value={table.getState().globalFilter ?? ""}
         />
 
         <DataTableFacetedFilter

@@ -1,6 +1,7 @@
 import FullScreenLoader from "@/components/FullScreenLoader";
 import { useAuth } from "@/contexts/auth";
-import UsersList from "@/pages/admin/UsersList";
+import NgosList from "@/pages/admin/NgosList";
+import MenteesList from "@/pages/mentor/MenteesList";
 
 import { createFileRoute, Navigate, redirect } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
@@ -31,8 +32,10 @@ export const Route = createFileRoute("/(app)/users/")({
 
 function RouteComponent() {
   const { userRole } = useAuth();
-  return userRole === "fdsc" || userRole === "mentor" ? (
-    <UsersList />
+  return userRole === "fdsc" ? (
+    <NgosList />
+  ) : userRole === "mentor" ? (
+    <MenteesList />
   ) : (
     <Navigate to="/" />
   );

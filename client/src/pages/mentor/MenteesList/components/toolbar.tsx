@@ -1,4 +1,3 @@
-import { Input } from "@/components/ui/input";
 import type { Table } from "@tanstack/react-table";
 import React from "react";
 
@@ -7,15 +6,16 @@ import { X } from "lucide-react";
 import { DataTableDateFilter } from "@/components/data-table/data-table-date-filter";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { Button } from "@/components/ui/button";
+import { DebouncedInput } from "@/components/ui/debounced-input";
 import { citiesByCounty } from "@/lib/orase-dupa-judet";
 import type { FinalDomainModel, FinalProgramModel } from "@/services/api/types";
 import { useSuspenseListDomains } from "@/services/domains.queries";
-import type { Option } from "@/types/data-table";
-import type { NgoVM } from "../types";
 import { useSuspenseListPrograms } from "@/services/programs.queries";
+import type { Option } from "@/types/data-table";
+import type { MenteeVM } from "../types";
 
-interface NgosDataTableToolbarProps {
-  table: Table<NgoVM>;
+interface MenteesDataTableToolbarProps {
+  table: Table<MenteeVM>;
 }
 
 function mapToOptions(
@@ -27,7 +27,9 @@ function mapToOptions(
   }));
 }
 
-export function NgosDataTableToolbar({ table }: NgosDataTableToolbarProps) {
+export function MenteesDataTableToolbar({
+  table,
+}: MenteesDataTableToolbarProps) {
   const isFiltered =
     table.getState().columnFilters.length > 0 || table.getState().globalFilter;
 
@@ -79,11 +81,13 @@ export function NgosDataTableToolbar({ table }: NgosDataTableToolbarProps) {
       className={"flex w-full items-start justify-between gap-2 p-1"}
     >
       <div className="flex flex-1 flex-wrap items-center gap-2">
-        <Input
+        <DebouncedInput
           placeholder="Cauta"
-          value={table.getState().globalFilter ?? ""}
-          onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="h-8 w-[150px] lg:w-[250px]"
+          onChange={(value) => {
+            table.setGlobalFilter(value);
+          }}
+          value={table.getState().globalFilter ?? ""}
         />
         <DataTableDateFilter
           column={table.getColumn("createdAt")!}

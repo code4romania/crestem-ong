@@ -3,7 +3,7 @@ import formatDate from "@/lib/formatDate";
 import { useDeleteActivityMutation } from "@/services/activity.mutations";
 import type { MentorActivityModel } from "@/services/api/types";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { PencilIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
