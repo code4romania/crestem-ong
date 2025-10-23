@@ -1,8 +1,7 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
-import NavbarEvaluation from "../NavbarEvaluation";
+import { Outlet } from "@tanstack/react-router";
 import Footer from "../Footer";
 import { Menu } from "../Navbar";
+import NavbarEvaluation from "../NavbarEvaluation";
 
 const LayoutEvaluation = () => (
   <>

@@ -1,127 +1,138 @@
-import { useEffect, useMemo } from "react";
-import { custom, literal, number, object, string, TypeOf } from "zod";
-import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
-import Button from "@/components/Button";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { toast } from "react-toastify";
 import {
-  useGetDomainsQuery,
-  useUpdateUserMutation,
-  useUploadMutation,
-} from "@/redux/api/userApi";
-import { useNavigate } from "react-router-dom";
-import MultiSelect from "@/components/MultiSelect";
-import { ErrorMessage } from "@hookform/error-message";
-import Select from "@/components/Select";
-import citiesByCounty from "@/lib/orase-dupa-judet.json";
-import SocialNetworkLinks from "@/components/SocialNetworkLinks";
-import Avatar from "@/components/Avatar";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useGetUserDomains } from "@/services/user.queries";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useMemo } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
-const ongProfileSchema = object({
-  id: number(),
-  ongName: string().min(1, "Numele organizatiei este obligatoriu"),
-  ongIdentificationNumber: string().min(
-    1,
-    "Numarul de identifiare este obligatoriu"
-  ),
-  county: string().min(1, "Judetul este obligatoriu"),
-  city: string().min(1, "Orasul este obligatoriu"),
-  email: string()
-    .min(1, "Adresa de email este obligatorie")
-    .email("Adresa de email este invalidă"),
-  phone: string().min(1, "Telefonul este obligatoriu"),
-  avatar: custom<File[]>(),
-  domains: number().array().optional(),
-  website: string(),
-  keywords: string(),
-  description: string(),
-  contactFirstName: string(),
-  contactLastName: string(),
-  contactEmail: string()
+import { LogoUpload } from "@/components/PictureSelect";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger,
+} from "@/components/ui/multi-select";
+
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/contexts/auth";
+import { citiesByCounty } from "@/lib/orase-dupa-judet";
+import { useListDomains } from "@/services/domains.queries";
+import {
+  updateNgoMutation,
+  useUploadPictureMutation,
+} from "@/services/user.mutations";
+import {
+  Building2,
+  Globe,
+  Link as LinkIcon,
+  Mail,
+  Phone,
+  User,
+} from "lucide-react";
+import type { FinalDomainModel } from "@/services/api/types";
+
+const ongProfileSchema = z.object({
+  id: z.number(),
+  ongName: z.string().min(1, "Numele organizatiei este obligatoriu"),
+  ongIdentificationNumber: z
+    .string()
+    .min(1, "Numarul de identifiare este obligatoriu"),
+  county: z.string().min(1, "Judetul este obligatoriu"),
+  city: z.string().min(1, "Orasul este obligatoriu"),
+  email: z
+    .email("Adresa de email este invalidă")
+    .min(1, "Adresa de email este obligatorie"),
+  phone: z.string().min(1, "Telefonul este obligatoriu"),
+  avatar: z.custom<File>(),
+  domains: z
+    .array(
+      z.object({
+        value: z.string(),
+        label: z.string(),
+      })
+    )
+    .catch([]),
+  website: z.string(),
+  keywords: z.string(),
+  description: z.string(),
+  contactFirstName: z.string(),
+  contactLastName: z.string(),
+  contactEmail: z
     .email("Adresa de email este invalida")
     .optional()
-    .or(literal("")),
-  contactPhone: string(),
-  accountFacebook: string().optional(),
-  accountTwitter: string().optional(),
-  accountTiktok: string().optional(),
-  accountInstagram: string().optional(),
-  accountLinkedin: string().optional(),
+    .or(z.literal("")),
+  contactPhone: z.string(),
+  accountFacebook: z.string().optional(),
+  accountTwitter: z.string().optional(),
+  accountTiktok: z.string().optional(),
+  accountInstagram: z.string().optional(),
+  accountLinkedin: z.string().optional(),
 });
 
-export type OngProfileInput = TypeOf<typeof ongProfileSchema>;
+export type OngProfileInput = z.infer<typeof ongProfileSchema>;
+
+const domainMapper = (userDomains: FinalDomainModel[]) =>
+  userDomains
+    ? userDomains.map((d) => ({ value: d.id.toString(), label: d.name }))
+    : [];
 
 const OngEditProfile = () => {
-  const user = useAppSelector((state) => state.userState.user);
+  const { user } = useAuth();
 
-  const ongDomains = useMemo(() => {
-    return user?.domains
-      ? user?.domains?.map((d) => ({ id: d.id, name: d.name, label: d.name }))
-      : [];
-  }, [user]);
+  const { data: ongDomains } = useGetUserDomains(domainMapper);
+  const { data: domains } = useListDomains();
 
-  const [updateOngProfile, { isSuccess, isError, error, data }] =
-    useUpdateUserMutation();
+  const navigate = useNavigate();
 
-  const [
-    uploadAvatar,
-    { isError: isUploadAvatarError, error: uploadAvatarError },
-  ] = useUploadMutation();
-  const { data: domains } = useGetDomainsQuery(null);
+  const { mutateAsync: updateUser, isPending: isUpdatePending } =
+    updateNgoMutation();
+  const { mutateAsync: uploadAvatar, isPending: isUploadPending } =
+    useUploadPictureMutation();
 
-  const methods = useForm<OngProfileInput>({
+  const form = useForm<OngProfileInput>({
     resolver: zodResolver(ongProfileSchema),
     defaultValues: {
       ...user,
-      domains: user?.domains?.map((d) => d.id),
+      domains: ongDomains,
       accountFacebook: user?.accountFacebook || "",
       accountTwitter: user?.accountTwitter || "",
       accountTiktok: user?.accountTiktok || "",
       accountInstagram: user?.accountInstagram || "",
       accountLinkedin: user?.accountLinkedin || "",
+      avatar: undefined,
     },
   });
 
-  const avatar = methods.watch("avatar");
-  const county = methods.watch("county");
-
-  const hasAvatar = !!avatar;
-
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (error?.data?.error?.message) {
-      toast.error(error.data.error.message);
-    }
-  }, [error?.data?.error?.message]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/profile");
-    }
-  }, [isSuccess, dispatch]);
-
-  const onSubmitHandler: SubmitHandler<OngProfileInput> = async (data) => {
-    updateOngProfile({
-      ...data,
-    });
-
-    if (data.avatar?.length && data.avatar[0].name) {
-      const formData = new FormData();
-      formData.append(`files`, data.avatar[0], data.avatar[0].name);
-      formData.append(`ref`, "plugin::users-permissions.user");
-      formData.append(`refId`, user!.id!.toString());
-      formData.append(`field`, "avatar");
-      uploadAvatar(formData);
-    }
-  };
-  const onError: any = (data) => {
-    console.log(data);
-  };
+  const county = form.watch("county");
 
   const counties = Object.keys(citiesByCounty)
     .sort()
@@ -130,7 +141,7 @@ const OngEditProfile = () => {
       name: county,
     }));
 
-  const cities = useMemo(
+  const availableCities = useMemo(
     () =>
       county
         ? [...new Set(citiesByCounty[county].map((city) => city.nume))]
@@ -143,6 +154,28 @@ const OngEditProfile = () => {
     [citiesByCounty, county]
   );
 
+  const onSubmit: SubmitHandler<OngProfileInput> = async (data) => {
+    await updateUser(
+      {
+        ...data,
+        domains: data.domains?.map((d) => +d.value),
+      },
+      {
+        onError: (error) => {
+          const data = error as any;
+          toast.error(data.error.message);
+        },
+      }
+    );
+
+    if (data.avatar) {
+      await uploadAvatar({ userId: data.id, file: data.avatar });
+    }
+
+    navigate({ to: "/profile" });
+    toast.success("Salvat");
+  };
+
   return (
     <div>
       <Section>
@@ -151,337 +184,483 @@ const OngEditProfile = () => {
         </div>
       </Section>
       <Section>
-        <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(onSubmitHandler, onError)}
-            className="space-y-8 divide-y divide-gray-200 max-w-3xl mx-auto"
-          >
-            <div className="space-y-8 divide-y divide-gray-200">
-              <div>
-                <div>
-                  <h3 className="text-base font-semibold leading-6 text-gray-900">
-                    Informații obligatorii despre ONG
-                  </h3>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            {/* Required Organization Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Building2 className="h-5 w-5" />
+                  Informații obligatorii despre ONG
+                </CardTitle>
+                <CardDescription>
+                  Aceste informații sunt necesare pentru înregistrarea
+                  organizației
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="ongName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Numele organizației
+                          <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="Numele organizației" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="ongIdentificationNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          CIF-ul organizației
+                          <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="CIF organizației" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="county"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Județul <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Selectați județul" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {counties.map((county) => (
+                              <SelectItem key={county.name} value={county.name}>
+                                {county.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Localitatea <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger
+                              className="w-full"
+                              disabled={!county}
+                            >
+                              <SelectValue placeholder="Selectați localitatea" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {availableCities.map((city) => (
+                              <SelectItem key={city.name} value={city.name}>
+                                {city.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="flex items-center gap-2">
+                          <Mail className="h-4 w-4" />
+                          Email organizație
+                          <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="email"
+                            placeholder="email@organizatie.ro"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="flex items-center gap-2">
+                          <Phone className="h-4 w-4" />
+                          Telefon organizație
+                          <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="tel"
+                            placeholder="+40 XXX XXX XXX"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
-                <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="ong_name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Numele organizației
-                      <span className="text-red-700 ml-1.5">*</span>
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("ongName")}
-                      />
-                      <div className="text-red-400 text-sm py-2">
-                        <ErrorMessage name={"ongName"} />
-                      </div>
-                    </div>
-                  </div>
+              </CardContent>
+            </Card>
 
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="ong_identification_number"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      CIF-ul organizației
-                      <span className="text-red-700 ml-1.5">*</span>
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("ongIdentificationNumber")}
-                      />
-                      <div className="text-red-400 text-sm py-2">
-                        <ErrorMessage name={"ongIdentificationNumber"} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="country"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Județ
-                      <span className="text-red-700 ml-1.5">*</span>
-                    </label>
-                    <div className="mt-1">
-                      <Select
-                        options={counties}
-                        register={methods.register}
-                        name="county"
-                      />
-                      <div className="text-red-400 text-sm py-2">
-                        <ErrorMessage name={"county"} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="country"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Localitate
-                      <span className="text-red-700 ml-1.5">*</span>
-                    </label>
-                    <div className="mt-1">
-                      <Select
-                        options={cities}
-                        register={methods.register}
-                        name="city"
-                        defaultValue={cities[0]?.name}
-                      />
-                      <div className="text-red-400 text-sm py-2">
-                        <ErrorMessage name={"city"} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="first-name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Email organizație
-                      <span className="text-red-700 ml-1.5">*</span>
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="email"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("email")}
-                      />
-                      <div className="text-red-400 text-sm py-2">
-                        <ErrorMessage name={"email"} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="last-name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Telefon organizație
-                      <span className="text-red-700 ml-1.5">*</span>
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="tel"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("phone")}
-                      />
-                      <div className="text-red-400 text-sm py-2">
-                        <ErrorMessage name={"phone"} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-8">
-                <div>
-                  <h3 className="text-base font-semibold leading-6 text-gray-900">
-                    Informații adiționale despre ONG (opționale)
-                  </h3>
-                </div>
-                <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                  {domains?.length > 0 && (
-                    <div className="sm:col-span-3">
-                      <MultiSelect
-                        options={domains}
-                        label={"Domenii activitate"}
-                        defaultValues={ongDomains}
-                        {...methods.register("domains")}
-                      />
-                      <div className="text-red-400 text-sm py-2">
-                        <ErrorMessage name={"domains"} />
-                      </div>
-                    </div>
+            {/* Optional Additional Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Globe className="h-5 w-5" />
+                  Informații adiționale (opționale)
+                </CardTitle>
+                <CardDescription>
+                  Aceste informații ne ajută să înțelegem mai bine organizația
+                  ta
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="domains"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Domenii de activitate</FormLabel>
+                      <MultiSelector
+                        onValuesChange={field.onChange}
+                        values={field.value}
+                      >
+                        <MultiSelectorTrigger>
+                          <MultiSelectorInput placeholder="Alege domenii" />
+                        </MultiSelectorTrigger>
+                        <MultiSelectorContent>
+                          <MultiSelectorList>
+                            {domains?.map((domain) => (
+                              <MultiSelectorItem
+                                key={domain.attributes.name}
+                                value={domain.id.toString()}
+                                label={domain.attributes.name}
+                              >
+                                <span>{domain.attributes.name}</span>
+                              </MultiSelectorItem>
+                            ))}
+                          </MultiSelectorList>
+                        </MultiSelectorContent>
+                      </MultiSelector>
+                      <FormMessage />
+                    </FormItem>
                   )}
-
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="last-name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Website organizație
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("website")}
-                      />
-                    </div>
-                  </div>
-                  <div className="sm:col-span-6">
-                    <label
-                      htmlFor="last-name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Cuvinte cheie despre activitate
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("keywords")}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-6">
-                    <label htmlFor="avatar" className="">
-                      <div className="text-sm font-medium text-gray-700 mb-2.5">
-                        Logo organizație
-                      </div>
-                      <div className="flex items-center gap-10 cursor-pointer">
-                        {!!avatar?.length ? (
-                          <img
-                            className="h-12 w-12 overflow-hidden rounded-full bg-gray-100"
-                            src={URL.createObjectURL(avatar[0])}
-                            alt={avatar[0].name}
-                            style={{ width: "100px", height: "100px" }}
-                          />
-                        ) : (
-                          <Avatar
-                            src={user?.avatar.url}
-                            alt={"Logo"}
-                            width={100}
-                            height={100}
-                          />
-                        )}
-                        <div className={"pointer-events-none"}>
-                          <Button color={"white"} type="button">
-                            {!hasAvatar ? "Încarcă logo" : "Schimbă logo"}
-                          </Button>
-                        </div>
-                        <input
-                          type="file"
-                          className="hidden"
-                          id={"avatar"}
-                          {...methods.register("avatar")}
+                />
+                <FormField
+                  control={form.control}
+                  name="website"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Website organizație</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="https://organizatia-mea.ro"
+                          {...field}
                         />
-                      </div>
-                    </label>
-                  </div>
-                  <div className="sm:col-span-6">
-                    <label
-                      htmlFor="about"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Descrie activitatea organizației
-                    </label>
-                    <div className="mt-1">
-                      <textarea
-                        rows={3}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("description")}
-                      ></textarea>
-                    </div>
-                    <p className="mt-2 text-sm text-gray-500">
-                      Numărul maxim de caractere: 1000
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="pt-8">
-                <div>
-                  <h3 className="text-base font-semibold leading-6 text-gray-900">
-                    Comunicare și social media
-                  </h3>
-                </div>
-                <div className={"mt-4"}>Link-uri către social media</div>
-                <SocialNetworkLinks />
-                <div className={"mt-4"}>Persoana de contact a organizației</div>
-                <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="first-name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Nume
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("contactLastName")}
-                      />
-                    </div>
-                  </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="last-name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Prenume
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("contactFirstName")}
-                      />
-                    </div>
-                  </div>
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="first-name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Adresă de email
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="email"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("contactEmail")}
-                      />
-                    </div>
-                  </div>
+                <FormField
+                  control={form.control}
+                  name="keywords"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Cuvinte cheie despre activitate</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="educație, mediu, sănătate..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="last-name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Telefon
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="tel"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                        {...methods.register("contactPhone")}
-                      />
-                    </div>
-                  </div>
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Descrie activitatea organizației</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Descrie pe scurt activitatea organizației tale..."
+                          className="min-h-[100px]"
+                          {...field}
+                        />
+                      </FormControl>
+                      <p className="text-sm text-muted-foreground">
+                        Numărul maxim de caractere: 1000
+                      </p>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="avatar"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Logo ONG</FormLabel>
+                      <FormControl>
+                        <LogoUpload
+                          currentLogo={user?.avatar?.formats?.thumbnail?.url}
+                          onImageChange={(file) => field.onChange(file)}
+                          disabled={isUploadPending || isUpdatePending}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
+
+            {/* Contact Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <User className="h-5 w-5" />
+                  Persoana de contact
+                </CardTitle>
+                <CardDescription>
+                  Informații despre persoana responsabilă de comunicare
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="contactLastName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nume</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Nume" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="contactFirstName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Prenume</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Prenume" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="contactEmail"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Adresă de email</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="email"
+                            placeholder="contact@email.ro"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="contactPhone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Telefon</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="tel"
+                            placeholder="+40 XXX XXX XXX"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
-            <div className="pt-5">
-              <div className="flex justify-end gap-4">
-                <Button to="/" color="white">
-                  Renunță
-                </Button>
-                <Button type="submit">Salvează</Button>
-              </div>
+            {/* Social Media Links */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <LinkIcon className="h-5 w-5" />
+                  Link-uri către social media
+                </CardTitle>
+                <CardDescription>
+                  Link-urile oficiale pentru comunicare
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="accountFacebook"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Facebook</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="https://facebook.com/organizatia"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="accountInstagram"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Instagram</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="https://instagram.com/organizatia"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="accountTwitter"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Twitter/X</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="https://twitter.com/organizatia"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="accountLinkedin"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>LinkedIn</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="https://linkedin.com/company/organizatia"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="accountTiktok"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>TikTok</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="https://tiktok.com/@organizatia"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
+            {/* Form Actions */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                className="sm:w-auto bg-transparent"
+                asChild
+              >
+                <Link to="/profile">Renunță</Link>
+              </Button>
+              <Button
+                type="submit"
+                className="sm:w-auto"
+                disabled={isUploadPending || isUpdatePending}
+              >
+                Salvează
+              </Button>
             </div>
           </form>
-        </FormProvider>
+        </Form>
       </Section>
     </div>
   );

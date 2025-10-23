@@ -1,13 +1,19 @@
-// import { RadioQuestion } from "@/components/radio-question";
 import Section from "@/components/Section";
-import { Matrix } from "@/redux/api/types";
-import { Controller, useFormContext } from "react-hook-form";
-import { EvaluationForm } from ".";
-import { RadioQuestion } from "./RadioQuestion";
-import { ErrorMessage } from "@hookform/error-message";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
+import type { FinalDimensionModel } from "@/services/api/types";
+import { useFormContext } from "react-hook-form";
+import type { DimensionEvaluationForm } from ".";
 
 interface FormStepProps {
-  dimension: Matrix;
+  dimension: FinalDimensionModel;
   stepIndex: number;
   totalSteps: number;
 }
@@ -17,9 +23,8 @@ export function EvaluationStep({
   stepIndex,
   totalSteps,
 }: FormStepProps) {
-  const { control } = useFormContext<EvaluationForm>();
-
   const stepDisplay = `(${stepIndex + 1} / ${totalSteps})`;
+  const form = useFormContext<DimensionEvaluationForm>();
 
   return (
     <div className="space-y-6" key={`step-${stepIndex}`}>
@@ -28,35 +33,90 @@ export function EvaluationStep({
       </h2>
 
       {dimension.quiz.map((question, index) => (
-        <RadioQuestion
+        <FormField
           key={question.id}
-          stepIndex={stepIndex}
-          questionIndex={index}
-          question={question}
+          control={form.control}
+          name={`question_${index + 1}` as keyof DimensionEvaluationForm}
+          render={({ field }) => (
+            <FormItem className="space-y-3">
+              <FormLabel>{question.question}</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  value={field.value ?? ""}
+                  className="flex flex-col"
+                >
+                  <FormItem className="flex items-center gap-3">
+                    <FormControl>
+                      <RadioGroupItem value="0" />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      {question.option_1}
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center gap-3">
+                    <FormControl>
+                      <RadioGroupItem value="1" />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      {question.option_2}
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center gap-3">
+                    <FormControl>
+                      <RadioGroupItem value="2" />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      {question.option_3}
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center gap-3">
+                    <FormControl>
+                      <RadioGroupItem value="3" />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      {question.option_4}
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center gap-3">
+                    <FormControl>
+                      <RadioGroupItem value="4" />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      {question.option_5}
+                    </FormLabel>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
       ))}
 
       <Section>
         <p className="text-base font-semibold leading-6 text-gray-900 mb-2">
-          Te rugăm să argumentezi selecțiile făcute pentru indicatorul{" "}
+          Te rugăm să argumentezi selecțiile făcute pentru indicatorul
           {dimension.name}
         </p>
 
-        <Controller
-          name={`dimensions.${stepIndex}.comment`}
-          control={control}
+        <FormField
+          control={form.control}
+          name={`comment`}
           render={({ field }) => (
-            <div className="space-y-2">
-              <textarea
-                className="rounded-md border-gray-300 w-full"
-                onChange={field.onChange}
-                value={field.value}
-              ></textarea>
-
-              <div className="text-red-600 text-sm mt-2">
-                <ErrorMessage name={`dimensions.${stepIndex}.comment`} />
-              </div>
-            </div>
+            <FormItem>
+              <FormLabel>
+                Descriere <span className="text-red-500">*</span>
+              </FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Introdu descrierea programului"
+                  className="min-h-[120px]"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
         />
       </Section>

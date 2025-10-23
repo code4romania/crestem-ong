@@ -1,5 +1,3 @@
-import React from "react";
-
 const FullScreenLoader = () => (
   <div className="flex justify-center items-center min-h-full">
     <div role="status">
