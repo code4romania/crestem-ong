@@ -31,10 +31,11 @@ function EditActivity() {
             toast.success("Activitatea a fost actualizata");
             navigate({ to: "/activities" });
           },
+          onError: () => toast.error("A aparut o problema"),
         }
       );
     },
-    [updateActivity, activityId, user, navigate]
+    [updateActivity, activityId, user]
   );
   return <ActivityForm onSubmit={onSubmit} activity={activity} />;
 }
