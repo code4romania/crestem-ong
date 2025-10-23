@@ -1,6 +1,6 @@
 import Stats from "@/components/Stats";
 import { useAuth } from "@/contexts/auth";
-import { useListUserMentorActivities } from "@/services/activities.queries";
+import { useListMentorMentorActivities } from "@/services/activities.queries";
 import type {
   FinalDetailedUserModel,
   MentorActivityModel,
@@ -19,7 +19,7 @@ function mapper(data: MentorActivityModel[]): {
   };
 }
 export function MentorStats({ mentor }: { mentor: FinalDetailedUserModel }) {
-  const { data } = useListUserMentorActivities(mentor.id, mapper);
+  const { data } = useListMentorMentorActivities(mentor.id, mapper);
   const { userRole } = useAuth();
 
   if (userRole !== "fdsc") {

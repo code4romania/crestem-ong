@@ -1,19 +1,13 @@
 import { DataTable } from "@/components/ui/data-table";
-import type {
-  FinalDetailedUserModel,
-  FinalDimensionModel,
-  FinalEvaluationModel,
-  MentorActivityModel,
-} from "@/services/api/types";
-import { useSuspenseGetMatrix } from "@/services/matrix.queries";
+import { useListNgoMentorActivities } from "@/services/activities.queries";
+import type { FinalDetailedUserModel } from "@/services/api/types";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { useCallback, useMemo } from "react";
 import { activitiesColumns } from "./activities-columns";
 import type { MentorActivityVM } from "./type";
-import { useListUserMentorActivities } from "@/services/activities.queries";
 
 function MentorActivitiesTable({ ngo }: { ngo: FinalDetailedUserModel }) {
-  const { data: activities } = useListUserMentorActivities(
+  const { data: activities } = useListNgoMentorActivities(
     ngo.id,
     (activities): MentorActivityVM[] =>
       activities.map((activity) => ({
@@ -26,6 +20,8 @@ function MentorActivitiesTable({ ngo }: { ngo: FinalDetailedUserModel }) {
         mentor: activity.mentor,
       })) ?? []
   );
+
+  console.log(activities);
 
   const downloadTable = useCallback((activity: MentorActivityVM) => {
     // downloadExcel({

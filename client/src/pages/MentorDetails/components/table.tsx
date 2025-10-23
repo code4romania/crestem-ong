@@ -1,6 +1,6 @@
 import { DataTable } from "@/components/ui/data-table";
 import { useAuth } from "@/contexts/auth";
-import { useListUserMentorActivities } from "@/services/activities.queries";
+import { useListMentorMentorActivities } from "@/services/activities.queries";
 import type {
   FinalDetailedUserModel,
   MentorActivityModel,
@@ -33,7 +33,7 @@ export function MentorActivitiesTable({
 }: {
   mentor: FinalDetailedUserModel;
 }) {
-  const { data } = useListUserMentorActivities(mentor.id, mapper);
+  const { data } = useListMentorMentorActivities(mentor.id, mapper);
 
   const { userRole } = useAuth();
 
