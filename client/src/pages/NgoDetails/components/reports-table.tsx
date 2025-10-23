@@ -11,7 +11,7 @@ import { useSuspenseGetMatrix } from "@/services/matrix.queries";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { useCallback, useMemo } from "react";
 import { downloadExcel } from "react-export-table-to-excel";
-import { reportsColumns } from "./columns";
+import { reportsColumns } from "./reports-columns";
 import type { ReportVM } from "./type";
 function getDimensionsData(
   dimensions: FinalDimensionModel[],

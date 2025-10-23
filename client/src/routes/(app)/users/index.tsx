@@ -31,5 +31,9 @@ export const Route = createFileRoute("/(app)/users/")({
 
 function RouteComponent() {
   const { userRole } = useAuth();
-  return userRole === "fdsc" ? <UsersList /> : <Navigate to="/" />;
+  return userRole === "fdsc" || userRole === "mentor" ? (
+    <UsersList />
+  ) : (
+    <Navigate to="/" />
+  );
 }

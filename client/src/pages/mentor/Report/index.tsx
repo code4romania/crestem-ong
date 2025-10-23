@@ -31,7 +31,7 @@ const Report = () => {
       : [];
   }, [evaluationsCompleted, matrix]);
 
-  if (!isLoadingMatrix || isLoadingreport) {
+  if (isLoadingMatrix || isLoadingreport) {
     return <FullScreenLoader />;
   }
 

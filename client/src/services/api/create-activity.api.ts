@@ -5,7 +5,7 @@ export interface CreateActivityRequest {
   dimension: string;
   startDate: string;
   type: string;
-  duration: string;
+  duration: number;
   notes: string;
   mentor: number;
 }

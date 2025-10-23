@@ -31,7 +31,7 @@ function RouteComponent() {
   const { data: userDetails } = useSuspenseGetUserDetails(userId);
   const { returnToProgramId } = Route.useSearch();
 
-  return userRole === "fdsc" ? (
+  return userRole === "fdsc" || userRole === "mentor" ? (
     <UserDetails
       userDetails={userDetails}
       returnToProgramId={returnToProgramId}

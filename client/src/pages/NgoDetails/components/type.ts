@@ -1,4 +1,9 @@
-import type { FinalEvaluationModel } from "@/services/api/types";
+import type {
+  ActivityTypeModel,
+  FinalDimensionModel,
+  FinalEvaluationModel,
+  FinalUserModel,
+} from "@/services/api/types";
 
 export interface ReportVM {
   id: number;
@@ -9,4 +14,14 @@ export interface ReportVM {
   score: string;
   finished: boolean;
   completedEvaluations: FinalEvaluationModel[];
+}
+
+export interface MentorActivityVM {
+  id: number;
+  createdAt: string;
+  startDate: string;
+  duration: number;
+  dimension: FinalDimensionModel;
+  type: ActivityTypeModel;
+  mentor: FinalUserModel;
 }

@@ -28,6 +28,7 @@ import { NgosPrimaryButtons } from "./primary-buttons";
 import { NgosDataTableToolbar } from "./toolbar";
 import type { FinalDetailedUserModel } from "@/services/api/types";
 import { DataTable } from "@/components/ui/data-table";
+import { useAuth } from "@/contexts/auth";
 const route = getRouteApi("/(app)/users/");
 
 const ngoMapper = (ngos: FinalDetailedUserModel[]): NgoVM[] =>
@@ -45,6 +46,7 @@ const ngoMapper = (ngos: FinalDetailedUserModel[]): NgoVM[] =>
     })
   );
 export function NgosTable() {
+  const { userRole } = useAuth();
   const { data } = useSuspenseListNgosWithDetails(ngoMapper);
   const {
     globalFilter,
@@ -126,7 +128,7 @@ export function NgosTable() {
           <div>
             <Heading level={"h2"}>Organizații</Heading>
           </div>
-          <NgosPrimaryButtons table={table} />
+          {userRole === "fdsc" && <NgosPrimaryButtons table={table} />}
         </div>
       </Section>
       <Section>

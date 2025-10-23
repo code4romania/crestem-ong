@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { useCallback } from "react";
 
 import { useCreateActivityMutation } from "@/services/activity.mutations";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
 import { useAuth } from "@/contexts/auth";
@@ -22,7 +21,7 @@ const NewActivity = () => {
         {
           ...data,
           startDate: format(data.startDate, "yyyy-MM-dd"),
-          duration: data.duration.toString(),
+          duration: Number(data.duration),
           notes: data.notes ?? "",
           mentor: user!.id,
         },

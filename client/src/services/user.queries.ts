@@ -3,23 +3,23 @@ import {
   useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { getMe, type MeModel } from "./api/get-me.api";
 import Cookies from "js-cookie";
+import { getMe, type MeModel } from "./api/get-me.api";
+import { getUserMentorActivities } from "./api/get-my-mentor-activities.api";
 import { getRegistrationInfo } from "./api/get-registration-info.api";
+import { getUserDetails } from "./api/get-user-details.api";
+import { getUserDimensions } from "./api/get-user-dimensions.api";
 import { getUserDomains } from "./api/get-user-domains.api";
-import { getUserMentorActivities } from "./api/get-user-mentor-activities.api";
+import { getUserPrograms } from "./api/get-user-programs.api";
+import { listMentees } from "./api/list-mentees.api";
 import type {
   FinalDetailedUserModel,
   FinalDimensionModel,
   FinalDomainModel,
-  MentorActivityModel,
   FinalProgramModel,
-  MenteeModel,
+  FinalUserModel,
+  MentorActivityModel,
 } from "./api/types";
-import { getUserPrograms } from "./api/get-user-programs.api";
-import { getUserDimensions } from "./api/get-user-dimensions.api";
-import { getUserDetails } from "./api/get-user-details.api";
-import { listMentees } from "./api/list-mentees.api";
 
 export const getMeQueryOptions = <TResult = MeModel>(
   select?: (data: MeModel) => TResult
@@ -142,9 +142,9 @@ export const useGetUserDetails = <TResult = FinalDetailedUserModel>(
   select?: (data: FinalDetailedUserModel) => TResult
 ) => useQuery(getUserDetailsQueryOptions(userId, select));
 
-export const listMenteesQueryOptions = <TResult = MenteeModel[]>(
+export const listMenteesQueryOptions = <TResult = FinalUserModel[]>(
   mentorId: number,
-  select?: (data: MenteeModel[]) => TResult
+  select?: (data: FinalUserModel[]) => TResult
 ) =>
   queryOptions({
     queryKey: ["mentees"],
@@ -154,7 +154,7 @@ export const listMenteesQueryOptions = <TResult = MenteeModel[]>(
     enabled: !!Cookies.get("jwt"),
   });
 
-export const useListMentees = <TResult = MenteeModel[]>(
+export const useListMentees = <TResult = FinalUserModel[]>(
   mentorId: number,
-  select?: (data: MenteeModel[]) => TResult
+  select?: (data: FinalUserModel[]) => TResult
 ) => useQuery(listMenteesQueryOptions(mentorId, select));

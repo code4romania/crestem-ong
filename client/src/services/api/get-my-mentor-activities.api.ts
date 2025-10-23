@@ -2,20 +2,18 @@ import qs from "qs";
 import { API } from "../api";
 import type { MentorActivityModel } from "./types";
 
-export const getMentorActivities = (
-  mentorId: number
-): Promise<MentorActivityModel[]> => {
+export const getUserMentorActivities = (): Promise<MentorActivityModel[]> => {
   const params = {
-    populate: {
-      mentorActivities: {
-        populate: ["dimension", "user", "type"],
-      },
-    },
+    populate: [
+      "mentorActivities.dimension",
+      "mentorActivities.user",
+      "mentorActivities.type",
+    ],
   };
 
   return API.get<{
     mentorActivities: MentorActivityModel[];
-  }>(`api/users/${mentorId}`, {
+  }>(`api/users/me`, {
     params,
     paramsSerializer: {
       serialize: (params) => {

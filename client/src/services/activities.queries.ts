@@ -3,31 +3,33 @@ import {
   useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { getMentorActivities } from "./api/get-mentor-activities.api";
+import { getUserMentorActivities } from "./api/get-user-mentor-activities.api";
 import type { MentorActivityModel } from "./api/types";
 import { getActivityDetails } from "./api/get-activity-details.api";
 
-export const listMentorActivities = <TResult = MentorActivityModel[]>(
-  mentorId: number,
+export const listUserMentorActivitiesQueryOptions = <
+  TResult = MentorActivityModel[]
+>(
+  userId: number,
   select?: (data: MentorActivityModel[]) => TResult
 ) =>
   queryOptions({
-    queryKey: ["mentor", mentorId, "activities"],
-    queryFn: () => getMentorActivities(mentorId),
+    queryKey: ["user", userId, "mentor-activities"],
+    queryFn: () => getUserMentorActivities(userId),
     select,
   });
 
-export const useSuspenseListMentorActivities = <
+export const useSuspenseListUserMentorActivities = <
   TResult = MentorActivityModel[]
 >(
-  mentorId: number,
+  userId: number,
   select?: (data: MentorActivityModel[]) => TResult
-) => useSuspenseQuery(listMentorActivities(mentorId, select));
+) => useSuspenseQuery(listUserMentorActivitiesQueryOptions(userId, select));
 
-export const useListMentorActivities = <TResult = MentorActivityModel[]>(
-  mentorId: number,
+export const useListUserMentorActivities = <TResult = MentorActivityModel[]>(
+  userId: number,
   select?: (data: MentorActivityModel[]) => TResult
-) => useQuery(listMentorActivities(mentorId, select));
+) => useQuery(listUserMentorActivitiesQueryOptions(userId, select));
 
 export const getActivityByIdQueryOptions = <TResult = MentorActivityModel>(
   activityId: string,

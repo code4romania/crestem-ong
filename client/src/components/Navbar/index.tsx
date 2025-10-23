@@ -62,6 +62,8 @@ const MENU = {
   mentor: [
     { text: "Evaluare ONG", link: "/" },
     { text: "Jurnal de activitate", link: "/activities" },
+    { text: "Organizații", link: "/users" },
+    { text: "Persoane resursă", link: "/mentors" },
   ],
 };
 

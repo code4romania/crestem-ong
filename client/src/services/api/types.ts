@@ -334,8 +334,3 @@ export interface FinalProgramModel {
   mentors: FinalUserModel[];
   users: FinalUserModel[];
 }
-
-export interface MenteeModel {
-  id: number;
-  ongName: string;
-}
