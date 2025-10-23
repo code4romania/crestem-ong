@@ -79,9 +79,6 @@ function ActivityForm({
       }))
   );
 
-  console.log(activity?.user);
-  console.log(users);
-
   const form = useForm<ActivityInput>({
     resolver: zodResolver(activitySchema),
     defaultValues: {
