@@ -1,8 +1,7 @@
-import React from "react";
-import Heading from "@/components/Heading";
-import Button from "@/components/Button";
 import screenshot from "@/assets/illustration.svg";
+import Heading from "@/components/Heading";
 import Section from "@/components/Section";
+import { Button } from "@/components/ui/button";
 
 const EvaluationFinished = () => (
   <Section>
@@ -17,26 +16,14 @@ const EvaluationFinished = () => (
           la nivel de organizație, poți deja accesa Biblioteca noastră de
           resurse, organizate în funcție de cele 10 dimensiuni ale analizei.
         </p>
-        <Button to={"https://crestem.ong/ro/biblioteca"}>
-          Vezi biblioteca
+        <Button>
+          <a href="https://crestem.ong/ro/biblioteca">Vezi biblioteca</a>
         </Button>
       </div>
       <div className="w-full md:w-1/2 md:pl-12">
         <img src={screenshot} alt={"Screenshot"} />
       </div>
     </div>
-    {/*<div className="py-12">*/}
-    {/*  <Heading level={"h2"}>*/}
-    {/*    Vrei sa fii la curent cu cele mai noi resurse de pe platformă?*/}
-    {/*  </Heading>*/}
-    {/*  <div className="text-green-600">*/}
-    {/*    <Heading level={"h2"}>Abonează-te la newsletter. </Heading>*/}
-    {/*  </div>*/}
-    {/*  <div>*/}
-    {/*    <input type="text" className="" />*/}
-    {/*    <Button></Button>*/}
-    {/*  </div>*/}
-    {/*</div>*/}
   </Section>
 );
 

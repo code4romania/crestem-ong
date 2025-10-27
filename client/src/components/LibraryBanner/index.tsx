@@ -1,8 +1,7 @@
-import React from "react";
-import Section from "@/components/Section";
 import screenshot from "@/assets/illustration.svg";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import Heading from "@/components/Heading";
+import Section from "@/components/Section";
 
 const LibraryBanner = () => (
   <Section className="pt-4">

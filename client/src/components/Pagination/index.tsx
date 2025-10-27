@@ -1,5 +1,3 @@
-import React from "react";
-
 const Pagination = ({ step }: { step: number }) => {
   return (
     <nav aria-label="Progress" className="w-full">
