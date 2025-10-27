@@ -19,5 +19,5 @@ export function MentorsTable() {
     return (
       <DataTableSkeleton columnCount={columns.length} withPagination={false} />
     );
-  return <DataTable table={table} />;
+  return <DataTable table={table} emptyMessage="Nu există mentori"></DataTable>;
 }

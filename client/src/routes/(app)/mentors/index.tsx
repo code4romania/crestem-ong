@@ -26,7 +26,7 @@ function RouteComponent() {
     <LayoutDashboard>
       <Mentors />
     </LayoutDashboard>
-  ) : userRole === "authenticated" ? (
+  ) : userRole === "authenticated" || userRole === "mentor" ? (
     <LayoutApp>
       <AuthenticatedMentorsList />
     </LayoutApp>

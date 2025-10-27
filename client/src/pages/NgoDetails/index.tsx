@@ -8,11 +8,12 @@ import { calcScore } from "@/lib/score";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import type { FinalDetailedUserModel } from "@/services/api/types";
 import { Link, Navigate } from "@tanstack/react-router";
-import NgoReportsTable from "./components/reports-table";
 import MentorActivitiesTable from "./components/activities-table";
+import { ExportActivitiesButton } from "./components/export-activities";
+import NgoReportsTable from "./components/reports-table";
 
 const NgoDetails = ({
   ngo,
@@ -175,23 +176,18 @@ const NgoDetails = ({
         </Card>
       </Section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Istoric evaluări</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <NgoReportsTable ngo={ngo} reports={ngo.reports} />
-        </CardContent>
-      </Card>
+      <Section>
+        <Heading level="h3">Istoric evaluări</Heading>
+        <NgoReportsTable ngo={ngo} reports={ngo.reports} />
+      </Section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Jurnal de activitate</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <MentorActivitiesTable ngo={ngo} />
-        </CardContent>
-      </Card>
+      <Section>
+        <div className="flex w-full items-center justify-between">
+          <Heading level="h3">Jurnal de activitate</Heading>
+          <ExportActivitiesButton ngo={ngo} />
+        </div>
+        <MentorActivitiesTable ngo={ngo} />
+      </Section>
     </>
   );
 };

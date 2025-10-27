@@ -133,7 +133,7 @@ export function NgosTable() {
         </div>
       </Section>
       <Section>
-        <DataTable table={table}>
+        <DataTable table={table} emptyMessage="Nu există organizații">
           <NgosDataTableToolbar table={table}></NgosDataTableToolbar>
         </DataTable>
       </Section>

@@ -52,5 +52,5 @@ export function ReportsTable() {
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  return <DataTable table={table} />;
+  return <DataTable table={table} emptyMessage="Nu există evaluări" />;
 }

@@ -57,5 +57,7 @@ export function MentorActivitiesTable({
     return null;
   }
 
-  return <DataTable table={table} />;
+  return (
+    <DataTable table={table} emptyMessage="Nu există activități"></DataTable>
+  );
 }

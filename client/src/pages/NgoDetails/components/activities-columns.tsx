@@ -3,16 +3,16 @@ import formatDate from "@/lib/formatDate";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { MentorActivityVM } from "./type";
 
-export const activitiesColumns: (
-  ngoId: number
-) => ColumnDef<MentorActivityVM>[] = (ngoId: number) => [
+export const activitiesColumns: ColumnDef<MentorActivityVM>[] = [
   {
     accessorKey: "mentor",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Mentor" />
     ),
     cell: ({ row }) =>
-      row.original.mentor.firstName + " " + row.original.mentor.lastName,
+      [row.original.mentor?.firstName, row.original.mentor?.lastName]
+        .filter(Boolean)
+        .join(" ") || "-",
     enableSorting: false,
   },
   {
@@ -54,6 +54,16 @@ export const activitiesColumns: (
     ),
     cell: ({ row }) => {
       return row.original.type.name;
+    },
+    enableSorting: false,
+  },
+  {
+    accessorKey: "notes",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Notițe" />
+    ),
+    cell: ({ row }) => {
+      return row.original.notes;
     },
     enableSorting: false,
   },

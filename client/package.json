@@ -90,7 +90,6 @@
     "react-dom": "^19.1.1",
     "react-dropzone": "^14.3.8",
     "react-error-boundary": "^6.0.0",
-    "react-export-table-to-excel": "^1.0.6",
     "react-hook-form": "^7.62.0",
     "react-medium-image-zoom": "^5.4.0",
     "react-range-slider-input": "^3.2.1",

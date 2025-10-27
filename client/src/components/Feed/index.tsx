@@ -24,7 +24,7 @@ export function Feed({ activities }: FeedProps) {
   const handleDelete = (id: number) => {
     deleteActivity(id, {
       onSuccess: () => toast.success("Activitatea a fost ștearsă."),
-      onError: (error) => {
+      onError: () => {
         toast.error("Activitatea nu a fost ștearsă.");
       },
     });

@@ -1,6 +1,7 @@
 import { DataTable } from "@/components/ui/data-table";
 import formatDate from "@/lib/formatDate";
 import { calcScore, calcScoreByDimension } from "@/lib/score";
+import { downloadDataToXLSX } from "@/lib/utils";
 import type {
   FinalDetailedUserModel,
   FinalDimensionModel,
@@ -10,9 +11,9 @@ import type {
 import { useSuspenseGetMatrix } from "@/services/matrix.queries";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { useCallback, useMemo } from "react";
-import { downloadExcel } from "react-export-table-to-excel";
 import { reportsColumns } from "./reports-columns";
 import type { ReportVM } from "./type";
+
 function getDimensionsData(
   dimensions: FinalDimensionModel[],
   completedEvaluations: FinalEvaluationModel[]
@@ -26,7 +27,7 @@ function getDimensionsData(
     const comments = ["Argumentare"];
     for (const evaluation of completedEvaluations) {
       const score = dimension.quiz.reduce(
-        (acc, quiz, quizIndex) =>
+        (acc, _, quizIndex) =>
           acc +
           evaluation.dimensions[dimensionIndex].quiz[quizIndex].answer +
           1,
@@ -96,54 +97,60 @@ function NgoReportsTable({
     );
   }, [reports]);
 
-  const downloadEvaluation = useCallback((report: ReportVM) => {
-    downloadExcel({
-      fileName: "evaluari",
-      sheet: "evaluari",
-      tablePayload: {
-        header: ["Date Generale"],
-        body: [
-          ["Nume ONG:", ngo.ongName],
-          ["CIF:", ngo.ongIdentificationNumber],
-          ["Dată început", formatDate(report.createdAt)],
-          ["Dată final", formatDate(report.deadline)],
-          ["Scor obținut", report.score],
-          ["Număr completări", report.numberOfCompletedEvaluations],
-          [
-            "Nume persoană de contact organizație:",
-            [ngo.contactFirstName, ngo.contactLastName]
-              .filter(Boolean)
-              .join(" ") ?? "-",
-          ],
-          ["Email persoană de contact organizație:", ngo.contactEmail ?? "-"],
-          ["Program", ngo.program?.name ?? "-"],
-          [
-            "Expert alocat (persoană resursă FDSC):",
-            [ngo.mentor?.firstName, ngo.mentor?.lastName]
-              .filter(Boolean)
-              .join(" ") ?? "-",
-          ],
-          [],
-          ["Rezultate Generale pe dimensiuni"],
-          ...calcScoreByDimension({
-            matrix,
-            evaluationsCompleted: report.completedEvaluations,
-          }).map((dimension) => [
-            dimension.name,
-            dimension.score?.toFixed(2) || "-",
-          ]),
-          [
-            "",
-            ...report.completedEvaluations.map(
-              (e, idx) => `Evaluare ${idx + 1}`
+  const downloadEvaluation = useCallback(
+    (report: ReportVM) => {
+      downloadDataToXLSX("evaluari.xlsx", () => [
+        {
+          name: "evaluari",
+          rows: [
+            ["Date Generale", ""],
+            ["Nume ONG:", ngo.ongName],
+            ["CIF:", ngo.ongIdentificationNumber],
+            ["Dată început", formatDate(report.createdAt)],
+            ["Dată final", formatDate(report.deadline)],
+            ["Scor obținut", report.score],
+            ["Număr completări", report.numberOfCompletedEvaluations],
+            [
+              "Nume persoană de contact organizație:",
+              [ngo.contactFirstName, ngo.contactLastName]
+                .filter(Boolean)
+                .join(" ") ?? "-",
+            ],
+            ["Email persoană de contact organizație:", ngo.contactEmail ?? "-"],
+            ["Program", ngo.program?.name ?? "-"],
+            [
+              "Expert alocat (persoană resursă FDSC):",
+              [ngo.mentor?.firstName, ngo.mentor?.lastName]
+                .filter(Boolean)
+                .join(" ") ?? "-",
+            ],
+            [],
+            ["Rezultate Generale pe dimensiuni"],
+            ...calcScoreByDimension({
+              matrix,
+              evaluationsCompleted: report.completedEvaluations,
+            }).map((dimension) => [
+              dimension.name,
+              dimension.score?.toFixed(2) || "-",
+            ]),
+            [
+              "",
+              ...report.completedEvaluations.map(
+                (e, idx) => `Evaluare ${idx + 1}`
+              ),
+            ],
+            ["", ...report.completedEvaluations.map((e) => e.email)],
+            ...getDimensionsData(
+              matrix.dimensions,
+              report.completedEvaluations
             ),
           ],
-          ["", ...report.completedEvaluations.map((e) => e.email)],
-          ...getDimensionsData(matrix.dimensions, report.completedEvaluations),
-        ],
-      },
-    });
-  }, []);
+          cols: [{ width: 40 }, { width: 40 }],
+        },
+      ]);
+    },
+    [ngo, matrix]
+  );
 
   const columns = useMemo(
     () => reportsColumns(ngo.id, downloadEvaluation),
@@ -157,7 +164,9 @@ function NgoReportsTable({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return <DataTable table={table} />;
+  return (
+    <DataTable table={table} emptyMessage="Nu există evaluări"></DataTable>
+  );
 }
 
 export default NgoReportsTable;

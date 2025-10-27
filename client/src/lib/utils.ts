@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { utils, writeFile, type Sheet } from "xlsx";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -54,3 +55,45 @@ export function getPageNumbers(currentPage: number, totalPages: number) {
 
   return rangeWithDots;
 }
+
+export const downloadJSONToXLSX = (
+  fileName: string,
+  getSheets: () => Sheet[]
+) => {
+  const workbook = utils.book_new();
+  const sheets = getSheets();
+
+  sheets.forEach((sheet) => {
+    debugger;
+    const ws = utils.json_to_sheet(sheet.rows);
+
+    if (sheet.cols) {
+      ws["!cols"] = sheet.cols;
+    }
+
+    utils.book_append_sheet(workbook, ws, sheet.name);
+  });
+
+  writeFile(workbook, fileName, { compression: true });
+};
+
+export const downloadDataToXLSX = (
+  fileName: string,
+  getSheets: () => Sheet[]
+) => {
+  const workbook = utils.book_new();
+  const sheets = getSheets();
+
+  sheets.forEach((sheet) => {
+    debugger;
+    const ws = utils.aoa_to_sheet(sheet.rows);
+
+    if (sheet.cols) {
+      ws["!cols"] = sheet.cols;
+    }
+
+    utils.book_append_sheet(workbook, ws, sheet.name);
+  });
+
+  writeFile(workbook, fileName, { compression: true });
+};

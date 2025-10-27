@@ -77,7 +77,10 @@ export function MentorsToNgosTable() {
         handleComplete={deleteMentorshipRelationCallback}
         destructive={true}
       />
-      <DataTable table={table} />
+      <DataTable
+        table={table}
+        emptyMessage="Nu există relații de mentorat"
+      ></DataTable>
     </>
   );
 }

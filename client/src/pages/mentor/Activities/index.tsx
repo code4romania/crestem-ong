@@ -6,7 +6,28 @@ import Section from "@/components/Section";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import { Feed } from "@/components/Feed";
+import ExportXLSX, { type Sheet } from "@/components/ExportXLSX";
+import type { MentorActivityModel } from "@/services/api/types";
+import formatDate from "@/lib/formatDate";
 
+const getSheets = (activities: MentorActivityModel[]): Sheet[] => {
+  const rows = activities.map((activity) => ({
+    Organizația: activity.user?.ongName,
+    Dată: formatDate(activity.startDate),
+    "Durată activitate (ore)": activity.duration,
+    Dimensiune: activity.dimension.name,
+    "Tip activitate": activity.type.name,
+    Notițe: activity.notes,
+  }));
+
+  return [
+    {
+      name: "Jurnal de activitate",
+      rows,
+      cols: Object.keys(rows[0]).map((key) => ({ width: key.length + 3 })),
+    },
+  ];
+};
 const Activities = () => {
   const { data: mentorActivities } = useGetUserMentorActivities((activities) =>
     activities.sort(
@@ -23,7 +44,13 @@ const Activities = () => {
       <Section>
         <div className="flex justify-between">
           <div className="text-lg font-semibold">Jurnal de activitate</div>
-          <div>
+          <div className="flex gap-2">
+            <ExportXLSX
+              buttonVariant="secondary"
+              className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none"
+              fileName={`jurnal-de-activitate.xlsx`}
+              getSheets={() => getSheets(mentorActivities ?? [])}
+            />
             <Button asChild>
               <Link to="/create/activity">Adaugă activitate</Link>
             </Button>

@@ -23,5 +23,6 @@ export interface MentorActivityVM {
   duration: number;
   dimension: FinalDimensionModel;
   type: ActivityTypeModel;
-  mentor: FinalUserModel;
+  mentor: FinalUserModel | null;
+  notes: string;
 }

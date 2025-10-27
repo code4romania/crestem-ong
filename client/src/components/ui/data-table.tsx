@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData> extends React.ComponentProps<"div"> {
   table: TanstackTable<TData>;
+  emptyMessage: string;
   hasPagination?: boolean;
 }
 
@@ -22,6 +23,7 @@ export function DataTable<TData>({
   table,
   children,
   className,
+  emptyMessage,
   hasPagination,
   ...props
 }: DataTableProps<TData>) {
@@ -83,7 +85,7 @@ export function DataTable<TData>({
                   colSpan={table.getAllColumns().length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {emptyMessage}
                 </TableCell>
               </TableRow>
             )}

@@ -8,7 +8,7 @@ export const getNgoMentorActivities = (
   const params = {
     populate: {
       userActivities: {
-        populate: ["dimension", "mentor", "type"],
+        populate: ["dimension", "mentor", "type", "activityType"],
       },
     },
   };
