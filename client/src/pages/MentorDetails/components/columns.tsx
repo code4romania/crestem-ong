@@ -1,11 +1,10 @@
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
 import { Button } from "@/components/ui/button";
+import { router } from "@/index";
+import formatDate from "@/lib/formatDate";
 import { Link } from "@tanstack/react-router";
 import { type ColumnDef } from "@tanstack/react-table";
 import type { MentorActivityVM } from "./types";
-import formatDate from "@/lib/formatDate";
-import { Router } from "lucide-react";
-import { router } from "@/index";
 
 export const programColumns: ColumnDef<MentorActivityVM>[] = [
   {
@@ -29,8 +28,13 @@ export const programColumns: ColumnDef<MentorActivityVM>[] = [
   {
     accessorKey: "duration",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Durată activitate (ore)" />
+      <DataTableColumnHeader column={column} title="Durată activitate" />
     ),
+    cell: ({ row }) => {
+      return (
+        <span className="text-right w-full">{row.original.duration} ore</span>
+      );
+    },
   },
   {
     accessorKey: "startDate",

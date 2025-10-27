@@ -28,7 +28,7 @@ export const activitiesColumns: ColumnDef<MentorActivityVM>[] = [
   {
     accessorKey: "duration",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Durată activitate (ore)" />
+      <DataTableColumnHeader column={column} title="Durată activitate" />
     ),
     cell: ({ row }) => {
       return (
