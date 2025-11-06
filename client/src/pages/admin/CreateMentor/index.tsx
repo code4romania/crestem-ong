@@ -97,7 +97,7 @@ const CreateMentor = () => {
       {
         ...values,
         programs: values.programs.map((p) => +p.value),
-        dimensions: values.programs.map((d) => +d.value),
+        dimensions: values.dimensions.map((d) => +d.value),
       },
       {
         onError: (error) => {
