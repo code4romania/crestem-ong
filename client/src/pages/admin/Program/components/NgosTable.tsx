@@ -20,10 +20,33 @@ import {
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 import { AddNgoInProgramDialog } from "./AddNgoInProgramDialog";
+import { DataTable } from "@/components/ui/data-table";
 
 export const columns: (programId: string) => ColumnDef<FinalUserModel>[] = (
   programId: string
 ) => [
+  {
+    accessorKey: "ongName",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Nume ONG"
+        className="whitespace-nowrap  text-sm font-bold text-gray-900"
+      />
+    ),
+  },
+  {
+    accessorKey: "ongIdentificationNumber",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="CUI"
+        className="whitespace-nowrap  text-sm font-bold text-gray-900"
+      />
+    ),
+    enableSorting: false,
+  },
+
   {
     accessorKey: "contactPersonName",
     header: ({ column }) => (
@@ -142,57 +165,10 @@ function NgosTable({
           </div>
         )}
       </div>
-
-      <div className="overflow-hidden rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  Nicio organizatie inscrisa in program
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+      <DataTable
+        table={table}
+        emptyMessage="Nici-un ONG inscris in program"
+      ></DataTable>
     </div>
   );
 }
