@@ -64,7 +64,6 @@ export const downloadJSONToXLSX = (
   const sheets = getSheets();
 
   sheets.forEach((sheet) => {
-    debugger;
     const ws = utils.json_to_sheet(sheet.rows);
 
     if (sheet.cols) {
@@ -85,7 +84,6 @@ export const downloadDataToXLSX = (
   const sheets = getSheets();
 
   sheets.forEach((sheet) => {
-    debugger;
     const ws = utils.aoa_to_sheet(sheet.rows);
 
     if (sheet.cols) {

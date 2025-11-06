@@ -19,25 +19,36 @@ export function exportReport(
       name: `evaluare-${report.id}`,
       rows: [
         ["Date Generale", ""],
+        ["ID", report.id],
         ["Nume ONG:", ngo.ongName],
         ["CIF:", ngo.ongIdentificationNumber],
         ["Dată început", formatDate(report.createdAt)],
         ["Dată final", formatDate(report.deadline)],
         ["Scor obținut", report.score],
-        ["Număr completări", report.numberOfCompletedEvaluations],
+        [
+          "Număr completări",
+          `${report.numberOfCompletedEvaluations} / ${report.totalEvaluations}`,
+        ],
         [
           "Nume persoană de contact organizație:",
           [ngo.contactFirstName, ngo.contactLastName]
             .filter(Boolean)
-            .join(" ") ?? "-",
+            .join(" ") || "N/A",
         ],
-        ["Email persoană de contact organizație:", ngo.contactEmail ?? "-"],
-        ["Program", ngo.program?.name ?? "-"],
+        ["Email persoană de contact organizație:", ngo.contactEmail || "N/A"],
+        ["Program", ngo.program?.name || "N/A"],
         [
           "Expert alocat (persoană resursă FDSC):",
-          [ngo.mentor?.firstName, ngo.mentor?.lastName]
-            .filter(Boolean)
-            .join(" ") ?? "-",
+          [
+            ngo.mentors
+              ?.map(
+                (mentor) =>
+                  [mentor?.firstName, mentor?.lastName]
+                    .filter(Boolean)
+                    .join(" ") || "N/A"
+              )
+              .join(", ") || "N/A",
+          ],
         ],
         [],
         ["Rezultate Generale pe dimensiuni"],
@@ -46,7 +57,7 @@ export function exportReport(
           evaluationsCompleted: report.completedEvaluations,
         }).map((dimension) => [
           dimension.name,
-          dimension.score?.toFixed(2) || "-",
+          `${dimension.score?.toFixed(2)} %` || "N/A",
         ]),
         [
           "",

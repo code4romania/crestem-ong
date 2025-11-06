@@ -82,6 +82,11 @@ export const calcScoreByDimension = ({
   if (!matrix) {
     return [];
   }
+
+  if (evaluationsCompleted.length === 0) {
+    return [];
+  }
+
   const object: Record<
     string,
     {

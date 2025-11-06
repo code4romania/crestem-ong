@@ -65,10 +65,24 @@ interface UserModel {
   firstName: string;
   lastName: string;
   available: boolean;
+  userSessions: UserSessionModel[];
+}
+
+interface UserSessionModel {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  mentor: UserModel;
 }
 
 export const getReport = (reportId: string): Promise<FinalReportModel> => {
-  return API.get<GetReportResponse>(`api/reports/${reportId}`).then(
-    (res) => res.data
-  );
+  return API.get<GetReportResponse>(`api/reports/${reportId}`).then((res) => {
+    return {
+      ...res.data,
+      user: {
+        ...res.data.user,
+        mentors: res.data.user.userSessions.map((s) => s.mentor),
+      },
+    };
+  });
 };

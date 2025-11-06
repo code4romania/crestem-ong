@@ -57,7 +57,11 @@ export function ReportsPrimaryButtons() {
 
   return (
     <div className="flex gap-2">
-      <Button className="space-x-1" onClick={handleDownloadExcel}>
+      <Button
+        className="space-x-1"
+        onClick={handleDownloadExcel}
+        disabled={!data?.length}
+      >
         <span>Descarca tabel </span> <Download size={18} />
       </Button>
     </div>
