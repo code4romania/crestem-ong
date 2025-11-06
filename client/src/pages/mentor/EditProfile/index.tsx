@@ -34,10 +34,7 @@ import FullScreenLoader from "@/components/FullScreenLoader";
 import { Button } from "@/components/ui/button";
 import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
 import { Switch } from "@/components/ui/switch";
-import type {
-  FinalDimensionModel,
-  ProgramFinalModel,
-} from "@/services/api/types";
+import type { FinalDimensionModel } from "@/services/api/types";
 import {
   updateMentorMutation,
   useUploadPictureMutation,
@@ -69,9 +66,7 @@ export const mentorProfileSchema = z.object({
 
 export type MentorProfileInput = z.infer<typeof mentorProfileSchema>;
 
-const optionsMapper = (
-  userDimensions: FinalDimensionModel[] | ProgramFinalModel[]
-) =>
+const optionsMapper = (userDimensions: FinalDimensionModel[]) =>
   userDimensions
     ? userDimensions.map((d) => ({ value: d.id.toString(), label: d.name }))
     : [];
@@ -87,7 +82,7 @@ const EditMentorProfile = () => {
 
   const { data: dimensions, isLoading } = useListDimensions((dimensions) =>
     dimensions.map((at) => ({
-      label: at.attributes.name,
+      label: at.name,
       value: at.id.toString(),
     }))
   );

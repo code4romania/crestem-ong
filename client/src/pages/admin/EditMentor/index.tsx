@@ -29,6 +29,7 @@ import { useListDimensions } from "@/services/dimensions.queries";
 import { Link, Navigate, useNavigate } from "@tanstack/react-router";
 import { Briefcase, User } from "lucide-react";
 
+import FullScreenLoader from "@/components/FullScreenLoader";
 import { Button } from "@/components/ui/button";
 import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
 import { Switch } from "@/components/ui/switch";
@@ -40,8 +41,6 @@ import { Route } from "@/routes/(app)/mentors/$mentorId/edit";
 import type {
   FinalDetailedUserModel,
   FinalDimensionModel,
-  FinalUserModel,
-  ProgramFinalModel,
 } from "@/services/api/types";
 import {
   updateMentorMutation,
@@ -51,10 +50,8 @@ import { useSuspenseGetUserDetails } from "@/services/user.queries";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
-import FullScreenLoader from "@/components/FullScreenLoader";
-const optionsMapper = (
-  userDimensions: FinalDimensionModel[] | ProgramFinalModel[]
-) =>
+
+const optionsMapper = (userDimensions: FinalDimensionModel[]) =>
   userDimensions
     ? userDimensions.map((d) => ({ value: d.id.toString(), label: d.name }))
     : [];
@@ -80,7 +77,7 @@ function EditMentor() {
 
   const { data: dimensions, isLoading } = useListDimensions((dimensions) =>
     dimensions.map((at) => ({
-      label: at.attributes.name,
+      label: at.name,
       value: at.id.toString(),
     }))
   );
