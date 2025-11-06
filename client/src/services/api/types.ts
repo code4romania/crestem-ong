@@ -241,9 +241,9 @@ export interface FinalUserModel {
   avatar?: Avatar;
   domains?: FinalDomainModel[];
   dimensions?: FinalDimensionModel[];
-  mentor?: FinalUserModel;
   mentorActivities?: any[];
   reports?: FinalReportModel[];
+  mentors?: FinalUserModel[];
 }
 
 export interface FinalDetailedUserModel extends FinalUserModel {

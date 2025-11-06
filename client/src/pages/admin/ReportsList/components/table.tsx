@@ -39,21 +39,17 @@ export const reportsMapper = (reports: ListReportsResponse): ReportVM[] =>
       ongIdentificationNumber: report.user?.ongIdentificationNumber || "-",
       city: report.user?.city || "-",
       county: report.user?.county || "-",
-      mentor: report.user?.mentor
-        ? [
-            report.user?.mentor?.firstName || "",
-            report.user?.mentor?.lastName || "",
-          ]
-            .filter(Boolean)
-            .join(" ")
-        : "NA",
+      mentors:
+        report.user?.mentors?.map(
+          (m) => [m?.firstName, m?.lastName].filter(Boolean).join(" ") ?? "N/A"
+        ) ?? [],
       startDate: report.createdAt.split("T")[0],
       endDate: report.deadline.split("T")[0],
       score: calcScore(completedEvaluations) || 0,
       completedEvaluationsCount: completedEvaluations.length,
       evaluationsCount: report.evaluations.length,
       evaluations: report.evaluations,
-    };
+    } as ReportVM;
   });
 
 export function ReportsTable() {

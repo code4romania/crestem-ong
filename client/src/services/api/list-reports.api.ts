@@ -1,6 +1,6 @@
 import qs from "qs";
 import { API } from "../api";
-import type { DomainModel, FinalReportModel } from "./types";
+import type { FinalReportModel, FinalUserModel } from "./types";
 
 export interface ListReportsResponse {
   data: FinalReportModel[];
@@ -70,7 +70,26 @@ interface DataAttributes {
   firstName: string | undefined;
   lastName: string | undefined;
   available: boolean;
-  domains: { data: DomainModel[] };
+  domains: {
+    data: Array<{
+      id: number;
+      attributes: {
+        name: string;
+        createdAt: string;
+        updatedAt: string;
+      };
+    }>;
+  };
+  userSessions: {
+    data: Array<{
+      id: number;
+      attributes: {
+        createdAt: string;
+        updatedAt: string;
+        mentor: UserDataModel;
+      };
+    }>;
+  };
 }
 
 interface EvaluationsDataModel {
@@ -119,6 +138,7 @@ export const listReports = (): Promise<ListReportsResponse> => {
       "user.mentor",
       "user.dimensions",
       "user.domains",
+      "user.userSessions.mentor",
     ],
     pagination: {
       page: 1,
@@ -134,27 +154,42 @@ export const listReports = (): Promise<ListReportsResponse> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => ({
-    ...res.data,
-    data:
-      res.data.data.map((r) => ({
-        ...r,
-        ...r.attributes,
-        evaluations: r.attributes.evaluations.data.map((e) => ({
-          ...e,
-          ...e.attributes,
-        })),
-        user: {
-          ...r.attributes.user.data,
-          ...r.attributes.user.data?.attributes,
-          avatar: undefined!,
-          domains: r.attributes.user.data?.attributes.domains.data.map((d) => ({
-            ...d,
-            ...d.attributes,
-          })),
-          dimensions: undefined!,
-          mentor: undefined!,
-        },
-      })) ?? [],
-  }));
+  }).then((res) => {
+    return {
+      ...res.data,
+      data:
+        res.data.data.map((r) => {
+          const user: FinalUserModel = {
+            ...r.attributes.user.data,
+            ...r.attributes.user.data?.attributes,
+            avatar: undefined!,
+            domains: r.attributes.user.data?.attributes.domains.data.map(
+              (d) => ({
+                id: d.id,
+                ...d.attributes,
+              })
+            ),
+            dimensions: undefined!,
+            mentors: r.attributes.user.data?.attributes.userSessions.data.map(
+              (s) => ({
+                ...s.attributes.mentor.data,
+                ...s.attributes.mentor.data?.attributes,
+                domains: undefined!,
+                dimensions: undefined!,
+              })
+            ),
+          };
+
+          return {
+            ...r,
+            ...r.attributes,
+            evaluations: r.attributes.evaluations.data.map((e) => ({
+              ...e,
+              ...e.attributes,
+            })),
+            user,
+          };
+        }) ?? [],
+    };
+  });
 };
