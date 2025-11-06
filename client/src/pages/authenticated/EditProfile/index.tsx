@@ -122,7 +122,7 @@ const OngEditProfile = () => {
     resolver: zodResolver(ongProfileSchema),
     defaultValues: {
       ...user,
-      domains: ongDomains,
+      domains: ongDomains ?? [],
       accountFacebook: user?.accountFacebook || "",
       accountTwitter: user?.accountTwitter || "",
       accountTiktok: user?.accountTiktok || "",
@@ -374,11 +374,11 @@ const OngEditProfile = () => {
                           <MultiSelectorList>
                             {domains?.map((domain) => (
                               <MultiSelectorItem
-                                key={domain.attributes.name}
+                                key={domain.name}
                                 value={domain.id.toString()}
-                                label={domain.attributes.name}
+                                label={domain.name}
                               >
-                                <span>{domain.attributes.name}</span>
+                                <span>{domain.name}</span>
                               </MultiSelectorItem>
                             ))}
                           </MultiSelectorList>

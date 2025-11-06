@@ -242,7 +242,7 @@ const Evaluation = () => {
           />
 
           <Section>
-            <Pagination step={currentStepIndex} />
+            <Pagination step={currentStepIndex + 1} />
           </Section>
           <Section>
             <div className="flex place-content-end gap-3">
