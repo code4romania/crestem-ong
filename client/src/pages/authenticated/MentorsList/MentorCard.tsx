@@ -28,22 +28,21 @@ const MentorCard = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex flex-col items-center gap-2">
+        <CardTitle className="flex flex-col items-center">
           <Avatar className="h-32 w-32">
             <AvatarImage src={avatarUrl} alt={`${firstName} ${lastName}`} />
             <AvatarFallback>
               {[firstName?.[0], lastName?.[0]].filter(Boolean).join("") ?? "-"}
             </AvatarFallback>
           </Avatar>
-          <span>
+          <div className="text-lg font-semibold mt-4">
             {firstName} {lastName}
-          </span>
+          </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex justify-center ">
+      <CardContent className="flex justify-center">
         <Button asChild>
           <Link to={`/users/$userId`} params={{ userId: id }}>
-            <span className="sr-only">Twitter</span>
             <UserIcon className="h-5 w-5 inline mr-2" />
             <span className="inline">Vezi profil</span>
           </Link>
