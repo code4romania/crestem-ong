@@ -15,18 +15,7 @@ import {
 } from "@tanstack/react-table";
 import { programColumns as columns } from "./columns";
 import type { MentorActivityVM } from "./types";
-
-const mapper = (result: MentorActivityModel[]): MentorActivityVM[] =>
-  result.map((ma) => {
-    return {
-      id: ma.id.toString(),
-      ngo: ma.user?.ongName ?? "N/A",
-      dimension: ma.dimension?.name ?? "N/A",
-      activityType: ma.type?.name ?? "N/A",
-      startDate: ma.startDate ?? "N/A",
-      duration: ma.duration ?? 0,
-    };
-  });
+import { mapper } from "./mapper";
 
 export function MentorActivitiesTable({
   mentor,

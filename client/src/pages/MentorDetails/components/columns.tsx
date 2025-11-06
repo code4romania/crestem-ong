@@ -45,6 +45,20 @@ export const programColumns: ColumnDef<MentorActivityVM>[] = [
       return formatDate(row.original.startDate);
     },
   },
+  {
+    accessorKey: "notes",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Notițe" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="text-left max-w-96 truncate mask-ellipsis">
+          {row.original.notes || "-"}
+        </div>
+      );
+    },
+    size: 200,
+  },
 
   {
     id: "navigate",

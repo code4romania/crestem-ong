@@ -5,4 +5,5 @@ export interface MentorActivityVM {
   activityType: string;
   startDate: string;
   duration: number;
+  notes: string;
 }

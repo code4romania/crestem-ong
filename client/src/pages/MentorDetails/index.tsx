@@ -8,9 +8,14 @@ import { useAuth } from "@/contexts/auth";
 import type { FinalDetailedUserModel } from "@/services/api/types";
 import { Link, Navigate } from "@tanstack/react-router";
 import DOMPurify from "dompurify";
-import { type ReactNode } from "react";
+import { useCallback, type ReactNode } from "react";
 import { MentorActivitiesTable } from "./components/table";
 import { MentorStats } from "./components/mentor-stats";
+import ExportXLSX, { type Sheet } from "@/components/ExportXLSX";
+import { useListMentorMentorActivities } from "@/services/activities.queries";
+import { mapper } from "./components/mapper";
+import type { MentorActivityVM } from "./components/types";
+import formatDate from "@/lib/formatDate";
 
 const MentorDetails = ({
   mentor,
@@ -20,10 +25,39 @@ const MentorDetails = ({
   returnToProgramId?: string;
 }) => {
   const { userRole } = useAuth();
+  const { data: mentorActivities } = useListMentorMentorActivities(
+    mentor.id,
+    mapper
+  );
 
-  if (mentor.role.type !== "mentor") {
+  if (mentor.role.type !== "mentor" && mentor.role.type !== "fdsc") {
     return <Navigate to="/" />;
   }
+
+  const getSheets = useCallback(
+    (activities: MentorActivityVM[]): Sheet[] => {
+      const rows = activities.map((activity) => ({
+        Organizația: activity.ngo,
+        Mentor: mentor.firstName + " " + mentor.lastName,
+
+        Dată: formatDate(activity.startDate),
+        "Durată activitate (ore)": activity.duration,
+        Dimensiune: activity.dimension,
+        "Tip activitate": activity.activityType,
+        Notițe: activity.notes || "-",
+      }));
+      return [
+        {
+          name: "Jurnal de activitate",
+          rows: rows,
+          cols: Object.keys(activities[0]).map((key) => ({
+            width: key.length + 3,
+          })),
+        },
+      ];
+    },
+    [mentor, mentorActivities]
+  );
 
   const rows: [string | ReactNode, string | undefined | null | ReactNode][] = [
     [
@@ -130,7 +164,15 @@ const MentorDetails = ({
       </Section>
       {userRole === "fdsc" && (
         <Section>
-          <Heading level="h3">Jurnal de activitate</Heading>
+          <div className="flex w-full items-center justify-between">
+            <Heading level="h3">Jurnal de activitate</Heading>
+            <ExportXLSX
+              buttonVariant="secondary"
+              className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none"
+              fileName={`jurnal-de-activitate.xlsx`}
+              getSheets={() => getSheets(mentorActivities ?? [])}
+            />
+          </div>
           <div className="flex flex-col gap-4">
             <MentorStats mentor={mentor} />
             <MentorActivitiesTable mentor={mentor} />

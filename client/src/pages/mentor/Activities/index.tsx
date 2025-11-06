@@ -10,7 +10,9 @@ import ExportXLSX, { type Sheet } from "@/components/ExportXLSX";
 import type { MentorActivityModel } from "@/services/api/types";
 import formatDate from "@/lib/formatDate";
 
-const getSheets = (activities: MentorActivityModel[]): Sheet[] => {
+const getMentorActivitySheets = (
+  activities: MentorActivityModel[]
+): Sheet[] => {
   const rows = activities.map((activity) => ({
     Organizația: activity.user?.ongName,
     Dată: formatDate(activity.startDate),
@@ -49,7 +51,7 @@ const Activities = () => {
               buttonVariant="secondary"
               className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none"
               fileName={`jurnal-de-activitate.xlsx`}
-              getSheets={() => getSheets(mentorActivities ?? [])}
+              getSheets={() => getMentorActivitySheets(mentorActivities ?? [])}
             />
             <Button asChild>
               <Link to="/create/activity">Adaugă activitate</Link>
