@@ -91,6 +91,7 @@ const ButtonGroup = ({ className }: { className?: string }) => (
 const NewReport = () => {
   const navigate = useNavigate();
   const form = useForm<ReportInput>({
+    mode: "onBlur",
     resolver: zodResolver(reportSchema),
     defaultValues: {
       evaluations: [{ email: "" }],
