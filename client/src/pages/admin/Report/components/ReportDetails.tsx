@@ -1,10 +1,7 @@
 import { calcScore } from "@/lib/score";
 
-import Heading from "@/components/Heading";
-import Section from "@/components/Section";
-import { Separator } from "@/components/ui/separator";
-import type { FinalEvaluationModel } from "@/services/api/types";
 import formatDate from "@/lib/formatDate";
+import type { FinalEvaluationModel } from "@/services/api/types";
 
 interface ReportViewProps {
   report: any;

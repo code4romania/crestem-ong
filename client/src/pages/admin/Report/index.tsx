@@ -2,18 +2,16 @@ import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import { evaluationsCompletedFilter } from "@/lib/filters";
 import { calcScoreByDimension } from "@/lib/score";
-import ReportDetails from "@/pages/admin/Report/ReportDetails";
+import ReportDetails from "@/pages/admin/Report/components/ReportDetails";
 import { Route } from "@/routes/(app)/reports/$reportId";
+import { useGetMatrix } from "@/services/matrix.queries";
 import { useSuspenseGetReportById } from "@/services/reports.queries";
 import { useMemo } from "react";
-import ReportResults from "./ReportResults";
-import { useGetMatrix } from "@/services/matrix.queries";
-import { Button } from "@/components/ui/button";
-import { Link } from "@tanstack/react-router";
+import { ReportPrimaryButtons } from "./components/PrimaryButtons";
+import ReportResults from "./components/ReportResults";
 
 const Report = () => {
   const { reportId } = Route.useParams();
-  const { fromNgoId } = Route.useSearch();
   const { data: report } = useSuspenseGetReportById(reportId);
   const { data: matrix } = useGetMatrix();
 
@@ -36,18 +34,7 @@ const Report = () => {
       <Section>
         <div className="flex justify-between items-center">
           <Heading level="h2">Evaluare #{reportId}</Heading>
-          <Button asChild variant="secondary">
-            {fromNgoId ? (
-              <Link
-                to={`/users/$userId`}
-                params={{ userId: fromNgoId.toString() }}
-              >
-                Înapoi
-              </Link>
-            ) : (
-              <Link to="/reports">Înapoi</Link>
-            )}
-          </Button>
+          <ReportPrimaryButtons />
         </div>
       </Section>
       <Section>
