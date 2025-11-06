@@ -90,6 +90,9 @@ export const reportsColumns: (
   },
   {
     id: "download",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Export evaluare" />
+    ),
     cell: ({ row }) => {
       return (
         <Button
@@ -97,7 +100,7 @@ export const reportsColumns: (
           onClick={() => downloadReport(row.original)}
           disabled={row.original.numberOfCompletedEvaluations === 0}
         >
-          <DownloadIcon className="w-4 h-4" />
+          <DownloadIcon className="w-4 h-4 text-primary" />
         </Button>
       );
     },
