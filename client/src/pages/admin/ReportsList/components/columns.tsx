@@ -76,7 +76,17 @@ export const reportsColumns: ColumnDef<ReportVM>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="PERSOANA RESURSA ALOCATĂ" />
     ),
-    cell: ({ row }) => <div>{row.original.mentor ?? "-"}</div>,
+    cell: ({ row }) => (
+      <div className="flex flex-wrap gap-2">
+        {row.original.mentors.length
+          ? row.original.mentors.map((m) => (
+              <Badge variant="outline" key={m}>
+                {m}
+              </Badge>
+            ))
+          : "N/A"}
+      </div>
+    ),
     enableSorting: false,
   },
   {

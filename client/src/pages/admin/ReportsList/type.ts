@@ -5,7 +5,7 @@ export interface ReportVM {
   ongIdentificationNumber: string;
   city: string;
   county: string;
-  mentor: string;
+  mentors: string[];
   startDate: string;
   endDate: string;
   finished: boolean;

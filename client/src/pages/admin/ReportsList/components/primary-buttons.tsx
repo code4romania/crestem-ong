@@ -18,7 +18,7 @@ export function ReportsPrimaryButtons() {
         ongIdentificationNumber,
         city,
         county,
-        mentor,
+        mentors,
         startDate,
         endDate,
         finished,
@@ -35,7 +35,8 @@ export function ReportsPrimaryButtons() {
           CIF: ongIdentificationNumber,
           LOCALITATE: city,
           JUDEȚ: county,
-          "PERSOANA RESURSA ALOCATĂ": mentor,
+          "PERSOANA RESURSĂ ALOCATĂ":
+            mentors.filter(Boolean).join(", ") ?? "N/A",
           "DATĂ ÎNCEPUT": formatDate(startDate),
           "DATĂ FINAL": finished ? formatDate(endDate) : "În progres",
           "SCOR OBȚINUT": finished ? `${score}%` : "În progres",
