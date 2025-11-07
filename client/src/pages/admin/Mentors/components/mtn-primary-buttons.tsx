@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { FinalUserModel } from "@/services/api/types";
 import { useCreateMentorshipRequestMutation } from "@/services/mentors.mutations";
 import {
   useListMentorshipRelations,
@@ -33,14 +34,19 @@ export function MtnPrimaryButtons() {
 
   const { data: mentors } = useSuspenseListMentors();
   const { data: ongs } = useSuspenseListNgos();
-  const { data: mentorshipRelations } = useListMentorshipRelations();
+  const { data: mentorToMentees } = useListMentorshipRelations(
+    (mentorshipRelationsiphs) =>
+      mentorshipRelationsiphs?.reduce((acc, curr) => {
+        acc[curr.mentor.id.toString()] = [
+          ...(acc[curr.mentor.id.toString()] || []),
+          curr.user?.id,
+        ];
+        return acc;
+      }, {} as Record<string, number[]>) || {}
+  );
 
   const { mutate: createMentorshipRelation } =
     useCreateMentorshipRequestMutation();
-
-  const associatedOngIdsForSelectedMentor = mentorshipRelations
-    ?.filter((relation) => relation.mentor.id.toString() === selectedMentor)
-    ?.map((relation) => relation.user.id);
 
   const handleAssociate = () => {
     if (selectedMentor && selectedOng) {
@@ -124,7 +130,13 @@ export function MtnPrimaryButtons() {
                 </SelectTrigger>
                 <SelectContent>
                   {ongs.map((ong) => (
-                    <SelectItem key={ong.id} value={ong.id.toString()}>
+                    <SelectItem
+                      key={ong.id}
+                      value={ong.id.toString()}
+                      disabled={mentorToMentees[selectedMentor]?.includes(
+                        ong.id
+                      )}
+                    >
                       {ong.ongName}
                     </SelectItem>
                   ))}
