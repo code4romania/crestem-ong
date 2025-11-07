@@ -52,7 +52,7 @@ module.exports = createCoreController(
       );
 
       const sanitizedEntities = await this.sanitizeOutput(entities, ctx);
-      return sanitizedEntities.map((e) => e.user);
+      return sanitizedEntities;
     },
 
     /**
