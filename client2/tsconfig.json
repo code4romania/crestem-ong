@@ -1,0 +1,60 @@
+{
+  /* Visit https://aka.ms/tsconfig to read more about this file */
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    /* Type Checking */
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    /* Modules */
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": false,
+    /* Emit */
+    // noEmit is set per-package based on needs
+    /* JavaScript Support */
+    "allowJs": true,
+    /* Interop Constraints */
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    /* Language and Environment */
+    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "useDefineForClassFields": true,
+    /* Completeness */
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "types": [
+      "vite/client"
+    ],
+    "composite": true,
+    "noEmit": true,
+    "tsBuildInfoFile": "../../.cache/tsconfig/web.tsbuildinfo",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "src/services/.ts"
+  ],
+  "exclude": [
+    "**/dist/**/*",
+    "**/node_modules/**/*"
+  ]
+}

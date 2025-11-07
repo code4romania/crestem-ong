@@ -1,0 +1,47 @@
+{
+  "kind": "collectionType",
+  "collectionName": "activities",
+  "info": {
+    "singularName": "activity",
+    "pluralName": "activities",
+    "displayName": "Activity"
+  },
+  "options": {
+    "comment": ""
+  },
+  "attributes": {
+    "type": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::activity-type.activity-type"
+    },
+    "dimension": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::dimension.dimension",
+      "inversedBy": "activities"
+    },
+    "startDate": {
+      "type": "date",
+      "required": true
+    },
+    "notes": {
+      "type": "richtext"
+    },
+    "duration": {
+      "type": "integer"
+    },
+    "mentor": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "mentorActivities"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "userActivities"
+    }
+  }
+}

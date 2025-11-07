@@ -1,0 +1,51 @@
+##
+GET https://crestem-ong-api.staging.heroesof.tech/api/users/me?populate[0]=reports.evaluations.dimensions.quiz&populate[1]=avatar&populate[2]=role&populate[3]=programs.users&populate[4]=userActivities&populate[5]=mentorActivities.user&populate[6]=mentorActivities.type&populate[7]=mentorActivities.dimension&populate[8]=program&populate[9]=dimensions&populate[10]=domains
+Authorization:<>
+###
+
+##
+GET https://crestem-ong-api.staging.heroesof.tech/api/users?filters[role][type][$eq]=mentor&populate[0]=role&populate[1]=domains&populate[2]=programs&populate[3]=dimensions&populate[4]=mentorActivities&populate[5]=avatar&sort=createdAt%3Adesc
+Authorization:<>
+###
+
+GET https://crestem-ong-api.staging.heroesof.tech/api/users?filters[role][type][$eq]=mentor&populate[0]=role&populate[1]=domains&populate[2]=programs&populate[3]=dimensions&populate[4]=mentorActivities&populate[5]=avatar&sort=createdAt%3Adesc&pagination[page]=1&pagination[pageSize]=100
+Authorization:<>
+###
+
+GET https://crestem-ong-api.staging.heroesof.tech/api/domains
+# Authorization:<>
+###
+
+
+
+GET https://crestem-ong-api.staging.heroesof.tech/api/programs?populate[mentors][fields]=id&populate[users][fields]=id&filters[name][$contains]=
+Authorization:<>
+###
+
+GET https://crestem-ong-api.staging.heroesof.tech/api/programs/1?populate[mentors][populate][0]=dimensions&populate[mentors][populate][1]=mentorActivities&populate[users][populate][reports][populate][evaluations][populate][dimensions][populate][quiz]=true
+Authorization:<>
+###
+
+GET https://crestem-ong-api.staging.heroesof.tech/api/matrix?populate[dimensions][populate][0]=quiz
+Authorization:<>
+###
+
+GET https://api.crestem.ong/api/programs/15?populate[mentors][populate][0]=dimensions&populate[mentors][populate][1]=mentorActivities&populate[users][populate][reports][populate][evaluations][populate][dimensions][populate][quiz]=true
+Authorization:<>
+###
+
+GET https://api.crestem.ong/api/users?filters[role][type][$eq]=authenticated
+Authorization:<>
+###
+
+GET https://api.crestem.ong/api/users?filters[type][role][$eq]=mentor&populate[0]=domains&populate[1]=mentorActivities&populate[2]=avatar&sort=createdAt:desc&pagination[page]=1&pagination[pageSize]=100
+Authorization:<>
+###
+
+GET https://api.crestem.ong/api/reports?pagination[page]=1&pagination[pageSize]=2&populate[0]=user&populate[1]=evaluations.dimensions.quiz&sort=createdAt:desc
+Authorization:<>
+###
+
+GET https://api.crestem.ong/api/reports
+Authorization:<>
+###
