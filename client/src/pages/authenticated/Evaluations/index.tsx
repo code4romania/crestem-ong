@@ -24,7 +24,7 @@ const Evaluations = () => {
           <Heading level={"h2"}>Evaluare organizațională</Heading>
           <Button asChild>
             <Link to="/matrix" target="_blank" rel="noopener noreferrer">
-              Vezi matricea
+              Vezi model matrice
             </Link>
           </Button>
         </div>

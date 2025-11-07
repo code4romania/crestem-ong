@@ -91,7 +91,7 @@ export const reportsColumns: (
   {
     id: "download",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Export evaluare" />
+      <DataTableColumnHeader column={column} title="EXPORT EVALUARE" />
     ),
     cell: ({ row }) => {
       return (

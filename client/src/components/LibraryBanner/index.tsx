@@ -1,7 +1,7 @@
 import screenshot from "@/assets/illustration.svg";
-import { Button } from "@/components/ui/button";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
+import { Button } from "@/components/ui/button";
 
 const LibraryBanner = () => (
   <Section className="pt-4">
@@ -13,7 +13,15 @@ const LibraryBanner = () => (
           la care ai scorat cel mai slab. Nu ezita să ne contactezi dacă ai
           nevoie de îndrumare sau ajutor.
         </p>
-        <Button to="https://crestem.ong/ro/biblioteca">Vezi biblioteca</Button>
+        <Button>
+          <a
+            href="https://crestem.ong/ro/biblioteca"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Vezi biblioteca
+          </a>
+        </Button>
       </div>
       <div>
         <div className="w-full h-full flex items-center justify-center pt-0 pr-4 pb-0 pl-4">
