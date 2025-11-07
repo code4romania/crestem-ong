@@ -46,7 +46,7 @@ module.exports = createCoreController(
         {
           ...query,
           filters,
-          populate: ["user"],
+          populate: ["user", "mentor"],
           sort: [{ createdAt: "desc" }],
         }
       );
