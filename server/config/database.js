@@ -1,4 +1,5 @@
 const path = require('path');
+const awsCaBundle = require('aws-ssl-profiles');
 
 module.exports = ({ env }) => {
   const client = env('DATABASE_CLIENT', 'sqlite');
@@ -15,7 +16,7 @@ module.exports = ({ env }) => {
         ssl: env.bool('DATABASE_SSL', false) && {
           key: env('DATABASE_SSL_KEY', undefined),
           cert: env('DATABASE_SSL_CERT', undefined),
-          ca: env('DATABASE_SSL_CA', undefined),
+          ca: env('DATABASE_SSL_CA', awsCaBundle.ca),
           capath: env('DATABASE_SSL_CAPATH', undefined),
           cipher: env('DATABASE_SSL_CIPHER', undefined),
           rejectUnauthorized: env.bool(
@@ -37,7 +38,7 @@ module.exports = ({ env }) => {
         ssl: env.bool('DATABASE_SSL', false) && {
           key: env('DATABASE_SSL_KEY', undefined),
           cert: env('DATABASE_SSL_CERT', undefined),
-          ca: env('DATABASE_SSL_CA', undefined),
+          ca: env('DATABASE_SSL_CA', awsCaBundle.ca),
           capath: env('DATABASE_SSL_CAPATH', undefined),
           cipher: env('DATABASE_SSL_CIPHER', undefined),
           rejectUnauthorized: env.bool(
