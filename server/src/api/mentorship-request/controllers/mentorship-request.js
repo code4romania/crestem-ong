@@ -51,10 +51,8 @@ module.exports = createCoreController(
         }
       );
 
-      return entities?.map((entity) => ({
-        id: entity.user.id,
-        ongName: entity.user.ongName,
-      }));
+      const sanitizedEntities = await this.sanitizeOutput(entities, ctx);
+      return sanitizedEntities.map((e) => e.user);
     },
 
     /**
@@ -95,10 +93,7 @@ module.exports = createCoreController(
         return ctx.notFound("Mentorship request not found");
       }
 
-      return {
-        id: entity.user.id,
-        ongName: entity.user.ongName,
-      };
+      return this.sanitizeOutput(entity, ctx);
     },
   })
 );
