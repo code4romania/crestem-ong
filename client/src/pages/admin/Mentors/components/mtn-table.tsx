@@ -19,10 +19,6 @@ export function MentorsToNgosTable() {
     useDeleteMentorshipRelationMutation();
 
   const deleteMentorshipRelationCallback = useCallback(() => {
-    console.log(
-      "deleteMentorshipRelationCallback",
-      selectedMentorshipRelationId
-    );
     if (!selectedMentorshipRelationId) return;
     deleteMentorshipRelation(selectedMentorshipRelationId, {
       onSuccess: () => {
