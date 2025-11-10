@@ -39,9 +39,7 @@ const menteeMapper = (mentees: FinalDetailedUserModel[]): MenteeVM[] =>
     })
   );
 export function MenteesTable() {
-  const { user } = useAuth();
-
-  const { data } = useSuspenseListMentees(user?.id!, menteeMapper);
+  const { data } = useSuspenseListMentees(menteeMapper);
 
   const {
     globalFilter,
@@ -126,7 +124,7 @@ export function MenteesTable() {
         </div>
       </Section>
       <Section>
-        <DataTable table={table}>
+        <DataTable table={table} emptyMessage="Nu există organizații">
           <MenteesDataTableToolbar table={table}></MenteesDataTableToolbar>
         </DataTable>
       </Section>

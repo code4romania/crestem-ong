@@ -2,17 +2,8 @@ import qs from "qs";
 import { API } from "../api";
 import type { FinalDetailedUserModel } from "./types";
 
-export const listMentees = (
-  userId: number
-): Promise<FinalDetailedUserModel[]> => {
+export const listMentees = (): Promise<FinalDetailedUserModel[]> => {
   const params = {
-    filters: {
-      mentor: {
-        id: {
-          $eq: userId,
-        },
-      },
-    },
     populate: ["user", "program", "domains"],
     pagination: {
       page: 1,
@@ -20,12 +11,14 @@ export const listMentees = (
     },
   };
 
-  return API.get<Array<FinalDetailedUserModel>>(`api/mentorship-requests`, {
+  return API.get<
+    Array<{ mentor: FinalDetailedUserModel; user: FinalDetailedUserModel }>
+  >(`api/mentorship-requests`, {
     params,
     paramsSerializer: {
       serialize: (params) => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data ?? []);
+  }).then((res) => res.data?.map((m) => m.user) ?? []);
 };

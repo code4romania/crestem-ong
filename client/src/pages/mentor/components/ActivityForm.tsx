@@ -70,13 +70,11 @@ function ActivityForm({
         value: at.id.toString(),
       }))
     );
-  const { data: users, isLoading: loadingUsers } = useListMentees(
-    user!.id,
-    (mentees) =>
-      mentees.map((mentee) => ({
-        label: mentee.ongName,
-        value: mentee.id.toString(),
-      }))
+  const { data: users, isLoading: loadingUsers } = useListMentees((mentees) =>
+    mentees.map((mentee) => ({
+      label: mentee.ongName,
+      value: mentee.id.toString(),
+    }))
   );
 
   const form = useForm<ActivityInput>({

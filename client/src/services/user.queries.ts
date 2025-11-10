@@ -143,23 +143,20 @@ export const useGetUserDetails = <TResult = FinalDetailedUserModel>(
 ) => useQuery(getUserDetailsQueryOptions(userId, select));
 
 export const listMenteesQueryOptions = <TResult = FinalDetailedUserModel[]>(
-  mentorId: number,
   select?: (data: FinalDetailedUserModel[]) => TResult
 ) =>
   queryOptions({
     queryKey: ["mentees"],
-    queryFn: () => listMentees(mentorId),
+    queryFn: () => listMentees(),
     placeholderData: [],
     select,
     enabled: !!Cookies.get("jwt"),
   });
 
 export const useListMentees = <TResult = FinalDetailedUserModel[]>(
-  mentorId: number,
   select?: (data: FinalDetailedUserModel[]) => TResult
-) => useQuery(listMenteesQueryOptions(mentorId, select));
+) => useQuery(listMenteesQueryOptions(select));
 
 export const useSuspenseListMentees = <TResult = FinalDetailedUserModel[]>(
-  mentorId: number,
   select?: (data: FinalDetailedUserModel[]) => TResult
-) => useSuspenseQuery(listMenteesQueryOptions(mentorId, select));
+) => useSuspenseQuery(listMenteesQueryOptions(select));
