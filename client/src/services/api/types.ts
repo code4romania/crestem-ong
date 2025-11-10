@@ -247,6 +247,7 @@ export interface FinalUserModel {
 }
 
 export interface FinalDetailedUserModel extends FinalUserModel {
+  userSessions: MentorshipRelationModel[];
   domains: FinalDomainModel[];
   dimensions: FinalDimensionModel[];
   reports: FinalReportModel[];

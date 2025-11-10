@@ -5,7 +5,6 @@ import ExpiredEvaluation from "@/pages/Evaluation/ExpiredEvaluation";
 import { getEvaluationQueryOptions } from "@/services/evaluation.queries";
 import { QueryErrorResetBoundary } from "@tanstack/react-query";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
-import { zodValidator } from "@tanstack/zod-adapter";
 import { ErrorBoundary } from "react-error-boundary";
 
 import z from "zod";
@@ -14,7 +13,7 @@ const routeSchema = z.object({
   email: z.email().optional().default(""),
 });
 export const Route = createFileRoute("/(app)/evaluation/$evaluationId")({
-  validateSearch: zodValidator(routeSchema),
+  validateSearch: routeSchema,
   loaderDeps: ({ search: { email } }) => ({ email }),
   loader: async ({
     context: { queryClient },

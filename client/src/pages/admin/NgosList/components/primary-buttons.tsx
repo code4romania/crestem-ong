@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { downloadJSONToXLSX } from "@/lib/utils";
+import { downloadDataToXLSX } from "@/lib/excel";
 import { getRouteApi } from "@tanstack/react-router";
 import type { Table } from "@tanstack/react-table";
 import { Download, Plus } from "lucide-react";
@@ -24,23 +24,34 @@ export function NgosPrimaryButtons({ table }: { table: Table<NgoVM> }) {
           lastEvaluationDate,
           city,
           domains,
-        }) => ({
-          "NUME ONG": ongName,
-          CIF: ongIdentificationNumber,
-          "DATĂ ÎNREGISTRARE": createdAt,
-          PROGRAM: programName,
-          JUDEȚ: county,
-          LOCALITATE: city,
-          "DOMENIU DE ACTIVITATE": domains,
-          "ULTIMA EVALUARE": lastEvaluationDate,
-        })
+        }) => [
+          ongName,
+          ongIdentificationNumber,
+          createdAt,
+          programName,
+          county,
+          city,
+          domains?.join(",") || "N/A",
+          lastEvaluationDate,
+        ]
       );
 
-    downloadJSONToXLSX("organizatii.xlsx", () => [
+    downloadDataToXLSX("organizatii.xlsx", () => [
       {
         name: "Organizații",
-        rows: rows,
-        cols: Object.keys(rows[0]).map((key) => ({ width: key.length + 3 })),
+        data: [
+          [
+            "NUME ONG",
+            "CIF",
+            "DATĂ ÎNREGISTRARE",
+            "PROGRAM",
+            "JUDEȚ",
+            "LOCALITATE",
+            "DOMENIU DE ACTIVITATE",
+            "ULTIMA EVALUARE",
+          ],
+          ...rows,
+        ],
       },
     ]);
   }, [table]);

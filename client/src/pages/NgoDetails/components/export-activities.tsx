@@ -1,10 +1,11 @@
-import ExportXLSX, { type Sheet } from "@/components/ExportXLSX";
 import formatDate from "@/lib/formatDate";
 import { useListNgoMentorActivities } from "@/services/activities.queries";
 import type { FinalDetailedUserModel } from "@/services/api/types";
 import { useCallback } from "react";
 import { toMentorActivityVM } from "./activities-table";
 import type { MentorActivityVM } from "./type";
+import ExportXLSX from "@/components/ExportXLSX";
+import type { Sheet } from "@/lib/excel";
 
 export const ExportActivitiesButton = ({
   ngo,
@@ -18,25 +19,32 @@ export const ExportActivitiesButton = ({
 
   const getSheets = useCallback(
     (activities: MentorActivityVM[]): Sheet[] => {
-      const rows = activities.map((activity) => ({
-        Organizația: ngo.ongName,
-        Mentor:
-          [activity.mentor?.firstName, activity.mentor?.lastName]
-            .filter(Boolean)
-            .join(" ") || "-",
-        Dată: formatDate(activity.startDate),
-        "Durată activitate (ore)": activity.duration,
-        Dimensiune: activity.dimension.name,
-        "Tip activitate": activity.type.name,
-        Notițe: activity.notes,
-      }));
+      const rows = activities.map((activity) => [
+        ngo.ongName,
+        [activity.mentor?.firstName, activity.mentor?.lastName]
+          .filter(Boolean)
+          .join(" ") || "-",
+        formatDate(activity.startDate),
+        activity.duration,
+        activity.dimension.name,
+        activity.type.name,
+        activity.notes,
+      ]);
       return [
         {
           name: "Jurnal de activitate",
-          rows: rows,
-          cols: Object.keys(activities[0]).map((key) => ({
-            width: key.length + 3,
-          })),
+          data: [
+            [
+              "Organizația",
+              "Mentor",
+              "Dată",
+              "Durată activitate (ore)",
+              "Dimensiune",
+              "Tip activitate",
+              "Notițe",
+            ],
+            ...rows,
+          ],
         },
       ];
     },

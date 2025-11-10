@@ -4,7 +4,6 @@ import ProgramsList from "@/pages/admin/ProgramsList";
 import { useAuth } from "@/contexts/auth";
 import { listProgramsQueryOptions } from "@/services/programs.queries";
 import { createFileRoute, Navigate, redirect } from "@tanstack/react-router";
-import { zodValidator } from "@tanstack/zod-adapter";
 import z from "zod";
 
 const filtersSchema = z.object({
@@ -18,7 +17,7 @@ const filtersSchema = z.object({
 });
 
 export const Route = createFileRoute("/(app)/programs/")({
-  validateSearch: zodValidator(filtersSchema),
+  validateSearch: filtersSchema,
   beforeLoad: ({ context }) => {
     if (!context.auth.isAuthenticated) {
       throw redirect({

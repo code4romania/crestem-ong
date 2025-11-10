@@ -4,7 +4,7 @@ import type {
   FinalEvaluationModel,
   FinalMatrixModel,
 } from "@/services/api/types";
-import { downloadDataToXLSX } from "./utils";
+import { downloadDataToXLSX, type CellData } from "./excel";
 import formatDate from "./formatDate";
 import type { ReportVM } from "@/pages/NgoDetails/components/type";
 import { calcScoreByDimension } from "./score";
@@ -17,51 +17,58 @@ export function exportReport(
   downloadDataToXLSX(`evaluare-${report.id}.xlsx`, () => [
     {
       name: `evaluare-${report.id}`,
-      rows: [
-        ["Date Generale", ""],
-        ["ID", report.id],
-        ["Nume ONG:", ngo.ongName],
-        ["CIF:", ngo.ongIdentificationNumber],
-        ["Dată început", formatDate(report.createdAt)],
-        ["Dată final", formatDate(report.deadline)],
-        ["Scor obținut", report.score],
+      data: [
+        [{ value: "Date Generale", bold: true }, { value: "" }],
+        [{ value: "ID", bold: true }, report.id],
+        [{ value: "Nume ONG:", bold: true }, ngo.ongName],
+        [{ value: "CIF:", bold: true }, ngo.ongIdentificationNumber],
+        [{ value: "Dată început", bold: true }, formatDate(report.createdAt)],
+        [{ value: "Dată final", bold: true }, formatDate(report.deadline)],
+        [{ value: "Scor obținut", bold: true }, report.score],
         [
-          "Număr completări",
+          {
+            value: "Număr completări",
+            bold: true,
+          },
           `${report.numberOfCompletedEvaluations} / ${report.totalEvaluations}`,
         ],
         [
-          "Nume persoană de contact organizație:",
+          { value: "Nume persoană de contact organizație:", bold: true },
           [ngo.contactFirstName, ngo.contactLastName]
             .filter(Boolean)
             .join(" ") || "N/A",
         ],
-        ["Email persoană de contact organizație:", ngo.contactEmail || "N/A"],
-        ["Program", ngo.program?.name || "N/A"],
         [
-          "Expert alocat (persoană resursă FDSC):",
-          [
-            ngo.mentors
-              ?.map(
-                (mentor) =>
-                  [mentor?.firstName, mentor?.lastName]
-                    .filter(Boolean)
-                    .join(" ") || "N/A"
-              )
-              .join(", ") || "N/A",
-          ],
+          { value: "Email persoană de contact organizație:", bold: true },
+          ngo.contactEmail || "N/A",
+        ],
+        [{ value: "Program", bold: true }, ngo.program?.name || "N/A"],
+        [
+          { value: "Experți alocați (persoane resurse FDSC):", bold: true },
+          ngo.mentors
+            ?.map(
+              (mentor) =>
+                [mentor?.firstName, mentor?.lastName]
+                  .filter(Boolean)
+                  .join(" ") || "N/A"
+            )
+            .join(", ") || "N/A",
         ],
         [],
-        ["Rezultate Generale pe dimensiuni"],
+        [{ value: "Rezultate Generale pe dimensiuni", bold: true }],
         ...calcScoreByDimension({
           matrix,
           evaluationsCompleted: report.completedEvaluations,
         }).map((dimension) => [
-          dimension.name,
+          { value: dimension.name, bold: true },
           `${dimension.score?.toFixed(2)} %` || "N/A",
         ]),
         [
           "",
-          ...report.completedEvaluations.map((e, idx) => `Evaluare ${idx + 1}`),
+          ...report.completedEvaluations.map((e, idx) => ({
+            value: `Evaluare ${idx + 1}`,
+            bold: true,
+          })),
         ],
         ["", ...report.completedEvaluations.map((e) => e.email)],
         ...getDimensionsData(matrix.dimensions, report.completedEvaluations),
@@ -74,14 +81,16 @@ export function exportReport(
 function getDimensionsData(
   dimensions: FinalDimensionModel[],
   completedEvaluations: FinalEvaluationModel[]
-): string[][] {
-  const data: string[][] = [];
+): CellData[][] {
+  const data: CellData[][] = [];
 
   for (const { dimension, dimensionIndex } of dimensions.map(
     (dimension, dimensionIndex) => ({ dimension, dimensionIndex })
   )) {
-    const row = [`${dimensionIndex + 1}. ${dimension.name}`];
-    const comments = ["Argumentare"];
+    const row: CellData[] = [
+      { value: `${dimensionIndex + 1}. ${dimension.name}`, bold: true },
+    ];
+    const comments: CellData[] = [{ value: "Argumentare", italic: true }];
     for (const evaluation of completedEvaluations) {
       const score = dimension.quiz.reduce(
         (acc, _, quizIndex) =>
@@ -91,7 +100,7 @@ function getDimensionsData(
         0
       );
 
-      row.push(`${score} / 25`);
+      row.push({ value: `${score} / 25`, bold: true, italic: true });
       comments.push(evaluation.dimensions[dimensionIndex].comment);
     }
     data.push(row);
@@ -99,8 +108,13 @@ function getDimensionsData(
     for (const { question, questionIndex } of dimension.quiz.map(
       (question, questionIndex) => ({ question, questionIndex })
     )) {
-      const row = [
-        `${dimensionIndex + 1}. ${questionIndex + 1}. ${question.question}`,
+      const row: CellData[] = [
+        {
+          value: `${dimensionIndex + 1}. ${questionIndex + 1}. ${
+            question.question
+          }`,
+          italic: true,
+        },
       ];
 
       for (const evaluation of completedEvaluations) {

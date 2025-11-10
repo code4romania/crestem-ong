@@ -1,12 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { downloadJSONToXLSX } from "@/lib/utils";
+import { downloadDataToXLSX, type Sheet } from "@/lib/excel";
 import { DownloadIcon } from "lucide-react";
-
-export interface Sheet {
-  name: string;
-  rows: any[];
-  cols?: any[];
-}
 
 interface ExportProps {
   label?: string;
@@ -34,7 +28,7 @@ const ExportXLSX = ({
   return (
     <div className={className}>
       <Button
-        onClick={() => downloadJSONToXLSX(fileName, getSheets)}
+        onClick={() => downloadDataToXLSX(fileName, getSheets)}
         variant={buttonVariant}
       >
         {icon}

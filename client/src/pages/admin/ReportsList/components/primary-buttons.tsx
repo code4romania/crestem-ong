@@ -4,7 +4,7 @@ import { Download } from "lucide-react";
 import { reportsMapper } from "./table";
 import { useCallback, useMemo } from "react";
 import formatDate from "@/lib/formatDate";
-import { downloadJSONToXLSX } from "@/lib/utils";
+import { downloadDataToXLSX } from "@/lib/excel";
 
 export function ReportsPrimaryButtons() {
   const { data } = useSuspenseListReports(reportsMapper);
@@ -26,31 +26,43 @@ export function ReportsPrimaryButtons() {
         completedEvaluationsCount,
         evaluationsCount,
       }) => {
-        return {
-          ID: id,
-          ONG: ngoName,
-          "DOMENIU DE ACTIVITATE": domains?.length
-            ? domains.map((d) => d).join(",")
-            : "-",
-          CIF: ongIdentificationNumber,
-          LOCALITATE: city,
-          JUDEȚ: county,
-          "PERSOANA RESURSĂ ALOCATĂ":
-            mentors.filter(Boolean).join(", ") ?? "N/A",
-          "DATĂ ÎNCEPUT": formatDate(startDate),
-          "DATĂ FINAL": finished ? formatDate(endDate) : "În progres",
-          "SCOR OBȚINUT": finished ? `${score}%` : "În progres",
-          "NUMĂR COMPLETĂRI": completedEvaluationsCount,
-          "NUMĂR INVITAȚII": evaluationsCount,
-        };
+        return [
+          id,
+          ngoName,
+          domains?.join(",") || "N/A",
+          ongIdentificationNumber,
+          city,
+          county,
+          mentors.filter(Boolean).join(", ") ?? "N/A",
+          formatDate(startDate),
+          finished ? formatDate(endDate) : "În progres",
+          finished ? `${score}%` : "În progres",
+          completedEvaluationsCount,
+          evaluationsCount,
+        ];
       }
     );
 
-    downloadJSONToXLSX("evaluari.xlsx", () => [
+    downloadDataToXLSX("evaluari.xlsx", () => [
       {
         name: "evaluari",
-        rows: rows,
-        cols: Object.keys(rows[0]).map((key) => ({ width: key.length + 3 })),
+        data: [
+          [
+            "ID",
+            "ONG",
+            "DOMENIU DE ACTIVITATE",
+            "CIF",
+            "LOCALITATE",
+            "JUDEȚ",
+            "PERSOANA RESURSĂ ALOCATĂ",
+            "DATĂ ÎNCEPUT",
+            "DATĂ FINAL",
+            "SCOR OBȚINUT",
+            "NUMĂR COMPLETĂRI",
+            "NUMĂR INVITAȚII",
+          ],
+          ...rows,
+        ],
       },
     ]);
   }, [data]);

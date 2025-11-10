@@ -1,6 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { utils, writeFile, type Sheet } from "xlsx";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -55,89 +54,3 @@ export function getPageNumbers(currentPage: number, totalPages: number) {
 
   return rangeWithDots;
 }
-
-function makeSafeSheetName(name: string) {
-  // Disallowed characters in Excel sheet names
-  const forbidden = /[:\\\/?*\[\]]/g;
-
-  // Replace forbidden characters with an underscore
-  let safe = name.replace(forbidden, "_");
-
-  // Trim whitespace
-  safe = safe.trim();
-
-  // Remove starting or ending apostrophes
-  safe = safe.replace(/^'+|'+$/g, "");
-
-  // Excel sheet names must not be empty
-  if (safe.length === 0) {
-    safe = "Sheet";
-  }
-
-  // Limit to 31 characters
-  if (safe.length > 31) {
-    safe = safe.slice(0, 31);
-  }
-
-  return safe;
-}
-
-function makeUniqueSheetName(baseName: string, existingNames: string[]) {
-  let safe = makeSafeSheetName(baseName);
-  let candidate = safe;
-  let counter = 1;
-
-  while (existingNames.includes(candidate)) {
-    const suffix = ` (${counter})`;
-    const maxBaseLength = 31 - suffix.length;
-    candidate = safe.slice(0, maxBaseLength) + suffix;
-    counter++;
-  }
-
-  return candidate;
-}
-
-export const downloadJSONToXLSX = (
-  fileName: string,
-  getSheets: () => Sheet[]
-) => {
-  const workbook = utils.book_new();
-  const sheets = getSheets();
-
-  const usedNames: string[] = [];
-
-  sheets.forEach((sheet) => {
-    const ws = utils.json_to_sheet(sheet.rows);
-
-    if (sheet.cols) {
-      ws["!cols"] = sheet.cols;
-    }
-
-    const uniqueName = makeUniqueSheetName(sheet.name, usedNames);
-    usedNames.push(uniqueName);
-
-    utils.book_append_sheet(workbook, ws, uniqueName);
-  });
-
-  writeFile(workbook, fileName, { compression: true });
-};
-
-export const downloadDataToXLSX = (
-  fileName: string,
-  getSheets: () => Sheet[]
-) => {
-  const workbook = utils.book_new();
-  const sheets = getSheets();
-
-  sheets.forEach((sheet) => {
-    const ws = utils.aoa_to_sheet(sheet.rows);
-
-    if (sheet.cols) {
-      ws["!cols"] = sheet.cols;
-    }
-
-    utils.book_append_sheet(workbook, ws, sheet.name);
-  });
-
-  writeFile(workbook, fileName, { compression: true });
-};

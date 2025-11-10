@@ -1,12 +1,8 @@
 import { DataTable } from "@/components/ui/data-table";
-import formatDate from "@/lib/formatDate";
-import { calcScore, calcScoreByDimension } from "@/lib/score";
-import { downloadDataToXLSX } from "@/lib/utils";
+import { exportReport } from "@/lib/reports";
+import { calcScore } from "@/lib/score";
 import type {
   FinalDetailedUserModel,
-  FinalDimensionModel,
-  FinalEvaluationModel,
-  FinalMatrixModel,
   FinalReportModel,
 } from "@/services/api/types";
 import { useSuspenseGetMatrix } from "@/services/matrix.queries";
@@ -14,7 +10,6 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { useCallback, useMemo } from "react";
 import { reportsColumns } from "./reports-columns";
 import type { ReportVM } from "./type";
-import { exportReport } from "@/lib/reports";
 
 function NgoReportsTable({
   ngo,

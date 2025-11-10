@@ -4,8 +4,8 @@ import NgosList from "@/pages/admin/NgosList";
 import MenteesList from "@/pages/mentor/MenteesList";
 
 import { createFileRoute, Navigate, redirect } from "@tanstack/react-router";
-import { zodValidator } from "@tanstack/zod-adapter";
 import z from "zod";
+
 const filtersSchema = z.object({
   search: z.string().optional(),
   createdAtDateFrom: z.iso.date().optional().catch(""),
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/(app)/users/")({
       });
     }
   },
-  validateSearch: zodValidator(filtersSchema),
+  validateSearch: filtersSchema,
 
   component: RouteComponent,
   pendingComponent: FullScreenLoader,

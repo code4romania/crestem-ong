@@ -12,6 +12,7 @@ export const getUserDetails = (
       "avatar",
       "dimensions",
       "role",
+      "userSessions.mentor",
     ],
   };
 
@@ -22,5 +23,8 @@ export const getUserDetails = (
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data);
+  }).then((res) => ({
+    ...res.data,
+    mentors: res.data?.userSessions?.map((s) => s.mentor) ?? [],
+  }));
 };
