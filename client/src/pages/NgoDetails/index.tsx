@@ -110,8 +110,8 @@ const NgoDetails = ({
         </AvatarFallback>
       </Avatar>,
     ],
-    ["Nume reprezentant organizație", ngo.firstName],
-    ["Prenume reprezentant organizație", ngo.lastName],
+    ["Nume reprezentant organizație", ngo.contactLastName],
+    ["Prenume reprezentant organizație", ngo.contactFirstName],
     ["Email reprezentant organizație", ngo.contactEmail],
     ["Telefon reprezentant organizație", ngo.contactPhone],
   ];

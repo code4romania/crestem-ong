@@ -211,12 +211,11 @@ const CreateUser = () => {
       <Section>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            {/* Required Organization Information */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Building2 className="h-5 w-5" />
-                  Informații obligatorii despre ONG
+                  Informații Obligatorii despre ONG
                 </CardTitle>
                 <CardDescription>
                   Aceste informații sunt necesare pentru înregistrarea
@@ -235,7 +234,10 @@ const CreateUser = () => {
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
-                          <Input placeholder="Numele organizației" {...field} />
+                          <Input
+                            placeholder="Introduceți numele organizației"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -252,7 +254,7 @@ const CreateUser = () => {
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
-                          <Input placeholder="CIF organizației" {...field} />
+                          <Input placeholder="Introduceți CIF-ul" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -327,17 +329,20 @@ const CreateUser = () => {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="flex items-center gap-2">
-                          <Mail className="h-4 w-4" />
+                        <FormLabel>
                           Email organizație
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
-                          <Input
-                            type="email"
-                            placeholder="email@organizatie.ro"
-                            {...field}
-                          />
+                          <div className="relative">
+                            <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                            <Input
+                              className="pl-10"
+                              placeholder="organizatie@example.com"
+                              type="email"
+                              {...field}
+                            />
+                          </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -349,17 +354,19 @@ const CreateUser = () => {
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="flex items-center gap-2">
-                          <Phone className="h-4 w-4" />
+                        <FormLabel>
                           Telefon organizație
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
-                          <Input
-                            type="tel"
-                            placeholder="+40 XXX XXX XXX"
-                            {...field}
-                          />
+                          <div className="relative">
+                            <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                            <Input
+                              className="pl-10"
+                              placeholder="+40 123 456 789"
+                              {...field}
+                            />
+                          </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -414,106 +421,189 @@ const CreateUser = () => {
                   />
                 </div>
               </CardContent>
+
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <User className="h-5 w-5" />
+                  Persoana de Contact
+                </CardTitle>
+                <CardDescription>
+                  Informații despre persoana de contact a organizației
+                </CardDescription>
+              </CardHeader>
+
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="contactLastName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Nume
+                          <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="Nume" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="contactFirstName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Prenume
+                          <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="Prenume" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="contactEmail"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Adresă de email
+                          <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                            <Input
+                              className="pl-10"
+                              placeholder="contact@example.com"
+                              type="email"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="contactPhone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Telefon <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                            <Input
+                              className="pl-10"
+                              placeholder="+40 123 456 789"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </CardContent>
             </Card>
 
-            {/* Optional Additional Information */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Globe className="h-5 w-5" />
-                  Informații adiționale (opționale)
+                  Informații Adiționale (Opționale)
                 </CardTitle>
                 <CardDescription>
-                  Aceste informații ne ajută să înțelegem mai bine organizația
-                  ta
+                  Aceste informații ne ajută să vă cunoaștem mai bine
+                  organizația
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="domains"
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <FormLabel>Domenii de activitate</FormLabel>
-                      <MultiSelector
-                        onValuesChange={field.onChange}
-                        values={field.value}
-                      >
-                        <MultiSelectorTrigger>
-                          <MultiSelectorInput placeholder="Alege domenii" />
-                        </MultiSelectorTrigger>
-                        <MultiSelectorContent>
-                          <MultiSelectorList>
-                            {domains.map((domain) => (
-                              <MultiSelectorItem
-                                key={domain.name}
-                                value={domain.id.toString()}
-                                label={domain.name}
-                              >
-                                <span>{domain.name}</span>
-                              </MultiSelectorItem>
-                            ))}
-                          </MultiSelectorList>
-                        </MultiSelectorContent>
-                      </MultiSelector>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="website"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Website organizație</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="https://organizatia-mea.ro"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="domains"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormLabel>Domenii de activitate</FormLabel>
+                        <MultiSelector
+                          onValuesChange={field.onChange}
+                          values={field.value}
+                        >
+                          <MultiSelectorTrigger>
+                            <MultiSelectorInput placeholder="Alege domenii" />
+                          </MultiSelectorTrigger>
+                          <MultiSelectorContent>
+                            <MultiSelectorList>
+                              {domains.map((domain) => (
+                                <MultiSelectorItem
+                                  key={domain.name}
+                                  value={domain.id.toString()}
+                                  label={domain.name}
+                                >
+                                  <span>{domain.name}</span>
+                                </MultiSelectorItem>
+                              ))}
+                            </MultiSelectorList>
+                          </MultiSelectorContent>
+                        </MultiSelector>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
-                <FormField
-                  control={form.control}
-                  name="keywords"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Cuvinte cheie despre activitate</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="educație, mediu, sănătate..."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="website"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Website organizație</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Globe className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                            <Input
+                              className="pl-10"
+                              placeholder="https://www.organizatia.ro"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Descrie activitatea organizației</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Descrie pe scurt activitatea organizației tale..."
-                          className="min-h-[100px]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <p className="text-sm text-muted-foreground">
-                        Numărul maxim de caractere: 1000
-                      </p>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <FormField
+                    control={form.control}
+                    name="keywords"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Cuvinte cheie despre activitate</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="educație, copii, mediu..."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
                 <FormField
                   control={form.control}
@@ -531,178 +621,17 @@ const CreateUser = () => {
                     </FormItem>
                   )}
                 />
-              </CardContent>
-            </Card>
-
-            {/* Contact Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <User className="h-5 w-5" />
-                  Persoana de contact
-                </CardTitle>
-                <CardDescription>
-                  Informații despre persoana responsabilă de comunicare
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="contactLastName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nume</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Nume" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="contactFirstName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Prenume</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Prenume" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="contactEmail"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Adresă de email</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="email"
-                            placeholder="contact@email.ro"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="contactPhone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Telefon</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="tel"
-                            placeholder="+40 XXX XXX XXX"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Social Media Links */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Link className="h-5 w-5" />
-                  Link-uri către social media
-                </CardTitle>
-                <CardDescription>
-                  Link-urile oficiale pentru comunicare
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="accountFacebook"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Facebook</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="https://facebook.com/organizatia"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
 
                 <FormField
                   control={form.control}
-                  name="accountInstagram"
+                  name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Instagram</FormLabel>
+                      <FormLabel>Descrierea activității organizației</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="https://instagram.com/organizatia"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="accountTwitter"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Twitter/X</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="https://twitter.com/organizatia"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="accountLinkedin"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>LinkedIn</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="https://linkedin.com/company/organizatia"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="accountTiktok"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>TikTok</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="https://tiktok.com/@organizatia"
+                        <Textarea
+                          placeholder="Descrieți pe scurt activitatea organizației..."
+                          className="min-h-[100px]"
                           {...field}
                         />
                       </FormControl>
