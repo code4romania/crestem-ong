@@ -11,7 +11,7 @@ const Home = () => {
         <div className={"flex justify-between space-y-2"}>
           <Heading level={"h2"}>Evaluare organizațională</Heading>
           <Button asChild>
-            <Link to="/matrix">Vezi matricea</Link>
+            <Link to="/matrix">Vezi model matrice</Link>
           </Button>
         </div>
       </Section>

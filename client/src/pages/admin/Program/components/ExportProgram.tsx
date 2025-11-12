@@ -1,5 +1,6 @@
-import ExportXLSX, { type Sheet } from "@/components/ExportXLSX";
+import ExportXLSX from "@/components/ExportXLSX";
 import FullScreenLoader from "@/components/FullScreenLoader";
+import type { CellData, Sheet } from "@/lib/excel";
 import { evaluationsCompletedFilter } from "@/lib/filters";
 import formatDate from "@/lib/formatDate";
 import { calcScore, calcScoreByDimension } from "@/lib/score";
@@ -15,23 +16,25 @@ const getSheets = (
   data: FinalProgramModel,
   matrix: FinalMatrixModel
 ): Sheet[] => {
-  const coverRow = {
-    "Denumire program": data.name,
-    "Data de început": formatDate(data.startDate),
-    "Data de final": formatDate(data.endDate),
-    "Nume finanțator": data.sponsorName || "-",
-    "Număr ONG-uri înscrise în program": data.users?.length,
-  };
-
-  const sheets: {
-    name: string;
-    rows: Record<string, string | number>[];
-    cols: { width: number }[];
-  }[] = [
+  const sheets: Sheet[] = [
     {
       name: "Informații despre program",
-      rows: [coverRow],
-      cols: Object.keys(coverRow).map((key) => ({ width: key.length + 3 })),
+      data: [
+        [
+          { value: "Denumire program", bold: true },
+          { value: "Data de început", bold: true },
+          { value: "Data de final", bold: true },
+          { value: "Nume finanțator", bold: true },
+          { value: "Număr ONG-uri înscrise în program", bold: true },
+        ],
+        [
+          data.name,
+          formatDate(data.startDate),
+          formatDate(data.endDate),
+          data.sponsorName || "-",
+          data.users?.length,
+        ],
+      ],
     },
   ];
 
@@ -41,7 +44,21 @@ const getSheets = (
         ? user.ongName.slice(0, 23) + "..."
         : user.ongName;
 
-    const rows: Record<string, string | number>[] = [];
+    const headerRow: CellData[] = [
+      { value: "Nume ONG", bold: true },
+      { value: "CUI", bold: true },
+      { value: "Domeniu de activitate", bold: true },
+      { value: "Nume reprezentant", bold: true },
+      { value: "Email reprezentant", bold: true },
+      { value: "Dată intrare program", bold: true },
+      { value: "Dată început evaluare", bold: true },
+      { value: "Dată final evaluare", bold: true },
+      { value: "Număr de completări", bold: true },
+      { value: "ID evaluare", bold: true },
+      { value: "Scor total obținut", bold: true },
+    ];
+
+    const data: CellData[][] = [];
 
     user.reports?.forEach((report: FinalReportModel) => {
       const evaluationsCompleted = evaluationsCompletedFilter(
@@ -59,44 +76,46 @@ const getSheets = (
 
       const totalScore = calcScore(evaluationsCompleted);
 
-      const row: Record<string, string | number> = {
+      const row: CellData[] = [
         // NGO
-        "Nume ONG": user.ongName,
-        CUI: user.ongIdentificationNumber,
-        "Domeniu de activitate":
-          user.domains?.map((d) => d.name).join(", ") || "-",
-        "Nume reprezentant": `${user.contactFirstName} ${user.contactLastName}`,
-        "Email reprezentant": user.contactEmail,
+        user.ongName,
+        user.ongIdentificationNumber,
+        user.domains?.map((d) => d.name).join(", ") || "-",
+        `${user.contactFirstName} ${user.contactLastName}`,
+        user.contactEmail,
 
         // Report
-        "Dată intrare program": "-", // TODO: add created_at to up_users_program_links table
-        "Dată început evaluare": formatDate(report.createdAt),
-        "Dată final evaluare": formatDate(report.deadline),
-        "Număr de completări": evaluationsCompleted.length,
+        "-", // TODO: add created_at to up_users_program_links table
+        formatDate(report.createdAt),
+        formatDate(report.deadline),
+        evaluationsCompleted.length,
 
         // Evaluation
-        "ID evaluare": report.id,
-        "Scor total obținut": totalScore,
-      };
+        report.id,
+        totalScore,
+      ];
 
       scoreByEvaluation?.forEach(({ name, score }, index) => {
-        row[`Scor ${name}`] = score;
-        row[`Comentariu ${name}`] = evaluationsCompleted
-          .map((evaluation) => evaluation.dimensions[index].comment)
-          .join("\n---\n");
+        headerRow.push({ value: `Scor ${name}`, bold: true });
+        headerRow.push({ value: `Comentariu ${name}`, bold: true });
+        row.push(score);
+        row.push(
+          evaluationsCompleted
+            .map((evaluation) => evaluation.dimensions[index].comment)
+            .join("\n---\n")
+        );
       });
 
-      rows.push(row);
+      data.push(row);
     });
 
-    if (!rows.length) {
+    if (!data.length) {
       return;
     }
 
     sheets.push({
       name: `Date ${user.id} - ${ongName}`,
-      rows,
-      cols: Object.keys(rows[0]).map((key) => ({ width: key.length + 3 })),
+      data: [headerRow, ...data],
     });
   });
 
