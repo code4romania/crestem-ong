@@ -55,7 +55,6 @@ module.exports = createCoreController(
         const reports = entity.user?.reports || [];
         const lastReport = reports.length ? reports[reports.length - 1] : null;
 
-        console.log(lastReport);
         return {
           ...entity,
           user: {
