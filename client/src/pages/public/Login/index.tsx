@@ -63,6 +63,10 @@ const FormFooter = memo(() => (
 const Login = memo(() => {
   const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      identifier: "",
+      password: "",
+    },
   });
 
   const { login } = useAuth();
