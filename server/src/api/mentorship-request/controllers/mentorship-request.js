@@ -13,10 +13,7 @@ module.exports = createCoreController(
      */
     async find(ctx) {
       const user = ctx.state?.user;
-
-      if (!user) {
-        return ctx.unauthorized("You must be logged in");
-      }
+      if (!user) return ctx.unauthorized("You must be logged in");
 
       const { query } = ctx;
       const roleName = user?.role?.type;
@@ -28,17 +25,10 @@ module.exports = createCoreController(
       }
 
       let filters = query.filters || {};
-
       if (roleName === "mentor") {
-        filters = {
-          ...filters,
-          mentor: { id: { $eq: user.id } },
-        };
+        filters = { ...filters, mentor: { id: { $eq: user.id } } };
       } else if (roleName === "authenticated") {
-        filters = {
-          ...filters,
-          user: { id: { $eq: user.id } },
-        };
+        filters = { ...filters, user: { id: { $eq: user.id } } };
       }
 
       const entities = await strapi.entityService.findMany(
@@ -46,13 +36,34 @@ module.exports = createCoreController(
         {
           ...query,
           filters,
-          populate: ["user", "mentor", "user.domains", "user.dimensions"],
+          populate: [
+            "user",
+            "mentor",
+            "user.domains",
+            "user.dimensions",
+            "user.reports",
+          ],
           sort: [{ createdAt: "desc" }],
         }
       );
 
+      // Sanitize first (to respect Strapi’s policies)
       const sanitizedEntities = await this.sanitizeOutput(entities, ctx);
-      return sanitizedEntities;
+
+      // Add `lastReport` field based on user.reports
+      const withLastReport = sanitizedEntities.map((entity) => {
+        const reports = entity.user?.reports || [];
+        const lastReportAt = reports.length
+          ? reports[reports.length - 1]
+          : null;
+
+        return {
+          ...entity,
+          lastReportAt: lastReportAt ? lastReport.createdAt : null,
+        };
+      });
+
+      return withLastReport;
     },
 
     /**
@@ -60,40 +71,39 @@ module.exports = createCoreController(
      */
     async findOne(ctx) {
       const user = ctx.state.user;
-      if (!user) {
-        return ctx.unauthorized("You must be logged in");
-      }
+      if (!user) return ctx.unauthorized("You must be logged in");
 
       const roleName = user.role?.name?.toLowerCase();
-      // deny all other roles
       if (!["mentor", "authenticated", "fdsc"].includes(roleName)) {
         return ctx.forbidden(
           "You do not have permission to access mentorship requests"
         );
       }
-      const { id } = ctx.params;
 
+      const { id } = ctx.params;
       const entity = await strapi.entityService.findOne(
         "api::mentorship-request.mentorship-request",
         id,
         {
-          populate: ["mentor", "user"],
+          populate: ["mentor", "user", "user.reports"],
         }
       );
 
-      if (!entity) {
-        return ctx.notFound("Mentorship request not found");
-      }
+      if (!entity) return ctx.notFound("Mentorship request not found");
 
-      if (roleName === "mentor" && entity.mentor?.id !== user.id) {
+      if (roleName === "mentor" && entity.mentor?.id !== user.id)
         return ctx.notFound("Mentorship request not found");
-      }
-
-      if (roleName === "authenticated" && entity.user?.id !== user.id) {
+      if (roleName === "authenticated" && entity.user?.id !== user.id)
         return ctx.notFound("Mentorship request not found");
-      }
 
-      return this.sanitizeOutput(entity, ctx);
+      const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
+      const reports = sanitizedEntity.user?.reports || [];
+      const lastReportAt = reports.length ? reports[reports.length - 1] : null;
+
+      return {
+        ...sanitizedEntity,
+        lastReportAt: lastReportAt ? lastReport.createdAt : null,
+      };
     },
   })
 );
