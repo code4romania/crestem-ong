@@ -46,13 +46,13 @@ module.exports = createCoreController(
         {
           ...query,
           filters,
-          populate: ["user", "mentor"],
+          populate: ["user", "mentor", "user.domains", "user.dimensions"],
           sort: [{ createdAt: "desc" }],
         }
       );
 
       const sanitizedEntities = await this.sanitizeOutput(entities, ctx);
-      return sanitizedEntities.map((e) => e.user);
+      return sanitizedEntities;
     },
 
     /**
