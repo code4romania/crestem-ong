@@ -26,11 +26,15 @@ const NgoDetails = ({
     return <Navigate to="/" />;
   }
 
-  const lastEvaluation = ngo.reports?.filter(
-    (report) => report.evaluations.length
-  );
+  const lastReports = ngo.reports
+    ?.filter((report) => report.evaluations.length)
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+
   const lastReportCompletedEvaluations = evaluationsCompletedFilter(
-    lastEvaluation?.[0]?.evaluations || []
+    lastReports?.[0]?.evaluations || []
   );
   const lastScore = calcScore(lastReportCompletedEvaluations);
 

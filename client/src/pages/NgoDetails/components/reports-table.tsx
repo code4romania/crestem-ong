@@ -21,29 +21,34 @@ function NgoReportsTable({
   const { data: matrix } = useSuspenseGetMatrix();
   const data = useMemo(() => {
     return (
-      reports?.map((report) => {
-        const completedEvaluations = report.evaluations
-          ? report.evaluations.filter(
-              ({ dimensions }) => dimensions.length === 10
-            )
-          : [];
+      reports
+        ?.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
+        .map((report) => {
+          const completedEvaluations = report.evaluations
+            ? report.evaluations.filter(
+                ({ dimensions }) => dimensions.length === 10
+              )
+            : [];
 
-        return {
-          id: report.id,
-          createdAt: report.createdAt,
-          deadline: report.deadline,
-          finished: report.finished,
-          numberOfCompletedEvaluations: completedEvaluations.length,
-          totalEvaluations: report.evaluations.length,
-          completedEvaluations,
-          score:
-            completedEvaluations.length > 0
-              ? report.finished
-                ? `${calcScore(completedEvaluations)}%`
-                : "-"
-              : "-",
-        };
-      }) ?? []
+          return {
+            id: report.id,
+            createdAt: report.createdAt,
+            deadline: report.deadline,
+            finished: report.finished,
+            numberOfCompletedEvaluations: completedEvaluations.length,
+            totalEvaluations: report.evaluations.length,
+            completedEvaluations,
+            score:
+              completedEvaluations.length > 0
+                ? report.finished
+                  ? `${calcScore(completedEvaluations)}%`
+                  : "-"
+                : "-",
+          };
+        }) ?? []
     );
   }, [reports]);
 
