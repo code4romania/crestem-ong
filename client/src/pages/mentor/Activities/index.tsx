@@ -6,27 +6,35 @@ import Section from "@/components/Section";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import { Feed } from "@/components/Feed";
-import ExportXLSX, { type Sheet } from "@/components/ExportXLSX";
 import type { MentorActivityModel } from "@/services/api/types";
 import formatDate from "@/lib/formatDate";
+import ExportXLSX from "@/components/ExportXLSX";
+import type { Sheet } from "@/lib/excel";
 
 const getMentorActivitySheets = (
   activities: MentorActivityModel[]
 ): Sheet[] => {
-  const rows = activities.map((activity) => ({
-    Organizația: activity.user?.ongName,
-    Dată: formatDate(activity.startDate),
-    "Durată activitate (ore)": activity.duration,
-    Dimensiune: activity.dimension.name,
-    "Tip activitate": activity.type.name,
-    Notițe: activity.notes,
-  }));
-
   return [
     {
       name: "Jurnal de activitate",
-      rows,
-      cols: Object.keys(rows[0]).map((key) => ({ width: key.length + 10 })),
+      data: [
+        [
+          { value: "Organizația", bold: true },
+          { value: "Dată", bold: true },
+          { value: "Durată activitate (ore)", bold: true },
+          { value: "Dimensiune", bold: true },
+          { value: "Tip activitate", bold: true },
+          { value: "Notițe", bold: true },
+        ],
+        ...activities.map((activity) => [
+          activity.user?.ongName,
+          formatDate(activity.startDate),
+          activity.duration,
+          activity.dimension.name,
+          activity.type.name,
+          activity.notes || "N/A",
+        ]),
+      ],
     },
   ];
 };

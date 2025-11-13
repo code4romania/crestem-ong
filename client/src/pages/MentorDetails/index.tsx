@@ -11,11 +11,12 @@ import DOMPurify from "dompurify";
 import { useCallback, type ReactNode } from "react";
 import { MentorActivitiesTable } from "./components/table";
 import { MentorStats } from "./components/mentor-stats";
-import ExportXLSX, { type Sheet } from "@/components/ExportXLSX";
+import ExportXLSX from "@/components/ExportXLSX";
 import { useListMentorMentorActivities } from "@/services/activities.queries";
 import { mapper } from "./components/mapper";
 import type { MentorActivityVM } from "./components/types";
 import formatDate from "@/lib/formatDate";
+import type { Sheet } from "@/lib/excel";
 
 const MentorDetails = ({
   mentor,
@@ -36,23 +37,29 @@ const MentorDetails = ({
 
   const getSheets = useCallback(
     (activities: MentorActivityVM[]): Sheet[] => {
-      const rows = activities.map((activity) => ({
-        Organizația: activity.ngo,
-        Mentor: mentor.firstName + " " + mentor.lastName,
-
-        Dată: formatDate(activity.startDate),
-        "Durată activitate (ore)": activity.duration,
-        Dimensiune: activity.dimension,
-        "Tip activitate": activity.activityType,
-        Notițe: activity.notes || "-",
-      }));
       return [
         {
           name: "Jurnal de activitate",
-          rows: rows,
-          cols: Object.keys(activities[0]).map((key) => ({
-            width: key.length + 3,
-          })),
+          data: [
+            [
+              { value: "Organizația", bold: true },
+              { value: "Mentor", bold: true },
+              { value: "Dată", bold: true },
+              { value: "Durată activitate (ore)", bold: true },
+              { value: "Dimensiune", bold: true },
+              { value: "Tip activitate", bold: true },
+              { value: "Notițe", bold: true },
+            ],
+            ...activities.map((activity) => [
+              activity.ngo,
+              mentor.firstName + " " + mentor.lastName,
+              formatDate(activity.startDate),
+              activity.duration,
+              activity.dimension,
+              activity.activityType,
+              activity.notes || "N/A",
+            ]),
+          ],
         },
       ];
     },

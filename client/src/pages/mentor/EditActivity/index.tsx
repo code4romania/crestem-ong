@@ -7,6 +7,8 @@ import { format } from "date-fns";
 import { useCallback } from "react";
 import { toast } from "sonner";
 import ActivityForm, { type ActivityInput } from "../components/ActivityForm";
+import Section from "@/components/Section";
+import Heading from "@/components/Heading";
 
 function EditActivity() {
   const { activityId } = Route.useParams();
@@ -37,7 +39,16 @@ function EditActivity() {
     },
     [updateActivity, activityId, user]
   );
-  return <ActivityForm onSubmit={onSubmit} activity={activity} />;
+  return (
+    <>
+      <Section>
+        <Heading level={"h2"}>
+          Modifică activitatea din {format(activity.startDate, "yyyy-MM-dd")}
+        </Heading>
+      </Section>
+      <ActivityForm onSubmit={onSubmit} activity={activity} />
+    </>
+  );
 }
 
 export default EditActivity;

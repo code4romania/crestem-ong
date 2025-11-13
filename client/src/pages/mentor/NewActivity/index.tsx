@@ -8,6 +8,8 @@ import { useAuth } from "@/contexts/auth";
 import { queryClient } from "@/lib/query";
 import { format } from "date-fns";
 import ActivityForm, { type ActivityInput } from "../components/ActivityForm";
+import Heading from "@/components/Heading";
+import Section from "@/components/Section";
 
 const NewActivity = () => {
   const navigate = useNavigate();
@@ -39,7 +41,14 @@ const NewActivity = () => {
     [createActivity]
   );
 
-  return <ActivityForm onSubmit={onSubmit} />;
+  return (
+    <>
+      <Section>
+        <Heading level={"h2"}>Adaugă activitate</Heading>
+      </Section>
+      <ActivityForm onSubmit={onSubmit} />
+    </>
+  );
 };
 
 export default NewActivity;

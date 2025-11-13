@@ -40,7 +40,7 @@ import { CalendarIcon } from "lucide-react";
 const activitySchema = z.object({
   user: z.string().min(1, "Selectați ONG-ul"),
   dimension: z.string().min(1, "Selectați dimensiune"),
-  startDate: z.date("Introduceti data activitatii"),
+  startDate: z.date({ error: "Introduceti data activitatii" }),
   type: z.string().min(1, "Selectați tipul activității"),
   duration: z.string().min(1, "Introduceti durata activitatii"),
   notes: z.string().optional(),
@@ -96,79 +96,16 @@ function ActivityForm({
   }
 
   return (
-    <>
-      <Section>
-        <Heading level={"h2"}>Adaugă activitate</Heading>
-      </Section>
-      <Section>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="user"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Organizație</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      disabled={form.formState.isSubmitting}
-                    >
-                      <FormControl className="w-full">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selectați organizația" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {users?.map((user) => (
-                          <SelectItem key={user.value} value={user.value}>
-                            {user.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tip activitate</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      disabled={form.formState.isSubmitting}
-                    >
-                      <FormControl className="w-full">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selectați tipul activității" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {activityTypes?.map((type) => (
-                          <SelectItem key={type.value} value={type.value}>
-                            {type.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
+    <Section>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
-              name="dimension"
+              name="user"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Dimensiune</FormLabel>
+                  <FormLabel>Organizație</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -176,16 +113,13 @@ function ActivityForm({
                   >
                     <FormControl className="w-full">
                       <SelectTrigger>
-                        <SelectValue placeholder="Selectați dimensiunea" />
+                        <SelectValue placeholder="Selectați organizația" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {dimensions?.map((dimension) => (
-                        <SelectItem
-                          key={dimension.value}
-                          value={dimension.value}
-                        >
-                          {dimension.label}
+                      {users?.map((user) => (
+                        <SelectItem key={user.value} value={user.value}>
+                          {user.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -195,81 +129,79 @@ function ActivityForm({
               )}
             />
 
-            <div className="flex flex-col md:flex-row gap-4">
-              <FormField
-                control={form.control}
-                name="duration"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Durată activitate (ore)</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Durată"
-                        className="w-48"
-                        type="number"
-                        min="0"
-                        step="0.5"
-                        disabled={form.formState.isSubmitting}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="startDate"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Dată</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP", { locale: ro })
-                            ) : (
-                              <span>Alege data de inceput</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) =>
-                            date < new Date("1900-01-01") || date > new Date()
-                          }
-                          captionLayout="dropdown"
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
             <FormField
               control={form.control}
-              name="notes"
+              name="type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Notițe</FormLabel>
+                  <FormLabel>Tip activitate</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={form.formState.isSubmitting}
+                  >
+                    <FormControl className="w-full">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selectați tipul activității" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {activityTypes?.map((type) => (
+                        <SelectItem key={type.value} value={type.value}>
+                          {type.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <FormField
+            control={form.control}
+            name="dimension"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Dimensiune</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  disabled={form.formState.isSubmitting}
+                >
+                  <FormControl className="w-full">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selectați dimensiunea" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {dimensions?.map((dimension) => (
+                      <SelectItem key={dimension.value} value={dimension.value}>
+                        {dimension.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="flex flex-col md:flex-row gap-4">
+            <FormField
+              control={form.control}
+              name="duration"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Durată activitate (ore)</FormLabel>
                   <FormControl>
-                    <Textarea
-                      placeholder="Adăugați notițe despre activitate..."
+                    <Input
+                      placeholder="Durată"
+                      className="w-48"
+                      type="number"
+                      min="0"
+                      step="0.5"
                       disabled={form.formState.isSubmitting}
                       {...field}
                     />
@@ -278,18 +210,78 @@ function ActivityForm({
                 </FormItem>
               )}
             />
-            <div className={"flex space-x-4 justify-end"}>
-              <Button variant="secondary" asChild>
-                <Link to={"/activities"}>Renunță</Link>
-              </Button>
-              <Button type="submit" disabled={form.formState.isSubmitting}>
-                Salvează detalii
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </Section>
-    </>
+
+            <FormField
+              control={form.control}
+              name="startDate"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Dată</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-[240px] pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP", { locale: ro })
+                          ) : (
+                            <span>Alege data de inceput</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) =>
+                          date < new Date("1900-01-01") || date > new Date()
+                        }
+                        captionLayout="dropdown"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <FormField
+            control={form.control}
+            name="notes"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Notițe</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Adăugați notițe despre activitate..."
+                    disabled={form.formState.isSubmitting}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className={"flex space-x-4 justify-end"}>
+            <Button variant="secondary" asChild>
+              <Link to={"/activities"}>Renunță</Link>
+            </Button>
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+              Salvează detalii
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </Section>
   );
 }
 
