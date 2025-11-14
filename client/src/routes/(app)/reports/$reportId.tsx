@@ -1,8 +1,8 @@
 import FullScreenLoader from "@/components/FullScreenLoader";
 import { useAuth } from "@/contexts/auth";
-import AdminReport from "@/pages/admin/Report";
+import ReportDetailsPage from "@/pages/ReportDetails";
 import Report from "@/pages/authenticated/Report";
-import MentorReport from "@/pages/mentor/Report";
+
 import { getReportByIdQueryOptions } from "@/services/reports.queries";
 
 import {
@@ -39,11 +39,11 @@ export const Route = createFileRoute("/(app)/reports/$reportId")({
 function RouteComponent() {
   const { userRole } = useAuth();
   return userRole === "fdsc" ? (
-    <AdminReport />
+    <ReportDetailsPage />
   ) : userRole === "authenticated" ? (
     <Report />
   ) : userRole === "mentor" ? (
-    <MentorReport />
+    <ReportDetailsPage />
   ) : (
     <Navigate to="/" />
   );

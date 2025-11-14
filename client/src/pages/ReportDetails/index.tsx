@@ -1,16 +1,17 @@
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import { evaluationsCompletedFilter } from "@/lib/filters";
-import { calcScoreByDimension } from "@/lib/score";
-import ReportDetails from "@/pages/admin/Report/components/ReportDetails";
+import { calcScore, calcScoreByDimension } from "@/lib/score";
+import ReportDetails from "@/pages/ReportDetails/components/ReportDetails";
 import { Route } from "@/routes/(app)/reports/$reportId";
 import { useGetMatrix } from "@/services/matrix.queries";
 import { useSuspenseGetReportById } from "@/services/reports.queries";
 import { useMemo } from "react";
 import { ReportPrimaryButtons } from "./components/PrimaryButtons";
 import ReportResults from "./components/ReportResults";
+import Stats from "@/components/Stats";
 
-const Report = () => {
+const ReportDetailsPage = () => {
   const { reportId } = Route.useParams();
   const { data: report } = useSuspenseGetReportById(reportId);
   const { data: matrix } = useGetMatrix();
@@ -29,6 +30,13 @@ const Report = () => {
       : [];
   }, [evaluationsCompleted, matrix]);
 
+  const startDate = new Date(report.createdAt).getTime();
+  const endDate = new Date(report.deadline).getTime();
+
+  const period = Math.ceil(
+    Math.abs(endDate - startDate) / (1000 * 60 * 60 * 24)
+  );
+
   return (
     <>
       <Section>
@@ -45,10 +53,28 @@ const Report = () => {
         />
       </Section>
       <Section>
+        <Stats
+          data={[
+            {
+              label: "Perioadă de completare",
+              value: `${period} zile`,
+            },
+            {
+              label: "Total completări",
+              value: `${evaluationsCompleted.length || 0}`,
+            },
+            {
+              label: " Scor total",
+              value: `${calcScore(evaluationsCompleted) || 0}%`,
+            },
+          ]}
+        />
+      </Section>
+      <Section>
         <ReportResults report={report} scoreByEvaluation={scoreByEvaluation} />
       </Section>
     </>
   );
 };
 
-export default Report;
+export default ReportDetailsPage;
