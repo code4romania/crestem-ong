@@ -61,7 +61,7 @@ export function exportReport(
           evaluationsCompleted: report.completedEvaluations,
         }).map((dimension) => [
           { value: dimension.name, bold: true },
-          `${dimension.score?.toFixed(2)} %` || "N/A",
+          `${dimension.score?.toFixed(0)} %` || "N/A",
         ]),
         [
           "",

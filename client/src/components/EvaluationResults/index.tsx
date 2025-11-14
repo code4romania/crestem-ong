@@ -48,10 +48,12 @@ const EvaluationResults = ({ evaluationData }: EvaluationResultsProps) => {
                       return (
                         <TableRow key={quiz.id} className="even:bg-muted/50">
                           <TableCell className="w-1/2 font-medium align-top">
-                            <b>
-                              {dimensionIndex + 1}.{quizIndex + 1}.
-                            </b>
-                            {quiz.question}
+                            <div className="text-wrap">
+                              <b>
+                                {dimensionIndex + 1}.{quizIndex + 1}.
+                              </b>
+                              {quiz.question}
+                            </div>
                           </TableCell>
                           <TableCell className="w-1/2 align-top ">
                             <div className="text-sm text-gray-700 text-wrap">
