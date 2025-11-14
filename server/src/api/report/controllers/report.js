@@ -36,6 +36,7 @@ module.exports = createCoreController("api::report.report", ({ strapi }) => ({
         "evaluations.dimensions.quiz",
         "user",
         "user.userSessions.mentor",
+        "user.program",
       ],
     });
 
