@@ -1,15 +1,18 @@
 import FullScreenLoader from "@/components/FullScreenLoader";
 import { queryClient } from "@/lib/query";
 import { getUserType } from "@/lib/userType";
-import { getMe, type MeModel } from "@/services/api/get-me.api";
+import { getMe } from "@/services/api/get-me.api";
 import { loginUser } from "@/services/api/login-user.api";
-import type { FinalRoleType } from "@/services/api/types";
+import type {
+  FinalDetailedUserModel,
+  FinalRoleType,
+} from "@/services/api/types";
 import Cookies from "js-cookie";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface AuthState {
   isAuthenticated: boolean;
-  user: MeModel | null;
+  user: FinalDetailedUserModel | null;
   userRole: FinalRoleType;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
@@ -18,7 +21,7 @@ interface AuthState {
 const AuthContext = createContext<AuthState | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<MeModel | null>(null);
+  const [user, setUser] = useState<FinalDetailedUserModel | null>(null);
   const [userRole, setUserRole] = useState<FinalRoleType>("public");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

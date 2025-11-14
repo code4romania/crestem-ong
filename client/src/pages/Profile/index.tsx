@@ -96,6 +96,13 @@ const Profile = () => {
     ["Prenume reprezentant organizație", user.contactLastName],
     ["Email reprezentant organizație", user.contactEmail],
     ["Telefon reprezentant organizație", user.contactPhone],
+    ["Program", user.program?.name],
+    [
+      "Experți alocați",
+      user.mentors
+        ?.map((mentor) => mentor.firstName + " " + mentor.lastName)
+        .join(", "),
+    ],
   ];
 
   return (

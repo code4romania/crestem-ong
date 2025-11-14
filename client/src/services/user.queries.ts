@@ -4,7 +4,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import Cookies from "js-cookie";
-import { getMe, type MeModel } from "./api/get-me.api";
+import { getMe } from "./api/get-me.api";
 import { getUserMentorActivities } from "./api/get-my-mentor-activities.api";
 import { getRegistrationInfo } from "./api/get-registration-info.api";
 import { getUserDetails } from "./api/get-user-details.api";
@@ -21,8 +21,8 @@ import type {
   MentorActivityModel,
 } from "./api/types";
 
-export const getMeQueryOptions = <TResult = MeModel>(
-  select?: (data: MeModel) => TResult
+export const getMeQueryOptions = <TResult = FinalDetailedUserModel>(
+  select?: (data: FinalDetailedUserModel) => TResult
 ) =>
   queryOptions({
     queryKey: ["me"],
@@ -31,12 +31,12 @@ export const getMeQueryOptions = <TResult = MeModel>(
     enabled: () => !!Cookies.get("jwt"),
   });
 
-export const useSuspenseGetMe = <TResult = MeModel>(
-  select?: (data: MeModel) => TResult
+export const useSuspenseGetMe = <TResult = FinalDetailedUserModel>(
+  select?: (data: FinalDetailedUserModel) => TResult
 ) => useSuspenseQuery(getMeQueryOptions(select));
 
-export const useGetMe = <TResult = MeModel>(
-  select?: (data: MeModel) => TResult
+export const useGetMe = <TResult = FinalDetailedUserModel>(
+  select?: (data: FinalDetailedUserModel) => TResult
 ) => useQuery(getMeQueryOptions(select));
 
 export const getTokenQueryOptions = <TResult = string | null>(

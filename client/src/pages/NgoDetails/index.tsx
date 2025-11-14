@@ -120,7 +120,7 @@ const NgoDetails = ({
     ["Telefon reprezentant organizație", ngo.contactPhone],
     ["Program", ngo.program?.name],
     [
-      "Experti alocati",
+      "Experți alocați",
       ngo.mentors
         ?.map((mentor) => mentor.firstName + " " + mentor.lastName)
         .join(", "),
