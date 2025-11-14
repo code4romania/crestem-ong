@@ -1,21 +1,45 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Button from "@/components/Button";
-import { DonutChart } from "react-circle-chart";
+import Confirm from "@/components/Confirm";
 import CreateEvaluation from "@/components/CreateEvaluation";
 import TableEvaluations from "@/components/TableEvaluations";
-import Confirm from "@/components/Confirm";
-import { useUpdateReportMutation } from "@/redux/api/userApi";
-import { ErrorMessage } from "@hookform/error-message";
-import { object, string, date, preprocess, array, TypeOf } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
+import formatDate from "@/lib/formatDate";
+import { cn } from "@/lib/utils";
+import type { FinalReportModel } from "@/services/api/types";
+import { useUpdateReportMutation } from "@/services/reports.mutations";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
+import { ro } from "date-fns/locale";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
+import { DonutChart } from "react-circle-chart";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const CallToAction = ({ reportId }: { reportId: number }) => {
-  const [updateReport] = useUpdateReportMutation();
+  const { mutate: updateReport } = useUpdateReportMutation();
   const [open, setOpen] = useState(false);
 
   const handleComplete = useCallback(() => {
-    updateReport({ id: reportId, finished: true, deadline: new Date().toISOString().split('T')[0] });
+    updateReport({
+      id: reportId,
+      finished: true,
+      deadline: format(new Date(), "yyyy-MM-dd"),
+    });
   }, [reportId]);
 
   return (
@@ -34,7 +58,22 @@ Asigură-te că ai toate răspunsurile înainte de a face această acțiune"
   );
 };
 
-const ReportInProgress = ({ report }) => {
+const today = new Date();
+const reportSchema = z.object({
+  deadline: z
+    .date({ error: "Alegeți o dată validă" })
+    .optional()
+    .refine((data) => !!data, {
+      message: "Alegeți o dată validă",
+    })
+    .refine((data) => data! > today, {
+      message: "Alegeti o data in viitor",
+    }),
+});
+
+type ReportInput = z.infer<typeof reportSchema>;
+
+const ReportInProgress = ({ report }: { report: FinalReportModel }) => {
   const reportId = report.id;
   const evaluationsCompleted = useMemo(
     () =>
@@ -44,38 +83,29 @@ const ReportInProgress = ({ report }) => {
   const canFinish = evaluationsCompleted.length > 0;
   const [editDeadline, setEditDeadline] = useState(false);
 
-  const [updateReport, { isSuccess }] = useUpdateReportMutation();
-  useEffect(() => {
-    if (isSuccess) {
-      setEditDeadline(false);
-    }
-  }, [isSuccess]);
+  const { mutate: updateReport } = useUpdateReportMutation();
 
-  const reportSchema = object({
-    deadline: preprocess((arg) => {
-      if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
-    }, date().min(new Date(), { message: "Alegeti o data in viitor" })),
-  });
-
-  type ReportInput = TypeOf<typeof reportSchema>;
-
-  const { register, handleSubmit, formState } = useForm<ReportInput>({
+  const form = useForm<ReportInput>({
     resolver: zodResolver(reportSchema),
+    defaultValues: {
+      deadline: new Date(report.deadline),
+    },
   });
 
-  const today = new Date().toISOString().split('T')[0];
-
-  const onSubmitHandler = useCallback((form: ReportInput) => {
-    updateReport({
-      id: reportId,
-      deadline: form.deadline,
-    });
+  const onSubmit = useCallback((form: ReportInput) => {
+    updateReport(
+      {
+        id: reportId,
+        deadline: format(form.deadline!, "yyyy-MM-dd"),
+      },
+      { onSuccess: () => setEditDeadline(false) }
+    );
   }, []);
 
   return (
     <div>
-      <div className={"divide-y divide-gray-300 mb-10"}>
-        <div className={"flex justify-between mb-4"}>
+      <div className="mb-10">
+        <div className="flex justify-between mb-4">
           <div>Detalii evaluare</div>
           {canFinish && (
             <div className={"hidden md:block"}>
@@ -83,6 +113,7 @@ const ReportInProgress = ({ report }) => {
             </div>
           )}
         </div>
+        <Separator />
         <div className="flex flex-col md:flex-row py-6 space-y-4">
           <div className="flex flex-col items-center md:w-1/3">
             <DonutChart
@@ -126,13 +157,7 @@ const ReportInProgress = ({ report }) => {
                 <div className="text-sm leading-5 font-medium">
                   Data de început:
                 </div>
-                <div className="mt-2.5">
-                  {new Date(report.createdAt).toLocaleDateString("ro-RO", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </div>
+                <div className="mt-2.5">{formatDate(report.createdAt)}</div>
               </div>
 
               {!editDeadline ? (
@@ -142,48 +167,89 @@ const ReportInProgress = ({ report }) => {
                   </div>
 
                   <div className="mt-2.5">
-                    <div>{new Date(report.deadline).toLocaleDateString("ro-RO", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}</div>
-                    <button className="whitespace-nowrap text-sm font-medium text-teal-600 hover:underline mt-2" onClick={() => setEditDeadline(true)}>Editează</button>
+                    <div>{formatDate(report.deadline)}</div>
+                    <button
+                      className="whitespace-nowrap text-sm font-medium text-teal-600 hover:underline mt-2"
+                      onClick={() => setEditDeadline(true)}
+                    >
+                      Editează
+                    </button>
                   </div>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit(onSubmitHandler)}>
-                  <div>
-                    <div className="text-sm leading-5 font-medium mb-1">
-                      Data de final:
-                    </div>
-                    <input
-                      type="date"
-                      className="border-gray-300 rounded-md"
-                      min={today}
-                      defaultValue={report.deadline}
-                      {...register('deadline')}
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-8"
+                  >
+                    <FormField
+                      control={form.control}
+                      name="deadline"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                          <FormLabel>
+                            Dată final
+                            <span className="text-red-500">*</span>
+                          </FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={"outline"}
+                                  className={cn(
+                                    "w-[240px] pl-3 text-left font-normal",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value ? (
+                                    format(field.value, "PPP", { locale: ro })
+                                  ) : (
+                                    <span>Alege data de final</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={(date) => date < new Date()}
+                                captionLayout="dropdown"
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    <div className="text-red-600 text-sm mt-1">
-                      <ErrorMessage name="deadline" errors={formState.errors} />
-                    </div>
-                  </div>
 
-                  <div className="flex space-x-4">
-                    <Button color="white" type={"reset"} onClick={()=>setEditDeadline(false)}>
-                      Renunță
-                    </Button>
-                    <Button type="submit">Salvează modificări</Button>
-                  </div>
-                </form>
+                    <div className="flex space-x-4">
+                      <Button
+                        variant="secondary"
+                        type="button"
+                        onClick={() => setEditDeadline(false)}
+                      >
+                        Renunță
+                      </Button>
+                      <Button type="submit">Salvează modificări</Button>
+                    </div>
+                  </form>
+                </Form>
               )}
             </div>
           </div>
         </div>
       </div>
-      <div className={"divide-y divide-gray-300"}>
+      <div>
         <div className="my-10 md:max-w-xl">
-          <CreateEvaluation reportId={reportId} />
+          <CreateEvaluation report={report} />
         </div>
+
         <TableEvaluations report={report} />
       </div>
       {canFinish && (
