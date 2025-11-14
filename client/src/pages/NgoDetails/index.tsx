@@ -118,6 +118,13 @@ const NgoDetails = ({
     ["Prenume reprezentant organizație", ngo.contactFirstName],
     ["Email reprezentant organizație", ngo.contactEmail],
     ["Telefon reprezentant organizație", ngo.contactPhone],
+    ["Program", ngo.program?.name],
+    [
+      "Experti alocati",
+      ngo.mentors
+        ?.map((mentor) => mentor.firstName + " " + mentor.lastName)
+        .join(", "),
+    ],
   ];
   return (
     <>
