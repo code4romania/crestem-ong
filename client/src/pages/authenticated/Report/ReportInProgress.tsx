@@ -16,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
 import formatDate from "@/lib/formatDate";
 import { cn } from "@/lib/utils";
 import type { FinalReportModel } from "@/services/api/types";
@@ -103,8 +104,8 @@ const ReportInProgress = ({ report }: { report: FinalReportModel }) => {
 
   return (
     <div>
-      <div className={"divide-y divide-gray-300 mb-10"}>
-        <div className={"flex justify-between mb-4"}>
+      <div className="mb-10">
+        <div className="flex justify-between mb-4">
           <div>Detalii evaluare</div>
           {canFinish && (
             <div className={"hidden md:block"}>
@@ -112,6 +113,7 @@ const ReportInProgress = ({ report }: { report: FinalReportModel }) => {
             </div>
           )}
         </div>
+        <Separator />
         <div className="flex flex-col md:flex-row py-6 space-y-4">
           <div className="flex flex-col items-center md:w-1/3">
             <DonutChart
@@ -247,6 +249,7 @@ const ReportInProgress = ({ report }: { report: FinalReportModel }) => {
         <div className="my-10 md:max-w-xl">
           <CreateEvaluation report={report} />
         </div>
+
         <TableEvaluations report={report} />
       </div>
       {canFinish && (

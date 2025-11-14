@@ -65,7 +65,7 @@ const TableEvaluations = ({ report }: TableEvaluationsProps) => {
               {completed ? (
                 <Badge>Completat</Badge>
               ) : (
-                <Badge variant="destructive">Necompletat</Badge>
+                <Badge variant="warning">Necompletat</Badge>
               )}
             </span>
           );

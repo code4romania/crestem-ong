@@ -18,5 +18,5 @@ export const getUserReports = (): Promise<FinalReportModel[]> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data.reports ?? []);
+  }).then((res) => res.data.reports.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) ?? []);
 };

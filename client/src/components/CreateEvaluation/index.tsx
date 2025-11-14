@@ -68,7 +68,6 @@ const CreateEvaluation = ({ report }: { report: FinalReportModel }) => {
           )}
         />
         <Button type="submit">Invită</Button>
-        <Separator />
       </form>
     </Form>
   );
