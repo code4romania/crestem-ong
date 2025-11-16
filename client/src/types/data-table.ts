@@ -56,8 +56,3 @@ export interface ExtendedColumnSort<TData> extends Omit<ColumnSort, "id"> {
 export interface ExtendedColumnFilter<TData> extends FilterItemSchema {
   id: Extract<keyof TData, string>;
 }
-
-export interface DataTableRowAction<TData> {
-  row: Row<TData>;
-  variant: "update" | "delete";
-}

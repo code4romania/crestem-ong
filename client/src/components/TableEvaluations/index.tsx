@@ -1,7 +1,4 @@
-"use client";
-
 import envelope from "@/assets/envelope.svg";
-import DeleteEvaluation from "@/components/DeleteEvaluation";
 import * as React from "react";
 
 import { useAuth } from "@/contexts/auth";
@@ -11,7 +8,6 @@ import type {
 } from "@/services/api/types";
 import { Link } from "@tanstack/react-router";
 import {
-  flexRender,
   getCoreRowModel,
   useReactTable,
   type ColumnDef,
@@ -19,14 +15,23 @@ import {
 } from "@tanstack/react-table";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import { DataTable } from "../ui/data-table";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../ui/table";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Copy, Ellipsis, MailIcon, TrashIcon } from "lucide-react";
+import Confirm from "../Confirm";
+import { toast } from "sonner";
+import {
+  useDeleteEvaluationMutation,
+  useResendEvaluationMutation,
+} from "@/services/evaluation.mutations";
+import formatDate from "@/lib/formatDate";
+import { fa } from "zod/v4/locales";
 
 interface TableEvaluationsProps {
   report: FinalReportModel;
@@ -34,6 +39,14 @@ interface TableEvaluationsProps {
 
 const TableEvaluations = ({ report }: TableEvaluationsProps) => {
   const { userRole } = useAuth();
+  const { mutate: deleteEvaluation } = useDeleteEvaluationMutation();
+  const { mutate: resendEvaluation } = useResendEvaluationMutation();
+
+  const [rowAction, setRowAction] = React.useState<{
+    action: "delete" | "resend";
+    evaluationId: number;
+    email: string;
+  } | null>(null);
 
   const isFDSC = userRole === "fdsc";
 
@@ -71,6 +84,11 @@ const TableEvaluations = ({ report }: TableEvaluationsProps) => {
           );
         },
       },
+      {
+        id: "invitedAt",
+        header: "INVITAT LA",
+        cell: ({ row }) => formatDate(row.original.createdAt),
+      },
       ...(isFDSC
         ? [
             {
@@ -95,22 +113,110 @@ const TableEvaluations = ({ report }: TableEvaluationsProps) => {
             },
           ]
         : []),
-      ...(!report.finished
-        ? [
-            {
-              id: "delete",
-              header: "",
-              cell: ({ row }: { row: Row<FinalEvaluationModel> }) => (
-                <div className="text-right">
-                  <DeleteEvaluation id={row.original.id} />
-                </div>
-              ),
-            },
-          ]
-        : []),
+
+      {
+        id: "actions",
+        cell: function Cell({ row }) {
+          const completed =
+            row.original.dimensions.reduce(
+              (acc: number, dimension: any) => acc + dimension.quiz.length,
+              0
+            ) === 50;
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  aria-label="Open menu"
+                  variant="ghost"
+                  className="flex size-8 p-0 data-[state=open]:bg-muted"
+                >
+                  <Ellipsis className="size-4" aria-hidden="true" />
+                </Button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end" className="w-40">
+                <DropdownMenuItem
+                  disabled={completed}
+                  onSelect={() =>
+                    setRowAction({
+                      evaluationId: row.original.id,
+                      action: "resend",
+                      email: row.original.email,
+                    })
+                  }
+                >
+                  <MailIcon className="h-5 w-5" aria-hidden="true" />
+                  Retrimite invitația
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem
+                  className="flex items-center gap-2 text-destructive"
+                  onSelect={() =>
+                    setRowAction({
+                      evaluationId: row.original.id,
+                      action: "delete",
+                      email: row.original.email,
+                    })
+                  }
+                >
+                  <TrashIcon
+                    className="h-5 w-5 text-destructive"
+                    aria-hidden="true"
+                  />
+                  Șterge invitația
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          );
+        },
+        size: 40,
+      },
     ],
     [isFDSC, report.finished]
   );
+
+  const handleDeleteInvite = React.useCallback(() => {
+    if (!rowAction?.evaluationId) return;
+
+    deleteEvaluation(rowAction?.evaluationId, {
+      onSuccess: () => toast.success("Invitația a fost ștearsă."),
+      onError: (error) => {
+        const errorResponse = (error as any)?.response?.data?.error;
+        const message = errorResponse?.message;
+        toast.error(message);
+      },
+    });
+
+    setRowAction(null);
+  }, [rowAction?.evaluationId]);
+
+  const handleResendInvite = React.useCallback(() => {
+    if (!rowAction?.evaluationId) return;
+
+    resendEvaluation(rowAction?.evaluationId, {
+      onSuccess: (response) => {
+        if (response.notificationSentAt) {
+          const deadline = new Date(report.deadline);
+          deadline.setDate(deadline.getDate() - 1);
+          const nextNotificationDate = formatDate(deadline);
+          toast.warning(
+            `Utilizatorul a primit deja o invitație la data de ${formatDate(
+              response.notificationSentAt
+            )}. Utilizatorul va primi o nouă invitație prin email la data de ${nextNotificationDate}.`
+          );
+        } else {
+          toast.success("Invitația a fost retrimisă.");
+        }
+      },
+      onError: () => {
+        toast.error("A apărut o eroare la re-trimiterea invitației.");
+      },
+    });
+
+    setRowAction(null);
+  }, [rowAction?.evaluationId]);
 
   const table = useReactTable({
     data: evaluations,
@@ -134,44 +240,30 @@ const TableEvaluations = ({ report }: TableEvaluationsProps) => {
   }
 
   return (
-    <div className="space-y-4 ">
-      <div className="overflow-hidden rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </div>
+    <>
+      <DataTable table={table} emptyMessage="Niciun membru invitat" />
+      <Confirm
+        header="Retrimite invitația"
+        body={`Ești sigur că vrei să retrimiți invitația catre ${rowAction?.email}? Utilizatorul va primi o nouă invitație prin email.`}
+        buttonText="Retrimite"
+        open={rowAction?.action === "resend"}
+        setOpen={() => setRowAction(null)}
+        handleComplete={() => {
+          handleResendInvite();
+        }}
+      />
+      <Confirm
+        header="Șterge adresa de email"
+        body={`Ești sigur că vrei să ștergi ${rowAction?.email}? Utilizatorul nu va mai avea acces la evaluare și va trebui să trimiți invitația din nou pentru ca progresul să fie salvat.`}
+        buttonText="Șterge"
+        open={rowAction?.action === "delete"}
+        setOpen={() => setRowAction(null)}
+        handleComplete={() => {
+          handleDeleteInvite();
+        }}
+        destructive={true}
+      />
+    </>
   );
 };
 

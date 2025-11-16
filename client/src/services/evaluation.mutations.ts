@@ -5,6 +5,7 @@ import {
 } from "./api/upsert-evaluation.api";
 import { inviteNGOMemberToEvaluation } from "./api/invite-ngo-member-to-evaluation.api";
 import { deleteEvaluation } from "./api/delete-evaluation.api";
+import { resendEvaluationInvite } from "./api/resent-evaluation-invite.api";
 
 export function updateEvaluationMutation() {
   const queryClient = useQueryClient();
@@ -41,5 +42,11 @@ export function useDeleteEvaluationMutation() {
         queryKey: ["reports"],
       });
     },
+  });
+}
+
+export function useResendEvaluationMutation() {
+  return useMutation({
+    mutationFn: resendEvaluationInvite,
   });
 }
