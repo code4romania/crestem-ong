@@ -58,15 +58,18 @@ module.exports = createCoreController(
           (acc, { name, quiz }, dimensionIndex) => {
             return `${acc}\n<h2>${name}</h2>${quiz.reduce(
               (acc, matrixQuiz, quizIndex) =>
-                `${acc}<h3>Intrebare: ${matrixQuiz.question}</h3><p>Raspuns: ${matrixQuiz[
-                `option_${+dimensions[dimensionIndex]?.quiz[quizIndex]?.answer + 1
-                }`
-                ]
+                `${acc}<h3>Intrebare: ${matrixQuiz.question}</h3><p>Raspuns: ${
+                  matrixQuiz[
+                    `option_${
+                      +dimensions[dimensionIndex]?.quiz[quizIndex]?.answer + 1
+                    }`
+                  ]
                 }</p>`,
               ""
-            )}${dimensions[dimensionIndex]?.comment &&
-            `<div style="padding: 1em 0 1em 0"><b>Argumentare:</b> ${dimensions[dimensionIndex]?.comment}</p>`
-              }
+            )}${
+              dimensions[dimensionIndex]?.comment &&
+              `<div style="padding: 1em 0 1em 0"><b>Argumentare:</b> ${dimensions[dimensionIndex]?.comment}</p>`
+            }
             <hr>
             `;
           },
@@ -110,7 +113,46 @@ module.exports = createCoreController(
         );
       }
 
-      return await strapi.entityService.delete('api::evaluation.evaluation', data.id);
-    }
+      return await strapi.entityService.delete(
+        "api::evaluation.evaluation",
+        data.id
+      );
+    },
+    async resend(ctx) {
+      const { id } = ctx.params;
+      const callerId = ctx.state.user.id;
+
+      // find the evaluation entry
+      const evaluation = await strapi.entityService.findOne(
+        "api::evaluation.evaluation",
+        id,
+        { populate: ["report.user"] }
+      );
+
+      const reportUserId = evaluation.report?.user?.id;
+
+      if (reportUserId !== callerId) {
+        return ctx.notFound();
+      }
+
+      // If mail already sent, do nothing
+      if (evaluation.notificationSentAt) {
+        return {
+          message: "Notificarea a fost deja trimisa",
+          notificationSentAt: evaluation.notificationSentAt,
+        };
+      }
+
+      // update notificationSentAt timestamp
+      const updated = await strapi.entityService.update(
+        "api::evaluation.evaluation",
+        id,
+        {
+          data: { notificationSentAt: new Date().toISOString() },
+        }
+      );
+
+      return {};
+    },
   })
 );

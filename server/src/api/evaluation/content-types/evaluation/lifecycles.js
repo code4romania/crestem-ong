@@ -39,7 +39,7 @@ module.exports = {
   async afterUpdate(event) {
     const { result, params } = event;
     const dimensions = params.data.dimensions;
-    if (dimensions.length === 10) {
+    if (dimensions?.length && dimensions.length === 10) {
       const data = await strapi.entityService.findOne(
         "api::evaluation.evaluation",
         result.id,
