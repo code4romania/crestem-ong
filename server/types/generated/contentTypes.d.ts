@@ -966,6 +966,7 @@ export interface ApiEvaluationEvaluation extends Schema.CollectionType {
   attributes: {
     dimensions: Attribute.Component<'evaluation.dimension', true>;
     email: Attribute.Email & Attribute.Required;
+    notificationSentAt: Attribute.Date;
     report: Attribute.Relation<
       'api::evaluation.evaluation',
       'manyToOne',

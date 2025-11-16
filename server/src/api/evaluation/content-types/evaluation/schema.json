@@ -22,6 +22,11 @@
       "type": "email",
       "required": true
     },
+    "notificationSentAt": {
+      "displayName": "Notification Sent At",
+      "type": "date",
+      "required": false
+    },
     "report": {
       "type": "relation",
       "relation": "manyToOne",
