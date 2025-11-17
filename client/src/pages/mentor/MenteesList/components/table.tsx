@@ -12,12 +12,8 @@ import { getRouteApi } from "@tanstack/react-router";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import { DataTable } from "@/components/ui/data-table";
-import { useAuth } from "@/contexts/auth";
 import { useTableUrlState } from "@/hooks/use-table-url-state";
-import type {
-  FinalDetailedUserModel,
-  FinalUserModel,
-} from "@/services/api/types";
+import type { FinalDetailedUserModel } from "@/services/api/types";
 import { useSuspenseListMentees } from "@/services/user.queries";
 import type { MenteeVM } from "../types";
 import { columns } from "./columns";
@@ -31,7 +27,7 @@ const menteeMapper = (mentees: FinalDetailedUserModel[]): MenteeVM[] =>
       ongName: ngo.ongName,
       ongIdentificationNumber: ngo.ongIdentificationNumber,
       createdAt: ngo.createdAt,
-      programs: ngo.ngoPrograms ?? [],
+      ngoPrograms: ngo.ngoPrograms ?? [],
       county: ngo.county,
       city: ngo.city,
       domains: ngo?.domains?.map((d) => d.name) ?? [],
@@ -74,8 +70,8 @@ export function MenteesTable() {
         type: "array",
       },
       {
-        columnId: "programName",
-        searchKey: "programName",
+        columnId: "ngoPrograms",
+        searchKey: "ngoPrograms",
         type: "array",
       },
       {

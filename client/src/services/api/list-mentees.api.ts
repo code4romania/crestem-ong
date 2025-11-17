@@ -4,7 +4,7 @@ import type { FinalDetailedUserModel } from "./types";
 
 export const listMentees = (): Promise<FinalDetailedUserModel[]> => {
   const params = {
-    populate: ["user", "program", "domains"],
+    populate: ["user", "ngoPrograms.program", "domains"],
     pagination: {
       page: 1,
       pageSize: 100,

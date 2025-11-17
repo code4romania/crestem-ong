@@ -5,6 +5,7 @@ import formatDate from "@/lib/formatDate";
 import { Link } from "@tanstack/react-router";
 import { type ColumnDef } from "@tanstack/react-table";
 import type { MenteeVM } from "../types";
+import type { FinalProgramModel } from "@/services/api/types";
 
 export const columns: ColumnDef<MenteeVM>[] = [
   {
@@ -62,18 +63,39 @@ export const columns: ColumnDef<MenteeVM>[] = [
     },
   },
   {
-    accessorKey: "programName",
+    accessorKey: "ngoPrograms",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="PROGRAM"
+        title="PROGRAME ASOCIATE"
         className="whitespace-nowrap py-4 text-sm font-bold text-gray-900 "
       />
     ),
-    cell: ({ row }) => <span>{row.original.programName || "-"}</span>,
+    cell: ({ row }) => (
+      <div className="flex flex-wrap gap-2">
+        1222
+        {row.original.ngoPrograms?.map(({ id, name, endDate }) => (
+          <Badge
+            key={id}
+            variant={new Date() > new Date(endDate) ? "warning" : "default"}
+          >
+            {name}
+          </Badge>
+        ))}
+      </div>
+    ),
     enableSorting: false,
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      const cellValues = row.getValue<FinalProgramModel[]>(id) ?? [];
+
+      // Extract names from program objects
+      const programNames = cellValues.map((x) => x.name);
+
+      // If no filter applied → always include row
+      if (value.length === 0) return true;
+
+      // Match any selected value
+      return programNames.some((name) => value.includes(name));
     },
   },
   {

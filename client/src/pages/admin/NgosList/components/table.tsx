@@ -73,8 +73,8 @@ export function NgosTable() {
         type: "array",
       },
       {
-        columnId: "programName",
-        searchKey: "programName",
+        columnId: "ngoPrograms",
+        searchKey: "ngoPrograms",
         type: "array",
       },
       {

@@ -98,7 +98,7 @@ export function NgosDataTableToolbar({ table }: NgosDataTableToolbarProps) {
           multiple={true}
         />
         <DataTableFacetedFilter
-          column={table.getColumn("programName")}
+          column={table.getColumn("ngoPrograms")}
           title={"Programe"}
           options={programs}
           multiple={true}

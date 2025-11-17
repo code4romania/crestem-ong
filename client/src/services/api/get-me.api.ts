@@ -1,6 +1,6 @@
 import qs from "qs";
 import { API } from "../api";
-import type { Avatar, FinalDetailedUserModel, FinalRoleType } from "./types";
+import type { FinalDetailedUserModel, FinalRoleType } from "./types";
 
 export interface Role {
   id: number;
@@ -13,7 +13,13 @@ export interface Role {
 
 export const getMe = (): Promise<FinalDetailedUserModel> => {
   const params = {
-    populate: ["role", "avatar", "program", "userSessions.mentor"],
+    populate: [
+      "role",
+      "avatar",
+      "ngoPrograms.program",
+      "mentorPrograms.program",
+      "userSessions.mentor",
+    ],
   };
   return API.get<FinalDetailedUserModel>(`api/users/me`, {
     params,

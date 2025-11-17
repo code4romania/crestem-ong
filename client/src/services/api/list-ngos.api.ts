@@ -33,7 +33,7 @@ export const listNgosWithDetails = (): Promise<FinalDetailedUserModel[]> => {
         },
       },
     },
-    populate: ["domains", "reports", "ngoPrograms"],
+    populate: ["domains", "reports", "ngoPrograms.program"],
     sort: "createdAt:desc",
   };
 

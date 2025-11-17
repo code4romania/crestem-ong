@@ -5,6 +5,7 @@ import formatDate from "@/lib/formatDate";
 import { Link } from "@tanstack/react-router";
 import { type ColumnDef } from "@tanstack/react-table";
 import type { NgoVM } from "../types";
+import type { FinalProgramModel } from "@/services/api/types";
 
 export const columns: ColumnDef<NgoVM>[] = [
   {
@@ -87,7 +88,16 @@ export const columns: ColumnDef<NgoVM>[] = [
       ),
     enableSorting: false,
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      const cellValues = row.getValue<FinalProgramModel[]>(id) ?? [];
+
+      // Extract names from program objects
+      const programNames = cellValues.map((x) => x.name);
+
+      // If no filter applied → always include row
+      if (value.length === 0) return true;
+
+      // Match any selected value
+      return programNames.some((name) => value.includes(name));
     },
   },
   {

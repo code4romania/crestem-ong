@@ -5,7 +5,7 @@ export interface MenteeVM {
   ongName: string;
   ongIdentificationNumber: string;
   createdAt: string;
-  programs: FinalProgramModel[];
+  ngoPrograms: FinalProgramModel[];
   county: string;
   city: string;
   domains: string[];
