@@ -1,6 +1,6 @@
 import ScrollToTop from "@/components/ScrollToTop";
 import { Toaster } from "@/components/ui/sonner";
-import type { MeModel } from "@/services/api/get-me.api";
+import type { FinalDetailedUserModel } from "@/services/api/types";
 import type { FinalRoleType } from "@/services/api/types";
 import type { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
@@ -8,7 +8,7 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 interface AuthState {
   isAuthenticated: boolean;
-  user: MeModel | null;
+  user: FinalDetailedUserModel | null;
   userRole: FinalRoleType;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;

@@ -1,22 +1,21 @@
+import ExportXLSX from "@/components/ExportXLSX";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
-import Stats from "@/components/Stats";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth";
+import type { Sheet } from "@/lib/excel";
+import formatDate from "@/lib/formatDate";
+import { useListMentorMentorActivities } from "@/services/activities.queries";
 import type { FinalDetailedUserModel } from "@/services/api/types";
 import { Link, Navigate } from "@tanstack/react-router";
 import DOMPurify from "dompurify";
 import { useCallback, type ReactNode } from "react";
-import { MentorActivitiesTable } from "./components/table";
-import { MentorStats } from "./components/mentor-stats";
-import ExportXLSX from "@/components/ExportXLSX";
-import { useListMentorMentorActivities } from "@/services/activities.queries";
 import { mapper } from "./components/mapper";
+import { MentorStats } from "./components/mentor-stats";
+import { MentorActivitiesTable } from "./components/table";
 import type { MentorActivityVM } from "./components/types";
-import formatDate from "@/lib/formatDate";
-import type { Sheet } from "@/lib/excel";
 
 const MentorDetails = ({
   mentor,
@@ -111,7 +110,22 @@ const MentorDetails = ({
       "Specializare pe dimensiuni",
       <div className="flex flex-wrap gap-2">
         {mentor.dimensions?.map(({ id, name }) => (
-          <Badge key={id}>{name}</Badge>
+          <Badge key={id} variant="outline">
+            {name}
+          </Badge>
+        ))}
+      </div>,
+    ],
+    [
+      "Programe asociate",
+      <div className="flex flex-wrap gap-2">
+        {mentor.mentorPrograms?.map(({ id, name, endDate }) => (
+          <Badge
+            key={id}
+            variant={new Date() > new Date(endDate) ? "warning" : "default"}
+          >
+            {name}
+          </Badge>
         ))}
       </div>,
     ],

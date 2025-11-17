@@ -57,6 +57,33 @@ export const columns: ColumnDef<MentorModel>[] = [
     enableSorting: false,
   },
   {
+    accessorKey: "programs",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Programe asociate"
+        className="whitespace-nowrap py-4  text-sm font-bold text-gray-900"
+      />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex flex-wrap gap-2">
+          {row.original.mentorPrograms?.map((program) => (
+            <Badge
+              variant={
+                new Date() > new Date(program.endDate) ? "warning" : "default"
+              }
+              key={program.id}
+            >
+              {program.name}
+            </Badge>
+          )) ?? "-"}
+        </div>
+      );
+    },
+    enableSorting: false,
+  },
+  {
     accessorKey: "availability",
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -69,7 +96,7 @@ export const columns: ColumnDef<MentorModel>[] = [
       row.original.available ? (
         <Badge>Disponibil</Badge>
       ) : (
-        <Badge variant="destructive">Indisponibil</Badge>
+        <Badge variant="secondary">Indisponibil</Badge>
       ),
     enableSorting: false,
   },

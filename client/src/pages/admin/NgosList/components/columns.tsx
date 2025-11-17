@@ -62,15 +62,29 @@ export const columns: ColumnDef<NgoVM>[] = [
     },
   },
   {
-    accessorKey: "programName",
+    accessorKey: "ngoPrograms",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="PROGRAM"
+        title="PROGRAME ASOCIATE"
         className="whitespace-nowrap py-4 text-sm font-bold text-gray-900 "
       />
     ),
-    cell: ({ row }) => <span>{row.original.programName || "-"}</span>,
+    cell: ({ row }) =>
+      row.original.ngoPrograms?.length ? (
+        <div className="flex flex-wrap gap-2">
+          {row.original.ngoPrograms?.map(({ id, name, endDate }) => (
+            <Badge
+              key={id}
+              variant={new Date() > new Date(endDate) ? "warning" : "default"}
+            >
+              {name}
+            </Badge>
+          ))}
+        </div>
+      ) : (
+        "-"
+      ),
     enableSorting: false,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));

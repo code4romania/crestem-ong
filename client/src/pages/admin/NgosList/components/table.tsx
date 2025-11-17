@@ -1,5 +1,4 @@
 import {
-  flexRender,
   getCoreRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
@@ -13,22 +12,14 @@ import { getRouteApi } from "@tanstack/react-router";
 
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { DataTable } from "@/components/ui/data-table";
+import { useAuth } from "@/contexts/auth";
 import { useTableUrlState } from "@/hooks/use-table-url-state";
+import type { FinalDetailedUserModel } from "@/services/api/types";
 import type { NgoVM } from "../types";
 import { columns } from "./columns";
 import { NgosPrimaryButtons } from "./primary-buttons";
 import { NgosDataTableToolbar } from "./toolbar";
-import type { FinalDetailedUserModel } from "@/services/api/types";
-import { DataTable } from "@/components/ui/data-table";
-import { useAuth } from "@/contexts/auth";
 const route = getRouteApi("/(app)/users/");
 
 const ngoMapper = (ngos: FinalDetailedUserModel[]): NgoVM[] =>
@@ -38,7 +29,7 @@ const ngoMapper = (ngos: FinalDetailedUserModel[]): NgoVM[] =>
       ongName: ngo.ongName,
       ongIdentificationNumber: ngo.ongIdentificationNumber,
       createdAt: ngo.createdAt,
-      programName: ngo.program?.name || "-",
+      ngoPrograms: ngo.ngoPrograms ?? [],
       county: ngo.county,
       city: ngo.city,
       domains: ngo.domains.map((d) => d.name) ?? [],

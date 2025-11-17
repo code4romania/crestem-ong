@@ -28,7 +28,7 @@ const mapper = (result: FinalProgramModel[]): ProgramVM[] =>
   result.map((p) => ({
     id: p.id,
     name: p.name,
-    status: new Date() < new Date(p.endDate) ? "ongoing" : "finished",
+    status: new Date() > new Date(p.endDate) ? "finished" : "ongoing",
     usersCount: p.usersCount,
     mentorsCount: p.mentorsCount,
   }));

@@ -7,7 +7,7 @@ export interface CreateMentorRequest {
   bio: string;
   expertise?: string;
   dimensions: number[];
-  programs: number[];
+  mentorPrograms?: number[];
 }
 export interface CreateMentorResponse {
   jwt: string;

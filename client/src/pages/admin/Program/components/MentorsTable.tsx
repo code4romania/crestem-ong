@@ -21,6 +21,7 @@ import { useMemo, useState } from "react";
 import { AddMentorInProgramDialog } from "./AddMentorInProgramDialog";
 import formatDate from "@/lib/formatDate";
 import type { FinalUserModel } from "@/services/api/types";
+import { DataTable } from "@/components/ui/data-table";
 
 export const columns: (programId: string) => ColumnDef<FinalUserModel>[] = (
   programId: string
@@ -85,7 +86,7 @@ export const columns: (programId: string) => ColumnDef<FinalUserModel>[] = (
       row.original.available ? (
         <Badge>Disponibil</Badge>
       ) : (
-        <Badge variant="destructive">Indisponibil</Badge>
+        <Badge variant="secondary">Indisponibil</Badge>
       ),
     enableSorting: false,
   },
@@ -170,54 +171,10 @@ function MentorsTable({
         )}
       </div>
       <div className="overflow-hidden rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  Nicio persoana resursa inscrisa in program
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+        <DataTable
+          table={table}
+          emptyMessage="Nu există persoane resursă în program"
+        ></DataTable>
       </div>
     </div>
   );

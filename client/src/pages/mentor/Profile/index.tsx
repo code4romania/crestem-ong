@@ -3,19 +3,14 @@ import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  useGetMe,
-  useGetUserDimensions,
-  useGetUserPrograms,
-} from "@/services/user.queries";
+import { useGetMe, useGetUserDimensions } from "@/services/user.queries";
 import { Link, redirect } from "@tanstack/react-router";
-import type { ReactNode } from "react";
 import DOMPurify from "dompurify";
+import type { ReactNode } from "react";
 
 const Profile = () => {
   const { data: user, isPending } = useGetMe();
   const { data: dimensions } = useGetUserDimensions();
-  const { data: programs } = useGetUserPrograms();
 
   if (isPending) return <FullScreenLoader />;
   if (!user) {
@@ -62,20 +57,27 @@ const Profile = () => {
     ],
     [
       "Programe asociate",
-      <div className="flex flex-wrap gap-2">
-        {programs
-          ?.map(({ name }) => name)
-          .map((program) => (
-            <Badge>{program}</Badge>
+      user.mentorPrograms?.length ? (
+        <div className="flex flex-wrap gap-2">
+          {user.mentorPrograms?.map(({ id, name, endDate }) => (
+            <Badge
+              key={id}
+              variant={new Date() > new Date(endDate) ? "warning" : "default"}
+            >
+              {name}
+            </Badge>
           ))}
-      </div>,
+        </div>
+      ) : (
+        "-"
+      ),
     ],
     [
       "Disponibilitate",
       user.available ? (
         <Badge>Disponibil</Badge>
       ) : (
-        <Badge variant="destructive">Indisponibil</Badge>
+        <Badge variant="secondary">Indisponibil</Badge>
       ),
     ],
   ];

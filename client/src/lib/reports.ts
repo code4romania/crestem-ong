@@ -42,17 +42,22 @@ export function exportReport(
           { value: "Email persoană de contact organizație:", bold: true },
           ngo.contactEmail || "N/A",
         ],
-        [{ value: "Program", bold: true }, ngo.program?.name || "N/A"],
+        [
+          { value: "Programe", bold: true },
+          ngo.ngoPrograms?.map((p) => p.name).join(", ") || "N/A",
+        ],
         [
           { value: "Experți alocați (persoane resurse FDSC):", bold: true },
-          ngo.mentors
-            ?.map(
-              (mentor) =>
-                [mentor?.firstName, mentor?.lastName]
-                  .filter(Boolean)
-                  .join(" ") || "N/A"
-            )
-            .join(", ") || "N/A",
+          ngo.ngoPrograms?.length
+            ? ngo.mentors
+                ?.map(
+                  (mentor) =>
+                    [mentor?.firstName, mentor?.lastName]
+                      .filter(Boolean)
+                      .join(" ") || "N/A"
+                )
+                .join(", ")
+            : "N/A",
         ],
         [],
         [{ value: "Rezultate Generale pe dimensiuni", bold: true }],

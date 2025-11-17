@@ -1,9 +1,11 @@
+import type { FinalProgramModel } from "@/services/api/types";
+
 export interface MenteeVM {
   id: number;
   ongName: string;
   ongIdentificationNumber: string;
   createdAt: string;
-  programName: string | undefined;
+  programs: FinalProgramModel[];
   county: string;
   city: string;
   domains: string[];

@@ -46,7 +46,7 @@ export interface MentorModel {
   available: boolean;
   role: RoleModel;
   // domains: MentorDomainModel[];
-  programs: MentorProgramModel[];
+  mentorPrograms: MentorProgramModel[];
   dimensions: MentorDimensionModel[];
   avatar?: UploadFileDocumentModel;
   mentorActivities?: MentorActivityModel[];
@@ -61,7 +61,13 @@ export const listMentors = (): Promise<MentorModel[]> => {
         },
       },
     },
-    populate: ["domains", "mentorActivities", "avatar", "dimensions"],
+    populate: [
+      "domains",
+      "mentorActivities",
+      "avatar",
+      "dimensions",
+      "mentorPrograms",
+    ],
     sort: "createdAt:desc",
   };
 

@@ -172,8 +172,6 @@ export interface DimensionModel {
   id: number;
   name: string;
   link?: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface FinalReportModel {
@@ -244,6 +242,7 @@ export interface FinalUserModel {
   mentorActivities?: any[];
   reports?: FinalReportModel[];
   mentors?: FinalUserModel[];
+  ngoPrograms?: FinalProgramModel[];
 }
 
 export interface FinalDetailedUserModel extends FinalUserModel {
@@ -251,8 +250,10 @@ export interface FinalDetailedUserModel extends FinalUserModel {
   domains: FinalDomainModel[];
   dimensions: FinalDimensionModel[];
   reports: FinalReportModel[];
-  program?: FinalProgramModel;
+  // program?: FinalProgramModel;
   role: RoleModel;
+  mentorPrograms: FinalProgramModel[];
+  userPrograms: FinalProgramModel[];
 }
 
 export interface FinalMatrixModel {

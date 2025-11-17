@@ -34,6 +34,7 @@ import { useUploadPictureMutation } from "@/services/user.mutations";
 import { toast } from "sonner";
 
 import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
+import { Badge } from "@/components/ui/badge";
 
 const mentorSchema = z.object({
   firstName: z.string().min(1, "Nume este obligatoriu"),
@@ -52,21 +53,25 @@ const mentorSchema = z.object({
     )
     .min(1, "Selectează cel puțin o specializare")
     .catch([]),
-  programs: z
+  mentorPrograms: z
     .array(
       z.object({
         value: z.string(),
         label: z.string(),
       })
     )
-    .min(1, "Selectează cel puțin un program")
     .catch([]),
   avatar: z.custom<File>().nullable(),
 });
 
 export type MentorInput = z.infer<typeof mentorSchema>;
 const programsMapper = (programs: FinalProgramModel[]) =>
-  programs.map((p) => ({ id: p.id, name: p.name }));
+  programs.map((p) => ({
+    value: p.id.toString(),
+    label: p.name,
+    disabled: new Date() > new Date(p.endDate),
+  }));
+
 const dimensionsMapper = (programs: ApiDimensionModel[]) =>
   programs.map((d) => ({ id: d.id, name: d.name }));
 
@@ -88,7 +93,7 @@ const CreateMentor = () => {
       bio: "",
       expertise: "",
       dimensions: [],
-      programs: [],
+      mentorPrograms: [],
     },
   });
 
@@ -96,7 +101,7 @@ const CreateMentor = () => {
     const mentor = await createMentor(
       {
         ...values,
-        programs: values.programs.map((p) => +p.value),
+        mentorPrograms: values.mentorPrograms.map((p) => +p.value),
         dimensions: values.dimensions.map((d) => +d.value),
       },
       {
@@ -215,7 +220,6 @@ const CreateMentor = () => {
                         editorContentClassName="p-5"
                         output="html"
                         placeholder="Scrie o scurtă descriere..."
-                        autofocus={true}
                         editable={true}
                         editorClassName="focus:outline-hidden"
                       />
@@ -239,7 +243,6 @@ const CreateMentor = () => {
                         editorContentClassName="p-5"
                         output="html"
                         placeholder="Descriere ariile de expertiză ale persoanei resursă"
-                        autofocus={true}
                         editable={true}
                         editorClassName="focus:outline-hidden"
                       />
@@ -267,7 +270,7 @@ const CreateMentor = () => {
                       </MultiSelectorTrigger>
                       <MultiSelectorContent>
                         <MultiSelectorList>
-                          {dimensions.map((dimension) => (
+                          {dimensions?.map((dimension) => (
                             <MultiSelectorItem
                               key={dimension.name}
                               value={dimension.id.toString()}
@@ -285,12 +288,10 @@ const CreateMentor = () => {
               />
               <FormField
                 control={form.control}
-                name="programs"
+                name="mentorPrograms"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>
-                      Program asociat <span className="text-red-500">*</span>
-                    </FormLabel>
+                    <FormLabel>Programe asociate</FormLabel>
                     <MultiSelector
                       onValuesChange={field.onChange}
                       values={field.value}
@@ -302,11 +303,21 @@ const CreateMentor = () => {
                         <MultiSelectorList>
                           {programs.map((program) => (
                             <MultiSelectorItem
-                              key={program.name}
-                              value={program.id.toString()}
-                              label={program.name}
+                              key={program.label}
+                              value={program.value}
+                              label={program.label}
+                              disabled={program.disabled}
                             >
-                              <span>{program.name}</span>
+                              <div className="flex items-center gap-2">
+                                {program.label}
+                                {program.disabled ? (
+                                  <Badge variant="warning">Finalizat</Badge>
+                                ) : (
+                                  <Badge variant="default">
+                                    In desfășurare
+                                  </Badge>
+                                )}
+                              </div>
                             </MultiSelectorItem>
                           ))}
                         </MultiSelectorList>

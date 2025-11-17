@@ -5,9 +5,9 @@ export interface UpdateMentorRequest {
   firstName: string;
   lastName: string;
   dimensions: number[];
+  mentorPrograms?: number[];
   bio: string;
   expertise?: string;
-  available: boolean;
 }
 
 export const updateMentor = ({

@@ -1,9 +1,11 @@
+import type { FinalProgramModel } from "@/services/api/types";
+
 export interface NgoVM {
   id: number;
   ongName: string;
   ongIdentificationNumber: string;
   createdAt: string;
-  programName: string | undefined;
+  ngoPrograms: FinalProgramModel[];
   county: string;
   city: string;
   domains: string[];

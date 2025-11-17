@@ -47,6 +47,9 @@ import {
 } from "@/components/ui/multi-select";
 import { toast } from "sonner";
 import { useUploadPictureMutation } from "@/services/user.mutations";
+import { useSuspenseListPrograms } from "@/services/programs.queries";
+import type { FinalProgramModel } from "@/services/api/types";
+import { Badge } from "@/components/ui/badge";
 
 const organizationSchema = z
   .object({
@@ -62,6 +65,15 @@ const organizationSchema = z
     phone: z.string().min(1, "Telefonul este obligatoriu"),
     avatar: z.any().optional(),
     domains: z
+      .array(
+        z.object({
+          value: z.string(),
+          label: z.string(),
+        })
+      )
+      .catch([]),
+
+    ngoPrograms: z
       .array(
         z.object({
           value: z.string(),
@@ -99,11 +111,19 @@ const organizationSchema = z
 
 type OrganizationFormData = z.infer<typeof organizationSchema>;
 
+const programsMapper = (programs: FinalProgramModel[]) =>
+  programs.map((p) => ({
+    value: p.id.toString(),
+    label: p.name,
+    disabled: new Date() > new Date(p.endDate),
+  }));
+
 const CreateUser = () => {
   const navigate = useNavigate();
   const { data: domains } = useSuspenseListDomains();
   const { mutateAsync: createNgo, isPending } = useCreateNgoMutation();
   const { mutate: uploadPicture } = useUploadPictureMutation();
+  const { data: programs } = useSuspenseListPrograms(programsMapper);
 
   const form = useForm<OrganizationFormData>({
     resolver: zodResolver(organizationSchema),
@@ -129,6 +149,7 @@ const CreateUser = () => {
       password: "",
       confirmPassword: "",
       domains: [],
+      ngoPrograms: [],
     },
   });
 
@@ -159,6 +180,7 @@ const CreateUser = () => {
       {
         ...values,
         domains: values.domains?.map((d) => +d.value),
+        ngoPrograms: values.ngoPrograms?.map((p) => +p.value),
         username: values.email,
       },
       {
@@ -526,8 +548,7 @@ const CreateUser = () => {
                   Informații Adiționale (Opționale)
                 </CardTitle>
                 <CardDescription>
-                  Aceste informații ne ajută să vă cunoaștem mai bine
-                  organizația
+                  Aceste informații ne ajută să cunoaștem mai bine organizația
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -554,6 +575,48 @@ const CreateUser = () => {
                                   label={domain.name}
                                 >
                                   <span>{domain.name}</span>
+                                </MultiSelectorItem>
+                              ))}
+                            </MultiSelectorList>
+                          </MultiSelectorContent>
+                        </MultiSelector>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="ngoPrograms"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormLabel>Programe asociate</FormLabel>
+                        <MultiSelector
+                          onValuesChange={field.onChange}
+                          values={field.value}
+                        >
+                          <MultiSelectorTrigger>
+                            <MultiSelectorInput placeholder="Alege programe" />
+                          </MultiSelectorTrigger>
+                          <MultiSelectorContent>
+                            <MultiSelectorList>
+                              {programs.map((program) => (
+                                <MultiSelectorItem
+                                  key={program.label}
+                                  value={program.value}
+                                  label={program.label}
+                                  disabled={program.disabled}
+                                >
+                                  <div className="flex items-center gap-2">
+                                    {program.label}
+                                    {program.disabled ? (
+                                      <Badge variant="warning">Finalizat</Badge>
+                                    ) : (
+                                      <Badge variant="default">
+                                        In desfășurare
+                                      </Badge>
+                                    )}
+                                  </div>
                                 </MultiSelectorItem>
                               ))}
                             </MultiSelectorList>

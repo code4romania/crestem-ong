@@ -1,13 +1,14 @@
-import Heading from "@/components/Heading";
+import { useSuspenseListDimensions } from "@/services/dimensions.queries";
+import { useCreateMentorMutation } from "@/services/fdsc.mutations";
+import { useSuspenseListPrograms } from "@/services/programs.queries";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "@tanstack/react-router";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { z } from "zod";
+
 import { LogoUpload } from "@/components/PictureSelect";
-import Section from "@/components/Section";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -25,206 +26,143 @@ import {
   MultiSelectorList,
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
-import { useListDimensions } from "@/services/dimensions.queries";
-import { Link, Navigate, useNavigate } from "@tanstack/react-router";
-import { Briefcase, User } from "lucide-react";
-
-import FullScreenLoader from "@/components/FullScreenLoader";
-import { Button } from "@/components/ui/button";
-import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
-import { Switch } from "@/components/ui/switch";
-import {
-  mentorProfileSchema,
-  type MentorProfileInput,
-} from "@/pages/mentor/EditProfile";
-import { Route } from "@/routes/(app)/mentors/$mentorId/edit";
 import type {
+  DimensionModel as ApiDimensionModel,
   FinalDetailedUserModel,
-  FinalDimensionModel,
+  FinalProgramModel,
 } from "@/services/api/types";
 import {
   updateMentorMutation,
   useUploadPictureMutation,
 } from "@/services/user.mutations";
-import { useSuspenseGetUserDetails } from "@/services/user.queries";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
-const optionsMapper = (userDimensions: FinalDimensionModel[]) =>
+import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
+import { Route } from "@/routes/(app)/mentors/$mentorId/edit";
+import { useSuspenseGetUserDetails } from "@/services/user.queries";
+import { Badge } from "@/components/ui/badge";
+
+const mentorSchema = z.object({
+  firstName: z.string().min(1, "Nume este obligatoriu"),
+  lastName: z.string().min(1, "Prenume este obligatoriu"),
+  email: z
+    .email("Adresa de email este invalidă")
+    .min(1, "Adresa de email este obligatorie"),
+  bio: z.string().min(1, "Adaugati o scurta descriere"),
+  expertise: z.string().optional(),
+  dimensions: z
+    .array(
+      z.object({
+        value: z.string(),
+        label: z.string(),
+      })
+    )
+    .min(1, "Selectează cel puțin o specializare")
+    .catch([]),
+  mentorPrograms: z
+    .array(
+      z.object({
+        value: z.string(),
+        label: z.string(),
+      })
+    )
+    .catch([]),
+  avatar: z.custom<File>().nullable(),
+});
+
+export type MentorInput = z.infer<typeof mentorSchema>;
+const programsMapper = (programs: FinalProgramModel[]) =>
+  programs.map((p) => ({
+    value: p.id.toString(),
+    label: p.name,
+    disabled: new Date() > new Date(p.endDate),
+  }));
+
+const dimensionsMapper = (userDimensions: ApiDimensionModel[]) =>
   userDimensions
     ? userDimensions.map((d) => ({ value: d.id.toString(), label: d.name }))
     : [];
 
 const mentorMapper = (user: FinalDetailedUserModel) => ({
   ...user,
-  dimensions: optionsMapper(user.dimensions ?? []),
+  dimensions: dimensionsMapper(user.dimensions ?? []),
+  mentorPrograms: programsMapper(user.mentorPrograms ?? []),
 });
 
-function EditMentor() {
-  const { mentorId } = Route.useParams();
-  const { data: userDetails } = useSuspenseGetUserDetails(
-    mentorId,
-    mentorMapper
-  );
-
+const EditMentor = () => {
   const navigate = useNavigate();
+  const { mentorId } = Route.useParams();
+  const { data: mentor } = useSuspenseGetUserDetails(mentorId, mentorMapper);
+  const { data: programs } = useSuspenseListPrograms(programsMapper);
+  const { data: dimensions } = useSuspenseListDimensions(dimensionsMapper);
 
-  const { mutateAsync: updatementor, isPending: isUpdatePending } =
-    updateMentorMutation();
-  const { mutateAsync: uploadAvatar, isPending: isUploadPending } =
-    useUploadPictureMutation();
+  const { mutateAsync: updateMentor, isPending } = updateMentorMutation();
+  const { mutateAsync: uploadAvatar } = useUploadPictureMutation();
 
-  const { data: dimensions, isLoading } = useListDimensions((dimensions) =>
-    dimensions.map((at) => ({
-      label: at.name,
-      value: at.id.toString(),
-    }))
-  );
-
-  const form = useForm<MentorProfileInput>({
-    resolver: zodResolver(mentorProfileSchema),
+  const form = useForm<MentorInput>({
+    resolver: zodResolver(mentorSchema),
     defaultValues: {
-      firstName: userDetails.firstName || "",
-      lastName: userDetails.lastName || "",
-      dimensions: userDetails.dimensions ?? [],
-      available: userDetails.available || false,
-      avatar: undefined,
-      bio: userDetails.bio || "",
-      expertise: userDetails.expertise || "",
+      firstName: mentor?.firstName ?? "",
+      lastName: mentor?.lastName ?? "",
+      email: mentor?.email ?? "",
+      bio: mentor?.bio ?? "",
+      expertise: mentor?.expertise ?? "",
+      dimensions: mentor?.dimensions ?? [],
+      mentorPrograms: mentor?.mentorPrograms ?? [],
     },
   });
 
-  const onSubmit: SubmitHandler<MentorProfileInput> = async (data) => {
-    await updatementor(
+  const onSubmitHandler: SubmitHandler<MentorInput> = async (values) => {
+    await updateMentor(
       {
-        ...data,
-        id: userDetails!.id,
-        dimensions: data.dimensions.map((d) => +d.value),
+        ...values,
+        id: +mentorId,
+        mentorPrograms: values.mentorPrograms.map((p) => +p.value),
+        dimensions: values.dimensions.map((d) => +d.value),
       },
       {
-        onError: (error) => {
-          const data = error as any;
-          toast.error(data.error.message);
+        onError: () => {
+          toast.error("A aparut o problema la actualizarea persoanei resursa");
         },
       }
     );
 
-    if (data.avatar) {
-      await uploadAvatar({ userId: userDetails.id, file: data.avatar });
+    if (values.avatar) {
+      uploadAvatar({ userId: +mentorId, file: values.avatar });
     }
 
-    navigate({ to: "/mentors/$mentorId", params: { mentorId } });
-    toast.success("Salvat");
+    navigate({ to: "/mentors" });
+    toast.success("Persoana resursa a fost actualizata cu succes!");
   };
 
-  if (isLoading) return <FullScreenLoader />;
-
-  if (userDetails.role.type !== "mentor") {
-    return <Navigate to="/" />;
-  }
-
   return (
-    <div>
-      <Section>
-        <div className="space-y-2">
-          <Heading level="h2">
-            Editează profilul: {userDetails.firstName} {userDetails.lastName}
-          </Heading>
-        </div>
-      </Section>
-
-      <Section>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            {/* Personal Info */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <User className="h-5 w-5" />
-                  Informații personale
-                </CardTitle>
-                <CardDescription>
-                  Aceste date sunt necesare pentru a-ți completa profilul
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="firstName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Nume <span className="text-red-500">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="Nume" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
+    <div className="container mx-auto py-8">
+      <Card className="max-w-4xl mx-auto">
+        <CardHeader>
+          <CardTitle className="text-2xl">Adaugă persoană resursă</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form
+              className="space-y-6"
+              onSubmit={form.handleSubmit(onSubmitHandler)}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Prenume <span className="text-red-500">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="Prenume" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-            </Card>
-
-            {/* Professional Info */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Briefcase className="h-5 w-5" />
-                  Detalii profesionale
-                </CardTitle>
-                <CardDescription>
-                  Completează detalii despre activitatea ta profesională
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="dimensions"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Specializare pe dimensiuni
+                        Nume persoană resursă
                         <span className="text-red-500">*</span>
                       </FormLabel>
-                      <MultiSelector
-                        onValuesChange={field.onChange}
-                        values={field.value}
-                      >
-                        <MultiSelectorTrigger>
-                          <MultiSelectorInput placeholder="Selectează dimensiuni" />
-                        </MultiSelectorTrigger>
-                        <MultiSelectorContent>
-                          <MultiSelectorList>
-                            {dimensions?.map((dimension) => (
-                              <MultiSelectorItem
-                                key={dimension.value}
-                                value={dimension.value}
-                                label={dimension.label}
-                              >
-                                {dimension.label}
-                              </MultiSelectorItem>
-                            ))}
-                          </MultiSelectorList>
-                        </MultiSelectorContent>
-                      </MultiSelector>
+                      <FormControl>
+                        <Input
+                          placeholder="Introdu nume persoană resursă"
+                          {...field}
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -232,114 +170,205 @@ function EditMentor() {
 
                 <FormField
                   control={form.control}
-                  name="bio"
+                  name="firstName"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Descriere (bio) <span className="text-red-500">*</span>
+                        Prenume persoană resursă
+                        <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
-                        <MinimalTiptapEditor
-                          value={field.value}
-                          onChange={field.onChange}
-                          className="w-full"
-                          editorContentClassName="p-5"
-                          output="html"
-                          placeholder="Scrie o scurtă descriere..."
-                          autofocus={true}
-                          editable={true}
-                          editorClassName="focus:outline-hidden"
+                        <Input
+                          placeholder="Introdu prenume persoană resursă"
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+              </div>
 
-                <FormField
-                  control={form.control}
-                  name="expertise"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Arii de expertiză</FormLabel>
-                      <FormControl>
-                        <MinimalTiptapEditor
-                          value={field.value}
-                          onChange={field.onChange}
-                          className="w-full"
-                          editorContentClassName="p-5"
-                          output="html"
-                          placeholder="Descriere ariile de expertiză ale persoanei resursă"
-                          autofocus={true}
-                          editable={true}
-                          editorClassName="focus:outline-hidden"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Email persoană resursă
+                      <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={true}
+                        type="email"
+                        placeholder="Introdu email persoană resursă"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormField
-                  control={form.control}
-                  name="available"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Disponibilitate</FormLabel>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                control={form.control}
+                name="bio"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Descriere (bio) <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <MinimalTiptapEditor
+                        value={field.value}
+                        onChange={field.onChange}
+                        className="w-full"
+                        editorContentClassName="p-5"
+                        output="html"
+                        placeholder="Scrie o scurtă descriere..."
+                        editable={true}
+                        editorClassName="focus:outline-hidden"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormField
-                  control={form.control}
-                  name="avatar"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Poza de profil</FormLabel>
-                      <FormControl>
-                        <LogoUpload
-                          currentLogo={userDetails?.avatar?.url}
-                          onImageChange={(file) => field.onChange(file)}
-                          disabled={isUploadPending || isUpdatePending}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-            </Card>
+              <FormField
+                control={form.control}
+                name="expertise"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Arii de expertiză</FormLabel>
+                    <FormControl>
+                      <MinimalTiptapEditor
+                        value={field.value}
+                        onChange={field.onChange}
+                        className="w-full"
+                        editorContentClassName="p-5"
+                        output="html"
+                        placeholder="Descriere ariile de expertiză ale persoanei resursă"
+                        editable={true}
+                        editorClassName="focus:outline-hidden"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-end">
-              <Button
-                type="button"
-                variant="outline"
-                className="sm:w-auto bg-transparent"
-                asChild
-              >
-                <Link to="/mentors/$mentorId" params={{ mentorId }}>
+              <FormField
+                control={form.control}
+                name="dimensions"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>
+                      Specializare pe dimensiuni
+                      <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <MultiSelector
+                      onValuesChange={field.onChange}
+                      values={field.value}
+                    >
+                      <MultiSelectorTrigger>
+                        <MultiSelectorInput placeholder="Alege domenii" />
+                      </MultiSelectorTrigger>
+                      <MultiSelectorContent>
+                        <MultiSelectorList>
+                          {dimensions.map((dimension) => (
+                            <MultiSelectorItem
+                              key={dimension.label}
+                              value={dimension.value}
+                              label={dimension.label}
+                            >
+                              <span>{dimension.label}</span>
+                            </MultiSelectorItem>
+                          ))}
+                        </MultiSelectorList>
+                      </MultiSelectorContent>
+                    </MultiSelector>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="mentorPrograms"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Programe asociate</FormLabel>
+                    <MultiSelector
+                      onValuesChange={field.onChange}
+                      values={field.value}
+                    >
+                      <MultiSelectorTrigger>
+                        <MultiSelectorInput placeholder="Alege programe" />
+                      </MultiSelectorTrigger>
+                      <MultiSelectorContent>
+                        <MultiSelectorList>
+                          {programs.map((program) => (
+                            <MultiSelectorItem
+                              key={program.label}
+                              value={program.value}
+                              label={program.label}
+                              disabled={program.disabled}
+                            >
+                              <div className="flex items-center gap-2">
+                                {program.label}
+                                {program.disabled ? (
+                                  <Badge variant="warning">Finalizat</Badge>
+                                ) : (
+                                  <Badge variant="default">
+                                    In desfășurare
+                                  </Badge>
+                                )}
+                              </div>
+                            </MultiSelectorItem>
+                          ))}
+                        </MultiSelectorList>
+                      </MultiSelectorContent>
+                    </MultiSelector>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="avatar"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Poza profil</FormLabel>
+                    <FormControl>
+                      <LogoUpload
+                        currentLogo={mentor?.avatar?.url}
+                        onImageChange={(file) => field.onChange(file)}
+                        disabled={isPending}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex justify-end space-x-4 pt-6">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => navigate({ to: "/mentors" })}
+                >
                   Renunță
-                </Link>
-              </Button>
-              <Button
-                type="submit"
-                className="sm:w-auto"
-                disabled={isUploadPending || isUpdatePending}
-              >
-                Salvează
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </Section>
+                </Button>
+                <Button type="submit">Salvează</Button>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   );
-}
+};
+
 export default EditMentor;

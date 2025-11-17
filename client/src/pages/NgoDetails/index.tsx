@@ -118,7 +118,23 @@ const NgoDetails = ({
     ["Prenume reprezentant organizație", ngo.contactFirstName],
     ["Email reprezentant organizație", ngo.contactEmail],
     ["Telefon reprezentant organizație", ngo.contactPhone],
-    ["Program", ngo.program?.name],
+    [
+      "Programe asociate",
+      ngo.ngoPrograms?.length ? (
+        <div className="flex flex-wrap gap-2">
+          {ngo.ngoPrograms?.map(({ id, name, endDate }) => (
+            <Badge
+              key={id}
+              variant={new Date() > new Date(endDate) ? "warning" : "default"}
+            >
+              {name}
+            </Badge>
+          ))}
+        </div>
+      ) : (
+        "-"
+      ),
+    ],
     [
       "Experți alocați",
       ngo.mentors

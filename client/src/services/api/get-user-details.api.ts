@@ -13,7 +13,8 @@ export const getUserDetails = (
       "dimensions",
       "role",
       "userSessions.mentor",
-      "program",
+      "mentorPrograms.program",
+      "ngoPrograms.program",
     ],
   };
 

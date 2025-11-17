@@ -247,7 +247,6 @@ const EditMentorProfile = () => {
                           editorContentClassName="p-5"
                           output="html"
                           placeholder="Scrie o scurtă descriere..."
-                          autofocus={true}
                           editable={true}
                           editorClassName="focus:outline-hidden"
                         />
@@ -271,7 +270,6 @@ const EditMentorProfile = () => {
                           editorContentClassName="p-5"
                           output="html"
                           placeholder="Descriere ariile de expertiză ale persoanei resursă"
-                          autofocus={true}
                           editable={true}
                           editorClassName="focus:outline-hidden"
                         />

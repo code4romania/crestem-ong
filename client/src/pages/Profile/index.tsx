@@ -88,7 +88,7 @@ const Profile = () => {
           alt={user?.ongName}
         />
         <AvatarFallback>
-          {user?.ongName?.charAt(0).toUpperCase() ?? "?"}
+          {user?.ongName?.charAt(0).toUpperCase() ?? "NA"}
         </AvatarFallback>
       </Avatar>,
     ],
@@ -96,7 +96,23 @@ const Profile = () => {
     ["Prenume reprezentant organizație", user.contactLastName],
     ["Email reprezentant organizație", user.contactEmail],
     ["Telefon reprezentant organizație", user.contactPhone],
-    ["Program", user.program?.name],
+    [
+      "Programe asociate",
+      user.ngoPrograms?.length ? (
+        <div className="flex flex-wrap gap-2">
+          {user.mentorPrograms?.map(({ id, name, endDate }) => (
+            <Badge
+              key={id}
+              variant={new Date() > new Date(endDate) ? "warning" : "default"}
+            >
+              {name}
+            </Badge>
+          ))}
+        </div>
+      ) : (
+        "-"
+      ),
+    ],
     [
       "Experți alocați",
       user.mentors

@@ -31,7 +31,7 @@ const menteeMapper = (mentees: FinalDetailedUserModel[]): MenteeVM[] =>
       ongName: ngo.ongName,
       ongIdentificationNumber: ngo.ongIdentificationNumber,
       createdAt: ngo.createdAt,
-      programName: ngo.program?.name || "-",
+      programs: ngo.ngoPrograms ?? [],
       county: ngo.county,
       city: ngo.city,
       domains: ngo?.domains?.map((d) => d.name) ?? [],

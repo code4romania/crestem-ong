@@ -22,6 +22,7 @@ import React, {
 export type MultiSelectValue = {
   value: string;
   label: string;
+  variant?: "default" | "secondary" | "warning" | "destructive" | "outline";
 };
 
 interface MultiSelectorProps
@@ -334,7 +335,9 @@ const MultiSelectorList = forwardRef<
     >
       {children}
       <CommandEmpty>
-        <span className="text-muted-foreground">No results found</span>
+        <span className="text-muted-foreground">
+          Nu s-a gasit nicio optiune
+        </span>
       </CommandEmpty>
     </CommandList>
   );

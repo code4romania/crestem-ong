@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateProgramMutation } from "@/services/program.mutations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 import { PlusIcon } from "lucide-react";
@@ -220,8 +220,8 @@ const CreateProgram = () => {
 
           {/* Action Buttons */}
           <div className="flex justify-end gap-3">
-            <Button type="button" variant="outline">
-              Renunță
+            <Button type="button" variant="outline" asChild>
+              <Link to="/programs">Renunță</Link>
             </Button>
             <Button type="submit" disabled={isPending}>
               Salvează

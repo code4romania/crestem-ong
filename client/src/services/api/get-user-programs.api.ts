@@ -4,11 +4,12 @@ import type { FinalProgramModel } from "./types";
 
 export const getUserPrograms = (): Promise<FinalProgramModel[]> => {
   const params = {
-    populate: ["program", "programs.users"],
+    populate: ["mentorPrograms.program", "ngoPrograms.program"],
   };
 
   return API.get<{
-    programs: FinalProgramModel[];
+    mentorPrograms: FinalProgramModel[];
+    ngoPrograms: FinalProgramModel[];
   }>(`api/users/me`, {
     params,
     paramsSerializer: {
@@ -16,5 +17,5 @@ export const getUserPrograms = (): Promise<FinalProgramModel[]> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data.programs ?? []);
+  }).then((res) => res.data.mentorPrograms ?? res.data.ngoPrograms ?? []);
 };
