@@ -38,6 +38,18 @@
       "relation": "oneToMany",
       "target": "plugin::users-permissions.user",
       "mappedBy": "program"
+    },
+    "ngosInProgram": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "ngoPrograms"
+    },
+    "mentorsInProgram": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "mentorPrograms"
     }
   }
 }

@@ -57,10 +57,7 @@ module.exports = createCoreController(
 
         return {
           ...entity,
-          user: {
-            ...entity.user,
-            lastReportAt: lastReport ? lastReport.createdAt : null,
-          },
+          lastReportAt: lastReport ? lastReport.createdAt : null,
         };
       });
 
@@ -103,10 +100,7 @@ module.exports = createCoreController(
 
       return {
         ...sanitizedEntity,
-        user: {
-          ...sanitizedEntity.user,
-          lastReportAt: lastReport ? lastReport.createdAt : null,
-        },
+        lastReportAt: lastReport ? lastReport.createdAt : null,
       };
     },
   })
