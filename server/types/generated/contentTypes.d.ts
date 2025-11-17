@@ -777,6 +777,16 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::mentorship-request.mentorship-request'
     >;
+    ngoPrograms: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'api::program.program'
+    >;
+    mentorPrograms: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'api::program.program'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -966,6 +976,7 @@ export interface ApiEvaluationEvaluation extends Schema.CollectionType {
   attributes: {
     dimensions: Attribute.Component<'evaluation.dimension', true>;
     email: Attribute.Email & Attribute.Required;
+    notificationSentAt: Attribute.Date;
     report: Attribute.Relation<
       'api::evaluation.evaluation',
       'manyToOne',
@@ -1086,6 +1097,16 @@ export interface ApiProgramProgram extends Schema.CollectionType {
     users: Attribute.Relation<
       'api::program.program',
       'oneToMany',
+      'plugin::users-permissions.user'
+    >;
+    ngosInProgram: Attribute.Relation<
+      'api::program.program',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    mentorsInProgram: Attribute.Relation<
+      'api::program.program',
+      'manyToMany',
       'plugin::users-permissions.user'
     >;
     createdAt: Attribute.DateTime;

@@ -53,13 +53,11 @@ module.exports = createCoreController(
       // Add `lastReport` field based on user.reports
       const withLastReport = sanitizedEntities.map((entity) => {
         const reports = entity.user?.reports || [];
-        const lastReportAt = reports.length
-          ? reports[reports.length - 1]
-          : null;
+        const lastReport = reports.length ? reports[reports.length - 1] : null;
 
         return {
           ...entity,
-          lastReportAt: lastReportAt ? lastReport.createdAt : null,
+          lastReportAt: lastReport ? lastReport.createdAt : null,
         };
       });
 
@@ -98,11 +96,11 @@ module.exports = createCoreController(
 
       const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
       const reports = sanitizedEntity.user?.reports || [];
-      const lastReportAt = reports.length ? reports[reports.length - 1] : null;
+      const lastReport = reports.length ? reports[reports.length - 1] : null;
 
       return {
         ...sanitizedEntity,
-        lastReportAt: lastReportAt ? lastReport.createdAt : null,
+        lastReportAt: lastReport ? lastReport.createdAt : null,
       };
     },
   })
