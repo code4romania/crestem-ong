@@ -50,3 +50,4 @@ frontend/target
 frontend/node_modules
 frontend/.next
 client/.env
+client/request.http

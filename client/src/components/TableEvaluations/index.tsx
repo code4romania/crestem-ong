@@ -2,10 +2,15 @@ import envelope from "@/assets/envelope.svg";
 import * as React from "react";
 
 import { useAuth } from "@/contexts/auth";
+import formatDate from "@/lib/formatDate";
 import type {
   FinalEvaluationModel,
   FinalReportModel,
 } from "@/services/api/types";
+import {
+  useDeleteEvaluationMutation,
+  useResendEvaluationMutation,
+} from "@/services/evaluation.mutations";
 import { Link } from "@tanstack/react-router";
 import {
   getCoreRowModel,
@@ -13,6 +18,9 @@ import {
   type ColumnDef,
   type Row,
 } from "@tanstack/react-table";
+import { Ellipsis, MailIcon, TrashIcon } from "lucide-react";
+import { toast } from "sonner";
+import Confirm from "../Confirm";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { DataTable } from "../ui/data-table";
@@ -23,15 +31,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Copy, Ellipsis, MailIcon, TrashIcon } from "lucide-react";
-import Confirm from "../Confirm";
-import { toast } from "sonner";
-import {
-  useDeleteEvaluationMutation,
-  useResendEvaluationMutation,
-} from "@/services/evaluation.mutations";
-import formatDate from "@/lib/formatDate";
-import { fa } from "zod/v4/locales";
 
 interface TableEvaluationsProps {
   report: FinalReportModel;
@@ -49,6 +48,7 @@ const TableEvaluations = ({ report }: TableEvaluationsProps) => {
   } | null>(null);
 
   const isFDSC = userRole === "fdsc";
+  const isAuthenticated = userRole === "authenticated";
 
   const evaluations = report?.evaluations || [];
 
@@ -89,90 +89,90 @@ const TableEvaluations = ({ report }: TableEvaluationsProps) => {
         header: "INVITAT LA",
         cell: ({ row }) => formatDate(row.original.createdAt),
       },
-      ...(isFDSC
+      {
+        id: "answers",
+        header: "",
+        cell: ({ row }: { row: Row<FinalEvaluationModel> }) => {
+          const { id, email, dimensions } = row.original;
+          return (
+            dimensions.length === 10 && (
+              <Button variant="link" asChild>
+                <Link
+                  to="/evaluation/$evaluationId"
+                  params={{ evaluationId: id.toString() }}
+                  search={{ email }}
+                >
+                  Vezi răspunsurile
+                </Link>
+              </Button>
+            )
+          );
+        },
+      },
+      ...(isFDSC || isAuthenticated
         ? [
             {
-              id: "answers",
-              header: "",
+              id: "actions",
               cell: ({ row }: { row: Row<FinalEvaluationModel> }) => {
-                const { id, email, dimensions } = row.original;
+                const completed =
+                  row.original.dimensions.reduce(
+                    (acc: number, dimension: any) =>
+                      acc + dimension.quiz.length,
+                    0
+                  ) === 50;
                 return (
-                  dimensions.length === 10 && (
-                    <Button variant="link" asChild>
-                      <Link
-                        to="/evaluation/$evaluationId"
-                        params={{ evaluationId: id.toString() }}
-                        search={{ email }}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        aria-label="Open menu"
+                        variant="ghost"
+                        className="flex size-8 p-0 data-[state=open]:bg-muted"
                       >
-                        Vezi răspunsurile
-                      </Link>
-                    </Button>
-                  )
+                        <Ellipsis className="size-4" aria-hidden="true" />
+                      </Button>
+                    </DropdownMenuTrigger>
+
+                    <DropdownMenuContent align="end" className="w-40">
+                      <DropdownMenuItem
+                        disabled={completed || report.finished}
+                        onSelect={() =>
+                          setRowAction({
+                            evaluationId: row.original.id,
+                            action: "resend",
+                            email: row.original.email,
+                          })
+                        }
+                      >
+                        <MailIcon className="h-5 w-5" aria-hidden="true" />
+                        Retrimite invitația
+                      </DropdownMenuItem>
+
+                      <DropdownMenuSeparator />
+
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 text-destructive"
+                        onSelect={() =>
+                          setRowAction({
+                            evaluationId: row.original.id,
+                            action: "delete",
+                            email: row.original.email,
+                          })
+                        }
+                      >
+                        <TrashIcon
+                          className="h-5 w-5 text-destructive"
+                          aria-hidden="true"
+                        />
+                        Șterge invitația
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 );
               },
+              size: 40,
             },
           ]
         : []),
-
-      {
-        id: "actions",
-        cell: function Cell({ row }) {
-          const completed =
-            row.original.dimensions.reduce(
-              (acc: number, dimension: any) => acc + dimension.quiz.length,
-              0
-            ) === 50;
-          return (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  aria-label="Open menu"
-                  variant="ghost"
-                  className="flex size-8 p-0 data-[state=open]:bg-muted"
-                >
-                  <Ellipsis className="size-4" aria-hidden="true" />
-                </Button>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent align="end" className="w-40">
-                <DropdownMenuItem
-                  disabled={completed}
-                  onSelect={() =>
-                    setRowAction({
-                      evaluationId: row.original.id,
-                      action: "resend",
-                      email: row.original.email,
-                    })
-                  }
-                >
-                  <MailIcon className="h-5 w-5" aria-hidden="true" />
-                  Retrimite invitația
-                </DropdownMenuItem>
-
-                <DropdownMenuSeparator />
-
-                <DropdownMenuItem
-                  className="flex items-center gap-2 text-destructive"
-                  onSelect={() =>
-                    setRowAction({
-                      evaluationId: row.original.id,
-                      action: "delete",
-                      email: row.original.email,
-                    })
-                  }
-                >
-                  <TrashIcon
-                    className="h-5 w-5 text-destructive"
-                    aria-hidden="true"
-                  />
-                  Șterge invitația
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          );
-        },
-        size: 40,
-      },
     ],
     [isFDSC, report.finished]
   );

@@ -52,6 +52,7 @@ const EvaluationResults = ({ evaluationData }: EvaluationResultsProps) => {
                               <b>
                                 {dimensionIndex + 1}.{quizIndex + 1}.
                               </b>
+                              <span> </span>
                               {quiz.question}
                             </div>
                           </TableCell>
@@ -60,6 +61,7 @@ const EvaluationResults = ({ evaluationData }: EvaluationResultsProps) => {
                               <b>
                                 {answerValue} / 5 - {answerLabel}
                               </b>
+                              <span> </span>
                               <i>
                                 (
                                 {
