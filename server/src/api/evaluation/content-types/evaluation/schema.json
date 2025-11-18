@@ -24,7 +24,7 @@
     },
     "notificationSentAt": {
       "displayName": "Notification Sent At",
-      "type": "date",
+      "type": "datetime",
       "required": false
     },
     "report": {
