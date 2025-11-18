@@ -72,7 +72,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     },
     "ongName": {
       "type": "string",
@@ -105,7 +107,12 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images", "files", "videos", "audios"]
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     },
     "description": {
       "type": "text"
@@ -210,15 +217,15 @@
     },
     "ngoPrograms": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::program.program",
-      "inversedBy": "ngosInProgram"
+      "relation": "oneToMany",
+      "target": "api::ngo-program.ngo-program",
+      "mappedBy": "ngo"
     },
     "mentorPrograms": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::program.program",
-      "inversedBy": "mentorsInProgram"
+      "relation": "oneToMany",
+      "target": "api::mentor-program.mentor-program",
+      "mappedBy": "mentor"
     }
   }
 }

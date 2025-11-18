@@ -779,13 +779,13 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     >;
     ngoPrograms: Attribute.Relation<
       'plugin::users-permissions.user',
-      'manyToMany',
-      'api::program.program'
+      'oneToMany',
+      'api::ngo-program.ngo-program'
     >;
     mentorPrograms: Attribute.Relation<
       'plugin::users-permissions.user',
-      'manyToMany',
-      'api::program.program'
+      'oneToMany',
+      'api::mentor-program.mentor-program'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1033,6 +1033,44 @@ export interface ApiMatrixMatrix extends Schema.SingleType {
   };
 }
 
+export interface ApiMentorProgramMentorProgram extends Schema.CollectionType {
+  collectionName: 'mentor_programs';
+  info: {
+    singularName: 'mentor-program';
+    pluralName: 'mentor-programs';
+    displayName: 'Mentor Program';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    mentor: Attribute.Relation<
+      'api::mentor-program.mentor-program',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    program: Attribute.Relation<
+      'api::mentor-program.mentor-program',
+      'manyToOne',
+      'api::program.program'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::mentor-program.mentor-program',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::mentor-program.mentor-program',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiMentorshipRequestMentorshipRequest
   extends Schema.CollectionType {
   collectionName: 'mentorship_requests';
@@ -1073,6 +1111,45 @@ export interface ApiMentorshipRequestMentorshipRequest
   };
 }
 
+export interface ApiNgoProgramNgoProgram extends Schema.CollectionType {
+  collectionName: 'ngo_programs';
+  info: {
+    singularName: 'ngo-program';
+    pluralName: 'ngo-programs';
+    displayName: 'NGO Program';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    ngo: Attribute.Relation<
+      'api::ngo-program.ngo-program',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    program: Attribute.Relation<
+      'api::ngo-program.ngo-program',
+      'manyToOne',
+      'api::program.program'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::ngo-program.ngo-program',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::ngo-program.ngo-program',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiProgramProgram extends Schema.CollectionType {
   collectionName: 'programs';
   info: {
@@ -1099,15 +1176,15 @@ export interface ApiProgramProgram extends Schema.CollectionType {
       'oneToMany',
       'plugin::users-permissions.user'
     >;
-    ngosInProgram: Attribute.Relation<
+    programMentors: Attribute.Relation<
       'api::program.program',
-      'manyToMany',
-      'plugin::users-permissions.user'
+      'oneToMany',
+      'api::mentor-program.mentor-program'
     >;
-    mentorsInProgram: Attribute.Relation<
+    programNgos: Attribute.Relation<
       'api::program.program',
-      'manyToMany',
-      'plugin::users-permissions.user'
+      'oneToMany',
+      'api::ngo-program.ngo-program'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1193,7 +1270,9 @@ declare module '@strapi/strapi' {
       'api::domain.domain': ApiDomainDomain;
       'api::evaluation.evaluation': ApiEvaluationEvaluation;
       'api::matrix.matrix': ApiMatrixMatrix;
+      'api::mentor-program.mentor-program': ApiMentorProgramMentorProgram;
       'api::mentorship-request.mentorship-request': ApiMentorshipRequestMentorshipRequest;
+      'api::ngo-program.ngo-program': ApiNgoProgramNgoProgram;
       'api::program.program': ApiProgramProgram;
       'api::report.report': ApiReportReport;
     }

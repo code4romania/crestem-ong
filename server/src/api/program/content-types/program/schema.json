@@ -39,17 +39,17 @@
       "target": "plugin::users-permissions.user",
       "mappedBy": "program"
     },
-    "ngosInProgram": {
+    "programMentors": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "plugin::users-permissions.user",
-      "mappedBy": "ngoPrograms"
+      "relation": "oneToMany",
+      "target": "api::mentor-program.mentor-program",
+      "mappedBy": "program"
     },
-    "mentorsInProgram": {
+    "programNgos": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "plugin::users-permissions.user",
-      "mappedBy": "mentorPrograms"
+      "relation": "oneToMany",
+      "target": "api::ngo-program.ngo-program",
+      "mappedBy": "program"
     }
   }
 }
