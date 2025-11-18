@@ -22,8 +22,9 @@ module.exports = createCoreController(
   "api::evaluation.evaluation",
   ({ strapi }) => ({
     async findOne(ctx) {
-      const isFDSC = ctx.state?.user?.role?.type === "fdsc";
-      const isMentor = ctx.state?.user?.role?.type === "mentor";
+      const isFDSC = ctx.state?.user?.role?.type?.toLowerCase() === "fdsc";
+      const isMentor = ctx.state?.user?.role?.type?.toLowerCase() === "mentor";
+
       const { id } = ctx.params;
       const { email } = ctx.query;
       const data = await strapi.entityService.findOne(
@@ -125,7 +126,7 @@ module.exports = createCoreController(
     async resend(ctx) {
       const { id } = ctx.params;
       const callerId = ctx.state.user.id;
-
+      const isFDSC = ctx.state?.user?.role?.type?.toLowerCase() === "fdsc";
       // find the evaluation entry
       const evaluation = await strapi.entityService.findOne(
         "api::evaluation.evaluation",
@@ -135,26 +136,64 @@ module.exports = createCoreController(
 
       const reportUserId = evaluation.report?.user?.id;
 
-      if (reportUserId !== callerId) {
-        return ctx.notFound();
+      if (!isFDSC) {
+        if (reportUserId !== callerId) {
+          return ctx.notFound();
+        }
       }
 
-      // If mail already sent, do nothing
       if (evaluation.notificationSentAt) {
-        return {
-          message: "Notificarea a fost deja trimisa",
-          notificationSentAt: evaluation.notificationSentAt,
-        };
+        const lastNotificationDate = new Date(
+          evaluation.notificationSentAt
+        ).toDateString();
+        const today = new Date().toDateString();
+
+        if (lastNotificationDate === today) {
+          return {
+            message: "Invitația a fost deja trimisă astăzi",
+            notificationSentAt: evaluation.notificationSentAt,
+            nextAvailableTime: new Date(new Date().setHours(24, 0, 0, 0)), // Next midnight
+          };
+        }
+      }
+
+      const evaluationUrl = `${
+        process.env.CLIENT_PUBLIC_URL
+      }/evaluation/${id}?email=${encodeURIComponent(evaluation.email)}`;
+
+      const deadline = new Date(evaluation.report.deadline).toLocaleDateString(
+        "ro-RO",
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }
+      );
+      try {
+        await strapi
+          .plugin("email-designer")
+          .service("email")
+          .sendTemplatedEmail(
+            {
+              to: evaluation.email,
+            },
+            {
+              templateReferenceId: 3,
+            },
+            {
+              ONG_NAME: evaluation.report.user.ongName,
+              URL: evaluationUrl,
+              DEADLINE: deadline,
+            }
+          );
+      } catch (err) {
+        console.log(err);
       }
 
       // update notificationSentAt timestamp
-      const updated = await strapi.entityService.update(
-        "api::evaluation.evaluation",
-        id,
-        {
-          data: { notificationSentAt: new Date().toISOString() },
-        }
-      );
+      await strapi.entityService.update("api::evaluation.evaluation", id, {
+        data: { notificationSentAt: new Date().toISOString() },
+      });
 
       return {};
     },
