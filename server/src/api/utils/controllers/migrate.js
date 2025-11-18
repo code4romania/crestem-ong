@@ -14,15 +14,12 @@ module.exports = {
       // 1️⃣ NGO migration → create join records
       //
       if (role === "Authenticated" && user.program) {
-        await strapi.entityService.create(
-          "api::ngos-in-program.ngos-in-program",
-          {
-            data: {
-              program: user.program.id,
-              ngo: user.id,
-            },
-          }
-        );
+        await strapi.entityService.create("api::ngo-program.ngo-program", {
+          data: {
+            program: user.program.id,
+            ngo: user.id,
+          },
+        });
       }
 
       //
@@ -31,7 +28,7 @@ module.exports = {
       if (role === "Mentor" && user.programs?.length) {
         for (const program of user.programs) {
           await strapi.entityService.create(
-            "api::mentors-in-program.mentors-in-program",
+            "api::mentor-program.mentor-program",
             {
               data: {
                 program: program.id,
