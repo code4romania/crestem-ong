@@ -23,6 +23,7 @@ module.exports = createCoreController(
   ({ strapi }) => ({
     async findOne(ctx) {
       const isFDSC = ctx.state?.user?.role?.type === "fdsc";
+      const isMentor = ctx.state?.user?.role?.type === "mentor";
       const { id } = ctx.params;
       const { email } = ctx.query;
       const data = await strapi.entityService.findOne(
@@ -34,7 +35,10 @@ module.exports = createCoreController(
       );
       const { report, email: userEmail, ...response } = data;
 
-      if ((report.finished || deadlineHasPassed(report.deadline)) && !isFDSC) {
+      if (
+        (report.finished || deadlineHasPassed(report.deadline)) &&
+        !(isFDSC || isMentor)
+      ) {
         throw new UnauthorizedError(
           `Perioada de evaluare a luat sfarsit. Va rugam luati legatura cu organizatia ${report.user.ongName} pentru mai multe detalii.`
         );

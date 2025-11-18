@@ -8,12 +8,12 @@ module.exports = {
     );
 
     for (const user of users) {
-      const role = user.role?.name;
+      const role = user.role?.name?.toLowerCase();
 
       //
       // 1️⃣ NGO migration → create join records
       //
-      if (role === "Authenticated" && user.program) {
+      if (role === "authenticated" && user.program) {
         await strapi.entityService.create("api::ngo-program.ngo-program", {
           data: {
             program: user.program.id,
@@ -25,7 +25,7 @@ module.exports = {
       //
       // 2️⃣ Mentor migration → create join records
       //
-      if (role === "Mentor" && user.programs?.length) {
+      if (role === "mentor" && user.programs?.length) {
         for (const program of user.programs) {
           await strapi.entityService.create(
             "api::mentor-program.mentor-program",
