@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "mentor_programs",
+  "info": {
+    "singularName": "mentor-program",
+    "pluralName": "mentor-programs",
+    "displayName": "Mentor Program"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "mentor": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "mentorPrograms"
+    },
+    "program": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::program.program",
+      "inversedBy": "programMentors"
+    }
+  }
+}
