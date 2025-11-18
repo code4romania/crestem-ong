@@ -10,28 +10,36 @@ module.exports = {
     for (const user of users) {
       const role = user.role?.name;
 
+      //
+      // 1️⃣ NGO migration → create join records
+      //
       if (role === "Authenticated" && user.program) {
-        await strapi.entityService.update(
-          "plugin::users-permissions.user",
-          user.id,
+        await strapi.entityService.create(
+          "api::ngos-in-program.ngos-in-program",
           {
             data: {
-              ngoPrograms: [user.program.id],
+              program: user.program.id,
+              ngo: user.id,
             },
           }
         );
       }
 
+      //
+      // 2️⃣ Mentor migration → create join records
+      //
       if (role === "Mentor" && user.programs?.length) {
-        await strapi.entityService.update(
-          "plugin::users-permissions.user",
-          user.id,
-          {
-            data: {
-              mentorPrograms: user.programs.map((p) => p.id),
-            },
-          }
-        );
+        for (const program of user.programs) {
+          await strapi.entityService.create(
+            "api::mentors-in-program.mentors-in-program",
+            {
+              data: {
+                program: program.id,
+                mentor: user.id,
+              },
+            }
+          );
+        }
       }
     }
 

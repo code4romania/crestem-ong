@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ngo_programs",
+  "info": {
+    "singularName": "ngo-program",
+    "pluralName": "ngo-programs",
+    "displayName": "NGO Program",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "ngo": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "ngoPrograms"
+    },
+    "program": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::program.program",
+      "inversedBy": "programNgos"
+    }
+  }
+}
