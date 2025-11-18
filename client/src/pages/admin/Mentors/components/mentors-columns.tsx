@@ -2,11 +2,11 @@ import { DataTableColumnHeader } from "@/components/data-table/column-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import formatDate from "@/lib/formatDate";
-import type { MentorModel } from "@/services/api/list-mentors.api";
+import type { FinalDetailedUserModel } from "@/services/api/types";
 import { Link } from "@tanstack/react-router";
 import { type ColumnDef } from "@tanstack/react-table";
 
-export const columns: ColumnDef<MentorModel>[] = [
+export const columns: ColumnDef<FinalDetailedUserModel>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (

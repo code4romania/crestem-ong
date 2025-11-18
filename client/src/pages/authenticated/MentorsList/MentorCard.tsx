@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { MentorDimensionModel } from "@/services/api/types";
+import type { FinalDimensionModel } from "@/services/api/types";
 import { UserIcon } from "@heroicons/react/20/solid";
 import { Link } from "@tanstack/react-router";
 
@@ -22,7 +22,7 @@ const MentorCard = ({
   id: string;
   firstName: string;
   lastName: string;
-  dimensions: MentorDimensionModel[];
+  dimensions?: FinalDimensionModel[];
   avatarUrl?: string;
 }) => {
   return (

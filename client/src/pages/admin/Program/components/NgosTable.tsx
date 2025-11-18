@@ -1,39 +1,31 @@
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { DataTable } from "@/components/ui/data-table";
 import formatDate from "@/lib/formatDate";
-import type { FinalUserModel } from "@/services/api/types";
+import type { FinalProgramModel, FinalUserModel } from "@/services/api/types";
 import { useSuspenseListNgos } from "@/services/ngos.queries";
 import { Link } from "@tanstack/react-router";
 import {
-  flexRender,
   getCoreRowModel,
   useReactTable,
   type ColumnDef,
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 import { AddNgoInProgramDialog } from "./AddNgoInProgramDialog";
-import { DataTable } from "@/components/ui/data-table";
 
-export const columns: (programId: string) => ColumnDef<FinalUserModel>[] = (
-  programId: string
+export const columns: (programId: number) => ColumnDef<FinalUserModel>[] = (
+  programId: number
 ) => [
   {
     accessorKey: "ongName",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Nume ONG"
+        title="ONG"
         className="whitespace-nowrap  text-sm font-bold text-gray-900"
       />
     ),
+    enableSorting: false,
   },
   {
     accessorKey: "ongIdentificationNumber",
@@ -75,7 +67,7 @@ export const columns: (programId: string) => ColumnDef<FinalUserModel>[] = (
     enableSorting: false,
   },
   {
-    accessorKey: "enrolDate",
+    accessorKey: "programJoinedAt",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -83,7 +75,7 @@ export const columns: (programId: string) => ColumnDef<FinalUserModel>[] = (
         className="whitespace-nowrap  text-sm font-bold text-gray-900"
       />
     ),
-    cell: ({ row }) => <span>-</span>,
+    cell: ({ row }) => <span>{formatDate(row.original.programJoinedAt)}</span>,
     enableSorting: false,
   },
   {
@@ -108,7 +100,7 @@ export const columns: (programId: string) => ColumnDef<FinalUserModel>[] = (
       <Button asChild variant="link">
         <Link
           to="/users/$userId"
-          search={{ returnToProgramId: programId }}
+          search={{ returnToProgramId: programId.toString() }}
           params={{ userId: row.original.id.toString() }}
         >
           vezi
@@ -119,10 +111,10 @@ export const columns: (programId: string) => ColumnDef<FinalUserModel>[] = (
 ];
 function NgosTable({
   ngos,
-  programId,
+  program,
 }: {
   ngos: FinalUserModel[];
-  programId: string;
+  program: FinalProgramModel;
 }) {
   const [openAddNgoInProgramDialog, setOpenAddNgoInProgramDialog] =
     useState(false);
@@ -135,7 +127,7 @@ function NgosTable({
     () => allNgos?.filter(({ id }) => !programNgoIds.includes(id)),
     [allNgos, programNgoIds]
   );
-  const memoizedColumns = useMemo(() => columns(programId), [programId]);
+  const memoizedColumns = useMemo(() => columns(program.id), [program.id]);
 
   const table = useReactTable({
     data: ngos,
@@ -153,14 +145,16 @@ function NgosTable({
         </h1>
         {availableNgos.length > 0 && (
           <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-            <Button onClick={() => setOpenAddNgoInProgramDialog(true)}>
+            <Button
+              onClick={() => setOpenAddNgoInProgramDialog(true)}
+              disabled={new Date(program.endDate) < new Date()}
+            >
               Adaugă ONG
             </Button>
             <AddNgoInProgramDialog
               open={openAddNgoInProgramDialog}
               onOpenChange={setOpenAddNgoInProgramDialog}
               availableNgos={availableNgos}
-              existingNgos={ngos}
             />
           </div>
         )}

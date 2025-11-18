@@ -15,18 +15,15 @@ interface ProgramAttributesModel {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
-  // Temoprary fix until we upgrade to strapi v5
-  // This is used just to get the count of mentors
-  mentors?: {
+  programMentors: {
     data: any[];
   };
-  mentorsCount: number | undefined;
 
-  // Temoprary fix until we upgrade to strapi v5
-  // This is used just to get the count of users
-  users?: {
+  programNgos: {
     data: any[];
   };
+
+  mentorsCount: number | undefined;
 
   usersCount: number | undefined;
 }
@@ -36,34 +33,53 @@ interface ListProgramsResponse {
 }
 export const listPrograms = (): Promise<FinalProgramModel[]> => {
   const params = {
-    populate: {
-      mentors: {
-        fields: ["id"],
-      },
-      users: {
-        fields: ["id"],
-      },
-    },
+    populate: ["programMentors", "programNgos"],
   };
 
-  return API.get<ListProgramsResponse>(`api/programs`, {
+  return API.get<ListProgramsResponse>(`/api/programs`, {
     params,
     paramsSerializer: {
-      serialize: (params) => {
-        return qs.stringify(params, { encodeValuesOnly: true });
-      },
+      serialize: (params) =>
+        qs.stringify(params, {
+          encodeValuesOnly: true,
+        }),
     },
   }).then((res) => {
     const result = res.data;
     return (
-      result.data.map((p) => ({
-        ...p,
-        ...p.attributes,
-        users: [],
-        mentors: [],
-        usersCount: p.attributes.users?.data?.length,
-        mentorsCount: p.attributes.mentors?.data?.length,
-      })) ?? []
+      result.data.map((p) => {
+        const attributes = p.attributes || {};
+
+        // flatten ngos and mentors arrays
+        const ngos = (attributes.programNgos?.data || []).map((r: any) => ({
+          id: r.id,
+          addedAt: r.attributes?.createdAt,
+          ngo: r.attributes?.ngo?.data
+            ? r.attributes.ngo.data.attributes
+            : undefined,
+        }));
+
+        const mentors = (attributes.programMentors?.data || []).map(
+          (r: any) => ({
+            id: r.id,
+            addedAt: r.attributes?.createdAt,
+            mentor: r.attributes?.mentor?.data
+              ? r.attributes.mentor.data.attributes
+              : undefined,
+          })
+        );
+
+        return {
+          id: p.id,
+          ...attributes,
+          ngosInProgram: ngos,
+          mentorsInProgram: mentors,
+          users: [],
+          mentors: [],
+          usersCount: attributes.programNgos?.data?.length ?? 0,
+          mentorsCount: attributes.programMentors?.data?.length ?? 0,
+        };
+      }) ?? []
     );
   });
 };

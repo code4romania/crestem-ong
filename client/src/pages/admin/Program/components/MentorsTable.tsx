@@ -1,30 +1,21 @@
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { DataTable } from "@/components/ui/data-table";
+import formatDate from "@/lib/formatDate";
+import type { FinalProgramModel, FinalUserModel } from "@/services/api/types";
 import { useSuspenseListMentors } from "@/services/mentors.queries";
 import { Link } from "@tanstack/react-router";
 import {
-  flexRender,
   getCoreRowModel,
   useReactTable,
   type ColumnDef,
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 import { AddMentorInProgramDialog } from "./AddMentorInProgramDialog";
-import formatDate from "@/lib/formatDate";
-import type { FinalUserModel } from "@/services/api/types";
-import { DataTable } from "@/components/ui/data-table";
 
-export const columns: (programId: string) => ColumnDef<FinalUserModel>[] = (
-  programId: string
+export const columns: (programId: number) => ColumnDef<FinalUserModel>[] = (
+  programId: number
 ) => [
   {
     accessorKey: "name",
@@ -91,6 +82,18 @@ export const columns: (programId: string) => ColumnDef<FinalUserModel>[] = (
     enableSorting: false,
   },
   {
+    accessorKey: "programJoinedAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Data intrare program"
+        className="whitespace-nowrap  text-sm font-bold text-gray-900"
+      />
+    ),
+    cell: ({ row }) => <span>{formatDate(row.original.programJoinedAt)}</span>,
+    enableSorting: false,
+  },
+  {
     accessorKey: "lastActivity",
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -112,7 +115,7 @@ export const columns: (programId: string) => ColumnDef<FinalUserModel>[] = (
       <Button asChild variant="link">
         <Link
           to="/users/$userId"
-          search={{ returnToProgramId: programId }}
+          search={{ returnToProgramId: programId.toString() }}
           params={{ userId: row.original.id.toString() }}
         >
           vezi
@@ -124,10 +127,10 @@ export const columns: (programId: string) => ColumnDef<FinalUserModel>[] = (
 
 function MentorsTable({
   mentors,
-  programId,
+  program,
 }: {
   mentors: FinalUserModel[];
-  programId: string;
+  program: FinalProgramModel;
 }) {
   const [openAddMentorInProgramDialog, setOpenAddMentorInProgramDialog] =
     useState(false);
@@ -140,7 +143,8 @@ function MentorsTable({
     () => allMentors?.filter(({ id }) => !programMentorsIds.includes(id)),
     [allMentors, programMentorsIds]
   );
-  const memoizedColumns = useMemo(() => columns(programId), [programId]);
+
+  const memoizedColumns = useMemo(() => columns(program.id), [program.id]);
 
   const table = useReactTable({
     data: mentors,
@@ -158,14 +162,16 @@ function MentorsTable({
         </h1>
         {availableMentors.length > 0 && (
           <div>
-            <Button onClick={() => setOpenAddMentorInProgramDialog(true)}>
+            <Button
+              onClick={() => setOpenAddMentorInProgramDialog(true)}
+              disabled={new Date(program.endDate) < new Date()}
+            >
               Adaugă persoană resursă
             </Button>
             <AddMentorInProgramDialog
               open={openAddMentorInProgramDialog}
               onOpenChange={setOpenAddMentorInProgramDialog}
               availableMentors={availableMentors}
-              existingMentors={mentors}
             />
           </div>
         )}

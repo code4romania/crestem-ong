@@ -11,6 +11,7 @@ import { Suspense } from "react";
 export const Route = createFileRoute("/")({
   component: RouteComponent,
   loader: FullScreenLoader,
+  errorComponent: () => <div>Error</div>,
 });
 
 function RouteComponent() {

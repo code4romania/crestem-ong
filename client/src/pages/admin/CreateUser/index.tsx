@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { LogoUpload } from "@/components/PictureSelect";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,21 +23,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { citiesByCounty } from "@/lib/orase-dupa-judet";
-import { useNavigate } from "@tanstack/react-router";
-import { Building2, Globe, Mail, Phone, User, Link, Lock } from "lucide-react";
-import { useMemo } from "react";
-import { PasswordInput } from "@/components/ui/password-input";
-import { LogoUpload } from "@/components/PictureSelect";
-import { useCreateNgoMutation } from "@/services/ngo.mutations";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   MultiSelector,
   MultiSelectorContent,
@@ -45,11 +31,22 @@ import {
   MultiSelectorList,
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
-import { toast } from "sonner";
+import { PasswordInput } from "@/components/ui/password-input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { citiesByCounty } from "@/lib/orase-dupa-judet";
+import { useCreateNgoMutation } from "@/services/ngo.mutations";
 import { useUploadPictureMutation } from "@/services/user.mutations";
-import { useSuspenseListPrograms } from "@/services/programs.queries";
-import type { FinalProgramModel } from "@/services/api/types";
-import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "@tanstack/react-router";
+import { Building2, Globe, Lock, Mail, Phone, User } from "lucide-react";
+import { useMemo } from "react";
+import { toast } from "sonner";
 
 const organizationSchema = z
   .object({
@@ -65,15 +62,6 @@ const organizationSchema = z
     phone: z.string().min(1, "Telefonul este obligatoriu"),
     avatar: z.any().optional(),
     domains: z
-      .array(
-        z.object({
-          value: z.string(),
-          label: z.string(),
-        })
-      )
-      .catch([]),
-
-    ngoPrograms: z
       .array(
         z.object({
           value: z.string(),
@@ -111,19 +99,11 @@ const organizationSchema = z
 
 type OrganizationFormData = z.infer<typeof organizationSchema>;
 
-const programsMapper = (programs: FinalProgramModel[]) =>
-  programs.map((p) => ({
-    value: p.id.toString(),
-    label: p.name,
-    disabled: new Date() > new Date(p.endDate),
-  }));
-
 const CreateUser = () => {
   const navigate = useNavigate();
   const { data: domains } = useSuspenseListDomains();
   const { mutateAsync: createNgo, isPending } = useCreateNgoMutation();
   const { mutate: uploadPicture } = useUploadPictureMutation();
-  const { data: programs } = useSuspenseListPrograms(programsMapper);
 
   const form = useForm<OrganizationFormData>({
     resolver: zodResolver(organizationSchema),
@@ -149,7 +129,6 @@ const CreateUser = () => {
       password: "",
       confirmPassword: "",
       domains: [],
-      ngoPrograms: [],
     },
   });
 
@@ -180,7 +159,6 @@ const CreateUser = () => {
       {
         ...values,
         domains: values.domains?.map((d) => +d.value),
-        ngoPrograms: values.ngoPrograms?.map((p) => +p.value),
         username: values.email,
       },
       {
@@ -575,48 +553,6 @@ const CreateUser = () => {
                                   label={domain.name}
                                 >
                                   <span>{domain.name}</span>
-                                </MultiSelectorItem>
-                              ))}
-                            </MultiSelectorList>
-                          </MultiSelectorContent>
-                        </MultiSelector>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="ngoPrograms"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormLabel>Programe asociate</FormLabel>
-                        <MultiSelector
-                          onValuesChange={field.onChange}
-                          values={field.value}
-                        >
-                          <MultiSelectorTrigger>
-                            <MultiSelectorInput placeholder="Alege programe" />
-                          </MultiSelectorTrigger>
-                          <MultiSelectorContent>
-                            <MultiSelectorList>
-                              {programs.map((program) => (
-                                <MultiSelectorItem
-                                  key={program.label}
-                                  value={program.value}
-                                  label={program.label}
-                                  disabled={program.disabled}
-                                >
-                                  <div className="flex items-center gap-2">
-                                    {program.label}
-                                    {program.disabled ? (
-                                      <Badge variant="warning">Finalizat</Badge>
-                                    ) : (
-                                      <Badge variant="default">
-                                        In desfășurare
-                                      </Badge>
-                                    )}
-                                  </div>
                                 </MultiSelectorItem>
                               ))}
                             </MultiSelectorList>

@@ -17,7 +17,6 @@ import type {
   FinalDimensionModel,
   FinalDomainModel,
   FinalProgramModel,
-  FinalUserModel,
   MentorActivityModel,
 } from "./api/types";
 

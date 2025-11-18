@@ -3,7 +3,7 @@ import Section from "@/components/Section";
 import { MentorsPrimaryButtons } from "./components/mentors-primary-buttons";
 import { MentorsTable } from "./components/mentors-table";
 import { MentorsToNgosTable } from "./components/mtn-table";
-import { MtnPrimaryButtons } from "./components/mtn-primary-buttons";
+import MtnPrimaryButtons from "./components/mtn-primary-buttons";
 
 const Mentors = () => {
   return (

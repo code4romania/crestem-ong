@@ -55,10 +55,6 @@ root.render(
   </StrictMode>
 );
 
-if (import.meta.hot) {
-  import.meta.hot.dispose(() => root.unmount());
-}
-
 declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;

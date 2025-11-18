@@ -42,8 +42,6 @@ export interface MentorDimensionModel {
   createdAt?: string;
   /** A datetime field */
   updatedAt?: string;
-  /** A datetime field */
-  publishedAt: string;
 }
 
 export interface MentorProgramModel {
@@ -243,6 +241,8 @@ export interface FinalUserModel {
   reports?: FinalReportModel[];
   mentors?: FinalUserModel[];
   ngoPrograms?: FinalProgramModel[];
+
+  programJoinedAt?: string;
 }
 
 export interface FinalDetailedUserModel extends FinalUserModel {
@@ -250,10 +250,8 @@ export interface FinalDetailedUserModel extends FinalUserModel {
   domains: FinalDomainModel[];
   dimensions: FinalDimensionModel[];
   reports: FinalReportModel[];
-  // program?: FinalProgramModel;
   role: RoleModel;
   mentorPrograms: FinalProgramModel[];
-  userPrograms: FinalProgramModel[];
 }
 
 export interface FinalMatrixModel {

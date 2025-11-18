@@ -69,10 +69,10 @@ const Program = () => {
         <Separator />
       </Section>
       <Section>
-        <NgosTable ngos={program?.users || []} programId={programId} />
+        <NgosTable ngos={program?.users || []} program={program} />
       </Section>
       <Section>
-        <MentorsTable mentors={program?.mentors || []} programId={programId} />
+        <MentorsTable mentors={program?.mentors || []} program={program} />
       </Section>
     </>
   );

@@ -10,7 +10,6 @@ export interface RegisterNgoRequest {
   password: string;
   confirmPassword: string;
   domains: number[];
-  ngoPrograms: number[];
   website: string | undefined;
   keywords: string;
   description: string;

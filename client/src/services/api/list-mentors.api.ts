@@ -1,9 +1,11 @@
 import qs from "qs";
 import { API } from "../api";
 import type {
+  FinalDetailedUserModel,
+  FinalDimensionModel,
+  FinalDomainModel,
+  FinalProgramModel,
   MentorActivityModel,
-  MentorDimensionModel,
-  MentorProgramModel,
   RoleModel,
   UploadFileDocumentModel,
 } from "./types";
@@ -13,7 +15,7 @@ export interface ListMentorsRequest {
   pageSize: number;
 }
 
-export interface MentorModel {
+interface MentorModel {
   createdAt: string;
   id: number;
   username: string;
@@ -45,14 +47,14 @@ export interface MentorModel {
   lastName: string;
   available: boolean;
   role: RoleModel;
-  // domains: MentorDomainModel[];
-  mentorPrograms: MentorProgramModel[];
-  dimensions: MentorDimensionModel[];
+  domains: FinalDomainModel[];
+  mentorPrograms: Array<{ id: number; program: FinalProgramModel }>;
+  dimensions: FinalDimensionModel[];
   avatar?: UploadFileDocumentModel;
   mentorActivities?: MentorActivityModel[];
 }
 
-export const listMentors = (): Promise<MentorModel[]> => {
+export const listMentors = (): Promise<FinalDetailedUserModel[]> => {
   const params = {
     filters: {
       role: {
@@ -66,7 +68,7 @@ export const listMentors = (): Promise<MentorModel[]> => {
       "mentorActivities",
       "avatar",
       "dimensions",
-      "mentorPrograms",
+      "mentorPrograms.program",
     ],
     sort: "createdAt:desc",
   };
@@ -78,5 +80,16 @@ export const listMentors = (): Promise<MentorModel[]> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data ?? []);
+  }).then(
+    (res): FinalDetailedUserModel[] =>
+      res.data?.map((m) => ({
+        ...m,
+        mentorPrograms: m.mentorPrograms.map((p) => p.program),
+        userSessions: [],
+        reports: [],
+        userPrograms: [],
+        dimensions: m.dimensions,
+        avatar: undefined!,
+      })) ?? []
+  );
 };

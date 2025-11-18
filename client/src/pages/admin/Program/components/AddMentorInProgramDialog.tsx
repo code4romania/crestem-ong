@@ -23,10 +23,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { ProgramMentorModel } from "@/services/api/get-program.api";
-import type { MentorModel } from "@/services/api/list-mentors.api";
+import type { FinalDetailedUserModel } from "@/services/api/types";
+import { useAssignMentorToProgramMutation } from "@/services/program.mutations";
 
-import { useUpdateProgramMutation } from "@/services/program.mutations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getRouteApi } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
@@ -41,8 +40,7 @@ type AddMentorForm = z.infer<typeof formSchema>;
 type AddMentorInProgramDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  availableMentors: MentorModel[];
-  existingMentors: ProgramMentorModel[];
+  availableMentors: FinalDetailedUserModel[];
 };
 const route = getRouteApi("/(app)/programs/$programId");
 
@@ -50,10 +48,9 @@ export function AddMentorInProgramDialog({
   open,
   onOpenChange,
   availableMentors,
-  existingMentors,
 }: AddMentorInProgramDialogProps) {
   const { programId } = route.useParams();
-  const { mutate: updateProgram } = useUpdateProgramMutation();
+  const { mutate: assignMentorToProgram } = useAssignMentorToProgramMutation();
 
   const form = useForm<AddMentorForm>({
     resolver: zodResolver(formSchema),
@@ -64,10 +61,10 @@ export function AddMentorInProgramDialog({
 
   const onSubmit = (values: AddMentorForm) => {
     form.reset();
-    updateProgram(
+    assignMentorToProgram(
       {
         programId,
-        mentorIds: [...existingMentors.map((x) => x.id), +values.mentorId],
+        mentorId: +values.mentorId,
       },
       {
         onSuccess: () => {

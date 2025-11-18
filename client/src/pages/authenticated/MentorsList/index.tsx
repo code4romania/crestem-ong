@@ -3,6 +3,10 @@ import FullScreenLoader from "@/components/FullScreenLoader";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import MentorCard from "@/pages/authenticated/MentorsList/MentorCard";
+import type {
+  FinalDimensionModel,
+  MentorDimensionModel,
+} from "@/services/api/types";
 import { useListMentors } from "@/services/mentors.queries";
 
 const Mentors = () => {
@@ -39,9 +43,9 @@ const Mentors = () => {
           {mentors.map((mentor) => (
             <MentorCard
               id={mentor.id.toString()}
-              firstName={mentor.firstName}
-              lastName={mentor.lastName}
-              dimensions={mentor.dimensions}
+              firstName={mentor.firstName ?? ""}
+              lastName={mentor.lastName ?? ""}
+              dimensions={mentor.dimensions ?? ([] as FinalDimensionModel[])}
               avatarUrl={mentor.avatar?.formats?.medium?.url}
             />
           ))}

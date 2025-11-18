@@ -1,6 +1,4 @@
 import { useSuspenseListDimensions } from "@/services/dimensions.queries";
-import { useCreateMentorMutation } from "@/services/fdsc.mutations";
-import { useSuspenseListPrograms } from "@/services/programs.queries";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
@@ -29,7 +27,6 @@ import {
 import type {
   DimensionModel as ApiDimensionModel,
   FinalDetailedUserModel,
-  FinalProgramModel,
 } from "@/services/api/types";
 import {
   updateMentorMutation,
@@ -40,7 +37,6 @@ import { toast } from "sonner";
 import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
 import { Route } from "@/routes/(app)/mentors/$mentorId/edit";
 import { useSuspenseGetUserDetails } from "@/services/user.queries";
-import { Badge } from "@/components/ui/badge";
 
 const mentorSchema = z.object({
   firstName: z.string().min(1, "Nume este obligatoriu"),
@@ -59,24 +55,10 @@ const mentorSchema = z.object({
     )
     .min(1, "Selectează cel puțin o specializare")
     .catch([]),
-  mentorPrograms: z
-    .array(
-      z.object({
-        value: z.string(),
-        label: z.string(),
-      })
-    )
-    .catch([]),
   avatar: z.custom<File>().nullable(),
 });
 
 export type MentorInput = z.infer<typeof mentorSchema>;
-const programsMapper = (programs: FinalProgramModel[]) =>
-  programs.map((p) => ({
-    value: p.id.toString(),
-    label: p.name,
-    disabled: new Date() > new Date(p.endDate),
-  }));
 
 const dimensionsMapper = (userDimensions: ApiDimensionModel[]) =>
   userDimensions
@@ -86,14 +68,12 @@ const dimensionsMapper = (userDimensions: ApiDimensionModel[]) =>
 const mentorMapper = (user: FinalDetailedUserModel) => ({
   ...user,
   dimensions: dimensionsMapper(user.dimensions ?? []),
-  mentorPrograms: programsMapper(user.mentorPrograms ?? []),
 });
 
 const EditMentor = () => {
   const navigate = useNavigate();
   const { mentorId } = Route.useParams();
   const { data: mentor } = useSuspenseGetUserDetails(mentorId, mentorMapper);
-  const { data: programs } = useSuspenseListPrograms(programsMapper);
   const { data: dimensions } = useSuspenseListDimensions(dimensionsMapper);
 
   const { mutateAsync: updateMentor, isPending } = updateMentorMutation();
@@ -108,7 +88,6 @@ const EditMentor = () => {
       bio: mentor?.bio ?? "",
       expertise: mentor?.expertise ?? "",
       dimensions: mentor?.dimensions ?? [],
-      mentorPrograms: mentor?.mentorPrograms ?? [],
     },
   });
 
@@ -117,7 +96,6 @@ const EditMentor = () => {
       {
         ...values,
         id: +mentorId,
-        mentorPrograms: values.mentorPrograms.map((p) => +p.value),
         dimensions: values.dimensions.map((d) => +d.value),
       },
       {
@@ -284,47 +262,6 @@ const EditMentor = () => {
                               label={dimension.label}
                             >
                               <span>{dimension.label}</span>
-                            </MultiSelectorItem>
-                          ))}
-                        </MultiSelectorList>
-                      </MultiSelectorContent>
-                    </MultiSelector>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="mentorPrograms"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Programe asociate</FormLabel>
-                    <MultiSelector
-                      onValuesChange={field.onChange}
-                      values={field.value}
-                    >
-                      <MultiSelectorTrigger>
-                        <MultiSelectorInput placeholder="Alege programe" />
-                      </MultiSelectorTrigger>
-                      <MultiSelectorContent>
-                        <MultiSelectorList>
-                          {programs.map((program) => (
-                            <MultiSelectorItem
-                              key={program.label}
-                              value={program.value}
-                              label={program.label}
-                              disabled={program.disabled}
-                            >
-                              <div className="flex items-center gap-2">
-                                {program.label}
-                                {program.disabled ? (
-                                  <Badge variant="warning">Finalizat</Badge>
-                                ) : (
-                                  <Badge variant="default">
-                                    In desfășurare
-                                  </Badge>
-                                )}
-                              </div>
                             </MultiSelectorItem>
                           ))}
                         </MultiSelectorList>

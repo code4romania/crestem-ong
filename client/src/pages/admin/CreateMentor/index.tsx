@@ -34,7 +34,6 @@ import { useUploadPictureMutation } from "@/services/user.mutations";
 import { toast } from "sonner";
 
 import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
-import { Badge } from "@/components/ui/badge";
 
 const mentorSchema = z.object({
   firstName: z.string().min(1, "Nume este obligatoriu"),
@@ -52,14 +51,6 @@ const mentorSchema = z.object({
       })
     )
     .min(1, "Selectează cel puțin o specializare")
-    .catch([]),
-  mentorPrograms: z
-    .array(
-      z.object({
-        value: z.string(),
-        label: z.string(),
-      })
-    )
     .catch([]),
   avatar: z.custom<File>().nullable(),
 });
@@ -93,7 +84,6 @@ const CreateMentor = () => {
       bio: "",
       expertise: "",
       dimensions: [],
-      mentorPrograms: [],
     },
   });
 
@@ -101,7 +91,6 @@ const CreateMentor = () => {
     const mentor = await createMentor(
       {
         ...values,
-        mentorPrograms: values.mentorPrograms.map((p) => +p.value),
         dimensions: values.dimensions.map((d) => +d.value),
       },
       {
@@ -277,47 +266,6 @@ const CreateMentor = () => {
                               label={dimension.name}
                             >
                               <span>{dimension.name}</span>
-                            </MultiSelectorItem>
-                          ))}
-                        </MultiSelectorList>
-                      </MultiSelectorContent>
-                    </MultiSelector>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="mentorPrograms"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Programe asociate</FormLabel>
-                    <MultiSelector
-                      onValuesChange={field.onChange}
-                      values={field.value}
-                    >
-                      <MultiSelectorTrigger>
-                        <MultiSelectorInput placeholder="Alege programe" />
-                      </MultiSelectorTrigger>
-                      <MultiSelectorContent>
-                        <MultiSelectorList>
-                          {programs.map((program) => (
-                            <MultiSelectorItem
-                              key={program.label}
-                              value={program.value}
-                              label={program.label}
-                              disabled={program.disabled}
-                            >
-                              <div className="flex items-center gap-2">
-                                {program.label}
-                                {program.disabled ? (
-                                  <Badge variant="warning">Finalizat</Badge>
-                                ) : (
-                                  <Badge variant="default">
-                                    In desfășurare
-                                  </Badge>
-                                )}
-                              </div>
                             </MultiSelectorItem>
                           ))}
                         </MultiSelectorList>

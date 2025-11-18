@@ -1,6 +1,76 @@
 import qs from "qs";
 import { API } from "../api";
-import type { FinalProgramModel } from "./types";
+import type { FinalProgramModel, FinalUserModel } from "./types";
+
+export type Root = {
+  data: {
+    id: number;
+    attributes: {
+      name: string;
+      startDate: string;
+      endDate: string;
+      sponsorName: any;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      programMentors: {
+        data: Array<{
+          id: number;
+          attributes: {
+            createdAt: string;
+            updatedAt: string;
+            mentor: {
+              data: {
+                id: number;
+                attributes: {
+                  username: string;
+                  email: string;
+                  provider: string;
+                  confirmed: boolean;
+                  blocked: boolean;
+                  ongName: string;
+                  ongIdentificationNumber: string;
+                  county: any;
+                  city: any;
+                  phone: any;
+                  website: any;
+                  keywords: any;
+                  description: any;
+                  contactFirstName: any;
+                  contactLastName: any;
+                  contactEmail: string;
+                  contactPhone: any;
+                  accountFacebook: any;
+                  accountTwitter: any;
+                  accountTiktok: any;
+                  accountInstagram: any;
+                  accountLinkedin: any;
+                  bio: any;
+                  expertise: any;
+                  firstName: any;
+                  lastName: any;
+                  available: boolean;
+                  createdAt: string;
+                  updatedAt: string;
+                  mentorActivities: {
+                    data: Array<any>;
+                  };
+                  dimensions: {
+                    data: Array<any>;
+                  };
+                };
+              };
+            };
+          };
+        }>;
+      };
+      programNgos: {
+        data: Array<any>;
+      };
+    };
+  };
+};
+
 interface GetProgramResponse {
   data: ProgramModel;
   meta: Meta;
@@ -19,12 +89,19 @@ interface ProgramAttributes {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
-  mentors: MentorsData;
-  users: UsersData;
+  programMentors: MentorsData;
+  programNgos: UsersData;
 }
 
 interface MentorsData {
-  data: ProgramMentorModel[];
+  data: Array<{
+    id: number;
+    attributes: {
+      createdAt: string;
+      updatedAt: string;
+      mentor: { data: ProgramMentorModel };
+    };
+  }>;
 }
 
 interface ProgramMentorModel {
@@ -33,7 +110,7 @@ interface ProgramMentorModel {
 }
 
 interface MentorAttributes {
-  id: number;
+  //id: number;
   username: string;
   email: string;
   provider: string;
@@ -91,7 +168,14 @@ interface MentorActivitiesData {
 }
 
 interface UsersData {
-  data: UserModel[];
+  data: Array<{
+    id: number;
+    attributes: {
+      createdAt: string;
+      updatedAt: string;
+      ngo: { data: UserModel };
+    };
+  }>;
 }
 
 interface UserModel {
@@ -100,7 +184,7 @@ interface UserModel {
 }
 
 interface UserAttributes {
-  id: number;
+  //id: number;
   username: string;
   email: string;
   provider: string;
@@ -186,25 +270,17 @@ interface Meta {}
 export const getProgram = (programId: string): Promise<FinalProgramModel> => {
   const params = {
     populate: {
-      mentors: {
-        populate: ["dimensions", "mentorActivities"],
+      programMentors: {
+        populate: ["mentor", "mentor.dimensions", "mentor.mentorActivities"],
       },
-      users: {
-        populate: {
-          reports: {
-            populate: {
-              evaluations: {
-                populate: {
-                  dimensions: {
-                    populate: {
-                      quiz: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
+      programNgos: {
+        populate: [
+          "ngo",
+          "ngo.reports",
+          "ngo.reports.evaluations",
+          "ngo.reports.evaluations.dimensions",
+          "ngo.reports.evaluations.dimensions.quiz",
+        ],
       },
     },
   };
@@ -216,38 +292,52 @@ export const getProgram = (programId: string): Promise<FinalProgramModel> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => ({
-    ...res.data.data,
-    ...res.data.data.attributes,
-    mentors: res.data.data.attributes.mentors.data.map((m) => ({
-      ...m,
-      ...m.attributes,
-      dimensions: m.attributes.dimensions.data.map((d) => ({
-        ...d,
-        ...d.attributes,
-        quiz: [],
-      })),
-      mentorActivities: m.attributes.mentorActivities.data.map((a) => ({
-        ...a,
-        ...a.attributes,
-      })),
-    })),
-    mentorsCount: res.data.data.attributes.mentors.data.length,
-    users: res.data.data.attributes.users.data.map((u) => ({
-      ...u,
-      ...u.attributes,
-      reports: u.attributes.reports.data.map((r) => ({
-        ...r,
-        ...r.attributes,
-        evaluations: r.attributes.evaluations.data.map((e) => ({
-          ...e,
-          ...e.attributes,
-          dimensions: e.attributes.dimensions.map((d) => ({
-            ...d,
+  }).then(
+    (res): FinalProgramModel => ({
+      ...res.data.data,
+      ...res.data.data.attributes,
+      mentors: res.data.data.attributes.programMentors.data.map(
+        (m): FinalUserModel => ({
+          id: m.attributes.mentor.data.id,
+          ...m.attributes.mentor.data.attributes,
+          programJoinedAt: m.attributes.createdAt,
+
+          dimensions: m.attributes.mentor.data.attributes.dimensions.data.map(
+            (d) => ({
+              ...d,
+              ...d.attributes,
+              quiz: [],
+            })
+          ),
+          mentorActivities:
+            m.attributes.mentor.data.attributes.mentorActivities.data.map(
+              (a) => ({
+                ...a,
+                ...a.attributes,
+              })
+            ),
+        })
+      ),
+      mentorsCount: res.data.data.attributes.programMentors.data.length,
+      users: res.data.data.attributes.programNgos.data.map(
+        (u): FinalUserModel => ({
+          id: u.attributes.ngo.data.id,
+          ...u.attributes.ngo.data.attributes,
+          programJoinedAt: u.attributes.createdAt,
+          reports: u.attributes.ngo.data.attributes.reports.data.map((r) => ({
+            ...r,
+            ...r.attributes,
+            evaluations: r.attributes.evaluations.data.map((e) => ({
+              ...e,
+              ...e.attributes,
+              dimensions: e.attributes.dimensions.map((d) => ({
+                ...d,
+              })),
+            })),
           })),
-        })),
-      })),
-    })),
-    usersCount: res.data.data.attributes.users.data.length,
-  }));
+        })
+      ),
+      usersCount: res.data.data.attributes.programNgos.data.length,
+    })
+  );
 };

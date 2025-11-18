@@ -21,53 +21,72 @@ import {
   useListMentorshipRelations,
   useSuspenseListMentors,
 } from "@/services/mentors.queries";
-import { useSuspenseListNgos } from "@/services/ngos.queries";
+import { useSuspenseListNgosWithDetails } from "@/services/ngos.queries";
+
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
-export function MtnPrimaryButtons() {
+export default function MtnPrimaryButtons() {
   const [open, setOpen] = useState(false);
   const [selectedMentor, setSelectedMentor] = useState("");
   const [selectedOng, setSelectedOng] = useState("");
 
+  // ------ FETCH DATA ------
   const { data: mentors } = useSuspenseListMentors();
-  const { data: ongs } = useSuspenseListNgos();
+  const { data: ongs } = useSuspenseListNgosWithDetails();
+
   const { data: mentorToMentees } = useListMentorshipRelations(
-    (mentorshipRelationsiphs) =>
-      mentorshipRelationsiphs?.reduce((acc, curr) => {
-        acc[curr.mentor.id.toString()] = [
-          ...(acc[curr.mentor.id.toString()] || []),
-          curr.user?.id,
-        ];
+    (relations) =>
+      relations?.reduce((acc, curr) => {
+        const mentorId = curr.mentor.id.toString();
+        acc[mentorId] = [...(acc[mentorId] || []), curr.user?.id];
         return acc;
       }, {} as Record<string, number[]>) || {}
   );
+
+  const filteredOngs = useMemo(() => {
+    if (!selectedMentor) return ongs;
+
+    const mentor = mentors.find((m) => m.id.toString() === selectedMentor);
+
+    if (!mentor) return [];
+
+    const mentorProgramIds = mentor.mentorPrograms?.map((p) => p.id) ?? [];
+
+    return ongs.filter((ong) => {
+      const ongProgramIds = ong.ngoPrograms?.map((p) => p.id) ?? [];
+
+      return mentorProgramIds.some((id) => ongProgramIds.includes(id));
+    });
+  }, [selectedMentor, mentors, ongs]);
 
   const { mutate: createMentorshipRelation } =
     useCreateMentorshipRequestMutation();
 
   const handleAssociate = () => {
-    if (selectedMentor && selectedOng) {
-      createMentorshipRelation(
-        {
-          user: Number(selectedOng),
-          mentor: Number(selectedMentor),
+    if (!selectedMentor || !selectedOng) return;
+
+    createMentorshipRelation(
+      {
+        user: Number(selectedOng),
+        mentor: Number(selectedMentor),
+      },
+      {
+        onSuccess: () => {
+          toast.success("Relația de mentorat a fost creată.");
         },
-        {
-          onSuccess: () => {
-            toast.success("Relația de mentorat a fost creată.");
-          },
-          onError: () => {
-            toast.error("Relația de mentorat nu a fost creată.");
-          },
-        }
-      );
-      setOpen(false);
-      setSelectedMentor("");
-      setSelectedOng("");
-    }
+        onError: () => {
+          toast.error("Relația de mentorat nu a fost creată.");
+        },
+      }
+    );
+
+    setOpen(false);
+    setSelectedMentor("");
+    setSelectedOng("");
   };
+
   const onOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
     if (!isOpen) {
@@ -84,6 +103,7 @@ export function MtnPrimaryButtons() {
             <span>Asociază mentor și ONG</span> <Plus size={18} />
           </Button>
         </DialogTrigger>
+
         <DialogContent
           className="sm:max-w-[425px]"
           onInteractOutside={(e) => e.preventDefault()}
@@ -92,10 +112,14 @@ export function MtnPrimaryButtons() {
           <DialogHeader>
             <DialogTitle>Asociază mentor și ONG</DialogTitle>
             <DialogDescription>
-              Selectează un mentor și un ONG pentru a crea o asociere.
+              Selectează un mentor și un ONG pentru a crea o asociere. Doar
+              mentorii și ONG-urile care fac parte din aceleași programe pot fi
+              asociați între ei
             </DialogDescription>
           </DialogHeader>
+
           <div className="grid gap-4 py-4">
+            {/* Mentor dropdown */}
             <div className="grid gap-2">
               <Label htmlFor="mentor">Mentor</Label>
               <Select
@@ -117,6 +141,8 @@ export function MtnPrimaryButtons() {
                 </SelectContent>
               </Select>
             </div>
+
+            {/* ONG dropdown */}
             <div className="grid gap-2">
               <Label htmlFor="ong">ONG</Label>
               <Select
@@ -128,7 +154,7 @@ export function MtnPrimaryButtons() {
                   <SelectValue placeholder="Selectează ONG" />
                 </SelectTrigger>
                 <SelectContent>
-                  {ongs.map((ong) => (
+                  {filteredOngs.map((ong) => (
                     <SelectItem
                       key={ong.id}
                       value={ong.id.toString()}
@@ -143,6 +169,7 @@ export function MtnPrimaryButtons() {
               </Select>
             </div>
           </div>
+
           <DialogFooter>
             <Button
               type="button"

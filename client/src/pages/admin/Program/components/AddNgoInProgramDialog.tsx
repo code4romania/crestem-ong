@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { FinalUserModel } from "@/services/api/types";
-import { useUpdateProgramMutation } from "@/services/program.mutations";
+import { useAssignNgoToProgramMutation } from "@/services/program.mutations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getRouteApi } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
@@ -40,7 +40,6 @@ type AddNgoInProgramDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   availableNgos: FinalUserModel[];
-  existingNgos: FinalUserModel[];
 };
 const route = getRouteApi("/(app)/programs/$programId");
 
@@ -48,10 +47,9 @@ export function AddNgoInProgramDialog({
   open,
   onOpenChange,
   availableNgos,
-  existingNgos,
 }: AddNgoInProgramDialogProps) {
   const { programId } = route.useParams();
-  const { mutate: updateProgram } = useUpdateProgramMutation();
+  const { mutate: assignNgoToProgram } = useAssignNgoToProgramMutation();
 
   const form = useForm<AddNgoForm>({
     resolver: zodResolver(formSchema),
@@ -61,8 +59,8 @@ export function AddNgoInProgramDialog({
   });
 
   const onSubmit = (values: AddNgoForm) => {
-    updateProgram(
-      { programId, ngoIds: [...existingNgos.map((x) => x.id), +values.ngoId] },
+    assignNgoToProgram(
+      { programId, ngoId: +values.ngoId },
       {
         onSuccess: (data) => {
           form.reset();

@@ -1,9 +1,9 @@
-import type { MeModel } from "@/services/api/get-me.api";
+import type { FinalDetailedUserModel } from "@/services/api/types";
 import type { FinalRoleType } from "@/services/api/types";
 
-export function getUserType(user?: MeModel): FinalRoleType {
+export function getUserType(user?: FinalDetailedUserModel): FinalRoleType {
   return user?.role?.type
-    ? user?.role?.type
+    ? (user?.role?.type as FinalRoleType)
     : user
     ? "authenticated"
     : "public";
