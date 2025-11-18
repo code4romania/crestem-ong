@@ -198,13 +198,12 @@ const TableEvaluations = ({ report }: TableEvaluationsProps) => {
     resendEvaluation(rowAction?.evaluationId, {
       onSuccess: (response) => {
         if (response.notificationSentAt) {
-          const deadline = new Date(report.deadline);
-          deadline.setDate(deadline.getDate() - 1);
-          const nextNotificationDate = formatDate(deadline);
           toast.warning(
             `Utilizatorul a primit deja o invitație la data de ${formatDate(
               response.notificationSentAt
-            )}. Utilizatorul va primi o nouă invitație prin email la data de ${nextNotificationDate}.`
+            )}. Vei putea sa ii trimi o noua invitație peste ${formatDate(
+              response.nextAvailableTime
+            )}.`
           );
         } else {
           toast.success("Invitația a fost retrimisă.");
