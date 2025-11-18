@@ -111,7 +111,7 @@ function ActivityDetails() {
             {rows.map(([label, value], idx) => (
               <div
                 key={idx}
-                className={`px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ${
+                className={`px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ${
                   idx % 2 === 0 ? "bg-white" : "bg-gray-50"
                 }`}
               >

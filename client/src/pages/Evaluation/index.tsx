@@ -155,6 +155,7 @@ const Evaluation = () => {
   const { mutate: updateEvaluation, isPending } = updateEvaluationMutation();
 
   const isFDSC = user?.role?.type === "fdsc";
+  const isMentor = user?.role?.type === "mentor";
 
   function incrementStep() {
     if (currentStepIndex < dimensions?.length - 1) {
@@ -203,7 +204,7 @@ const Evaluation = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (isFDSC && evaluationData?.dimensions?.length === 10) {
+  if ((isFDSC || isMentor) && evaluationData?.dimensions?.length === 10) {
     return <EvaluationResults evaluationData={evaluationData} />;
   }
 

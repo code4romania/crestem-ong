@@ -38,110 +38,6 @@ const NgoDetails = ({
   );
   const lastScore = calcScore(lastReportCompletedEvaluations);
 
-  const rows = [
-    ["Nume organizație", ngo.ongName],
-    ["CIF-ul organizației", ngo.ongIdentificationNumber],
-    ["Județ", ngo.city],
-    ["Localitate", ngo.county],
-    ["Email organizație", ngo.email],
-    [
-      "Domenii de activitate",
-      ngo.domains?.length ? (
-        <div className="flex flex-wrap gap-2">
-          {ngo.domains.map((domain) => (
-            <Badge key={domain.id} variant="secondary">
-              {domain.name}
-            </Badge>
-          ))}
-        </div>
-      ) : (
-        "-"
-      ),
-    ],
-    ["Cuvinte cheie despre activitate", ngo.keywords],
-    ["Descriere organizație", ngo.description],
-    [
-      "Website organizație",
-      ngo.website ? (
-        <Button asChild variant="link" className="p-0">
-          <Link to={ngo.website} target="_blank" rel="noopener noreferrer">
-            {ngo.website}
-          </Link>
-        </Button>
-      ) : (
-        "-"
-      ),
-    ],
-    [
-      "Link-uri social media",
-      [
-        ngo.accountFacebook,
-        ngo.accountInstagram,
-        ngo.accountLinkedin,
-        ngo.accountTiktok,
-        ngo.accountTwitter,
-      ].filter(Boolean).length > 0 ? (
-        <div className="flex flex-wrap gap-2">
-          {[
-            ngo.accountFacebook,
-            ngo.accountInstagram,
-            ngo.accountLinkedin,
-            ngo.accountTiktok,
-            ngo.accountTwitter,
-          ]
-            .filter(Boolean)
-            .map((link, idx) => (
-              <Button key={idx} variant="link" asChild className="p-0">
-                <Link to={link!} target="_blank" rel="noopener noreferrer">
-                  {link}
-                </Link>
-              </Button>
-            ))}
-        </div>
-      ) : (
-        "-"
-      ),
-    ],
-    [
-      "Logo organizație",
-      <Avatar className="h-16 w-16">
-        <AvatarImage
-          src={ngo.avatar?.formats?.thumbnail?.url}
-          alt={ngo.ongName}
-        />
-        <AvatarFallback>
-          {ngo.ongName?.charAt(0).toUpperCase() ?? "?"}
-        </AvatarFallback>
-      </Avatar>,
-    ],
-    ["Nume reprezentant organizație", ngo.contactLastName],
-    ["Prenume reprezentant organizație", ngo.contactFirstName],
-    ["Email reprezentant organizație", ngo.contactEmail],
-    ["Telefon reprezentant organizație", ngo.contactPhone],
-    [
-      "Programe asociate",
-      ngo.ngoPrograms?.length ? (
-        <div className="flex flex-wrap gap-2">
-          {ngo.ngoPrograms?.map(({ id, name, endDate }) => (
-            <Badge
-              key={id}
-              variant={new Date() > new Date(endDate) ? "warning" : "default"}
-            >
-              {name}
-            </Badge>
-          ))}
-        </div>
-      ) : (
-        "-"
-      ),
-    ],
-    [
-      "Experți alocați",
-      ngo.mentors
-        ?.map((mentor) => mentor.firstName + " " + mentor.lastName)
-        .join(", "),
-    ],
-  ];
   return (
     <>
       <Section>
@@ -183,21 +79,285 @@ const NgoDetails = ({
         <Card>
           <CardContent>
             <dl className="divide-y divide-gray-100">
-              {rows.map(([label, value], idx) => (
-                <div
-                  key={idx}
-                  className={`px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ${
-                    idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                  }`}
-                >
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    {label}
+              <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                    Nume organizație
                   </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {value || "-"}
+                  <dd className="text-sm leading-6 text-gray-700">
+                    {ngo.ongName || "-"}
                   </dd>
                 </div>
-              ))}
+                <div>
+                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                    CIF-ul organizației
+                  </dt>
+                  <dd className="text-sm leading-6 text-gray-700">
+                    {ngo.ongIdentificationNumber || "-"}
+                  </dd>
+                </div>
+              </div>
+
+              <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                    Județ
+                  </dt>
+                  <dd className="text-sm leading-6 text-gray-700">
+                    {ngo.county || "-"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                    Localitate
+                  </dt>
+                  <dd className="text-sm leading-6 text-gray-700">
+                    {ngo.city || "-"}
+                  </dd>
+                </div>
+              </div>
+
+              <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                    Nume reprezentant organizație
+                  </dt>
+                  <dd className="text-sm leading-6 text-gray-700">
+                    {ngo.contactLastName || "-"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                    Prenume reprezentant organizație
+                  </dt>
+                  <dd className="text-sm leading-6 text-gray-700">
+                    {ngo.contactFirstName || "-"}
+                  </dd>
+                </div>
+              </div>
+
+              <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                    Email organizație
+                  </dt>
+                  <dd className="text-sm leading-6 text-gray-700">
+                    {ngo.email || "-"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                    Telefon organizație
+                  </dt>
+                  <dd className="text-sm leading-6 text-gray-700">
+                    {ngo.phone || "-"}
+                  </dd>
+                </div>
+              </div>
+
+              <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                    Nume reprezentant organizație
+                  </dt>
+                  <dd className="text-sm leading-6 text-gray-700">
+                    {ngo.contactLastName || "-"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                    Prenume reprezentant organizație
+                  </dt>
+                  <dd className="text-sm leading-6 text-gray-700">
+                    {ngo.contactFirstName || "-"}
+                  </dd>
+                </div>
+              </div>
+
+              <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                    Email reprezentant organizație
+                  </dt>
+                  <dd className="text-sm leading-6 text-gray-700">
+                    {ngo.contactEmail || "-"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                    Telefon reprezentant organizație
+                  </dt>
+                  <dd className="text-sm leading-6 text-gray-700">
+                    {ngo.contactPhone || "-"}
+                  </dd>
+                </div>
+              </div>
+
+              <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                    Website organizație
+                  </dt>
+                  <dd className="text-sm leading-6 text-gray-700">
+                    {ngo.website ? (
+                      <Button asChild variant="link" className="p-0">
+                        <Link
+                          to={ngo.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {ngo.website}
+                        </Link>
+                      </Button>
+                    ) : (
+                      "-"
+                    )}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                    Cuvinte cheie despre activitate
+                  </dt>
+                  <dd className="text-sm leading-6 text-gray-700">
+                    {ngo.keywords || "-"}
+                  </dd>
+                </div>
+              </div>
+
+              {/* Domenii de activitate */}
+              <div className="px-4 py-4 sm:px-6 ">
+                <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                  Domenii de activitate
+                </dt>
+                <dd className="text-sm leading-6 text-gray-700">
+                  {ngo.domains?.length ? (
+                    <div className="flex flex-wrap gap-2">
+                      {ngo.domains.map((domain) => (
+                        <Badge key={domain.id} variant="secondary">
+                          {domain.name}
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : (
+                    "-"
+                  )}
+                </dd>
+              </div>
+
+              {/* Descriere organizație */}
+              <div className="px-4 py-4 sm:px-6 ">
+                <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                  Descriere organizație
+                </dt>
+                <dd className="text-sm leading-6 text-gray-700">
+                  {ngo.description || "-"}
+                </dd>
+              </div>
+
+              {/* Link-uri social media */}
+              <div className="px-4 py-4 sm:px-6 ">
+                <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                  Link-uri social media
+                </dt>
+                <dd className="text-sm leading-6 text-gray-700">
+                  {[
+                    ngo.accountFacebook,
+                    ngo.accountInstagram,
+                    ngo.accountLinkedin,
+                    ngo.accountTiktok,
+                    ngo.accountTwitter,
+                  ].filter(Boolean).length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        ngo.accountFacebook,
+                        ngo.accountInstagram,
+                        ngo.accountLinkedin,
+                        ngo.accountTiktok,
+                        ngo.accountTwitter,
+                      ]
+                        .filter(Boolean)
+                        .map((link, idx) => (
+                          <Button
+                            key={idx}
+                            variant="link"
+                            asChild
+                            className="p-0"
+                          >
+                            <Link
+                              to={link!}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {link}
+                            </Link>
+                          </Button>
+                        ))}
+                    </div>
+                  ) : (
+                    "-"
+                  )}
+                </dd>
+              </div>
+
+              {/* Logo organizație */}
+              <div className="px-4 py-4 sm:px-6 ">
+                <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                  Logo organizație
+                </dt>
+                <dd className="text-sm leading-6 text-gray-700">
+                  <Avatar className="h-16 w-16">
+                    <AvatarImage
+                      src={
+                        ngo.avatar?.formats?.thumbnail?.url ||
+                        "/placeholder.svg"
+                      }
+                      alt={ngo.ongName}
+                    />
+                    <AvatarFallback>
+                      {ngo.ongName?.charAt(0).toUpperCase() ?? "?"}
+                    </AvatarFallback>
+                  </Avatar>
+                </dd>
+              </div>
+
+              {/* Programe asociate */}
+              <div className="px-4 py-4 sm:px-6 ">
+                <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                  Programe asociate
+                </dt>
+                <dd className="text-sm leading-6 text-gray-700">
+                  {ngo.ngoPrograms?.length ? (
+                    <div className="flex flex-wrap gap-2">
+                      {ngo.ngoPrograms?.map(({ id, name, endDate }) => (
+                        <Badge
+                          key={id}
+                          variant={
+                            new Date() > new Date(endDate)
+                              ? "warning"
+                              : "default"
+                          }
+                        >
+                          {name}
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : (
+                    "-"
+                  )}
+                </dd>
+              </div>
+
+              {/* Experți alocați */}
+              <div className="px-4 py-4 sm:px-6 ">
+                <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
+                  Experți alocați
+                </dt>
+                <dd className="text-sm leading-6 text-gray-700">
+                  {ngo.mentors
+                    ?.map((mentor) => mentor.firstName + " " + mentor.lastName)
+                    .join(", ") || "-"}
+                </dd>
+              </div>
             </dl>
           </CardContent>
         </Card>
