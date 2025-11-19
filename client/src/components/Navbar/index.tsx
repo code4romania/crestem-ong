@@ -5,14 +5,13 @@ import { useAuth } from "@/contexts/auth";
 
 import { Bars3Icon } from "@heroicons/react/20/solid";
 import { Link } from "@tanstack/react-router";
-import { Fragment, useMemo } from "react";
+import { useMemo } from "react";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
@@ -144,10 +143,14 @@ export const Menu = () => {
                 )}
               </DropdownMenuItem>
             ))}
+            <DropdownMenuSeparator />
 
-            {!user && (
+            {user ? (
+              <DropdownMenuItem asChild>
+                <Link to="/profile">Profilul meu</Link>
+              </DropdownMenuItem>
+            ) : (
               <>
-                <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link to={"/login"}>Intră în cont</Link>
                 </DropdownMenuItem>
@@ -156,13 +159,6 @@ export const Menu = () => {
                 </DropdownMenuItem>
               </>
             )}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link to="/">Acasă</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/profile">Profilul meu</Link>
-            </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -8,14 +8,8 @@ const Home = () => {
   return (
     <div>
       <Section>
-        <div className={"flex justify-between space-y-2"}>
-          <Heading level={"h2"}>Evaluare organizațională</Heading>
-          <Button asChild>
-            <Link to="/matrix">Vezi model matrice</Link>
-          </Button>
-        </div>
+        <Heading level={"h2"}>Evaluare organizațională</Heading>
       </Section>
-
       <Section className="py-6">
         <div className="grid lg:grid-cols-2 justify-center mt-0 mr-auto mb-0 ml-auto container gap-8">
           <div className="w-full h-full flex items-center justify-center pt-0 pr-4 pb-0 pl-4 md:mb-0">
@@ -33,15 +27,21 @@ const Home = () => {
               Managementul resurselor umane, Implicarea persoanelor beneficiare,
               Advocacy și parteneriate, Comunicare externă.
             </p>
+            <Button asChild variant="outline" className="mt-4">
+              <Link to="/matrix">Vezi model matrice</Link>
+            </Button>
           </div>
         </div>
       </Section>
 
-      <Section className="bg-gray-100 bg-opacity-70 text-center py-8">
-        <Heading level="h2">Înscrie-te acum</Heading>
-        <div className="mt-8">
+      <Section className="bg-gray-100 text-center py-8">
+        <Heading level="h2">Creează un cont pentru a începe evaluarea</Heading>
+        <div className="mt-8 flex gap-4 justify-center">
           <Button asChild>
-            <Link to="/register">Înregistrează-te</Link>
+            <Link to="/register">Creează cont</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link to="/login">Intră în cont</Link>
           </Button>
         </div>
       </Section>

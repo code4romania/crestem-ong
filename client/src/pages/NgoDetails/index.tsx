@@ -120,25 +120,6 @@ const NgoDetails = ({
               <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50">
                 <div>
                   <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
-                    Nume reprezentant organizație
-                  </dt>
-                  <dd className="text-sm leading-6 text-gray-700">
-                    {ngo.contactLastName || "-"}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
-                    Prenume reprezentant organizație
-                  </dt>
-                  <dd className="text-sm leading-6 text-gray-700">
-                    {ngo.contactFirstName || "-"}
-                  </dd>
-                </div>
-              </div>
-
-              <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white">
-                <div>
-                  <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
                     Email organizație
                   </dt>
                   <dd className="text-sm leading-6 text-gray-700">
@@ -155,7 +136,7 @@ const NgoDetails = ({
                 </div>
               </div>
 
-              <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50">
+              <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white">
                 <div>
                   <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
                     Nume reprezentant organizație
@@ -174,7 +155,7 @@ const NgoDetails = ({
                 </div>
               </div>
 
-              <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white">
+              <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50">
                 <div>
                   <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
                     Email reprezentant organizație
@@ -193,7 +174,7 @@ const NgoDetails = ({
                 </div>
               </div>
 
-              <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50">
+              <div className="px-4 py-4 sm:px-6  grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white">
                 <div>
                   <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
                     Website organizație
@@ -225,7 +206,7 @@ const NgoDetails = ({
               </div>
 
               {/* Domenii de activitate */}
-              <div className="px-4 py-4 sm:px-6 bg-white">
+              <div className="px-4 py-4 sm:px-6 bg-gray-50">
                 <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
                   Domenii de activitate
                 </dt>
@@ -245,7 +226,7 @@ const NgoDetails = ({
               </div>
 
               {/* Descriere organizație */}
-              <div className="px-4 py-4 sm:px-6 bg-gray-50">
+              <div className="px-4 py-4 sm:px-6 bg-white">
                 <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
                   Descriere organizație
                 </dt>
@@ -255,7 +236,7 @@ const NgoDetails = ({
               </div>
 
               {/* Link-uri social media */}
-              <div className="px-4 py-4 sm:px-6 bg-white">
+              <div className="px-4 py-4 sm:px-6 bg-gray-50">
                 <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
                   Link-uri social media
                 </dt>
@@ -300,7 +281,7 @@ const NgoDetails = ({
               </div>
 
               {/* Logo organizație */}
-              <div className="px-4 py-4 sm:px-6 bg-gray-50">
+              <div className="px-4 py-4 sm:px-6 bg-white">
                 <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
                   Logo organizație
                 </dt>
@@ -321,7 +302,7 @@ const NgoDetails = ({
               </div>
 
               {/* Programe asociate */}
-              <div className="px-4 py-4 sm:px-6 bg-white">
+              <div className="px-4 py-4 sm:px-6 bg-gray-50">
                 <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
                   Programe asociate
                 </dt>
@@ -348,7 +329,7 @@ const NgoDetails = ({
               </div>
 
               {/* Experți alocați */}
-              <div className="px-4 py-4 sm:px-6 bg-gray-50">
+              <div className="px-4 py-4 sm:px-6 bg-white">
                 <dt className="text-sm font-medium leading-6 text-gray-900 mb-1">
                   Experți alocați
                 </dt>
