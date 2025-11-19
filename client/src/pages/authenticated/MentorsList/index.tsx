@@ -3,10 +3,7 @@ import FullScreenLoader from "@/components/FullScreenLoader";
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import MentorCard from "@/pages/authenticated/MentorsList/MentorCard";
-import type {
-  FinalDimensionModel,
-  MentorDimensionModel,
-} from "@/services/api/types";
+import type { FinalDimensionModel } from "@/services/api/types";
 import { useListMentors } from "@/services/mentors.queries";
 
 const Mentors = () => {
