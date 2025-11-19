@@ -1,6 +1,5 @@
 import Heading from "@/components/Heading";
 import Section from "@/components/Section";
-import Stats from "@/components/Stats";
 import { Button } from "@/components/ui/button";
 import {
   Card,
