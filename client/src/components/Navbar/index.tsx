@@ -4,7 +4,7 @@ import UserMenu from "@/components/UserMenu";
 import { useAuth } from "@/contexts/auth";
 
 import { Bars3Icon } from "@heroicons/react/20/solid";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { Button } from "../ui/button";
 import {
@@ -15,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { queryClient } from "@/lib/query";
 
 const MENU = {
   public: [
@@ -67,7 +68,8 @@ const MENU = {
 };
 
 export const Menu = () => {
-  const { userRole, user } = useAuth();
+  const { userRole, user, logout } = useAuth();
+  const router = useRouter();
   const menu = useMemo(() => MENU[userRole], [userRole]);
 
   return (
@@ -146,9 +148,21 @@ export const Menu = () => {
             <DropdownMenuSeparator />
 
             {user ? (
-              <DropdownMenuItem asChild>
-                <Link to="/profile">Profilul meu</Link>
-              </DropdownMenuItem>
+              <>
+                <DropdownMenuItem asChild>
+                  <Link to="/profile">Profilul meu</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={async () => {
+                    await logout();
+                    await router.invalidate();
+                    await queryClient.clear();
+                    await router.navigate({ to: "/login" });
+                  }}
+                >
+                  Log out
+                </DropdownMenuItem>
+              </>
             ) : (
               <>
                 <DropdownMenuItem asChild>
@@ -173,7 +187,9 @@ const Navbar = () => {
     <NavbarEvaluation menu={<Menu />}>
       <div className="flex justify-end w-full">
         {user ? (
-          <UserMenu />
+          <div className="lg:block hidden">
+            <UserMenu />
+          </div>
         ) : (
           <div className="hidden lg:flex justify-center items-center md:justify-start gap-4">
             <div>
