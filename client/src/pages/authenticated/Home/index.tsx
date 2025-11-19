@@ -23,6 +23,8 @@ const map = (data: FinalReportModel[]) =>
       numberOfCompletions: evaluationsCompleted.length,
       totalEvaluations: r.evaluations?.length || 0,
       isFinished: r.finished,
+      reportId: r.id,
+      createdAt: r.createdAt,
     };
   });
 
@@ -30,54 +32,150 @@ const Home = () => {
   const { data: reports = [] } = useGetUserReports((data) => map(data));
 
   const stats = useMemo(() => {
-    const stats: { label: string; value: string | number }[] = [
-      { label: "Sesiuni de evaluare", value: reports.length },
-      {
-        label: "Completări evaluare",
-        value: `${reports.reduce(
-          (acc, curr) => acc + curr.numberOfCompletions,
-          0
-        )}/${reports.reduce((acc, curr) => acc + curr.totalEvaluations, 0)}`,
-      },
-    ];
+    const totalCompletions = reports.reduce(
+      (acc, curr) => acc + curr.numberOfCompletions,
+      0
+    );
 
+    const totalEvaluations = reports.reduce(
+      (acc, curr) => acc + curr.totalEvaluations,
+      0
+    );
+
+    const result: {
+      evaluationSessions: number;
+      evaluationCompletions: {
+        completed: number;
+        total: number;
+      };
+      evaluationsInProgress?: {
+        reportId: number;
+        completed: number;
+        total: number;
+      };
+    } = {
+      evaluationSessions: reports.length,
+      evaluationCompletions: {
+        completed: totalCompletions,
+        total: totalEvaluations,
+      },
+    };
+
+    // Add evaluationsInProgress only if needed
     if (reports.some((r) => !r.isFinished)) {
-      const totalEvaluationsInProgress = reports
+      const inProgressStats = reports
         .filter((r) => !r.isFinished)
         .reduce(
           (acc, curr) => ({
-            totalEvaluations: acc.totalEvaluations + curr.totalEvaluations,
-            numberOfCompletions:
-              acc.numberOfCompletions + curr.numberOfCompletions,
+            completed: acc.completed + curr.numberOfCompletions,
+            total: acc.total + curr.totalEvaluations,
           }),
-          { totalEvaluations: 0, numberOfCompletions: 0 }
+          { completed: 0, total: 0 }
         );
 
-      stats.push({
-        label: "Evaluari in progres",
-        value: `${totalEvaluationsInProgress.numberOfCompletions}/${totalEvaluationsInProgress.totalEvaluations}`,
-      });
+      const inProgressReportId = reports
+        .filter((r) => !r.isFinished)
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )?.[0]?.reportId;
+
+      result.evaluationsInProgress = {
+        ...inProgressStats,
+        reportId: inProgressReportId,
+      };
     }
-    return stats;
+
+    return result;
   }, [reports]);
 
   return (
     <>
       <Section className="py-4">
         <div className={"mb-10"}>
-          <Heading level={"h2"}>Statisticile ong</Heading>
+          <Heading level={"h2"}>Statistici Organizație</Heading>
         </div>
-        <Stats data={stats} />
+
+        <div>
+          <dl className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+            {/* Total sesiuni de evaluare */}
+            <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
+              <dt className="font-medium text-gray-500">
+                Total sesiuni de evaluare
+              </dt>
+
+              <dd className="mt-2 text-3xl font-bold text-gray-900">
+                {stats.evaluationSessions ?? "-"}
+              </dd>
+
+              <Button variant="link" className="mt-3 p-0" asChild>
+                <Link to="/reports">Vezi</Link>
+              </Button>
+            </div>
+
+            {/* Total matrici completate */}
+            <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
+              <dt className="font-medium text-gray-500">
+                Total matrici completate
+              </dt>
+
+              <dd className="mt-2 text-3xl font-bold text-gray-900">
+                {stats.evaluationCompletions.completed ?? "-"} /{" "}
+                {stats.evaluationCompletions.total ?? "-"}
+              </dd>
+
+              <p className="text-xs text-gray-500 mt-1">
+                (finalizate / inițiate)
+              </p>
+
+              <Button variant="link" className="mt-3 p-0" asChild>
+                <Link to="/reports">Vezi</Link>
+              </Button>
+            </div>
+
+            {/* Matrici în curs de completare — rendered only when exists */}
+            {stats.evaluationsInProgress && (
+              <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
+                <dt className="font-medium text-gray-500">
+                  Matrici în curs de completare
+                </dt>
+
+                <dd className="mt-2 text-3xl font-bold text-gray-900">
+                  {stats.evaluationsInProgress.completed ?? "-"} /{" "}
+                  {stats.evaluationsInProgress.total ?? "-"}
+                </dd>
+
+                <p className="text-xs text-gray-500 mt-1">
+                  (completări / invitații)
+                </p>
+
+                {stats.evaluationsInProgress.reportId && (
+                  <Button variant="link" className="mt-3 p-0" asChild>
+                    <Link
+                      to={`/reports/$reportId`}
+                      params={{
+                        reportId:
+                          stats.evaluationsInProgress.reportId.toString(),
+                      }}
+                    >
+                      Vezi
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            )}
+          </dl>
+        </div>
       </Section>
 
       <Section className="py-4">
         <div className={"mb-10"}>
           <Heading level={"h2"}>Instrumentele disponibile</Heading>
         </div>
-        <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-3">
           <Card>
             <CardHeader>
-              <CardTitle>Quiz funcționare ONG</CardTitle>
+              <CardTitle>Quiz ONG</CardTitle>
               <CardDescription>
                 Testează cunoștințele tale despre funcționarea unei ONG
               </CardDescription>
@@ -88,19 +186,7 @@ const Home = () => {
               </Button>
             </CardFooter>
           </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Evaluare ONG</CardTitle>
-              <CardDescription>
-                Evaluă funcționalitatea unei ONG
-              </CardDescription>
-            </CardHeader>
-            <CardFooter>
-              <Button variant="link" asChild>
-                <Link to="/reports">Vezi</Link>
-              </Button>
-            </CardFooter>
-          </Card>
+
           <Card>
             <CardHeader>
               <CardTitle>Biblioteca de resurse</CardTitle>
