@@ -155,7 +155,7 @@ export const Menu = () => {
                   <Link to={"/login"}>Intră în cont</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to={"/register"}>Înregistrează-te</Link>
+                  <Link to={"/register"}>Creează cont</Link>
                 </DropdownMenuItem>
               </>
             )}
@@ -183,7 +183,7 @@ const Navbar = () => {
             </div>
             <div>
               <Button asChild onClick={close}>
-                <Link to={"/register"}>Înregistrează-te</Link>
+                <Link to={"/register"}>Creează cont</Link>
               </Button>
             </div>
           </div>

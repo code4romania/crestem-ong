@@ -657,7 +657,7 @@ const Register = () => {
                 className="min-w-[120px]"
                 disabled={isPending}
               >
-                Înregistrează
+                Înregistrează-te
               </Button>
             </div>
           </form>
