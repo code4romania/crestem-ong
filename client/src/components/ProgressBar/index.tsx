@@ -1,5 +1,4 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 const getColor = (percentage: number) =>
   percentage >= 70
@@ -20,14 +19,19 @@ const ProgressBar = ({
   percentage,
 }: {
   label: string;
-  link: string;
+  link?: string;
   percentage: number;
 }) => {
   const color = getColor(percentage);
   return (
     <div>
       <div className="flex justify-between mb-2">
-        <Link className="text-lg hover:underline" to={link} target="_blank" rel="noopener noreferrer">
+        <Link
+          className="text-lg hover:underline"
+          to={link}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {label}
         </Link>
         <div

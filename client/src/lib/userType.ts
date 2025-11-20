@@ -1,4 +1,10 @@
-import { User, RoleType } from "@/redux/api/types";
+import type { FinalDetailedUserModel } from "@/services/api/types";
+import type { FinalRoleType } from "@/services/api/types";
 
-export default (user?: User): RoleType =>
-  user?.role?.type ? user?.role?.type : user ? "authenticated" : "public";
+export function getUserType(user?: FinalDetailedUserModel): FinalRoleType {
+  return user?.role?.type
+    ? (user?.role?.type as FinalRoleType)
+    : user
+    ? "authenticated"
+    : "public";
+}

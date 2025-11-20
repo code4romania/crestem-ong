@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react";
 import empty from "@/assets/empty.svg";
 import Heading from "@/components/Heading";
+import type { ReactNode } from "react";
 
 const EmptyScreen = ({
   title,
