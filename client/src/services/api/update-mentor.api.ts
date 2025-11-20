@@ -8,6 +8,7 @@ export interface UpdateMentorRequest {
   mentorPrograms?: number[];
   bio: string;
   expertise?: string;
+  available: boolean;
 }
 
 export const updateMentor = ({

@@ -129,6 +129,16 @@ const MentorDetails = ({
         ))}
       </div>,
     ],
+    [
+      "Disponibilitate",
+      <div className="flex flex-wrap gap-2">
+        {mentor.available ? (
+          <Badge>Disponibil</Badge>
+        ) : (
+          <Badge variant="warning">Indisponibil</Badge>
+        )}
+      </div>,
+    ],
   ];
 
   return (

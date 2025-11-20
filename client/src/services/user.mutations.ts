@@ -71,8 +71,17 @@ export function updateMentorMutation() {
 
   return useMutation({
     mutationFn: (request: UpdateMentorRequest) => updateMentor(request),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+    onSuccess: (data, variables) => {
+      console.log(data, variables);
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["me"] }),
+        queryClient.invalidateQueries({
+          queryKey: ["users-detailed"],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["mentors"],
+        }),
+      ]);
     },
   });
 }

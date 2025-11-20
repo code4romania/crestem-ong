@@ -37,6 +37,7 @@ import { toast } from "sonner";
 import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
 import { Route } from "@/routes/(app)/mentors/$mentorId/edit";
 import { useSuspenseGetUserDetails } from "@/services/user.queries";
+import { Switch } from "@/components/ui/switch";
 
 const mentorSchema = z.object({
   firstName: z.string().min(1, "Nume este obligatoriu"),
@@ -56,6 +57,7 @@ const mentorSchema = z.object({
     .min(1, "Selectează cel puțin o specializare")
     .catch([]),
   avatar: z.custom<File>().nullable(),
+  available: z.boolean(),
 });
 
 export type MentorInput = z.infer<typeof mentorSchema>;
@@ -74,6 +76,8 @@ const EditMentor = () => {
   const navigate = useNavigate();
   const { mentorId } = Route.useParams();
   const { data: mentor } = useSuspenseGetUserDetails(mentorId, mentorMapper);
+
+  console.log(mentor);
   const { data: dimensions } = useSuspenseListDimensions(dimensionsMapper);
 
   const { mutateAsync: updateMentor, isPending } = updateMentorMutation();
@@ -88,6 +92,7 @@ const EditMentor = () => {
       bio: mentor?.bio ?? "",
       expertise: mentor?.expertise ?? "",
       dimensions: mentor?.dimensions ?? [],
+      available: mentor?.available ?? false,
     },
   });
 
@@ -117,7 +122,7 @@ const EditMentor = () => {
     <div className="container mx-auto py-8">
       <Card className="max-w-4xl mx-auto">
         <CardHeader>
-          <CardTitle className="text-2xl">Adaugă persoană resursă</CardTitle>
+          <CardTitle className="text-2xl">Modifică persoană resursă</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -268,6 +273,22 @@ const EditMentor = () => {
                       </MultiSelectorContent>
                     </MultiSelector>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="available"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Disponibilitate</FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
                   </FormItem>
                 )}
               />

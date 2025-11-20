@@ -1,13 +1,13 @@
 import qs from "qs";
 import { API } from "../api";
 import type {
+  Avatar,
   FinalDetailedUserModel,
   FinalDimensionModel,
   FinalDomainModel,
   FinalProgramModel,
   MentorActivityModel,
   RoleModel,
-  UploadFileDocumentModel,
 } from "./types";
 
 export interface ListMentorsRequest {
@@ -50,7 +50,7 @@ interface MentorModel {
   domains: FinalDomainModel[];
   mentorPrograms: Array<{ id: number; program: FinalProgramModel }>;
   dimensions: FinalDimensionModel[];
-  avatar?: UploadFileDocumentModel;
+  avatar?: Avatar;
   mentorActivities?: MentorActivityModel[];
 }
 
@@ -89,7 +89,7 @@ export const listMentors = (): Promise<FinalDetailedUserModel[]> => {
         reports: [],
         userPrograms: [],
         dimensions: m.dimensions,
-        avatar: undefined!,
+        avatar: m.avatar,
       })) ?? []
   );
 };
