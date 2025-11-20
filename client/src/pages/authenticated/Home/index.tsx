@@ -204,7 +204,7 @@ const Home = () => {
             <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
               <dt className="font-medium text-gray-500">Persoana Resursă</dt>
 
-              <dd className="mt-2 flex flex-col gap-2">
+              <dd className="mt-2 flex flex-col gap-2 text-3xl font-bold text-gray-900">
                 {me?.userSessions?.length
                   ? me?.userSessions
                       ?.map((session) => session.mentor)
