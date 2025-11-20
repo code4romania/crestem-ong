@@ -33,7 +33,10 @@ const ngoMapper = (ngos: FinalDetailedUserModel[]): NgoVM[] =>
       county: ngo.county,
       city: ngo.city,
       domains: ngo.domains.map((d) => d.name) ?? [],
-      lastEvaluationDate: ngo.reports?.at(-1)?.createdAt,
+      lastEvaluationDate: ngo.reports?.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )[0]?.createdAt,
     })
   );
 export function NgosTable() {

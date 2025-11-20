@@ -77,7 +77,6 @@ const EditMentor = () => {
   const { mentorId } = Route.useParams();
   const { data: mentor } = useSuspenseGetUserDetails(mentorId, mentorMapper);
 
-  console.log(mentor);
   const { data: dimensions } = useSuspenseListDimensions(dimensionsMapper);
 
   const { mutateAsync: updateMentor, isPending } = updateMentorMutation();

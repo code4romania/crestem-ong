@@ -29,28 +29,7 @@ const Evaluations = () => {
           </Button>
         </div>
       </Section>
-      {!hasReports && (
-        <Section className="py-6">
-          <div className="grid lg:grid-cols-2 justify-center mt-0 mr-auto mb-0 ml-auto container gap-8">
-            <div className="w-full h-full flex items-center justify-center pt-0 pr-4 pb-0 pl-4 md:mb-0">
-              <img src={screenshot} />
-            </div>
-            <div className="w-full h-full items- justify- pt-0 pr-4 pb-0 pl-4 md:mb-0 text-lg text-gray-500">
-              <p>
-                Matricea de dezvoltare organizațională sprijină organizațiile în
-                procesul de management, în gestionarea provocărilor legate de
-                îndeplinirea misiunii, sustenabilitate și creșterea impactului
-                social. Chestionarul te ajută să identifici nevoi, punctele tari
-                și cele de îmbunătățit ale organizației tale din 10 perspective:
-                Guvernanță, Aspecte financiare, Managementul informației,
-                Monitorizare și evaluare, Structură organizațională, Leadership,
-                Managementul resurselor umane, Implicarea persoanelor
-                beneficiare, Advocacy și parteneriate, Comunicare externă.
-              </p>
-            </div>
-          </div>
-        </Section>
-      )}
+
       {hasReports ? (
         <>
           <Section>

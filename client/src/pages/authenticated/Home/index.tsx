@@ -8,8 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import formatDate from "@/lib/formatDate";
 import type { FinalReportModel } from "@/services/api/types";
 import { useGetUserReports } from "@/services/reports.queries";
+import { useSuspenseGetMe } from "@/services/user.queries";
 import { Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 const map = (data: FinalReportModel[]) =>
@@ -27,8 +29,26 @@ const map = (data: FinalReportModel[]) =>
     };
   });
 
+const getLatestFinishedReport = (
+  data: FinalReportModel[]
+): FinalReportModel | undefined => {
+  const latest = data
+    .filter((r) => r.finished)
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )?.[0];
+
+  return latest ?? undefined;
+};
 const Home = () => {
   const { data: reports = [] } = useGetUserReports((data) => map(data));
+  const { data: latestFinishedReport } = useGetUserReports((data) =>
+    getLatestFinishedReport(data)
+  );
+  const { data: me } = useSuspenseGetMe();
+
+  console.log(me?.userSessions);
 
   const stats = useMemo(() => {
     const totalCompletions = reports.reduce(
@@ -108,7 +128,7 @@ const Home = () => {
               </dd>
 
               <Button variant="link" className="mt-3 p-0" asChild>
-                <Link to="/reports">Vezi</Link>
+                <Link to="/reports">Vezi istoric evaluări</Link>
               </Button>
             </div>
 
@@ -128,12 +148,11 @@ const Home = () => {
               </p>
 
               <Button variant="link" className="mt-3 p-0" asChild>
-                <Link to="/reports">Vezi</Link>
+                <Link to="/reports">Vezi istoric evaluări</Link>
               </Button>
             </div>
 
-            {/* Matrici în curs de completare — rendered only when exists */}
-            {stats.evaluationsInProgress && (
+            {stats.evaluationsInProgress ? (
               <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
                 <dt className="font-medium text-gray-500">
                   Matrici în curs de completare
@@ -157,10 +176,18 @@ const Home = () => {
                           stats.evaluationsInProgress.reportId.toString(),
                       }}
                     >
-                      Vezi
+                      Vezi evaluare
                     </Link>
                   </Button>
                 )}
+              </div>
+            ) : (
+              <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
+                <dt className="font-medium text-gray-500">
+                  Matrici în curs de completare
+                </dt>
+
+                <dd className="mt-2 text-3xl font-bold text-gray-900">-</dd>
               </div>
             )}
           </dl>
@@ -169,23 +196,89 @@ const Home = () => {
 
       <Section className="py-4">
         <div className={"mb-10"}>
+          <Heading level={"h2"}>Informații organizație</Heading>
+        </div>
+
+        <div>
+          <dl className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
+              <dt className="font-medium text-gray-500">Persoana Resursă</dt>
+
+              <dd className="mt-2 flex flex-col gap-2">
+                {me?.userSessions?.length
+                  ? me?.userSessions
+                      ?.map((session) => session.mentor)
+                      .map((mentor) => ({
+                        id: mentor.id,
+                        name: mentor.firstName + " " + mentor.lastName,
+                      }))
+                      .map((mentor) => (
+                        <Button
+                          variant="link"
+                          asChild
+                          key={mentor.id}
+                          className="text-3xl font-bold text-gray-900 text-left justify-start"
+                        >
+                          <Link
+                            to={`/mentors/$mentorId`}
+                            params={{ mentorId: mentor.id.toString() }}
+                          >
+                            {mentor.name}
+                          </Link>
+                        </Button>
+                      ))
+                  : "-"}
+              </dd>
+            </div>
+
+            <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
+              <dt className="font-medium text-gray-500">Program</dt>
+
+              <dd className="mt-2 text-3xl font-bold text-gray-900 flex flex-col gap-2">
+                {me?.ngoPrograms?.length
+                  ? me?.ngoPrograms.map((program) => (
+                      <span key={program.id}>{program.name}</span>
+                    ))
+                  : "-"}
+              </dd>
+            </div>
+
+            <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
+              <dt className="font-medium text-gray-500">
+                Data finalizare evaluare
+              </dt>
+
+              <dd className="mt-2 text-3xl font-bold text-gray-900 flex flex-col gap-2">
+                {latestFinishedReport?.createdAt ? (
+                  <Button
+                    asChild
+                    variant="link"
+                    className="text-3xl font-bold text-gray-900 text-wrap justify-start"
+                  >
+                    <Link
+                      to={`/reports/$reportId`}
+                      params={{
+                        reportId: latestFinishedReport.id.toString(),
+                      }}
+                    >
+                      <span className="text-wrap">
+                        {formatDate(latestFinishedReport.createdAt)}
+                      </span>
+                    </Link>
+                  </Button>
+                ) : (
+                  "-"
+                )}
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </Section>
+      <Section className="py-4">
+        <div className={"mb-10"}>
           <Heading level={"h2"}>Instrumentele disponibile</Heading>
         </div>
-        <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-3">
-          <Card>
-            <CardHeader>
-              <CardTitle>Quiz ONG</CardTitle>
-              <CardDescription>
-                Testează cunoștințele tale despre funcționarea unei ONG
-              </CardDescription>
-            </CardHeader>
-            <CardFooter>
-              <Button variant="link" asChild>
-                <Link to="/matrix">Vezi</Link>
-              </Button>
-            </CardFooter>
-          </Card>
-
+        <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-2">
           <Card>
             <CardHeader>
               <CardTitle>Biblioteca de resurse</CardTitle>

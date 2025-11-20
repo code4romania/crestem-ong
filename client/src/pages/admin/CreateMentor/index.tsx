@@ -68,7 +68,6 @@ const dimensionsMapper = (programs: ApiDimensionModel[]) =>
 
 const CreateMentor = () => {
   const navigate = useNavigate();
-  const { data: programs } = useSuspenseListPrograms(programsMapper);
   const { data: dimensions } = useSuspenseListDimensions(dimensionsMapper);
 
   const { mutateAsync: createMentor, isPending } = useCreateMentorMutation();
