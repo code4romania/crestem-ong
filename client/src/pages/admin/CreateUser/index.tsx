@@ -43,7 +43,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { citiesByCounty } from "@/lib/orase-dupa-judet";
 import { useCreateNgoMutation } from "@/services/ngo.mutations";
 import { useUploadPictureMutation } from "@/services/user.mutations";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Building2, Globe, Lock, Mail, Phone, User } from "lucide-react";
 import { useMemo } from "react";
 import { toast } from "sonner";
@@ -646,9 +646,11 @@ const CreateUser = () => {
                 type="button"
                 variant="outline"
                 className="sm:w-auto bg-transparent"
+                asChild
               >
-                Renunță
+                <Link to="/users">Renunță</Link>
               </Button>
+
               <Button type="submit" className="sm:w-auto">
                 Salvează organizația
               </Button>
