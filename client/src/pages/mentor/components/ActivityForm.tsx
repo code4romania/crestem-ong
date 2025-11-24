@@ -1,6 +1,5 @@
 import Section from "@/components/Section";
 import { Button } from "@/components/ui/button";
-
 import { useListMentees } from "@/services/user.queries";
 
 import FullScreenLoader from "@/components/FullScreenLoader";
@@ -29,7 +28,6 @@ import {
 } from "@/components/ui/popover";
 import { SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuth } from "@/contexts/auth";
 import { cn } from "@/lib/utils";
 import type { MentorActivityModel } from "@/services/api/types";
 import { format } from "date-fns";
@@ -39,7 +37,9 @@ import { CalendarIcon } from "lucide-react";
 const activitySchema = z.object({
   user: z.string().min(1, "Selectați ONG-ul"),
   dimension: z.string().min(1, "Selectați dimensiune"),
-  startDate: z.date({ error: "Introduceti data activitatii" }),
+  startDate: z.date({
+    error: "Introduceti data activitatii",
+  }),
   type: z.string().min(1, "Selectați tipul activității"),
   duration: z.string().min(1, "Introduceti durata activitatii"),
   notes: z.string().optional(),
@@ -54,7 +54,6 @@ function ActivityForm({
   onSubmit: (data: ActivityInput) => void;
   activity?: MentorActivityModel;
 }) {
-  const { user } = useAuth();
   const { data: dimensions, isLoading: loadingDimensions } = useListDimensions(
     (dimensions) =>
       dimensions.map((at) => ({
@@ -239,7 +238,11 @@ function ActivityForm({
                       <Calendar
                         mode="single"
                         selected={field.value}
-                        onSelect={field.onChange}
+                        onSelect={(date) => {
+                          if (date) {
+                            field.onChange(date);
+                          }
+                        }}
                         disabled={(date) =>
                           date < new Date("1900-01-01") || date > new Date()
                         }
