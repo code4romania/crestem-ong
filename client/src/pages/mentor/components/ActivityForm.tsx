@@ -1,4 +1,3 @@
-import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import { Button } from "@/components/ui/button";
 

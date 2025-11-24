@@ -112,11 +112,11 @@ const Home = () => {
     <>
       <Section className="py-4">
         <div className={"mb-10"}>
-          <Heading level={"h2"}>Statistici Organizație</Heading>
+          <Heading level={"h2"}>Informații Organizație</Heading>
         </div>
 
         <div>
-          <dl className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <dl className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
             {/* Total sesiuni de evaluare */}
             <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
               <dt className="font-medium text-gray-500">
@@ -191,20 +191,12 @@ const Home = () => {
               </div>
             )}
           </dl>
-        </div>
-      </Section>
 
-      <Section className="py-4">
-        <div className={"mb-10"}>
-          <Heading level={"h2"}>Informații organizație</Heading>
-        </div>
-
-        <div>
           <dl className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
             <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
               <dt className="font-medium text-gray-500">Persoana Resursă</dt>
 
-              <dd className="mt-2 flex flex-col gap-2 text-3xl font-bold text-gray-900">
+              <dd className="mt-2 flex flex-col gap-2">
                 {me?.userSessions?.length
                   ? me?.userSessions
                       ?.map((session) => session.mentor)
@@ -213,19 +205,13 @@ const Home = () => {
                         name: mentor.firstName + " " + mentor.lastName,
                       }))
                       .map((mentor) => (
-                        <Button
-                          variant="link"
-                          asChild
-                          key={mentor.id}
-                          className="text-3xl font-bold text-gray-900 text-left justify-start"
+                        <Link
+                          to={`/mentors/$mentorId`}
+                          params={{ mentorId: mentor.id.toString() }}
+                          className="text-xl text-gray-900 font-bold underline-offset-4 hover:underline"
                         >
-                          <Link
-                            to={`/mentors/$mentorId`}
-                            params={{ mentorId: mentor.id.toString() }}
-                          >
-                            {mentor.name}
-                          </Link>
-                        </Button>
+                          {mentor.name}
+                        </Link>
                       ))
                   : "-"}
               </dd>
@@ -234,7 +220,7 @@ const Home = () => {
             <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
               <dt className="font-medium text-gray-500">Program</dt>
 
-              <dd className="mt-2 text-3xl font-bold text-gray-900 flex flex-col gap-2">
+              <dd className="mt-2 text-xl font-bold text-gray-900 flex flex-col gap-2">
                 {me?.ngoPrograms?.length
                   ? me?.ngoPrograms.map((program) => (
                       <span key={program.id}>{program.name}</span>
@@ -248,24 +234,19 @@ const Home = () => {
                 Data finalizare evaluare
               </dt>
 
-              <dd className="mt-2 text-3xl font-bold text-gray-900 flex flex-col gap-2">
+              <dd className="mt-2 text-xl font-bold text-gray-900 flex flex-col gap-2">
                 {latestFinishedReport?.createdAt ? (
-                  <Button
-                    asChild
-                    variant="link"
-                    className="text-3xl font-bold text-gray-900 text-wrap justify-start"
+                  <Link
+                    to={`/reports/$reportId`}
+                    params={{
+                      reportId: latestFinishedReport.id.toString(),
+                    }}
+                    className="text-xl text-gray-900 font-bold underline-offset-4 hover:underline"
                   >
-                    <Link
-                      to={`/reports/$reportId`}
-                      params={{
-                        reportId: latestFinishedReport.id.toString(),
-                      }}
-                    >
-                      <span className="text-wrap">
-                        {formatDate(latestFinishedReport.createdAt)}
-                      </span>
-                    </Link>
-                  </Button>
+                    <span className="text-wrap">
+                      {formatDate(latestFinishedReport.createdAt)}
+                    </span>
+                  </Link>
                 ) : (
                   "-"
                 )}
@@ -276,13 +257,15 @@ const Home = () => {
       </Section>
       <Section className="py-4">
         <div className={"mb-10"}>
-          <Heading level={"h2"}>Instrumentele disponibile</Heading>
+          <Heading level={"h2"}>Alte instrumente disponibile</Heading>
         </div>
         <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle>Biblioteca de resurse</CardTitle>
-              <CardDescription>
+              <CardTitle className="text-xl font-bold text-gray-900">
+                Biblioteca de resurse
+              </CardTitle>
+              <CardDescription className="font-medium">
                 Accesează resursele disponibile pentru ONG
               </CardDescription>
             </CardHeader>
@@ -300,8 +283,10 @@ const Home = () => {
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>Persoane resursa</CardTitle>
-              <CardDescription>
+              <CardTitle className="text-xl font-bold text-gray-900">
+                Persoane resursa
+              </CardTitle>
+              <CardDescription className="font-medium">
                 Accesează persoanele resursa pentru ONG
               </CardDescription>
             </CardHeader>
