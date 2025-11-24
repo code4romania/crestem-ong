@@ -1,15 +1,12 @@
-import "react-toastify/dist/ReactToastify.css";
-import React from "react";
-import { Outlet } from "react-router-dom";
-import Navbar from "../Navbar";
+import type { ReactNode } from "react";
 import Footer from "../Footer";
+import Navbar from "../Navbar";
+import { Outlet } from "@tanstack/react-router";
 
-const LayoutApp = () => (
+const LayoutApp = ({ children }: { children?: ReactNode }) => (
   <div className="flex flex-col h-screen">
     <Navbar />
-    <div className="mb-auto">
-      <Outlet />
-    </div>
+    <div className="mb-auto">{children ?? <Outlet />}</div>
     <Footer />
   </div>
 );

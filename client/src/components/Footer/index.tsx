@@ -1,7 +1,6 @@
-import React from "react";
 import MadeBy from "@/components/MadeBy";
 import Section from "@/components/Section";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 const Footer = () => (
   <>
@@ -25,8 +24,7 @@ const Footer = () => (
                         href="https://crestem.ong/ro/despre-proiect"
                         className="text-gray-500 hover:text-gray-900"
                       >
-                        {" "}
-                        Despre Creștem.ONG{" "}
+                        Despre Creștem.ONG
                       </a>
                     </li>
                     <li>
@@ -42,8 +40,7 @@ const Footer = () => (
                         href="https://crestem.ong/ro/biblioteca"
                         className="text-gray-500 hover:text-gray-900"
                       >
-                        {" "}
-                        Bibliotecă{" "}
+                        Bibliotecă
                       </a>
                     </li>
                     <li>
@@ -51,15 +48,13 @@ const Footer = () => (
                         href="https://crestem.ong/ro/contact"
                         className="text-gray-500 hover:text-gray-900"
                       >
-                        {" "}
-                        Contact{" "}
+                        Contact
                       </a>
                     </li>
                   </ul>
                 </li>
                 <li className="space-y-4">
                   <button className="text-left text-sm font-semibold tracking-wider text-gray-400 uppercase hover:text-gray-900">
-                    {" "}
                     Linkuri externe
                   </button>
                   <ul className="space-y-4">
@@ -70,8 +65,7 @@ const Footer = () => (
                         rel="noopener"
                         className="text-gray-500 hover:text-gray-900"
                       >
-                        {" "}
-                        Fundația pentru Dezvoltarea Societății Civile{" "}
+                        Fundația pentru Dezvoltarea Societății Civile
                       </a>
                     </li>
                     <li>
@@ -81,8 +75,7 @@ const Footer = () => (
                         rel="noopener"
                         className="text-gray-500 hover:text-gray-900"
                       >
-                        {" "}
-                        #ÎnStareDeBine{" "}
+                        #ÎnStareDeBine
                       </a>
                     </li>
                     <li>
@@ -92,15 +85,13 @@ const Footer = () => (
                         rel="noopener"
                         className="text-gray-500 hover:text-gray-900"
                       >
-                        {" "}
-                        Știri.ONG{" "}
+                        Știri.ONG
                       </a>
                     </li>
                   </ul>
                 </li>
                 <li className="space-y-4">
                   <button className="text-left text-sm font-semibold tracking-wider text-gray-400 uppercase hover:text-gray-900">
-                    {" "}
                     Date personale
                   </button>
                   <ul className="space-y-4">
@@ -109,14 +100,12 @@ const Footer = () => (
                         href="https://crestem.ong/ro/termeni-si-conditii"
                         className="text-gray-500 hover:text-gray-900"
                       >
-                        {" "}
-                        Termeni și condiții{" "}
+                        Termeni și condiții
                       </a>
                     </li>
                     <li>
                       <a className="text-gray-500 hover:text-gray-900">
-                        {" "}
-                        Politica de confidențialitate{" "}
+                        Politica de confidențialitate
                       </a>
                     </li>
                   </ul>
@@ -127,8 +116,7 @@ const Footer = () => (
           <div className="pt-8 mt-8 border-t border-gray-200 md:flex md:items-center md:justify-between">
             <div className="flex space-x-4 text-gray-400 md:order-2"></div>
             <p className="mt-8 text-base text-gray-400 md:mt-0 md:order-1">
-              {" "}
-              © 2023 Website Factory: ONG.{" "}
+              © 2023 Website Factory: ONG.
             </p>
           </div>
         </div>

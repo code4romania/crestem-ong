@@ -1,0 +1,195 @@
+import qs from "qs";
+import { API } from "../api";
+import type { FinalReportModel, FinalUserModel } from "./types";
+
+export interface ListReportsResponse {
+  data: FinalReportModel[];
+  meta: Meta;
+}
+
+interface ListReportsApiResponse {
+  data: ReportModel[];
+  meta: Meta;
+}
+
+interface ReportModel {
+  id: number;
+  attributes: ReportModelAttributes;
+}
+
+interface ReportModelAttributes {
+  deadline: string;
+  finished: boolean;
+  createdAt: string;
+  updatedAt: string;
+  evaluations: EvaluationsDataModel;
+  user: UserDataModel;
+}
+
+interface UserDataModel {
+  data: UseModel;
+}
+
+interface UseModel {
+  id: number;
+  attributes: DataAttributes;
+}
+
+interface DataAttributes {
+  id: number;
+  username: string;
+  email: string;
+  provider: string;
+  password?: string | undefined;
+  resetPasswordToken?: string | undefined;
+  confirmationToken?: string | undefined;
+  confirmed: boolean;
+  blocked: boolean;
+  ongName: string;
+  ongIdentificationNumber: string;
+  county: string;
+  city: string;
+  phone: string;
+  website: string;
+  keywords: string;
+  description: string;
+  contactFirstName: string;
+  contactLastName: string;
+  contactEmail: string;
+  contactPhone: string;
+  accountFacebook: string | undefined;
+  accountTwitter: string | undefined;
+  accountTiktok: string | undefined;
+  accountInstagram: string | undefined;
+  accountLinkedin: string | undefined;
+  createdAt: string;
+  updatedAt: string;
+  registrationToken?: string | undefined;
+  bio: string | undefined;
+  expertise: string | undefined;
+  firstName: string | undefined;
+  lastName: string | undefined;
+  available: boolean;
+  domains: {
+    data: Array<{
+      id: number;
+      attributes: {
+        name: string;
+        createdAt: string;
+        updatedAt: string;
+      };
+    }>;
+  };
+  userSessions: {
+    data: Array<{
+      id: number;
+      attributes: {
+        createdAt: string;
+        updatedAt: string;
+        mentor: UserDataModel;
+      };
+    }>;
+  };
+}
+
+interface EvaluationsDataModel {
+  data: EvaluationModel[];
+}
+
+interface EvaluationModel {
+  id: number;
+  attributes: EvaluationModelAttributes;
+}
+
+interface EvaluationModelAttributes {
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+  dimensions: EvaluationDimensionModel[];
+}
+
+interface EvaluationDimensionModel {
+  id: number;
+  comment: string;
+  quiz: QuizModel[];
+}
+
+interface QuizModel {
+  id: number;
+  answer: number;
+}
+
+interface Meta {
+  pagination: Pagination;
+}
+
+interface Pagination {
+  page: number;
+  pageSize: number;
+  pageCount: number;
+  total: number;
+}
+
+export const listReports = (): Promise<ListReportsResponse> => {
+  const params = {
+    populate: [
+      "evaluations.dimensions.quiz",
+      "user",
+      "user.mentor",
+      "user.dimensions",
+      "user.domains",
+      "user.userSessions.mentor",
+    ],
+    pagination: {
+      page: 1,
+      pageSize: 1000,
+    },
+    sort: "createdAt:desc",
+  };
+
+  return API.get<ListReportsApiResponse>(`api/reports`, {
+    params,
+    paramsSerializer: {
+      serialize: (params) => {
+        return qs.stringify(params, { encodeValuesOnly: true });
+      },
+    },
+  }).then((res) => {
+    return {
+      ...res.data,
+      data:
+        res.data.data.map((r) => {
+          const user: FinalUserModel = {
+            ...r.attributes.user.data,
+            ...r.attributes.user.data?.attributes,
+            avatar: undefined!,
+            domains: r.attributes.user.data?.attributes.domains.data.map(
+              (d) => ({
+                id: d.id,
+                ...d.attributes,
+              })
+            ),
+            dimensions: undefined!,
+            mentors: r.attributes.user.data?.attributes.userSessions.data.map(
+              (s) => ({
+                ...s.attributes.mentor.data,
+                ...s.attributes.mentor.data?.attributes,
+                domains: undefined!,
+                dimensions: undefined!,
+              })
+            ),
+          };
+
+          return {
+            ...r,
+            ...r.attributes,
+            evaluations: r.attributes.evaluations.data.map((e) => ({
+              ...e,
+              ...e.attributes,
+            })),
+            user,
+          };
+        }) ?? [],
+    };
+  });
+};

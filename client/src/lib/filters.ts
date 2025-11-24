@@ -1,6 +1,8 @@
-import { Evaluation } from "@/redux/api/types";
+import type { FinalEvaluationModel } from "@/services/api/types";
 
-export const evaluationsCompletedFilter = (evaluations: Evaluation[]) =>
+export const evaluationsCompletedFilter = (
+  evaluations: FinalEvaluationModel[]
+): FinalEvaluationModel[] =>
   evaluations.filter(
     (evaluation) =>
       evaluation.dimensions.reduce(

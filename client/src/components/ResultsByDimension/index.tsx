@@ -1,7 +1,6 @@
-import React from "react";
-import ProgressBar from "../ProgressBar";
-import goodIcon from "@/assets/good.svg";
 import badIcon from "@/assets/bad.svg";
+import goodIcon from "@/assets/good.svg";
+import ProgressBar from "../ProgressBar";
 
 const ResultsByDimension = ({
   scoreByEvaluation,
@@ -9,7 +8,7 @@ const ResultsByDimension = ({
   scoreByEvaluation: {
     id: string;
     name: string;
-    link: string;
+    link?: string;
     score: number;
     tags: string[];
   }[];

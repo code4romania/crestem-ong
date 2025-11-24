@@ -1,69 +1,75 @@
-import React, { useCallback, useEffect } from "react";
-import Button from "@/components/Button";
-import { useCreateEvaluationMutation } from "@/redux/api/userApi";
-import { object, string, TypeOf } from "zod";
+import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
-import { toast } from "react-toastify";
-import { ErrorMessage } from "@hookform/error-message";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { toast } from "sonner";
+import { useInviteNGOMemberMutation } from "@/services/evaluation.mutations";
+import { Separator } from "../ui/separator";
+import type { FinalReportModel } from "@/services/api/types";
 
-const evaluationSchema = object({
-  email: string()
-    .min(1, "Vă rugăm introduceți adresa de email")
-    .email("Adresa de email este invalidă"),
-});
-export type EvaluationInput = TypeOf<typeof evaluationSchema>;
+const CreateEvaluation = ({ report }: { report: FinalReportModel }) => {
+  const { mutate: createEvaluation } = useInviteNGOMemberMutation();
+  const evaluationSchema = z.object({
+    email: z
+      .email("Adresa de email este invalidă")
+      .min(1, "Vă rugăm introduceți adresa de email")
+      .refine((email) => !report.evaluations.some((e) => e.email === email), {
+        message: "Adresa de email este deja invitată.",
+      }),
+  });
 
-const CreateEvaluation = ({ reportId }: { reportId: string }) => {
-  const [createEvaluation, { isSuccess, isError }] =
-    useCreateEvaluationMutation();
-  const { register, formState, handleSubmit, reset } = useForm<EvaluationInput>(
-    {
-      resolver: zodResolver(evaluationSchema),
-    }
-  );
+  type EvaluationInput = z.infer<typeof evaluationSchema>;
+
+  const form = useForm<EvaluationInput>({
+    resolver: zodResolver(evaluationSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
+
   const onSubmitHandler = useCallback(
     ({ email }: EvaluationInput) => {
-      createEvaluation({ id: reportId, email });
-      reset();
+      createEvaluation(
+        { report: report.id, email },
+        {
+          onSuccess: () => toast.success("Invitația a fost transmisă."),
+          onError: () => toast.error("Ceva nu a funcționat. Încearcă din nou."),
+        }
+      );
+      form.reset();
     },
-    [createEvaluation, reset]
+    [createEvaluation, form, form.reset]
   );
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success("Invitația a fost transmisă.");
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (isError) {
-      toast.error("Ceva nu a funcționat. Încearcă din nou.");
-    }
-  }, [isError]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmitHandler)}>
-      <div className="sm:col-span-6">
-        <label
-          htmlFor="last-name"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Invită membrii organizației
-        </label>
-        <div className="my-2">
-          <input
-            type="email"
-            className="inline-flex w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-            {...register("email")}
-          />{" "}
-          <div className="text-red-600 text-sm">
-            <ErrorMessage errors={formState.errors} name={"email"} />
-          </div>
-        </div>
-
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmitHandler)} className="space-y-2">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Invită membrii organizației</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button type="submit">Invită</Button>
-      </div>
-    </form>
+      </form>
+    </Form>
   );
 };
 

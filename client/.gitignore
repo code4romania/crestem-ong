@@ -1,27 +1,82 @@
+# Include your project-specific ignores in this file
+# Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
+
+# Compiled output
+**/dist/
+**/*.tsbuildinfo
+
+# Bun package manager
+# https://bun.sh/docs/install/lockfile
+node_modules/
+
 # Logs
-logs
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Cache
+/.cache
+/*/.swc/
+.eslintcache
 
-# Editor directories and files
+# Testing
+/coverage
+*.lcov
+
+# Environment variables
+.env
+
+# Visual Studio Code
+# https://github.com/github/gitignore/blob/master/Global/VisualStudioCode.gitignore
 .vscode/*
 !.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/mcp.json
+!.vscode/settings.json
+!.vscode/tasks.json
+
+# WebStorm
 .idea
+
+# Wrangler CLI
+# https://developers.cloudflare.com/workers/wrangler/
+.wrangler/
+
+# Terraform
+# https://github.com/github/gitignore/blob/main/Terraform.gitignore
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Astro
+.astro/
+
+# TanStack Router
+# Generated route tree files should not be committed
+*/lib/routeTree.gen.ts
+*/.tanstack/
+
+# VitePress
+docs/.vitepress/cache
+docs/.vitepress/dist
+
+# React Email
+# Generated preview build and runtime files
+.react-email/
+
+# Local development files
+*.local.md
+*.local.json
+*.local.jsonc
+
+# macOS
+# https://github.com/github/gitignore/blob/master/Global/macOS.gitignore
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-/test-results/
-/playwright-report/
-/playwright/.cache/
+
