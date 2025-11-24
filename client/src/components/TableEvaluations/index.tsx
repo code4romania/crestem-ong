@@ -48,6 +48,7 @@ const TableEvaluations = ({ report }: TableEvaluationsProps) => {
   } | null>(null);
 
   const isFDSC = userRole === "fdsc";
+  const isMentor = userRole === "mentor";
   const isAuthenticated = userRole === "authenticated";
 
   const evaluations = report?.evaluations || [];
@@ -89,7 +90,7 @@ const TableEvaluations = ({ report }: TableEvaluationsProps) => {
         header: "INVITAT LA",
         cell: ({ row }) => formatDate(row.original.createdAt),
       },
-      ...(isFDSC
+      ...(isFDSC || isMentor
         ? [
             {
               id: "answers",
