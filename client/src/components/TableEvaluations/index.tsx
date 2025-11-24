@@ -89,26 +89,30 @@ const TableEvaluations = ({ report }: TableEvaluationsProps) => {
         header: "INVITAT LA",
         cell: ({ row }) => formatDate(row.original.createdAt),
       },
-      {
-        id: "answers",
-        header: "",
-        cell: ({ row }: { row: Row<FinalEvaluationModel> }) => {
-          const { id, email, dimensions } = row.original;
-          return (
-            dimensions.length === 10 && (
-              <Button variant="link" asChild>
-                <Link
-                  to="/evaluation/$evaluationId"
-                  params={{ evaluationId: id.toString() }}
-                  search={{ email }}
-                >
-                  Vezi răspunsurile
-                </Link>
-              </Button>
-            )
-          );
-        },
-      },
+      ...(isFDSC
+        ? [
+            {
+              id: "answers",
+              header: "",
+              cell: ({ row }: { row: Row<FinalEvaluationModel> }) => {
+                const { id, email, dimensions } = row.original;
+                return (
+                  dimensions.length === 10 && (
+                    <Button variant="link" asChild>
+                      <Link
+                        to="/evaluation/$evaluationId"
+                        params={{ evaluationId: id.toString() }}
+                        search={{ email }}
+                      >
+                        Vezi răspunsurile
+                      </Link>
+                    </Button>
+                  )
+                );
+              },
+            },
+          ]
+        : []),
       ...(isFDSC || isAuthenticated
         ? [
             {
