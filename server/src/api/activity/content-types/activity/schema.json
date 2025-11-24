@@ -31,7 +31,8 @@
       "type": "richtext"
     },
     "duration": {
-      "type": "integer"
+      "type": "decimal",
+      "columnType": "decimal(10,2)"
     },
     "mentor": {
       "type": "relation",
