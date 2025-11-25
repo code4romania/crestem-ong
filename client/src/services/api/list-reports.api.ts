@@ -130,7 +130,7 @@ interface Pagination {
   total: number;
 }
 
-export const listReports = (): Promise<ListReportsResponse> => {
+export const listReports = async (): Promise<ListReportsResponse> => {
   const params = {
     populate: [
       "evaluations.dimensions.quiz",
@@ -147,49 +147,81 @@ export const listReports = (): Promise<ListReportsResponse> => {
     sort: "createdAt:desc",
   };
 
-  return API.get<ListReportsApiResponse>(`api/reports`, {
+  const transformPage = (
+    models: ReportModel[] | undefined
+  ): FinalReportModel[] => {
+    return (models ?? []).map((r) => {
+      const user: FinalUserModel = {
+        ...r.attributes.user.data,
+        ...r.attributes.user.data?.attributes,
+        avatar: undefined!,
+        domains: r.attributes.user.data?.attributes.domains.data.map((d) => ({
+          id: d.id,
+          ...d.attributes,
+        })),
+        dimensions: undefined!,
+        mentors: r.attributes.user.data?.attributes.userSessions.data.map(
+          (s) => ({
+            ...s.attributes.mentor.data,
+            ...s.attributes.mentor.data?.attributes,
+            domains: undefined!,
+            dimensions: undefined!,
+          })
+        ),
+      };
+
+      return {
+        ...r,
+        ...r.attributes,
+        evaluations: r.attributes.evaluations.data.map((e) => ({
+          ...e,
+          ...e.attributes,
+        })),
+        user,
+      };
+    });
+  };
+
+  const firstRes = await API.get<ListReportsApiResponse>(`api/reports`, {
     params,
     paramsSerializer: {
       serialize: (params) => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => {
-    return {
-      ...res.data,
-      data:
-        res.data.data.map((r) => {
-          const user: FinalUserModel = {
-            ...r.attributes.user.data,
-            ...r.attributes.user.data?.attributes,
-            avatar: undefined!,
-            domains: r.attributes.user.data?.attributes.domains.data.map(
-              (d) => ({
-                id: d.id,
-                ...d.attributes,
-              })
-            ),
-            dimensions: undefined!,
-            mentors: r.attributes.user.data?.attributes.userSessions.data.map(
-              (s) => ({
-                ...s.attributes.mentor.data,
-                ...s.attributes.mentor.data?.attributes,
-                domains: undefined!,
-                dimensions: undefined!,
-              })
-            ),
-          };
-
-          return {
-            ...r,
-            ...r.attributes,
-            evaluations: r.attributes.evaluations.data.map((e) => ({
-              ...e,
-              ...e.attributes,
-            })),
-            user,
-          };
-        }) ?? [],
-    };
   });
+
+  const allData: FinalReportModel[] = [...transformPage(firstRes.data.data)];
+  const { pageCount } = firstRes.data.meta.pagination;
+
+  if (pageCount > 1) {
+    const requests: Promise<FinalReportModel[]>[] = [];
+    for (let page = 2; page <= pageCount; page++) {
+      const pageParams = {
+        ...params,
+        pagination: {
+          ...params.pagination,
+          page,
+        },
+      };
+      const req = API.get<ListReportsApiResponse>(`api/reports`, {
+        params: pageParams,
+        paramsSerializer: {
+          serialize: (params) => {
+            return qs.stringify(params, { encodeValuesOnly: true });
+          },
+        },
+      }).then((res) => transformPage(res.data.data));
+      requests.push(req);
+    }
+    const restPages = await Promise.all(requests);
+    restPages.forEach((items) => {
+      allData.push(...items);
+    });
+  }
+
+  return {
+    data: allData,
+    meta: firstRes.data.meta,
+  };
 };
