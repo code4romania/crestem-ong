@@ -122,6 +122,7 @@ export function MenteesDataTableToolbar({
           title={"Localitate"}
           options={availableCities}
           multiple={false}
+          disabled={!county}
         />
         {isFiltered && (
           <Button

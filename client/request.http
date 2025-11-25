@@ -1,4 +1,0 @@
-
-GET https://crestem-ong-api.staging.heroesof.tech/api/reports?populate[0]=user.userSessions.mentor
-Authorization: Bearer 
-###

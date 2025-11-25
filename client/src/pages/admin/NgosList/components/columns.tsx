@@ -136,7 +136,6 @@ export const columns: ColumnDef<NgoVM>[] = [
     enableSorting: true,
     filterFn: (row, id, value) => {
       const rowValue = row.getValue<string | undefined>(id);
-      if (!rowValue) return true;
       if (!Array.isArray(value) || value.length !== 2) return true; // fallback if invalid
 
       if (!rowValue) return false;
