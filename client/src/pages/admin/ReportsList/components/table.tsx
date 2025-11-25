@@ -1,4 +1,3 @@
-import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTable } from "@/components/ui/data-table";
 import { useTableUrlState } from "@/hooks/use-table-url-state";
 import { evaluationsCompletedFilter } from "@/lib/filters";
@@ -8,15 +7,16 @@ import { useSuspenseListReports } from "@/services/reports.queries";
 import { getRouteApi } from "@tanstack/react-router";
 import {
   getCoreRowModel,
-  getPaginationRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type { ReportVM } from "../type";
+import type { ReportVM } from "../types";
 import { reportsColumns as columns } from "./columns";
+import { ReportsDataTableToolbar } from "./toolbar";
 
 const route = getRouteApi("/(app)/reports/");
 
@@ -64,12 +64,12 @@ export function ReportsTable() {
       {
         columnId: "startDate",
         searchKey: "startDate",
-        type: "string",
+        type: "array",
       },
       {
         columnId: "endDate",
         searchKey: "endDate",
-        type: "string",
+        type: "array",
       },
       {
         columnId: "score",
@@ -110,15 +110,8 @@ export function ReportsTable() {
   });
 
   return (
-    <div className="space-y-4 ">
-      <DataTableToolbar table={table}></DataTableToolbar>
-      <div className="overflow-hidden rounded-md border">
-        <DataTable
-          table={table}
-          emptyMessage={"Nu există evaluări"}
-          hasPagination
-        />
-      </div>
-    </div>
+    <DataTable table={table} emptyMessage={"Nu există evaluări"} hasPagination>
+      <ReportsDataTableToolbar table={table} />
+    </DataTable>
   );
 }

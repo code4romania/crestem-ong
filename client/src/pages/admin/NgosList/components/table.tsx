@@ -1,5 +1,6 @@
 import {
   getCoreRowModel,
+  getPaginationRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
@@ -48,11 +49,12 @@ export function NgosTable() {
     onGlobalFilterChange,
     columnFilters,
     onColumnFiltersChange,
+    pagination,
     onPaginationChange,
   } = useTableUrlState({
     search: route.useSearch(),
     navigate: route.useNavigate(),
-    pagination: { defaultPage: 1, defaultPageSize: 10 },
+    pagination: { defaultPage: 1, defaultPageSize: 25 },
     globalFilter: { enabled: true, key: "search", trim: false },
     columnFilters: [
       {
@@ -94,6 +96,7 @@ export function NgosTable() {
     state: {
       columnFilters,
       globalFilter,
+      pagination,
       columnPinning: {
         right: ["navigate"],
       },
@@ -108,12 +111,12 @@ export function NgosTable() {
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     onPaginationChange,
     onGlobalFilterChange,
     onColumnFiltersChange,
-    manualPagination: true,
   });
 
   return (
@@ -127,7 +130,11 @@ export function NgosTable() {
         </div>
       </Section>
       <Section>
-        <DataTable table={table} emptyMessage="Nu există organizații">
+        <DataTable
+          table={table}
+          emptyMessage="Nu există organizații"
+          hasPagination
+        >
           <NgosDataTableToolbar table={table}></NgosDataTableToolbar>
         </DataTable>
       </Section>

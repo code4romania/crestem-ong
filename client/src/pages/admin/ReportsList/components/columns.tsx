@@ -1,12 +1,12 @@
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import formatDate from "@/lib/formatDate";
 import { Link } from "@tanstack/react-router";
 import { type ColumnDef } from "@tanstack/react-table";
-import formatDate from "@/lib/formatDate";
-import type { ReportVM } from "../type";
-import { CalendarIcon, Percent } from "lucide-react";
 import { format } from "date-fns";
+import { CalendarIcon, Percent } from "lucide-react";
+import type { ReportVM } from "../types";
 
 export const reportsColumns: ColumnDef<ReportVM>[] = [
   {
@@ -23,15 +23,19 @@ export const reportsColumns: ColumnDef<ReportVM>[] = [
         </div>
       );
     },
-    enableSorting: false,
+    enableSorting: true,
   },
   {
     accessorKey: "ongName",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="ONG" />
     ),
-    cell: ({ row }) => <div>{row.original.ngoName ?? "-"}</div>,
-    enableSorting: false,
+    cell: ({ row }) => (
+      <div className="max-w-48 min-w-48 text-wrap">
+        {row.original.ngoName ?? "-"}
+      </div>
+    ),
+    enableSorting: true,
   },
   {
     accessorKey: "domains",
@@ -53,7 +57,7 @@ export const reportsColumns: ColumnDef<ReportVM>[] = [
       <DataTableColumnHeader column={column} title="CIF" />
     ),
     cell: ({ row }) => <div>{row.original.ongIdentificationNumber ?? "-"}</div>,
-    enableSorting: false,
+    enableSorting: true,
   },
   {
     accessorKey: "city",
@@ -61,7 +65,7 @@ export const reportsColumns: ColumnDef<ReportVM>[] = [
       <DataTableColumnHeader column={column} title="LOCALITATE" />
     ),
     cell: ({ row }) => <div>{row.original.city ?? "-"}</div>,
-    enableSorting: false,
+    enableSorting: true,
   },
   {
     accessorKey: "county",
@@ -69,7 +73,7 @@ export const reportsColumns: ColumnDef<ReportVM>[] = [
       <DataTableColumnHeader column={column} title="JUDEȚ" />
     ),
     cell: ({ row }) => <div>{row.original.county ?? "-"}</div>,
-    enableSorting: false,
+    enableSorting: true,
   },
   {
     accessorKey: "mentor",
@@ -87,7 +91,7 @@ export const reportsColumns: ColumnDef<ReportVM>[] = [
           : "N/A"}
       </div>
     ),
-    enableSorting: false,
+    enableSorting: true,
   },
   {
     accessorKey: "startDate",
@@ -95,7 +99,7 @@ export const reportsColumns: ColumnDef<ReportVM>[] = [
       <DataTableColumnHeader column={column} title="DATĂ ÎNCEPUT" />
     ),
     cell: ({ row }) => <div>{formatDate(row.original.startDate)}</div>,
-    enableSorting: false,
+    enableSorting: true,
 
     meta: {
       label: "Dată Început",
@@ -103,7 +107,11 @@ export const reportsColumns: ColumnDef<ReportVM>[] = [
       icon: CalendarIcon,
     },
     filterFn: (row, id, value) => {
-      return format(new Date(value), "yyyy-MM-dd") === row.getValue<string>(id);
+      const rowValue = format(new Date(row.getValue<string>(id)), "yyyy-MM-dd");
+      if (!Array.isArray(value) || value.length !== 2) return true; // fallback if invalid
+
+      const [min, max] = value;
+      return rowValue >= min && rowValue <= max;
     },
   },
   {
@@ -120,14 +128,18 @@ export const reportsColumns: ColumnDef<ReportVM>[] = [
         )}
       </div>
     ),
-    enableSorting: false,
+    enableSorting: true,
     meta: {
       label: "Dată Final",
       variant: "date",
       icon: CalendarIcon,
     },
     filterFn: (row, id, value) => {
-      return format(new Date(value), "yyyy-MM-dd") === row.getValue<string>(id);
+      const rowValue = format(new Date(row.getValue<string>(id)), "yyyy-MM-dd");
+      if (!Array.isArray(value) || value.length !== 2) return true; // fallback if invalid
+
+      const [min, max] = value;
+      return rowValue >= min && rowValue <= max;
     },
   },
   {
@@ -140,7 +152,7 @@ export const reportsColumns: ColumnDef<ReportVM>[] = [
         {row.original.finished ? `${row.original.score}%` : <span>-</span>}
       </div>
     ),
-    enableSorting: false,
+    enableSorting: true,
     meta: {
       label: "Scor",
       variant: "range",
@@ -169,7 +181,7 @@ export const reportsColumns: ColumnDef<ReportVM>[] = [
         {row.original.evaluationsCount}
       </div>
     ),
-    enableSorting: false,
+    enableSorting: true,
   },
 
   {
