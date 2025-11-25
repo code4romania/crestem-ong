@@ -31,7 +31,10 @@ const menteeMapper = (mentees: FinalDetailedUserModel[]): MenteeVM[] =>
       county: ngo.county,
       city: ngo.city,
       domains: ngo?.domains?.map((d) => d.name) ?? [],
-      lastEvaluationDate: ngo.reports?.at(-1)?.createdAt,
+      lastEvaluationDate:
+        ngo.reports && ngo.reports.length > 0
+          ? ngo.reports[ngo.reports.length - 1].createdAt
+          : undefined,
     })
   );
 export function MenteesTable() {

@@ -6,16 +6,13 @@ import { Link } from "@tanstack/react-router";
 import { type ColumnDef } from "@tanstack/react-table";
 import type { MenteeVM } from "../types";
 import type { FinalProgramModel } from "@/services/api/types";
+import { format } from "date-fns";
 
 export const columns: ColumnDef<MenteeVM>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Nume ONG"
-        className="whitespace-nowrap py-4 text-sm font-bold text-gray-900 "
-      />
+      <DataTableColumnHeader column={column} title="Nume ONG" />
     ),
     cell: ({ row }) => {
       return (
@@ -26,16 +23,12 @@ export const columns: ColumnDef<MenteeVM>[] = [
         </div>
       );
     },
-    enableSorting: false,
+    enableSorting: true,
   },
   {
     accessorKey: "ongIdentificationNumber",
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="CIF"
-        className="whitespace-nowrap py-4 text-sm font-bold text-gray-900 "
-      />
+      <DataTableColumnHeader column={column} title="CIF" />
     ),
     cell: ({ row }) => <div>{row.original.ongIdentificationNumber ?? "-"}</div>,
     enableSorting: false,
@@ -43,18 +36,14 @@ export const columns: ColumnDef<MenteeVM>[] = [
   {
     accessorKey: "createdAt",
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="DATĂ ÎNREGISTRARE"
-        className="whitespace-nowrap py-4 text-sm font-bold text-gray-900 "
-      />
+      <DataTableColumnHeader column={column} title="DATĂ ÎNREGISTRARE" />
     ),
     cell: ({ row }) => {
       return formatDate(row.original.createdAt);
     },
-    enableSorting: false,
+    enableSorting: true,
     filterFn: (row, id, value) => {
-      const rowValue = row.getValue<string>(id);
+      const rowValue = format(row.getValue<string>(id), "yyyy-MM-dd");
 
       if (!Array.isArray(value) || value.length !== 2) return true; // fallback if invalid
 
@@ -65,15 +54,10 @@ export const columns: ColumnDef<MenteeVM>[] = [
   {
     accessorKey: "ngoPrograms",
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="PROGRAME ASOCIATE"
-        className="whitespace-nowrap py-4 text-sm font-bold text-gray-900 "
-      />
+      <DataTableColumnHeader column={column} title="PROGRAME ASOCIATE" />
     ),
     cell: ({ row }) => (
       <div className="flex flex-wrap gap-2">
-        1222
         {row.original.ngoPrograms?.map(({ id, name, endDate }) => (
           <Badge
             key={id}
@@ -101,35 +85,23 @@ export const columns: ColumnDef<MenteeVM>[] = [
   {
     accessorKey: "county",
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="JUDEȚ"
-        className="whitespace-nowrap py-4 text-sm font-bold text-gray-900 "
-      />
+      <DataTableColumnHeader column={column} title="JUDEȚ" />
     ),
     cell: ({ row }) => <span>{row.original.county}</span>,
-    enableSorting: false,
+    enableSorting: true,
   },
   {
     accessorKey: "city",
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="LOCALITATE"
-        className="whitespace-nowrap py-4 text-sm font-bold text-gray-900 "
-      />
+      <DataTableColumnHeader column={column} title="LOCALITATE" />
     ),
     cell: ({ row }) => <span>{row.original.city}</span>,
-    enableSorting: false,
+    enableSorting: true,
   },
   {
     accessorKey: "domains",
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="DOMENIU DE ACTIVITATE"
-        className="whitespace-nowrap py-4 text-sm font-bold text-gray-900 "
-      />
+      <DataTableColumnHeader column={column} title="DOMENIU DE ACTIVITATE" />
     ),
     cell: ({ row }) => {
       return row.original.domains?.length ? (
@@ -151,25 +123,25 @@ export const columns: ColumnDef<MenteeVM>[] = [
   {
     accessorKey: "lastEvaluationDate",
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="ULTIMA EVALUARE"
-        className="whitespace-nowrap py-4 text-sm font-bold text-gray-900 "
-      />
+      <DataTableColumnHeader column={column} title="ULTIMA EVALUARE" />
     ),
     cell: ({ row }) => {
       return row.original.lastEvaluationDate
         ? formatDate(row.original.lastEvaluationDate)
         : "-";
     },
-    enableSorting: false,
+    enableSorting: true,
     filterFn: (row, id, value) => {
-      const rowValue = row.getValue<string>(id);
-
+      const rowValue = row.getValue<string | undefined>(id);
       if (!Array.isArray(value) || value.length !== 2) return true; // fallback if invalid
 
+      if (!rowValue) return false;
+
       const [min, max] = value;
-      return rowValue >= min && rowValue <= max;
+      return (
+        format(rowValue, "yyyy-MM-dd") >= min &&
+        format(rowValue, "yyyy-MM-dd") <= max
+      );
     },
   },
   {
