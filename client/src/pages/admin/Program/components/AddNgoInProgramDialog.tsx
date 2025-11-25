@@ -103,7 +103,7 @@ export function AddNgoInProgramDialog({
                 name="ngoId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Persoană resursă</FormLabel>
+                    <FormLabel>ONG</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
