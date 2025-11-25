@@ -16,18 +16,18 @@ module.exports = createCoreController(
       if (!user) return ctx.unauthorized("You must be logged in");
 
       const { query } = ctx;
-      const roleName = user?.role?.type;
+      const roleType = user?.role?.type?.toLowerCase();
 
-      if (!["mentor", "authenticated", "fdsc"].includes(roleName)) {
+      if (!["mentor", "authenticated", "fdsc"].includes(roleType)) {
         return ctx.forbidden(
           "You do not have permission to access mentorship requests"
         );
       }
 
       let filters = query.filters || {};
-      if (roleName === "mentor") {
+      if (roleType === "mentor") {
         filters = { ...filters, mentor: { id: { $eq: user.id } } };
-      } else if (roleName === "authenticated") {
+      } else if (roleType === "authenticated") {
         filters = { ...filters, user: { id: { $eq: user.id } } };
       }
 
@@ -71,8 +71,8 @@ module.exports = createCoreController(
       const user = ctx.state.user;
       if (!user) return ctx.unauthorized("You must be logged in");
 
-      const roleName = user.role?.name?.toLowerCase();
-      if (!["mentor", "authenticated", "fdsc"].includes(roleName)) {
+      const roleType = user.role?.type?.toLowerCase();
+      if (!["mentor", "authenticated", "fdsc"].includes(roleType)) {
         return ctx.forbidden(
           "You do not have permission to access mentorship requests"
         );
@@ -89,9 +89,9 @@ module.exports = createCoreController(
 
       if (!entity) return ctx.notFound("Mentorship request not found");
 
-      if (roleName === "mentor" && entity.mentor?.id !== user.id)
+      if (roleType === "mentor" && entity.mentor?.id !== user.id)
         return ctx.notFound("Mentorship request not found");
-      if (roleName === "authenticated" && entity.user?.id !== user.id)
+      if (roleType === "authenticated" && entity.user?.id !== user.id)
         return ctx.notFound("Mentorship request not found");
 
       const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
