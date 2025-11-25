@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useSuspenseListReports } from "@/services/reports.queries";
 import { Download } from "lucide-react";
 import { reportsMapper } from "./table";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import formatDate from "@/lib/formatDate";
 import { downloadDataToXLSX } from "@/lib/excel";
 

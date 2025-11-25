@@ -1,12 +1,5 @@
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { DataTable } from "@/components/ui/data-table";
 import { useTableUrlState } from "@/hooks/use-table-url-state";
 import { evaluationsCompletedFilter } from "@/lib/filters";
 import { calcScore } from "@/lib/score";
@@ -14,8 +7,8 @@ import type { ListReportsResponse } from "@/services/api/list-reports.api";
 import { useSuspenseListReports } from "@/services/reports.queries";
 import { getRouteApi } from "@tanstack/react-router";
 import {
-  flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
@@ -24,7 +17,6 @@ import {
 } from "@tanstack/react-table";
 import type { ReportVM } from "../type";
 import { reportsColumns as columns } from "./columns";
-import { getCommonPinningStyles } from "@/lib/data-table";
 
 const route = getRouteApi("/(app)/reports/");
 
@@ -61,11 +53,12 @@ export function ReportsTable() {
     onGlobalFilterChange,
     columnFilters,
     onColumnFiltersChange,
+    pagination,
     onPaginationChange,
   } = useTableUrlState({
     search: route.useSearch(),
     navigate: route.useNavigate(),
-    pagination: { defaultPage: 1, defaultPageSize: 10 },
+    pagination: { defaultPage: 1, defaultPageSize: 25 },
     globalFilter: { enabled: true, key: "search", trim: false },
     columnFilters: [
       {
@@ -92,6 +85,7 @@ export function ReportsTable() {
     state: {
       columnFilters,
       globalFilter,
+      pagination,
       columnPinning: {
         right: ["navigate"],
       },
@@ -107,77 +101,23 @@ export function ReportsTable() {
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     onPaginationChange,
     onGlobalFilterChange,
     onColumnFiltersChange,
-    manualPagination: true,
   });
 
   return (
     <div className="space-y-4 ">
       <DataTableToolbar table={table}></DataTableToolbar>
       <div className="overflow-hidden rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      key={header.id}
-                      colSpan={header.colSpan}
-                      style={{
-                        ...getCommonPinningStyles({ column: header.column }),
-                      }}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      style={{
-                        ...getCommonPinningStyles({ column: cell.column }),
-                      }}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  0 Rezultate
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+        <DataTable
+          table={table}
+          emptyMessage={"Nu există evaluări"}
+          hasPagination
+        />
       </div>
     </div>
   );

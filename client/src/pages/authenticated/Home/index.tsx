@@ -48,8 +48,6 @@ const Home = () => {
   );
   const { data: me } = useSuspenseGetMe();
 
-  console.log(me?.userSessions);
-
   const stats = useMemo(() => {
     const totalCompletions = reports.reduce(
       (acc, curr) => acc + curr.numberOfCompletions,
