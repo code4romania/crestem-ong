@@ -4,6 +4,7 @@ import { ro } from "date-fns/locale";
 import { CalendarIcon, XCircle } from "lucide-react";
 import * as React from "react";
 import type { DateRange } from "react-day-picker";
+import { parse, isValid, format as formatISODate } from "date-fns";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -21,12 +22,10 @@ function getIsDateRange(value: DateSelection): value is DateRange {
   return value && typeof value === "object" && !Array.isArray(value);
 }
 
-function parseAsDate(timestamp: number | string | undefined): Date | undefined {
-  if (!timestamp) return undefined;
-  const numericTimestamp =
-    typeof timestamp === "string" ? Number(timestamp) : timestamp;
-  const date = new Date(numericTimestamp);
-  return !Number.isNaN(date.getTime()) ? date : undefined;
+function parseAsDate(dateString: string | undefined): Date | undefined {
+  if (!dateString) return undefined;
+  const parsed = parse(dateString, "yyyy-MM-dd", new Date());
+  return isValid(parsed) ? parsed : undefined;
 }
 
 function parseColumnFilterValue(value: unknown) {
@@ -36,14 +35,11 @@ function parseColumnFilterValue(value: unknown) {
 
   if (Array.isArray(value)) {
     return value.map((item) => {
-      if (typeof item === "number" || typeof item === "string") {
-        return item;
-      }
-      return undefined;
+      return typeof item === "string" ? item : undefined;
     });
   }
 
-  if (typeof value === "string" || typeof value === "number") {
+  if (typeof value === "string") {
     return [value];
   }
 
@@ -89,11 +85,13 @@ export function DataTableDateFilter<TData>({
       }
 
       if (multiple && !("getTime" in date)) {
-        const from = date.from?.getTime();
-        const to = date.to?.getTime();
+        const from = date.from
+          ? formatISODate(date.from, "yyyy-MM-dd")
+          : undefined;
+        const to = date.to ? formatISODate(date.to, "yyyy-MM-dd") : undefined;
         column.setFilterValue(from || to ? [from, to] : undefined);
       } else if (!multiple && "getTime" in date) {
-        column.setFilterValue(date.getTime());
+        column.setFilterValue(formatISODate(date, "yyyy-MM-dd"));
       }
     },
     [column, multiple]
@@ -179,7 +177,7 @@ export function DataTableDateFilter<TData>({
           {hasValue ? (
             <div
               role="button"
-              aria-label={`Sterge ${title}`}
+              aria-label={`Șterge ${title}`}
               tabIndex={0}
               onClick={onReset}
               className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"

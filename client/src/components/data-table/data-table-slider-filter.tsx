@@ -134,7 +134,7 @@ export function DataTableSliderFilter<TData>({
           {columnFilterValue ? (
             <div
               role="button"
-              aria-label={`Sterge ${title}`}
+              aria-label={`Șterge ${title}`}
               tabIndex={0}
               className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               onClick={onReset}
@@ -226,12 +226,12 @@ export function DataTableSliderFilter<TData>({
           />
         </div>
         <Button
-          aria-label={`Sterge ${title}`}
+          aria-label={`Șterge ${title}`}
           variant="outline"
           size="sm"
           onClick={onReset}
         >
-          Sterge
+          Șterge
         </Button>
       </PopoverContent>
     </Popover>

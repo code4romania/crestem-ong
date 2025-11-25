@@ -29,6 +29,7 @@ interface DataTableFacetedFilterProps<TData, TValue> {
   title?: string;
   options: Option[];
   multiple?: boolean;
+  disabled?: boolean;
 }
 
 export function DataTableFacetedFilter<TData, TValue>({
@@ -36,8 +37,15 @@ export function DataTableFacetedFilter<TData, TValue>({
   title,
   options,
   multiple,
+  disabled,
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const [open, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    if (disabled && open) {
+      setOpen(false);
+    }
+  }, [disabled, open]);
 
   const columnFilterValue = column?.getFilterValue();
   const selectedValues = new Set(
@@ -76,7 +84,7 @@ export function DataTableFacetedFilter<TData, TValue>({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="border-dashed">
+        <Button variant="outline" size="sm" className="border-dashed" disabled={disabled} aria-disabled={disabled}>
           {selectedValues?.size > 0 ? (
             <div
               role="button"
@@ -133,7 +141,7 @@ export function DataTableFacetedFilter<TData, TValue>({
         <Command>
           <CommandInput placeholder={title} />
           <CommandList className="max-h-full">
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>Nu există rezultate.</CommandEmpty>
             <CommandGroup className="max-h-[18.75rem] overflow-y-auto overflow-x-hidden">
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value);
@@ -172,7 +180,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     onSelect={() => onReset()}
                     className="justify-center text-center"
                   >
-                    Sterge filtre
+                    Șterge filtre
                   </CommandItem>
                 </CommandGroup>
               </>

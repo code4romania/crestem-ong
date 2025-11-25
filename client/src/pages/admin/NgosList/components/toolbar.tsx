@@ -120,17 +120,18 @@ export function NgosDataTableToolbar({ table }: NgosDataTableToolbarProps) {
           title={"Localitate"}
           options={availableCities}
           multiple={false}
+          disabled={!county}
         />
         {isFiltered && (
           <Button
-            aria-label="Sterge filtre"
+            aria-label="Șterge filtre"
             variant="outline"
             size="sm"
             className="border-dashed"
             onClick={onReset}
           >
             <X />
-            Sterge filtre
+            Șterge filtre
           </Button>
         )}
       </div>
