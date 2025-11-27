@@ -1,9 +1,10 @@
+import FullScreenLoader from "@/components/FullScreenLoader";
 import { useAuth } from "@/contexts/auth";
 import UserDetails from "@/pages/admin/UserDetails";
 import MentorDetails from "@/pages/MentorDetails";
 import {
   getUserDetailsQueryOptions,
-  useSuspenseGetUserDetails,
+  useGetUserDetails,
 } from "@/services/user.queries";
 
 import { createFileRoute, Navigate, redirect } from "@tanstack/react-router";
@@ -28,7 +29,13 @@ export const Route = createFileRoute("/(app)/users/$userId")({
 function RouteComponent() {
   const { userRole } = useAuth();
   const { userId } = Route.useParams();
-  const { data: userDetails } = useSuspenseGetUserDetails(userId);
+  const { data: userDetails, isLoading } = useGetUserDetails(userId);
+  if (isLoading) {
+    return <FullScreenLoader />;
+  }
+  if (!userDetails) {
+    return <Navigate to="/users" />;
+  }
   const { returnToProgramId } = Route.useSearch();
 
   return userRole === "fdsc" || userRole === "mentor" ? (

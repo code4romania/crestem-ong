@@ -43,7 +43,12 @@ const Mentors = () => {
               firstName={mentor.firstName ?? ""}
               lastName={mentor.lastName ?? ""}
               dimensions={mentor.dimensions ?? ([] as FinalDimensionModel[])}
-              avatarUrl={mentor.avatar?.formats?.medium?.url}
+              avatarUrl={
+                mentor.avatar?.formats?.medium?.url ??
+                mentor.avatar?.formats?.small?.url ??
+                mentor.avatar?.formats?.thumbnail?.url ??
+                mentor.avatar?.url
+              }
             />
           ))}
         </div>
