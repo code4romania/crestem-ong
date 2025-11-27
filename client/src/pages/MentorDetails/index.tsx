@@ -34,6 +34,12 @@ const MentorDetails = ({
     return <Navigate to="/" />;
   }
 
+  const avatarUrl =
+    mentor.avatar?.formats?.medium?.url ??
+    mentor.avatar?.formats?.small?.url ??
+    mentor.avatar?.formats?.thumbnail?.url ??
+    mentor.avatar?.url;
+
   const getSheets = useCallback(
     (activities: MentorActivityVM[]): Sheet[] => {
       return [
@@ -68,10 +74,10 @@ const MentorDetails = ({
   const rows: [string | ReactNode, string | undefined | null | ReactNode][] = [
     [
       <div className="flex flex-col items-center sm:items-start sm:flex-row gap-4">
-        {mentor.avatar?.formats?.medium?.url && (
+        {avatarUrl && (
           <Avatar className="size-72 rounded-none shrink-0">
             <AvatarImage
-              src={mentor.avatar?.formats?.medium?.url}
+              src={avatarUrl}
               alt={`${mentor.firstName} ${mentor.lastName}`}
             />
           </Avatar>
