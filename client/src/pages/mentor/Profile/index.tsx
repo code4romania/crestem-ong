@@ -3,6 +3,7 @@ import Heading from "@/components/Heading";
 import Section from "@/components/Section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { MinimalTiptapViewer } from "@/components/ui/minimal-tiptap";
 import { useGetMe, useGetUserDimensions } from "@/services/user.queries";
 import { Link, redirect } from "@tanstack/react-router";
 import DOMPurify from "dompurify";
@@ -23,27 +24,11 @@ const Profile = () => {
     ["Email persoană resursă", user.email],
     [
       "Descriere (bio)",
-      <div className="minimal-tiptap-editor">
-        <div className="ProseMirror">
-          <div
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(user.bio || "-"),
-            }}
-          ></div>
-        </div>
-      </div>,
+      <MinimalTiptapViewer value={DOMPurify.sanitize(user.bio || "-")} />,
     ],
     [
       "Arii de expertiză",
-      <div className="minimal-tiptap-editor">
-        <div className="ProseMirror">
-          <div
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(user.expertise || "-"),
-            }}
-          ></div>
-        </div>
-      </div>,
+      <MinimalTiptapViewer value={DOMPurify.sanitize(user.expertise || "-")} />,
     ],
     [
       "Specializare pe dimensiuni",

@@ -59,14 +59,20 @@ export const columns: ColumnDef<NgoVM>[] = [
     cell: ({ row }) =>
       row.original.ngoPrograms?.length ? (
         <div className="flex flex-wrap gap-2">
-          {row.original.ngoPrograms?.map(({ id, name, endDate }) => (
-            <Badge
-              key={id}
-              variant={new Date() > new Date(endDate) ? "warning" : "default"}
-            >
-              {name}
-            </Badge>
-          ))}
+          {row.original.ngoPrograms?.map((program) =>
+            program ? (
+              <Badge
+                key={program.id}
+                variant={
+                  new Date() > new Date(program.endDate) ? "warning" : "default"
+                }
+              >
+                {program.name}
+              </Badge>
+            ) : (
+              "-"
+            )
+          )}
         </div>
       ) : (
         "-"

@@ -4,6 +4,7 @@ import Section from "@/components/Section";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { MinimalTiptapViewer } from "@/components/ui/minimal-tiptap";
 import { useAuth } from "@/contexts/auth";
 import type { Sheet } from "@/lib/excel";
 import formatDate from "@/lib/formatDate";
@@ -88,29 +89,12 @@ const MentorDetails = ({
       </div>,
       null,
     ],
-    [
-      "Descriere (bio)",
-      <div className="minimal-tiptap-editor">
-        <div className="ProseMirror">
-          <div
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(mentor.bio || "-"),
-            }}
-          ></div>
-        </div>
-      </div>,
-    ],
+    ["Descriere (bio)", <MinimalTiptapViewer value={mentor.bio || "-"} />],
     [
       "Arii de expertiză",
-      <div className="minimal-tiptap-editor">
-        <div className="ProseMirror">
-          <div
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(mentor.expertise || "-"),
-            }}
-          ></div>
-        </div>
-      </div>,
+      <MinimalTiptapViewer
+        value={DOMPurify.sanitize(mentor.expertise || "-")}
+      />,
     ],
     [
       "Specializare pe dimensiuni",
