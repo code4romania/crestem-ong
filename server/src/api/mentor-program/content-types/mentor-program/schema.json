@@ -15,13 +15,15 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
-      "inversedBy": "mentorPrograms"
+      "inversedBy": "mentorPrograms",
+      "required": true
     },
     "program": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::program.program",
-      "inversedBy": "programMentors"
+      "inversedBy": "programMentors",
+      "required": true
     }
   }
 }

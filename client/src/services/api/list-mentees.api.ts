@@ -20,5 +20,5 @@ export const listMentees = (): Promise<FinalDetailedUserModel[]> => {
         return qs.stringify(params, { encodeValuesOnly: true });
       },
     },
-  }).then((res) => res.data?.map((m) => m.user) ?? []);
+  }).then((res) => res.data?.map((m) => m.user).filter(Boolean) ?? []);
 };

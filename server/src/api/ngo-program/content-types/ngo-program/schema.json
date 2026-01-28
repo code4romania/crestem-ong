@@ -16,13 +16,15 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
-      "inversedBy": "ngoPrograms"
+      "inversedBy": "ngoPrograms",
+      "required": true
     },
     "program": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::program.program",
-      "inversedBy": "programNgos"
+      "inversedBy": "programNgos",
+      "required": true
     }
   }
 }

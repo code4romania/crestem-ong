@@ -81,7 +81,7 @@ export const getReport = (reportId: string): Promise<FinalReportModel> => {
       ...res.data,
       user: {
         ...res.data.user,
-        mentors: res.data.user.userSessions?.map((s) => s.mentor) ?? [],
+        mentors: res.data.user.userSessions?.map((s) => s.mentor).filter(Boolean) ?? [],
       },
     };
   });

@@ -1,6 +1,6 @@
 import qs from "qs";
 import { API } from "../api";
-import type { FinalDimensionModel, FinalDomainModel } from "./types";
+import type { FinalDimensionModel } from "./types";
 
 interface GetUserDomains {
   dimensions: FinalDimensionModel[];

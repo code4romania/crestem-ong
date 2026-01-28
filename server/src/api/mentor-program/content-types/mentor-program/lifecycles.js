@@ -1,16 +1,38 @@
 const { ValidationError } = require("@strapi/utils").errors;
 
+// Extract IDs for relational fields
+// Strapi uses { connect: [{ id: 1 }] } when connecting relations
+const getId = (relation) => {
+  if (!relation) return null;
+  if (typeof relation === "number") return relation; // already an ID
+  if (relation?.connect?.length) return relation.connect[0].id;
+  return null;
+};
+
 module.exports = {
   async beforeCreate(event) {
     const ctx = strapi.requestContext.get();
     const data = event.params.data || {};
 
-    const programId = data.program;
-    const mentorId = data.mentor;
+    const programId = getId(data.program);
+    const mentorId = getId(data.mentor);
 
-    if (!programId || !mentorId) {
-      ctx.badRequest(`Program sau persoana resursa invalide`);
-      throw new ValidationError(`Program sau persoana resursa invalide`);
+    if (!mentorId) {
+      throw new ValidationError(`Persoana resursa este obligatorie`);
+    }
+
+    if (!programId) {
+      throw new ValidationError(`Program este obligatoriu`);
+    }
+
+    // ✅ Check if program exists
+    const programData = await strapi.entityService.findOne(
+      "api::program.program",
+      programId
+    );
+
+    if (!programData) {
+      throw new ValidationError(`Programul selectat nu exista`);
     }
 
     // ✅ Check if a mentorship request between the same user and mentor already exists
@@ -24,9 +46,6 @@ module.exports = {
       });
 
     if (existingMentorProgram) {
-      ctx.badRequest(
-        `Aceasta relatie intre program si persoana resursa exista deja`
-      );
       throw new ValidationError(
         `Aceasta relatie intre program si persoana resursa exista deja`
       );
@@ -38,8 +57,11 @@ module.exports = {
       { populate: "role" }
     );
 
+    if (!mentorData) {
+      throw new ValidationError(`Persoana resursa nu exista`);
+    }
+
     if (mentorData?.role?.type !== "mentor") {
-      ctx.badRequest(`Persoana resursa nu este valida`);
       throw new ValidationError(`Persoana resursa nu este valida`);
     }
   },
