@@ -1,16 +1,38 @@
 const { ValidationError } = require("@strapi/utils").errors;
 
+// Extract IDs for relational fields
+// Strapi uses { connect: [{ id: 1 }] } when connecting relations
+const getId = (relation) => {
+  if (!relation) return null;
+  if (typeof relation === "number") return relation; // already an ID
+  if (relation?.connect?.length) return relation.connect[0].id;
+  return null;
+};
+
 module.exports = {
   async beforeCreate(event) {
     const ctx = strapi.requestContext.get();
     const data = event.params.data || {};
 
-    const ngoId = data.ngo;
-    const programId = data.program;
+    const ngoId = getId(data.ngo);
+    const programId = getId(data.program);
 
-    if (!ngoId || !programId) {
-      ctx.badRequest(`Program sau organizatie invalide`);
-      throw new ValidationError(`Program sau organizatie invalide`);
+    if (!programId) {
+      throw new ValidationError(`Program este obligatoriu`);
+    }
+
+    if (!ngoId) {
+      throw new ValidationError(`Organizatia este obligatorie`);
+    }
+
+    // ✅ Check if program exists
+    const programData = await strapi.entityService.findOne(
+      "api::program.program",
+      programId
+    );
+
+    if (!programData) {
+      throw new ValidationError(`Programul selectat nu exista`);
     }
 
     // ✅ Check if a mentorship request between the same user and mentor already exists
@@ -24,8 +46,9 @@ module.exports = {
       });
 
     if (existingNgoProgram) {
-      ctx.badRequest(`Aceasta relatie exista deja`);
-      throw new ValidationError(`Aceasta relatie exista deja`);
+      throw new ValidationError(
+        `Aceasta relatie intre program si organizatie exista deja`
+      );
     }
 
     const ngoData = await strapi.entityService.findOne(
@@ -34,9 +57,12 @@ module.exports = {
       { populate: "role" }
     );
 
+    if (!ngoData) {
+      throw new ValidationError(`Organizatia nu exista`);
+    }
+
     if (ngoData?.role?.type?.toLowerCase() !== "authenticated") {
-      ctx.badRequest(`Alege o organizatie valida`);
-      throw new ValidationError(`Alege o organizatie valida`);
+      throw new ValidationError(`Organizatia selectata nu este valida`);
     }
   },
 };

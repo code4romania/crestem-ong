@@ -92,8 +92,8 @@ export const getUserDetails = (
     },
   }).then((res) => ({
     ...res.data,
-    mentors: res.data?.userSessions?.map((s) => s.mentor) ?? [],
-    ngoPrograms: res.data?.ngoPrograms?.map((p) => p.program) ?? [],
-    mentorPrograms: res.data?.mentorPrograms?.map((p) => p.program) ?? [],
+    mentors: res.data?.userSessions?.map((s) => s.mentor).filter(Boolean) ?? [],
+    ngoPrograms: res.data?.ngoPrograms?.map((p) => p.program).filter(Boolean) ?? [],
+    mentorPrograms: res.data?.mentorPrograms?.map((p) => p.program).filter(Boolean) ?? [],
   }));
 };

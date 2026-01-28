@@ -828,7 +828,7 @@ export interface ApiActivityActivity extends Schema.CollectionType {
     >;
     startDate: Attribute.Date & Attribute.Required;
     notes: Attribute.RichText;
-    duration: Attribute.Integer;
+    duration: Attribute.Float;
     mentor: Attribute.Relation<
       'api::activity.activity',
       'manyToOne',
@@ -1048,12 +1048,14 @@ export interface ApiMentorProgramMentorProgram extends Schema.CollectionType {
       'api::mentor-program.mentor-program',
       'manyToOne',
       'plugin::users-permissions.user'
-    >;
+    > &
+      Attribute.Required;
     program: Attribute.Relation<
       'api::mentor-program.mentor-program',
       'manyToOne',
       'api::program.program'
-    >;
+    > &
+      Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1127,12 +1129,14 @@ export interface ApiNgoProgramNgoProgram extends Schema.CollectionType {
       'api::ngo-program.ngo-program',
       'manyToOne',
       'plugin::users-permissions.user'
-    >;
+    > &
+      Attribute.Required;
     program: Attribute.Relation<
       'api::ngo-program.ngo-program',
       'manyToOne',
       'api::program.program'
-    >;
+    > &
+      Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
