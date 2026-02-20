@@ -14,7 +14,7 @@ const NavbarEvaluation = ({
       <div className="relative flex items-center justify-between gap-3 w-full">
         <Link to="/">
           <img
-            className="object-contain max-w-[180px]"
+            className="object-contain max-w-[144px]"
             alt={"Crestem ONG-uri Incredere De Bine"}
             src={logo}
           />
