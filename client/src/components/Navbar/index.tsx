@@ -23,6 +23,7 @@ const MENU = {
     { text: "Despre", link: "https://crestem.ong/ro/despre-proiect" },
     { text: "Evaluare ONG", link: "/" },
     { text: "Bibliotecă", link: "https://crestem.ong/ro/biblioteca" },
+    { text: "LegiXplore", link: "https://crestem.ong/ro/legixplore" },
     {
       text: "Programele noastre",
       link: "https://crestem.ong/ro/programele-noastre",
@@ -125,7 +126,7 @@ export const Menu = () => {
                     href={menuItem.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    // className="flex flex-wrap border-b-2 px-3 py-2 font-medium items-center text-gray-900 hover:bg-gray-50"
+                  // className="flex flex-wrap border-b-2 px-3 py-2 font-medium items-center text-gray-900 hover:bg-gray-50"
                   >
                     {menuItem.text}
                   </a>
